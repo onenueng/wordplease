@@ -7,7 +7,7 @@
 
 require('./bootstrap');
 
-window.Vue = require('vue');
+// window.Vue = require('vue');
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -17,6 +17,15 @@ window.Vue = require('vue');
 
 Vue.component('example', require('./components/Example.vue'));
 
+Vue.component('input-text', require('./components/InputText.vue'));
+
 const app = new Vue({
     el: '#app'
 });
+
+/*  yarn add flatpickr -- flatpickr no need to import css if use default */
+// require("flatpickr/dist/themes/dark.css");
+// window.flatpickr = require("flatpickr"); // const flatpickr = require("flatpickr");
+flatpickr('#tryme');
+autosize(document.querySelectorAll('textarea'));
+

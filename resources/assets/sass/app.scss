@@ -1,9 +1,78 @@
-// hello
-// Fonts
-@import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
+// Fonts ดูเหมือน fa ใน npm มันจะไม่ใช่ css+font ก็เลยต้องไป download แล้วก็มาใส่ไว้ใน node-modules เอง
+$fa-font-path: "~font-awesome/fonts" !default;
+@import '~font-awesome/scss/font-awesome.scss';
+// @import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
 
 // Variables
 @import "variables";
 
 // Bootstrap
 @import "~bootstrap-sass/assets/stylesheets/bootstrap";
+
+/* font */
+@font-face {
+    font-family: 'Roboto';
+    src: url('/fonts/Roboto/Roboto-Light.ttf');
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('/fonts/Roboto/Roboto-Bold.ttf');
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('/fonts/Roboto/Roboto-Italic.ttf');
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('/fonts/Roboto/Roboto-BoldItalic.ttf');
+    font-style: italic;
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: 'PraJad';
+    src: url('/fonts/CSPraJad/CSPraJad.otf');
+}
+
+@font-face {
+    font-family: 'PraJad';
+    src: url('/fonts/CSPraJad/CSPraJad-Bold.otf');
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: 'PraJad';
+    src: url('/fonts/CSPraJad/CSPraJad-Italic.otf');
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'PraJad';
+    src: url('/fonts/CSPraJad/CSPraJad-BoldItalic.otf');
+    font-style: italic;
+    font-weight: bold;
+}
+/* end font */
+
+/* top padding for navbar */
+body { padding-top: 70px; }
+
+/* page theme */
+html, body {
+    font-family: 'Roboto', 'PraJad', Helvetica, Arial, sans-serif;
+    font-weight: 100;
+    height: 100vh; /* full height */
+    margin: 0; /* full screen */
+}
+
+input, textarea, option {
+    font-size: 1em!important;
+}
+
+.form-group-sm {font-size: 1em!important;}
+/* end page theme */

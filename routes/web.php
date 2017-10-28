@@ -19,11 +19,28 @@ Route::get('vue', function () {
     return view('vue');
 });
 
+Route::get('material', function () {
+    return view('material');
+});
+
+Route::get('sidebar', function () {
+    return view('bt-navbar-sidenav');
+});
+
 Route::get('index', function () {
     return view('index');
 });
 
+Route::get('edit', function () {
+    return view('edit');
+});
+
 Route::post('test-post', function (Illuminate\Http\Request $request) {
+    return $request->all();
+});
+
+Route::post('autosave', function (Illuminate\Http\Request $request) {
+    // sleep(2);
     return $request->all();
 });
 
@@ -35,11 +52,45 @@ Route::get('/get-actions', function () {
     ];
 });
 
-Route::get('/get-creatable-notes', function () {
+Route::get('/get-ajax', function () {
+    $items['suggestions'] = [
+        [ 'value' => 'apple', 'data' => '1' ],
+        [ 'value' => 'samsung', 'data' => '2' ],
+        [ 'value' => 'oppo', 'data' => '3'],
+    ];
+
+    return response()->json($items);
+});
+
+Route::get('/get-creatable-notes/{an}', function ($an) {
     return [
-        [ 'base' => 1, 'as' => 1, 'label' => 'Admission note' ],
-        [ 'base' => 1, 'as' => 4, 'label' => 'Admission note as On service note' ],
-        [ 'base' => 1, 'as' => 5, 'label' => 'Admission note as Off service note' ],
-        [ 'base' => 2, 'as' => 2, 'label' => 'Discharge summary' ],
+        [ 
+            'style' => 'cursor: pointer',
+            'base' => 1,
+            'as' => 1,
+            'label' => 'Admission note' ,
+            'title' => ''
+        ],
+        [ 
+            'style' => 'cursor: pointer',
+            'base' => 1,
+            'as' => 4,
+            'label' => 'Admission note as On service note',
+            'title' => ''
+        ],
+        [ 
+            'style' => 'cursor: not-allowed',
+            'base' => 0,
+            'as' => 0,
+            'label' => '<s>Admission note as Off service note</s>',
+            'title' => 'not allowed'
+        ],
+        [ 
+            'style' => 'cursor: pointer',
+            'base' => 2,
+            'as' => 2,
+            'label' => 'Discharge summary' ,
+            'title' => ''
+        ],
     ];
 });

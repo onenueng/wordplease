@@ -11,9 +11,18 @@ let mix = require('laravel-mix');
  |
  */
 
-// use autoload for bootstrap can't find jquery
 mix.js('resources/assets/js/app.js', 'public/js')
-   .autoload({jquery: ['$', 'window.jQuery', 'jQuery']})
-   .extract(['lodash','jquery','bootstrap-sass','axios','vue','flatpickr','autosize'])
-   .js('resources/assets/js/wordplease-index.js', 'public/js')
+   .autoload({jquery: ['$', 'window.jQuery', 'jQuery']}) // use autoload cause bootstrap can't find jquery
+   .extract([
+        'lodash',
+        'jquery',
+        'bootstrap-sass',
+        'axios',
+        'vue',
+        'flatpickr',
+        'autosize',
+        'devbridge-autocomplete'
+    ])
+   .js('resources/assets/js/create-note.js', 'public/js')
+   .js('resources/assets/js/edit-note.js', 'public/js')
    .sass('resources/assets/sass/app.scss', 'public/css');

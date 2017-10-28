@@ -1,28 +1,12 @@
 <template>
     <transition name="slide-fade">
-        <li class="dropdown hvr-bounce-to-bottom" title="hello world">
-            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" disabled v-if="isShow">Create <span class="fa fa-file-text"></span></a>
+        <li class="dropdown hvr-bounce-to-bottom">
+            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" disabled v-if="isShow"><u>HN 12345678 John Doe</u> | Create <span class="fa fa-file-text"></span></a>
             <ul class="dropdown-menu">
-                <li v-for="note in notes" :title="note.label">
-                    <a @click="action(note.base, note.as)">{{ note.label }}</a>
+                <li v-for="note in notes">
+                    <a  :title="note.title" data-toggle="tooltip" :class="getClass(note.title)"  
+                    :style="note.style" @click="action(note.base, note.as)" v-html="note.label"></a>
                 </li>
-                <!-- 
-                <li><a role="button" class="hvr-underline-from-center" onclick="tryCreateNote(99,99);">Admission note</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a role="button" class="hvr-underline-from-left" onclick="tryCreateNote(1,1);">as On service note</a></li>
-                <li><a role="button" class="hvr-underline-from-left" onclick="tryCreateNote(1,1);">as Off service note</a></li>
-                <li><a role="button" class="hvr-underline-from-left" onclick="tryCreateNote(1,1);">as Transfer note</a></li>
-                <li><span class="fa fa-elipsis-h"></span></li>
-                <li><a role="button" class="hvr-underline-from-center" onclick="tryCreateNote(88,88);">Discharge summary</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a href="#">Create Note 1</a></li>
-                <li><a href="#">Create Note 2</a></li>
-                <li><a href="#">Create Note 3</a></li>
-                <li><a href="#">Create Note 4 as Note 1</a></li>
-                <li><a href="#">Create Note 5 as Note 1</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a href="#">Another link</a></li>
-                 -->
             </ul>
         </li>
     </transition>
@@ -33,7 +17,7 @@
         data () {
             return {
                 isShow: true,
-                notes: axios.get('/get-creatable-notes')
+                notes: axios.get('/get-creatable-notes/' + document.getElementById('an').value)
                             .then( (response) => {
                                 this.notes = response.data;
                             }).catch( (error) => {
@@ -43,8 +27,21 @@
         },
         methods: {
             action (base, as) {
-                alert("create " + base + " as " + as)
+                if (base != 0) {
+                    alert("create " + base + " as " + as)
+                }
+            },
+            getClass (title) {
+                return (title == '') ? 'hvr-underline-from-left' : 'tiptip'
             }
+        },
+        updated () {
+            $('.tiptip').tooltip({
+                container: "body",
+                placement: "bottom",
+                trigger: "hover",
+                delay: { "show": 100, "hide": 500 }
+            });
         }
     }
 </script>
@@ -54,11 +51,11 @@
     /* durations and timing functions.              */
     .slide-fade-enter-active {
       /*transition: all .3s ease;*/
-      transition: all 5s ease;
+      transition: all .8s ease;
     }
     .slide-fade-leave-active {
       /*transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);*/
-      transition: all 5s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+      transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
     }
     .slide-fade-enter, .slide-fade-leave-to
     /* .slide-fade-leave-active below version 2.1.8 */ {

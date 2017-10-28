@@ -1,6 +1,7 @@
 <template>
     <ul class="nav navbar-nav navbar-right">
-        <li v-for="action in actions"><a :href="action.link">{{ action.label }}</a></li>
+        <!-- <li v-for="action in actions"><a :href="action.link">{{ action.label }}</a></li> -->
+        <slot></slot>
         <li class="active"><a role="button">{{ username }}</a></li>
         <li class="hvr-bounce-to-top"><a href="/logout"><span class="fa fa-sign-out"></span></a></li>
     </ul>

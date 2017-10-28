@@ -11,18 +11,18 @@
     <!-- modal component -->
 
     <div id="app">
-        <!-- App Navbar -->
-        <appbar
+        <!-- Create note Navbar -->
+        <navbar
             home-link="/"
             department-name="Medicine"
             app-name="IPD Note"
             username="koramit"
             pattern="^[0-9]{8}$">
-        </appbar>
+        </navbar>
     
     
         <div class="container-fluid">
-            <input-text name="an" value="12345678" label="an :"></input-text>
+            <input-text name="an" value="12345678" label="an :" ></input-text>
             
             <div class="form-group form-group-sm has-success has-feedback" id="xxx">
                 <div class="input-group input-group-sm">
@@ -38,6 +38,6 @@
 
     <script src="/js/manifest.js"></script>
     <script src="/js/vendor.js"></script>
-    <script src="/js/wordplease-index.js"></script>
+    <script src="/js/create-note.js"></script>
 </body>
 </html>

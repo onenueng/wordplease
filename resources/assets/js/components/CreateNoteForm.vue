@@ -24,7 +24,7 @@
 
 <script>
     export default {
-        props: ['pattern'],
+        props: ['pattern', 'isValidAn'],
         data () {
             return {
                 an : '',

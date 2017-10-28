@@ -26,7 +26,6 @@
                 userInput: '',
                 domRef: 'input[name=' + this.field + ']',
                 showReset: false,
-                data: '',
                 lastData: ''
             }
         },
@@ -40,19 +39,20 @@
                     this.userInput = suggestion.value;
                     app.$data.autosaving = true;
                     this.autosave();
-
                 },
                 minChars: this.minChars,
                 maxHeight: 200
             });
             this.autosave = _.debounce( () => {
                 if ( this.field != '') {
-                    let value = (this.data != '') ? this.data : this.userInput;
-                    axios.post('/autosave', JSON.parse('{"' + this.field + '": "' + value + '"}'))
-                         .then((response) => { console.log(response.data); app.$data.autosaving = false; })
-                         .catch((error) => { console.log(error); app.$data.autosaving = false; });
-                    this.lastData = this.data;
-                    this.data = '';
+                    if (this.userInput != this.lastData) {
+                        axios.post('/autosave', JSON.parse('{"' + this.field + '": "' + this.userInput + '"}'))
+                             .then((response) => { console.log(response.data); app.$data.autosaving = false; })
+                             .catch((error) => { console.log(error); app.$data.autosaving = false; });
+                        this.lastData = this.userInput;
+                    } else {
+                        app.$data.autosaving = false;
+                    }
                 }
             }, 1000);
         },
@@ -63,9 +63,6 @@
             },
             autosave() {
                 
-            },
-            getRegex() {
-                return 'hello regex';
             },
             reset() {
                 this.showReset = false;

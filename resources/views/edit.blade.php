@@ -27,7 +27,7 @@
 
         <!-- Form content -->
         <div class="container-fluid">
-            <panel heading='genderal data'>
+            <panel heading='Admission data'>
                 <!-- wrap content with row class -->
                 <div class="row">
                     <!-- datetime_admit -->
@@ -97,6 +97,21 @@
                         grid="1-2-4"
                         >
                     </input-select>
+                </div>
+            </panel>
+
+            <panel>
+                <div class="row">
+                    <!-- chief complaint -->
+                    <input-textarea
+                        field="chief_complaint"
+                        value="Lorem ipsum dolor sit amet."
+                        label="Chief complaint :"
+                        grid="1-1-1"
+                        max-chars="50" >
+                    </input-textarea>
+
+                    <div class="col-xs-12"><hr class="line"></div>
                 </div>
             </panel>
 

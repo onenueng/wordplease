@@ -2,7 +2,11 @@
     <transition name="slide-fade">
         <div id="alert-box">
             <div :class="this.class" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true"><span class="fa fa-times-circle"></span></span></button>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">
+                        <span class="fa fa-times-circle"></span>
+                    </span>
+                </button>
                 <span :class="this.setIcon()" id="alert-icon"></span>
                 <p><slot></slot></p>
             </div>
@@ -25,10 +29,13 @@
         },
         methods: {
             setIcon() {
-                if ( this.status == 'warning' ) {
-                    return 'fa fa-warning';
-                } else {
-                    return 'fa fa-check-circle';
+                switch (this.status) {
+                    case 'warning':
+                        return 'fa fa-exclamation-circle';
+                    case 'danger':
+                        return 'fa fa-warning';
+                    default:
+                        return 'fa fa-info-circle';    
                 }
             }
         }
@@ -40,8 +47,8 @@
         font-size: 1em;
         width: 400px;
         position: fixed;
-        top: 5%;
-        right: 2.5%;
+        top: 105px;
+        right: 15px;
         z-index:10;
     }
 

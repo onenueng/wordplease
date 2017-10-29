@@ -30,14 +30,14 @@
             }
         },
         mounted () {
-            this.userInput = this.value;
+            this.lastData = this.userInput = this.value;
+            this.showReset = (this.value != '');
             $(this.domRef).autocomplete({
                 serviceUrl: this.serviceUrl,
                 onSelect: (suggestion) => {
                     this.showReset = true;
                     this.data = suggestion.data;
                     this.userInput = suggestion.value;
-                    app.$data.autosaving = true;
                     this.autosave();
                 },
                 minChars: this.minChars,
@@ -45,6 +45,7 @@
             });
             this.autosave = _.debounce( () => {
                 if ( this.field != '') {
+                    app.$data.autosaving = true;
                     if (this.userInput != this.lastData) {
                         axios.post('/autosave', JSON.parse('{"' + this.field + '": "' + this.userInput + '"}'))
                              .then((response) => { console.log(response.data); app.$data.autosaving = false; })
@@ -73,7 +74,6 @@
                 return this.notAllowOther === undefined ? 'return true;' : 'return false;' ;
             },
             onblur() {
-                app.$data.autosaving = true;
                 this.autosave();
             }
         }

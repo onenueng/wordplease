@@ -1369,17 +1369,29 @@ Vue.component('panel', __webpack_require__(82));
 Vue.component('input-text', __webpack_require__(9));
 Vue.component('input-suggestion', __webpack_require__(98));
 Vue.component('input-select', __webpack_require__(103));
+Vue.component('input-textarea', __webpack_require__(108));
 
 window.app = new Vue({
     el: '#app',
     data: {
         showAlertbox: false,
         alertboxMessage: "Hello World",
-        alertStatus: 'warning',
+        alertStatus: "warning",
         alertDuration: 5000,
         autosaving: false
     }
 });
+
+window.toggleAlertbox = function (message, status) {
+    var duration = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 5000;
+
+    if (!app.$data.showAlertbox) {
+        app.$data.alertboxMessage = message;
+        app.$data.alertStatus = status;
+        app.$data.alertDuration = duration;
+        app.$data.showAlertbox = true;
+    }
+};
 
 /***/ }),
 /* 74 */
@@ -1468,7 +1480,7 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, "\n#alert-box {\n    font-size: 1em;\n    width: 400px;\n    position: fixed;\n    top: 5%;\n    right: 2.5%;\n    z-index:10;\n}\n#alert-icon {\n    font-size:2em;\n    float:left;\n    margin-right: .5em;\n}\n.slide-fade-enter-active {\n  /*transition: all .3s ease;*/\n  -webkit-transition: all .8s ease;\n  transition: all .8s ease;\n}\n.slide-fade-leave-active {\n  /*transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);*/\n  -webkit-transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);\n  transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);\n}\n.slide-fade-enter, .slide-fade-leave-to\n/* .slide-fade-leave-active below version 2.1.8 */ {\n  -webkit-transform: translateX(10px);\n          transform: translateX(10px);\n  opacity: 0;\n}\n", ""]);
+exports.push([module.i, "\n#alert-box {\n    font-size: 1em;\n    width: 400px;\n    position: fixed;\n    top: 105px;\n    right: 15px;\n    z-index:10;\n}\n#alert-icon {\n    font-size:2em;\n    float:left;\n    margin-right: .5em;\n}\n.slide-fade-enter-active {\n  /*transition: all .3s ease;*/\n  -webkit-transition: all .8s ease;\n  transition: all .8s ease;\n}\n.slide-fade-leave-active {\n  /*transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);*/\n  -webkit-transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);\n  transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);\n}\n.slide-fade-enter, .slide-fade-leave-to\n/* .slide-fade-leave-active below version 2.1.8 */ {\n  -webkit-transform: translateX(10px);\n          transform: translateX(10px);\n  opacity: 0;\n}\n", ""]);
 
 // exports
 
@@ -1479,6 +1491,10 @@ exports.push([module.i, "\n#alert-box {\n    font-size: 1em;\n    width: 400px;\
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
 //
 //
 //
@@ -1509,10 +1525,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         setIcon: function setIcon() {
-            if (this.status == 'warning') {
-                return 'fa fa-warning';
-            } else {
-                return 'fa fa-check-circle';
+            switch (this.status) {
+                case 'warning':
+                    return 'fa fa-exclamation-circle';
+                case 'danger':
+                    return 'fa fa-warning';
+                default:
+                    return 'fa fa-info-circle';
             }
         }
     }
@@ -2159,21 +2178,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             userInput: '',
             domRef: 'input[name=' + this.field + ']',
             showReset: false,
-            data: '',
             lastData: ''
         };
     },
     mounted: function mounted() {
         var _this = this;
 
-        this.userInput = this.value;
+        this.lastData = this.userInput = this.value;
+        this.showReset = this.value != '';
         $(this.domRef).autocomplete({
             serviceUrl: this.serviceUrl,
             onSelect: function onSelect(suggestion) {
                 _this.showReset = true;
                 _this.data = suggestion.data;
                 _this.userInput = suggestion.value;
-                app.$data.autosaving = true;
                 _this.autosave();
             },
             minChars: this.minChars,
@@ -2181,14 +2199,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         });
         this.autosave = _.debounce(function () {
             if (_this.field != '') {
-                var value = _this.data != '' ? _this.data : _this.userInput;
-                axios.post('/autosave', JSON.parse('{"' + _this.field + '": "' + value + '"}')).then(function (response) {
-                    console.log(response.data);app.$data.autosaving = false;
-                }).catch(function (error) {
-                    console.log(error);app.$data.autosaving = false;
-                });
-                _this.lastData = _this.data;
-                _this.data = '';
+                app.$data.autosaving = true;
+                if (_this.userInput != _this.lastData) {
+                    axios.post('/autosave', JSON.parse('{"' + _this.field + '": "' + _this.userInput + '"}')).then(function (response) {
+                        console.log(response.data);app.$data.autosaving = false;
+                    }).catch(function (error) {
+                        console.log(error);app.$data.autosaving = false;
+                    });
+                    _this.lastData = _this.userInput;
+                } else {
+                    app.$data.autosaving = false;
+                }
             }
         }, 1000);
     },
@@ -2201,9 +2222,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return 'col-xs-' + grid[0] + ' col-sm-' + grid[1] + ' col-md-' + grid[2];
         },
         autosave: function autosave() {},
-        getRegex: function getRegex() {
-            return 'hello regex';
-        },
         reset: function reset() {
             this.showReset = false;
             this.userInput = '';
@@ -2213,7 +2231,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return this.notAllowOther === undefined ? 'return true;' : 'return false;';
         },
         onblur: function onblur() {
-            app.$data.autosaving = true;
             this.autosave();
         }
     }
@@ -2301,6 +2318,320 @@ if (false) {
     require("vue-hot-reload-api")      .rerender("data-v-0130fef4", module.exports)
   }
 }
+
+/***/ }),
+/* 108 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(111)
+}
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(109)
+/* template */
+var __vue_template__ = __webpack_require__(110)
+/* template functional */
+  var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/InputTextarea.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-11b2bf44", Component.options)
+  } else {
+    hotAPI.reload("data-v-11b2bf44", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 109 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* WEBPACK VAR INJECTION */(function($) {//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['field', 'value', 'label', 'grid', 'readonly', 'maxChars'],
+    data: function data() {
+        return {
+            userInput: '',
+            domRef: 'textarea[name=' + this.field + ']',
+            dirty: false,
+            controlClass: 'form-control',
+            helperClass: 'text-muted',
+            showCharsRemaining: false,
+            charsRemaining: 0
+        };
+    },
+    mounted: function mounted() {
+        var _this = this;
+
+        this.userInput = this.value;
+        autosize($(this.domRef));
+        this.onkeypress = _.debounce(function () {
+            var countChars = _this.userInput.length;
+            if (countChars > .5 * _this.maxChars) {
+                _this.charsRemaining = _this.maxChars - _this.userInput.length;
+                _this.showCharsRemaining = true;
+                if (countChars > .75 * _this.maxChars) {
+                    _this.toggleStatus('danger');
+                } else {
+                    _this.toggleStatus('warning');
+                }
+            } else {
+                _this.toggleStatus('');
+            }
+        }, 300);
+        this.onkeypressSave = _.debounce(function () {
+            _this.autosave();
+        }, 5000);
+    },
+
+    methods: {
+        getGrid: function getGrid() {
+            var grid = this.grid.split('-').map(function (x) {
+                return 12 / x;
+            });
+            return 'col-xs-' + grid[0] + ' col-sm-' + grid[1] + ' col-md-' + grid[2];
+        },
+        autosave: function autosave() {
+            var _this2 = this;
+
+            if (this.readonly != '' && this.dirty) {
+                app.$data.autosaving = true;
+                axios.post('/autosave', JSON.parse('{"' + this.field + '": ' + JSON.stringify(this.userInput) + '}')).then(function (response) {
+                    console.log(response.data);_this2.dirty = false;app.$data.autosaving = false;
+                }).catch(function (error) {
+                    console.log(error);app.$data.autosaving = false;
+                });
+                this.showCharsRemaining = false;
+                this.toggleStatus('');
+            }
+
+            if (this.showCharsRemaining) {
+                this.showCharsRemaining = false;
+            }
+        },
+        oninput: function oninput() {
+            if (!this.dirty && this.userInput.length < this.maxChars) {
+                this.dirty = true;
+            }
+
+            if (this.showCharsRemaining) {
+                this.charsRemaining = this.maxChars - this.userInput.length;
+            }
+            this.onkeypress();
+            this.onkeypressSave();
+        },
+        onkeypress: function onkeypress() {},
+        onkeypressSave: function onkeypressSave() {},
+        toggleStatus: function toggleStatus(status) {
+            var baseClass = '';
+            var subClass = '';
+            var show = false;
+            switch (status) {
+                case 'warning':
+                    baseClass = 'form-control textarea-warning';
+                    subClass = 'text-warning';
+                    show = true;
+                    break;
+                case 'danger':
+                    baseClass = 'form-control textarea-danger';
+                    subClass = 'text-danger';
+                    show = true;
+                    break;
+                default:
+                    baseClass = 'form-control';
+                    subClass = 'text-muted';
+            }
+            if (this.controlClass != baseClass) {
+                this.controlClass = baseClass;
+                this.helperClass = subClass;
+                this.showCharsRemaining = show;
+            }
+        },
+        onfocus: function onfocus() {
+            console.log('limit' + this.userInput.length);
+            if (this.userInput.length == this.maxChars) {
+                console.log('limit');
+                this.toggleStatus('danger');
+                // this.showCharsRemaining = true;
+            }
+        }
+    }
+});
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(1)))
+
+/***/ }),
+/* 110 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { class: _vm.getGrid() }, [
+    _c(
+      "div",
+      { staticClass: "form-group-sm" },
+      [
+        _c(
+          "label",
+          { staticClass: "control-label", attrs: { for: _vm.field } },
+          [_vm._v(_vm._s(_vm.label))]
+        ),
+        _vm._v(" "),
+        _c("textarea", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.userInput,
+              expression: "userInput"
+            }
+          ],
+          class: _vm.controlClass,
+          attrs: {
+            readonly: _vm.readonly,
+            name: _vm.field,
+            rows: "1",
+            maxlength: _vm.maxChars
+          },
+          domProps: { value: _vm.userInput },
+          on: {
+            input: [
+              function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.userInput = $event.target.value
+              },
+              function($event) {
+                _vm.oninput()
+              }
+            ],
+            blur: function($event) {
+              _vm.autosave()
+            },
+            focus: function($event) {
+              _vm.onfocus()
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c("transition", { attrs: { name: "slide-fade" } }, [
+          _vm.showCharsRemaining
+            ? _c("p", { class: _vm.helperClass }, [
+                _c("strong", [
+                  _vm._v(_vm._s(_vm.charsRemaining) + " chars remain.")
+                ])
+              ])
+            : _vm._e()
+        ])
+      ],
+      1
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-11b2bf44", module.exports)
+  }
+}
+
+/***/ }),
+/* 111 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(112);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(21)("7258981c", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-11b2bf44\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./InputTextarea.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-11b2bf44\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./InputTextarea.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 112 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(3)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "\n.textarea-warning {\n    /*Important stuff here*/\n    -webkit-transition: flash-warning 3s ease-out;\n    transition: flash-warning 3s ease-out;\n    -webkit-animation: flash-warning 3s forwards linear normal;\n            animation: flash-warning 3s forwards linear normal;\n}\n@-webkit-keyframes flash-warning {\n0% {\n        background:#fff;\n}\n50% {\n        background:#f0ad4e;\n}\n100% {\n        background:#fff;\n}\n}\n@keyframes flash-warning {\n0% {\n        background:#fff;\n}\n50% {\n        background:#f0ad4e;\n}\n100% {\n        background:#fff;\n}\n}\n.textarea-danger {\n    /*Important stuff here*/\n    -webkit-transition: flash-danger 3s ease-out;\n    transition: flash-danger 3s ease-out;\n    -webkit-animation: flash-danger 3s forwards linear normal;\n            animation: flash-danger 3s forwards linear normal;\n}\n@-webkit-keyframes flash-danger {\n0% {\n        background:#fff;\n}\n50% {\n        background:#d9534f;\n}\n100% {\n        background:#fff;\n}\n}\n@keyframes flash-danger {\n0% {\n        background:#fff;\n}\n50% {\n        background:#d9534f;\n}\n100% {\n        background:#fff;\n}\n}\n.slide-fade-enter-active {\n  /*transition: all .3s ease;*/\n  -webkit-transition: all .8s ease;\n  transition: all .8s ease;\n}\n.slide-fade-leave-active {\n  /*transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);*/\n  -webkit-transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);\n  transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);\n}\n.slide-fade-enter, .slide-fade-leave-to\n/* .slide-fade-leave-active below version 2.1.8 */ {\n  -webkit-transform: translateX(10px);\n          transform: translateX(10px);\n  opacity: 0;\n}\n", ""]);
+
+// exports
+
 
 /***/ })
 ],[72]);

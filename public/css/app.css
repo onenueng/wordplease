@@ -11545,6 +11545,11 @@ a.navbar-brand.active:hover {
 
 /* end autocomplete theme */
 
+hr.line {
+  background-color: #fff;
+  border-top: 2px dashed #e0e0e0;
+}
+
 /* Hover effect Bounce To Bottom */
 
 .hvr-bounce-to-bottom {

@@ -115,21 +115,33 @@
                 </div>
             </panel>
 
-            <input-radio
-                field="dm"
-                label="Radio :"
-                options='[
-                    {"label": "champ", "value": 1},
-                    {"label": "toon", "value": 2}
-                ]'>
-                <input-radio
-                    field="type"
-                    label="Type :"
-                    options='[
-                        {"label": "I", "value": 1},
-                        {"label": "II", "value": 2}
-                    ]'>
-                </input-radio>                
+            <input-radio field="dm"
+                         label="Radio :"
+                         options='[
+                            {"label": "champ", "value": 1},
+                            {"label": "toon", "value": 2}
+                         ]'>
+                <input-radio field="type"
+                             label="Type :"
+                             options='[
+                                {"label": "I", "value": 1},
+                                {"label": "II", "value": 2}
+                             ]'>
+                </input-radio>
+                {{-- 
+                <input-check field="check1"
+                             label="Check A">
+                </input-check>
+                 --}}
+
+                <input-check-group label="Check group"
+                                   checks='[
+                                        {"field": "a1", "label": "Lab A1"},
+                                        {"field": "b1", "label": "Lab B1"}
+                                   ]'>
+                    
+                </input-check-group>
+                
             </input-radio>
             <input type="text" class="form-control">
             <input type="text" class="form-control">

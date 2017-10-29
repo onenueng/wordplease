@@ -352,7 +352,7 @@ autosize(document.querySelectorAll('textarea'));
 /***/ 4:
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(__webpack_provided_window_dot_jQuery) {window._ = __webpack_require__(12);
+/* WEBPACK VAR INJECTION */(function(__webpack_provided_window_dot_jQuery) {window._ = __webpack_require__(13);
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -366,14 +366,14 @@ autosize(document.querySelectorAll('textarea'));
 //     require('bootstrap-sass');
 // } catch (e) {}
 window.$ = __webpack_provided_window_dot_jQuery = __webpack_require__(1);
-__webpack_require__(13);
+__webpack_require__(14);
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
  * to our Laravel back-end. This library automatically handles sending the
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-window.axios = __webpack_require__(14);
+window.axios = __webpack_require__(15);
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
@@ -391,14 +391,14 @@ if (token) {
   console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
 
-window.Vue = __webpack_require__(15);
+window.Vue = __webpack_require__(16);
 
 __webpack_require__(5);
-window.flatpickr = __webpack_require__(16); // const flatpickr = require("flatpickr");
+window.flatpickr = __webpack_require__(17); // const flatpickr = require("flatpickr");
 
-window.autosize = __webpack_require__(17);
+window.autosize = __webpack_require__(18);
 
-__webpack_require__(18);
+__webpack_require__(19);
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting

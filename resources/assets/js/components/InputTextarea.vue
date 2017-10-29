@@ -115,11 +115,8 @@
                 }
             },
             onfocus() {
-                console.log('limit' + this.userInput.length);
                 if(this.userInput.length == this.maxChars) {
-                    console.log('limit');
                     this.toggleStatus('danger');
-                    // this.showCharsRemaining = true;
                 }
             }
         }

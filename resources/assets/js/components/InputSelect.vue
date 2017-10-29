@@ -12,7 +12,7 @@
                 v-model="userInput"
                 @blur="onblur()"
                 @input="showReset = (userInput != '')"
-                :onkeypress="this.isAllowOther()" />
+                :onkeypress="isAllowOther()" />
             <i class="fa fa-chevron-down form-control-feedback"></i>
         </div>
     </div>

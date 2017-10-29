@@ -1370,6 +1370,7 @@ Vue.component('input-text', __webpack_require__(9));
 Vue.component('input-suggestion', __webpack_require__(98));
 Vue.component('input-select', __webpack_require__(103));
 Vue.component('input-textarea', __webpack_require__(108));
+Vue.component('input-radio', __webpack_require__(113));
 
 window.app = new Vue({
     el: '#app',
@@ -2284,7 +2285,7 @@ var render = function() {
         attrs: {
           type: "text",
           name: _vm.field,
-          onkeypress: this.isAllowOther()
+          onkeypress: _vm.isAllowOther()
         },
         domProps: { value: _vm.userInput },
         on: {
@@ -2501,11 +2502,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
         },
         onfocus: function onfocus() {
-            console.log('limit' + this.userInput.length);
             if (this.userInput.length == this.maxChars) {
-                console.log('limit');
                 this.toggleStatus('danger');
-                // this.showCharsRemaining = true;
             }
         }
     }
@@ -2629,6 +2627,245 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 // module
 exports.push([module.i, "\n.textarea-warning {\n    /*Important stuff here*/\n    -webkit-transition: flash-warning 3s ease-out;\n    transition: flash-warning 3s ease-out;\n    -webkit-animation: flash-warning 3s forwards linear normal;\n            animation: flash-warning 3s forwards linear normal;\n}\n@-webkit-keyframes flash-warning {\n0% {\n        background:#fff;\n}\n50% {\n        background:#f0ad4e;\n}\n100% {\n        background:#fff;\n}\n}\n@keyframes flash-warning {\n0% {\n        background:#fff;\n}\n50% {\n        background:#f0ad4e;\n}\n100% {\n        background:#fff;\n}\n}\n.textarea-danger {\n    /*Important stuff here*/\n    -webkit-transition: flash-danger 3s ease-out;\n    transition: flash-danger 3s ease-out;\n    -webkit-animation: flash-danger 3s forwards linear normal;\n            animation: flash-danger 3s forwards linear normal;\n}\n@-webkit-keyframes flash-danger {\n0% {\n        background:#fff;\n}\n50% {\n        background:#d9534f;\n}\n100% {\n        background:#fff;\n}\n}\n@keyframes flash-danger {\n0% {\n        background:#fff;\n}\n50% {\n        background:#d9534f;\n}\n100% {\n        background:#fff;\n}\n}\n.slide-fade-enter-active {\n  /*transition: all .3s ease;*/\n  -webkit-transition: all .8s ease;\n  transition: all .8s ease;\n}\n.slide-fade-leave-active {\n  /*transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);*/\n  -webkit-transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);\n  transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);\n}\n.slide-fade-enter, .slide-fade-leave-to\n/* .slide-fade-leave-active below version 2.1.8 */ {\n  -webkit-transform: translateX(10px);\n          transform: translateX(10px);\n  opacity: 0;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 113 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(116)
+}
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(114)
+/* template */
+var __vue_template__ = __webpack_require__(115)
+/* template functional */
+  var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/InputRadio.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-5dea33e1", Component.options)
+  } else {
+    hotAPI.reload("data-v-5dea33e1", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 114 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['field', 'label', 'options'],
+    data: function data() {
+        return {
+            showReset: false,
+            currentValue: -1,
+            showExtra: false
+        };
+    },
+
+    methods: {
+        check: function check(value) {
+            if (!this.showReset) {
+                this.showReset = true;
+            }
+            this.currentValue = value;
+            console.log(value);
+            if (this.hasDefaultSlot) {
+                this.showExtra = true;
+            }
+        },
+        reset: function reset() {
+            this.showReset = false;
+            this.currentValue = -1;
+            if (this.hasDefaultSlot) {
+                this.showExtra = false;
+            }
+        }
+    },
+    mounted: function mounted() {},
+
+    computed: {
+        hasDefaultSlot: function hasDefaultSlot() {
+            return !!this.$slots.default;
+        }
+    }
+});
+
+/***/ }),
+/* 115 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c(
+        "div",
+        { staticClass: "form-group-sm" },
+        [
+          _c("label", { staticClass: "control-label" }, [
+            _vm._v(_vm._s(_vm.label))
+          ]),
+          _vm._v(" "),
+          _c(
+            "a",
+            {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.showReset,
+                  expression: "showReset"
+                }
+              ],
+              attrs: { role: "button" },
+              on: {
+                click: function($event) {
+                  _vm.reset()
+                }
+              }
+            },
+            [_c("i", { staticClass: "fa fa-remove" })]
+          ),
+          _vm._v(" "),
+          _vm._l(JSON.parse(_vm.options), function(option) {
+            return _c("label", { staticClass: "radio-inline" }, [
+              _c("input", {
+                attrs: { type: "radio", name: _vm.field },
+                domProps: {
+                  value: option.value,
+                  checked: option.value == _vm.currentValue
+                },
+                on: {
+                  click: function($event) {
+                    _vm.check(option.value)
+                  }
+                }
+              }),
+              _vm._v(" " + _vm._s(option.label) + "\n        ")
+            ])
+          })
+        ],
+        2
+      ),
+      _vm._v(" "),
+      _c("transition", { attrs: { name: "slide-fade" } }, [
+        _vm.showExtra ? _c("div", [_vm._t("default")], 2) : _vm._e()
+      ])
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-5dea33e1", module.exports)
+  }
+}
+
+/***/ }),
+/* 116 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(117);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(21)("703bb3c0", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-5dea33e1\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./InputRadio.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-5dea33e1\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./InputRadio.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 117 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(3)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "\n.slide-fade-enter-active {\n  /*transition: all .3s ease;*/\n  -webkit-transition: all .8s ease;\n  transition: all .8s ease;\n}\n.slide-fade-leave-active {\n  /*transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);*/\n  -webkit-transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);\n  transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);\n}\n.slide-fade-enter, .slide-fade-leave-to\n/* .slide-fade-leave-active below version 2.1.8 */ {\n  -webkit-transform: translateX(10px);\n          transform: translateX(10px);\n  opacity: 0;\n}\n", ""]);
 
 // exports
 

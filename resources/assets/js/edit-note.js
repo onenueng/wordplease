@@ -8,6 +8,7 @@ Vue.component('input-text', require('./components/InputText.vue'));
 Vue.component('input-suggestion', require('./components/InputSuggestion.vue'));
 Vue.component('input-select', require('./components/InputSelect.vue'));
 Vue.component('input-textarea', require('./components/InputTextarea.vue'));
+Vue.component('input-radio', require('./components/InputRadio.vue'));
 
 window.app = new Vue({
     el: '#app',

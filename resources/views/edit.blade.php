@@ -115,11 +115,25 @@
                 </div>
             </panel>
 
-            <div class="form-group-sm has-feedback">
-                <label class="control-label">Username</label>
-                <input type="text" class="form-control" placeholder="Username" id="ajax" onkeypress="return false;" />
-                <i class="fa fa-chevron-down form-control-feedback"></i>
-            </div>
+            <input-radio
+                field="dm"
+                label="Radio :"
+                options='[
+                    {"label": "champ", "value": 1},
+                    {"label": "toon", "value": 2}
+                ]'>
+                <input-radio
+                    field="type"
+                    label="Type :"
+                    options='[
+                        {"label": "I", "value": 1},
+                        {"label": "II", "value": 2}
+                    ]'>
+                </input-radio>                
+            </input-radio>
+            <input type="text" class="form-control">
+            <input type="text" class="form-control">
+            <input type="text" class="form-control">
         </div>
     </div>
 
@@ -128,10 +142,7 @@
     <script src="/js/edit-note.js"></script>
 
     <script>
-        $('#ajax').autocomplete({
-            serviceUrl: '/get-ajax',
-            minChars: 0
-        });
+        
     </script>
 </body>
 </html>

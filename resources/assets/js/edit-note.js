@@ -1,5 +1,9 @@
 require('./bootstrap');
 
+// in case of need to use global event bus
+// window.EventBus = new Vue();
+
+
 Vue.component('alert-box', require('./components/Alertbox.vue'));
 Vue.component('navbar', require('./components/EditNoteNavbar.vue'));
 Vue.component('appbar-right', require('./components/AppbarRight.vue'));
@@ -31,3 +35,5 @@ window.toggleAlertbox = (message, status, duration = 5000) => {
         app.$data.showAlertbox = true;
     }
 }
+
+// window.EventBus = new Vue;

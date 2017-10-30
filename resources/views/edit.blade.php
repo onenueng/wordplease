@@ -112,40 +112,48 @@
                     </input-textarea>
 
                     <div class="col-xs-12"><hr class="line"></div>
+
+                    <div class="col-xs-12 col-sm-6 col-md-4">
+                        <input-radio field="comorbid_DM"
+                                     label="DM :"
+                                     options='[
+                                        {"label": "No data", "value": 255},
+                                        {"label": "No", "value": 0},
+                                        {"label": "Yes", "value": 1}
+                                     ]'
+                                     trigger-value="1">
+                            <input-radio field="comorbid_DM_type"
+                                         label="Type : "
+                                         options='[
+                                            {"label": "I", "value": 1},
+                                            {"label": "II", "value": 2}
+                                         ]'
+                                         need-sync>
+                            </input-radio>
+
+                            <input-check-group label="Complication : "
+                                               checks='[
+                                                    {"field": "comorbid_DM_DR", "label": "DR"},
+                                                    {"field": "comorbid_DM_nephropathy", "label": "Nephropathy"},
+                                                    {"field": "comorbid_DM_neuropathy", "label": "Neuropathy"}
+                                               ]'
+                                               need-sync>
+                            </input-check-group>
+
+                            <input-check-group label="Treatment : "
+                                               checks='[
+                                                    {"field": "comorbid_DM_diet", "label": "Diet", "checked": "checked"},
+                                                    {"field": "comorbid_DM_oral_meds", "label": "Oral Meds"},
+                                                    {"field": "comorbid_DM_insulin", "label": "Insulin"}
+                                               ]'
+                                               need-sync>
+                            </input-check-group>
+                        </input-radio>
+                        <hr class="line">
+                    </div>
                 </div>
             </panel>
 
-            <input-radio field="dm"
-                         label="Radio :"
-                         options='[
-                            {"label": "champ", "value": 1},
-                            {"label": "toon", "value": 2}
-                         ]'>
-                <input-radio field="type"
-                             label="Type :"
-                             options='[
-                                {"label": "I", "value": 1},
-                                {"label": "II", "value": 2}
-                             ]'>
-                </input-radio>
-                {{-- 
-                <input-check field="check1"
-                             label="Check A">
-                </input-check>
-                 --}}
-
-                <input-check-group label="Check group"
-                                   checks='[
-                                        {"field": "a1", "label": "Lab A1"},
-                                        {"field": "b1", "label": "Lab B1"}
-                                   ]'>
-                    
-                </input-check-group>
-                
-            </input-radio>
-            <input type="text" class="form-control">
-            <input type="text" class="form-control">
-            <input type="text" class="form-control">
         </div>
     </div>
 

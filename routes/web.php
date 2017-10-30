@@ -40,7 +40,7 @@ Route::post('test-post', function (Illuminate\Http\Request $request) {
 });
 
 Route::post('autosave', function (Illuminate\Http\Request $request) {
-    sleep(2);
+    // sleep(1);
     return $request->all();
 });
 

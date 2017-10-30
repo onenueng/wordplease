@@ -2,19 +2,22 @@
     <div>
         <div class="form-group-sm">
             <label class="control-label">{{ label }}</label>
-            <a @click="reset()" role="button" v-show="showReset"><i class="fa fa-remove"></i></a>
+            <transition name="slide-fade">
+                <a @click="reset()" role="button" v-show="showReset"><i class="fa fa-remove"></i></a>
+            </transition>
             <label class="radio-inline" v-for="option in JSON.parse(options)">
                 <input
                     type="radio"
                     :name="field"
                     :value="option.value"
                     @click="check(option.value)"
-                    :checked="option.value == currentValue" /> {{ option.label }}
+                    :checked="option.value == currentValue" />
+                 {{ option.label }}
             </label>
         </div>
 
         <transition name="slide-fade">
-            <div v-if="showExtra">
+            <div v-if="showExtra" class="form-group-sm extra">
                 <slot></slot>
             </div>
         </transition>
@@ -24,7 +27,7 @@
 
 <script>
     export default {
-        props: ['field','label', 'options'],
+        props: ['field','label', 'options', 'triggerValue', 'needSync'],
         data () {
             return {
                 showReset: false,
@@ -34,13 +37,31 @@
         },
         methods: {
             check(value) {
-                if(!this.showReset) {
+                if (this.hasDefaultSlot) {
+                    if (this.isTriggerExtra(value)) {
+                        if (!this.showExtra) {
+                            this.showExtra = true;
+                        }
+                    } else {
+                        if (this.showExtra) {
+                            this.showExtra = false;
+                            // in case of need to use global event bus
+                            // EventBus.$emit(this.emitCloseExtra);
+                        }
+                    }
+                }
+
+                if (!this.showReset) {
                     this.showReset = true;
                 }
-                this.currentValue = value;
-                console.log(value);
-                if (this.hasDefaultSlot) {
-                    this.showExtra = true;
+
+                if (this.currentValue != value) {
+                    app.$data.autosaving = true;
+                    this.currentValue = value;
+
+                    axios.post('/autosave', JSON.parse('{"' + this.field + '": ' + JSON.stringify(value) + '}'))
+                         .then((response) => { console.log(response.data); this.dirty = false; app.$data.autosaving = false; })
+                         .catch((error) => { console.log(error); app.$data.autosaving = false; });
                 }
             },
             reset() {
@@ -49,15 +70,33 @@
                 if (this.hasDefaultSlot) {
                     this.showExtra = false;
                 }
+            },
+            isTriggerExtra(value) {
+                return (value == this.triggerValue)
             }
         },
         mounted () {
-            
+            // in case of need to use global event bus
+            // if (this.onCloseExtra !== undefined) {    
+            //     EventBus.$on(this.onCloseExtra, () => {
+            //         axios.post('/autosave', JSON.parse('{"' + this.field + '": ' + JSON.stringify(null) + '}'))
+            //              .then((response) => { console.log(response.data); this.dirty = false; app.$data.autosaving = false; })
+            //              .catch((error) => { console.log(error); app.$data.autosaving = false; });
+            //         console.log(this.field);
+            //     });
+            // }
+
+            if (this.needSync !== undefined) {
+                console.log(this.field + ' need sync');
+            }
         },
         computed: {
             hasDefaultSlot() {
                 return !!this.$slots.default;
             }
+        },
+        beforeDestroy() {
+            
         }
     }
 </script>
@@ -75,5 +114,9 @@
     /* .slide-fade-leave-active below version 2.1.8 */ {
       transform: translateX(10px);
       opacity: 0;
+    }
+    div.extra {
+        font-style: italic;
+        color: #757575;
     }
 </style>

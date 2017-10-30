@@ -111,7 +111,12 @@ input, textarea, option {
 
 hr.line {
     background-color: #fff;
-    border-top: 2px dashed #e0e0e0;
+    border-top: 1.5px dashed #e0e0e0;
+}
+
+/* custom fix checkbox aligment to fit with theme font */
+div.form-group-sm label.checkbox-inline input {
+    margin-top: 6px!important;
 }
 
 

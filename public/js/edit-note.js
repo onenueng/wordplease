@@ -1362,6 +1362,10 @@ module.exports = __webpack_require__(73);
 
 __webpack_require__(4);
 
+// in case of need to use global event bus
+// window.EventBus = new Vue();
+
+
 Vue.component('alert-box', __webpack_require__(74));
 Vue.component('navbar', __webpack_require__(79));
 Vue.component('appbar-right', __webpack_require__(23));
@@ -1395,6 +1399,8 @@ window.toggleAlertbox = function (message, status) {
         app.$data.showAlertbox = true;
     }
 };
+
+// window.EventBus = new Vue;
 
 /***/ }),
 /* 74 */
@@ -2703,7 +2709,7 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, "\n.slide-fade-enter-active {\n  /*transition: all .3s ease;*/\n  -webkit-transition: all .8s ease;\n  transition: all .8s ease;\n}\n.slide-fade-leave-active {\n  /*transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);*/\n  -webkit-transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);\n  transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);\n}\n.slide-fade-enter, .slide-fade-leave-to\n/* .slide-fade-leave-active below version 2.1.8 */ {\n  -webkit-transform: translateX(10px);\n          transform: translateX(10px);\n  opacity: 0;\n}\n", ""]);
+exports.push([module.i, "\n.slide-fade-enter-active {\n  /*transition: all .3s ease;*/\n  -webkit-transition: all .8s ease;\n  transition: all .8s ease;\n}\n.slide-fade-leave-active {\n  /*transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);*/\n  -webkit-transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);\n  transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);\n}\n.slide-fade-enter, .slide-fade-leave-to\n/* .slide-fade-leave-active below version 2.1.8 */ {\n  -webkit-transform: translateX(10px);\n          transform: translateX(10px);\n  opacity: 0;\n}\ndiv.extra {\n    font-style: italic;\n    color: #757575;\n}\n", ""]);
 
 // exports
 
@@ -2738,9 +2744,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['field', 'label', 'options'],
+    props: ['field', 'label', 'options', 'triggerValue', 'needSync'],
     data: function data() {
         return {
             showReset: false,
@@ -2751,13 +2760,35 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         check: function check(value) {
+            var _this = this;
+
+            if (this.hasDefaultSlot) {
+                if (this.isTriggerExtra(value)) {
+                    if (!this.showExtra) {
+                        this.showExtra = true;
+                    }
+                } else {
+                    if (this.showExtra) {
+                        this.showExtra = false;
+                        // in case of need to use global event bus
+                        // EventBus.$emit(this.emitCloseExtra);
+                    }
+                }
+            }
+
             if (!this.showReset) {
                 this.showReset = true;
             }
-            this.currentValue = value;
-            console.log(value);
-            if (this.hasDefaultSlot) {
-                this.showExtra = true;
+
+            if (this.currentValue != value) {
+                app.$data.autosaving = true;
+                this.currentValue = value;
+
+                axios.post('/autosave', JSON.parse('{"' + this.field + '": ' + JSON.stringify(value) + '}')).then(function (response) {
+                    console.log(response.data);_this.dirty = false;app.$data.autosaving = false;
+                }).catch(function (error) {
+                    console.log(error);app.$data.autosaving = false;
+                });
             }
         },
         reset: function reset() {
@@ -2766,15 +2797,33 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (this.hasDefaultSlot) {
                 this.showExtra = false;
             }
+        },
+        isTriggerExtra: function isTriggerExtra(value) {
+            return value == this.triggerValue;
         }
     },
-    mounted: function mounted() {},
+    mounted: function mounted() {
+        // in case of need to use global event bus
+        // if (this.onCloseExtra !== undefined) {    
+        //     EventBus.$on(this.onCloseExtra, () => {
+        //         axios.post('/autosave', JSON.parse('{"' + this.field + '": ' + JSON.stringify(null) + '}'))
+        //              .then((response) => { console.log(response.data); this.dirty = false; app.$data.autosaving = false; })
+        //              .catch((error) => { console.log(error); app.$data.autosaving = false; });
+        //         console.log(this.field);
+        //     });
+        // }
+
+        if (this.needSync !== undefined) {
+            console.log(this.field + ' need sync');
+        }
+    },
 
     computed: {
         hasDefaultSlot: function hasDefaultSlot() {
             return !!this.$slots.default;
         }
-    }
+    },
+    beforeDestroy: function beforeDestroy() {}
 });
 
 /***/ }),
@@ -2796,26 +2845,28 @@ var render = function() {
             _vm._v(_vm._s(_vm.label))
           ]),
           _vm._v(" "),
-          _c(
-            "a",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.showReset,
-                  expression: "showReset"
+          _c("transition", { attrs: { name: "slide-fade" } }, [
+            _c(
+              "a",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.showReset,
+                    expression: "showReset"
+                  }
+                ],
+                attrs: { role: "button" },
+                on: {
+                  click: function($event) {
+                    _vm.reset()
+                  }
                 }
-              ],
-              attrs: { role: "button" },
-              on: {
-                click: function($event) {
-                  _vm.reset()
-                }
-              }
-            },
-            [_c("i", { staticClass: "fa fa-remove" })]
-          ),
+              },
+              [_c("i", { staticClass: "fa fa-remove" })]
+            )
+          ]),
           _vm._v(" "),
           _vm._l(JSON.parse(_vm.options), function(option) {
             return _c("label", { staticClass: "radio-inline" }, [
@@ -2831,7 +2882,7 @@ var render = function() {
                   }
                 }
               }),
-              _vm._v(" " + _vm._s(option.label) + "\n        ")
+              _vm._v("\n             " + _vm._s(option.label) + "\n        ")
             ])
           })
         ],
@@ -2839,7 +2890,14 @@ var render = function() {
       ),
       _vm._v(" "),
       _c("transition", { attrs: { name: "slide-fade" } }, [
-        _vm.showExtra ? _c("div", [_vm._t("default")], 2) : _vm._e()
+        _vm.showExtra
+          ? _c(
+              "div",
+              { staticClass: "form-group-sm extra" },
+              [_vm._t("default")],
+              2
+            )
+          : _vm._e()
       ])
     ],
     1
@@ -2915,9 +2973,51 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['field', 'label']
+    props: ['field', 'label', 'checked', 'needSync'],
+    data: function data() {
+        return {
+            thisChecked: ''
+        };
+    },
+    mounted: function mounted() {
+        this.thisChecked = this.checked === undefined ? '' : this.checked;
+
+        // in case of need to use global event bus
+        // if (this.onCloseExtra !== undefined) {
+        //     EventBus.$on(this.onCloseExtra, () => {
+        //         axios.post('/autosave', JSON.parse('{"' + this.field + '": ' + JSON.stringify(false) + '}'))
+        //              .then((response) => { console.log(response.data); this.dirty = false; app.$data.autosaving = false; })
+        //              .catch((error) => { console.log(error); app.$data.autosaving = false; });
+        //         console.log(this.field);
+        //     });
+        // }
+
+        if (this.needSync !== undefined) {
+            console.log(this.field + ' need sync');
+        }
+    },
+    beforeDestroy: function beforeDestroy() {},
+
+    methods: {
+        check: function check() {
+            var _this = this;
+
+            this.thisChecked = this.thisChecked == '' ? 'checked' : '';
+            app.$data.autosaving = true;
+            axios.post('/autosave', JSON.parse('{"' + this.field + '": ' + JSON.stringify(this.thisChecked.length > 0) + '}')).then(function (response) {
+                console.log(response.data);_this.dirty = false;app.$data.autosaving = false;
+            }).catch(function (error) {
+                console.log(error);app.$data.autosaving = false;
+            });
+            console.log(this.thisChecked.length);
+        }
+    }
 });
 
 /***/ }),
@@ -2929,8 +3029,16 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("label", { staticClass: "checkbox-inline" }, [
-    _c("input", { attrs: { type: "checkbox", name: _vm.field } }),
-    _vm._v(" " + _vm._s(_vm.label) + "\n")
+    _c("input", {
+      attrs: { type: "checkbox", name: _vm.field },
+      domProps: { checked: _vm.thisChecked },
+      on: {
+        click: function($event) {
+          _vm.check()
+        }
+      }
+    }),
+    _vm._v("\n    " + _vm._s(_vm.label) + "\n")
   ])
 }
 var staticRenderFns = []
@@ -3004,9 +3112,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['label', 'checks']
+    props: ['label', 'checks', 'needSync']
 });
 
 /***/ }),
@@ -3028,7 +3142,12 @@ var render = function() {
       _vm._l(JSON.parse(_vm.checks), function(check) {
         return _c("input-check", {
           key: check.field,
-          attrs: { field: check.field, label: check.label }
+          attrs: {
+            field: check.field,
+            label: check.label,
+            checked: check.checked,
+            "need-sync": _vm.needSync
+          }
         })
       })
     ],

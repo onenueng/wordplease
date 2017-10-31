@@ -1,10 +1,8 @@
 <template>
     <div :class="getGrid()">
-        <div :class="getSize()">
-            <label class="control-label" :for="field">
-                {{ label }}
-                <a @click="reset()" role="button" v-show="showReset"><i class="fa fa-remove"></i></a>
-            </label>
+        <div class="form-group has-feedback">
+            <label class="control-label" for="inputSuccess4">Input with success</label>
+            
             <input
                 type="text"
                 class="form-control"
@@ -13,14 +11,14 @@
                 @blur="onblur()"
                 @input="showReset = (userInput != '')"
                 :onkeypress="isAllowOther()" />
-            <span class="fa fa-chevron-down form-control-feedback" aria-hidden="true"></span>
+            <span class="fa fa-check form-control-feedback" aria-hidden="true"></span>
         </div>
     </div>
 </template>
 
 <script>
     export default {
-        props: ['field', 'value', 'label', 'grid', 'serviceUrl', 'minChars', 'notAllowOther', 'size', 'needSync'],
+        props: ['field', 'value', 'label', 'grid', 'serviceUrl', 'minChars', 'notAllowOther'],
         data () {
             return {
                 userInput: '',
@@ -30,10 +28,6 @@
             }
         },
         mounted () {
-            if (this.needSync !== undefined) {
-                console.log(this.field + ' need sync');
-            }
-            
             this.lastData = this.userInput = this.value;
             this.showReset = (this.value != '');
             $(this.domRef).autocomplete({
@@ -63,9 +57,6 @@
         },
         methods: {
             getGrid() {
-                if (this.grid === undefined) {
-                    return '';
-                }
                 let grid = this.grid.split('-').map((x) => 12/x);
                 return 'col-xs-' + (grid[0]) + ' col-sm-' + (grid[1]) + ' col-md-' + (grid[2]);
             },
@@ -83,11 +74,8 @@
             onblur() {
                 this.autosave();
             },
-            getSize() {
-                if (this.size == 'normal') {
-                    return 'form-group has-feedback';   
-                }
-                return 'form-group-sm has-feedback';
+            focusInput() {
+                $('input[name=' + this.field + ']').focus();
             }
         }
     }

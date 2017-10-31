@@ -31,7 +31,7 @@
 
             if (this.needSync !== undefined) {
                 console.log(this.field + ' need sync');
-            }   
+            }
         },
         beforeDestroy() {
             

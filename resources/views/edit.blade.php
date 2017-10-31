@@ -8,7 +8,7 @@
     <title>$AN@$NOTE-NAME</title>
 </head>
 <body>
-    <div id="app">
+    <div id="app"><!-- Vue app -->
         <!-- app alert box -->
         <alert-box
             v-if="showAlertbox"
@@ -25,11 +25,12 @@
             :show-saving="autosaving">
         </navbar>
 
-        <!-- Form content -->
-        <div class="container-fluid">
+        <div class="container-fluid"><!-- note content -->
+            
             <panel heading='Admission data'>
-                <!-- wrap content with row class -->
-                <div class="row">
+                
+                <div class="row"><!-- wrap content with row class -->
+                    
                     <!-- datetime_admit -->
                     <input-text
                         field=""
@@ -97,11 +98,12 @@
                         grid="1-2-4"
                         >
                     </input-select>
-                </div>
-            </panel>
+                </div><!-- wrap content with row class -->
+            </panel><!-- Panel Admission Data -->
 
-            <panel>
-                <div class="row">
+            <panel heading='History'>
+                <div class="row"><!-- wrap content with row class -->
+                    
                     <!-- chief complaint -->
                     <input-textarea
                         field="chief_complaint"
@@ -111,9 +113,11 @@
                         max-chars="50" >
                     </input-textarea>
 
-                    <div class="col-xs-12"><hr class="line"></div>
+                    <div class="col-xs-12"><hr class="line" /></div>
 
                     <div class="col-xs-12 col-sm-6 col-md-4">
+                        
+                        <!-- DM comorbid and its extra contents -->
                         <input-radio field="comorbid_DM"
                                      label="DM :"
                                      options='[
@@ -122,6 +126,8 @@
                                         {"label": "Yes", "value": 1}
                                      ]'
                                      trigger-value="1">
+                            
+                            <!-- DM type -->
                             <input-radio field="comorbid_DM_type"
                                          label="Type : "
                                          options='[
@@ -131,6 +137,7 @@
                                          need-sync>
                             </input-radio>
 
+                            <!-- DM complications DR, Nephropathy, Neuropathy -->
                             <input-check-group label="Complication : "
                                                checks='[
                                                     {"field": "comorbid_DM_DR", "label": "DR"},
@@ -140,6 +147,7 @@
                                                need-sync>
                             </input-check-group>
 
+                            <!-- DM treatments Diet, Oral Meds, Insulin -->
                             <input-check-group label="Treatment : "
                                                checks='[
                                                     {"field": "comorbid_DM_diet", "label": "Diet", "checked": "checked"},
@@ -147,15 +155,62 @@
                                                     {"field": "comorbid_DM_insulin", "label": "Insulin"}
                                                ]'
                                                need-sync>
-                            </input-check-group>
+                            </input-check-group><!-- DM comorbid and its extra contents -->
                         </input-radio>
-                        <hr class="line">
+                        
+                        <div><hr class="line"></div>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-6 col-md-4">
+                        
+                        <!-- HT comorbid -->
+                        <input-radio field="comorbid_HT"
+                                     label="HT :"
+                                     options='[
+                                        {"label": "No data", "value": 255},
+                                        {"label": "No", "value": 0},
+                                        {"label": "Yes", "value": 1}
+                                     ]'>
+                        </input-radio>
+
+                        <div><hr class="line"></div>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-6 col-md-4">
+                        
+                        <!-- CAD comorbid and its extra contents -->
+                        <input-radio field="comorbid_CAD"
+                                     label="CAD "
+                                     label-description="Coronary Artery Disease"
+                                     options='[
+                                        {"label": "No data", "value": 255},
+                                        {"label": "No", "value": 0},
+                                        {"label": "Yes", "value": 1}
+                                     ]'
+                                     trigger-value="1">
+                            
+                            <!-- CAD specify -->
+                            <div class="form-inline">
+                                <input-select
+                                    field="comorbid_CAD_specify"
+                                    value="apple"
+                                    service-url="/get-ajax"
+                                    min-chars="0"
+                                    label="Specify :"
+                                    size="normal"
+                                    not-allow-other
+                                    need-sync>
+                                </input-select>
+                            </div>
+                        </input-radio><!-- CAD comorbid and its extra contents -->
+                        
+                        <div><hr class="line"></div>
                     </div>
                 </div>
-            </panel>
+            </panel><!-- Panel Hisroty -->
+        </div><!-- note content -->
+    </div><!-- Vue app -->
 
-        </div>
-    </div>
 
     <script src="/js/manifest.js"></script>
     <script src="/js/vendor.js"></script>

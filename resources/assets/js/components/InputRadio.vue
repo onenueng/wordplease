@@ -1,7 +1,12 @@
 <template>
     <div>
         <div class="form-group-sm">
-            <label class="control-label">{{ label }}</label>
+            <label class="control-label">{{ label }}
+                <a v-if="labelDescription !== undefined" role="button" data-toggle="tooltip" :title="labelDescription">
+                    <i class="fa fa-info-circle"></i>
+                </a>
+                <span v-if="labelDescription !== undefined">:</span>
+            </label>
             <transition name="slide-fade">
                 <a @click="reset()" role="button" v-show="showReset"><i class="fa fa-remove"></i></a>
             </transition>
@@ -27,15 +32,21 @@
 
 <script>
     export default {
-        props: ['field','label', 'options', 'triggerValue', 'needSync'],
+        props: ['field','label', 'options', 'triggerValue', 'needSync', 'labelDescription'],
         data () {
             return {
                 showReset: false,
-                currentValue: -1,
+                currentValue: null,
                 showExtra: false
             }
         },
         methods: {
+            autosave() {
+                app.$data.autosaving = true;
+                axios.post('/autosave', JSON.parse('{"' + this.field + '": ' + JSON.stringify(this.currentValue) + '}'))
+                     .then((response) => { console.log(response.data); this.dirty = false; app.$data.autosaving = false; })
+                     .catch((error) => { console.log(error); app.$data.autosaving = false; });
+            },
             check(value) {
                 if (this.hasDefaultSlot) {
                     if (this.isTriggerExtra(value)) {
@@ -56,20 +67,17 @@
                 }
 
                 if (this.currentValue != value) {
-                    app.$data.autosaving = true;
                     this.currentValue = value;
-
-                    axios.post('/autosave', JSON.parse('{"' + this.field + '": ' + JSON.stringify(value) + '}'))
-                         .then((response) => { console.log(response.data); this.dirty = false; app.$data.autosaving = false; })
-                         .catch((error) => { console.log(error); app.$data.autosaving = false; });
+                    this.autosave();
                 }
             },
             reset() {
                 this.showReset = false;
-                this.currentValue = -1;
+                this.currentValue = null;
                 if (this.hasDefaultSlot) {
                     this.showExtra = false;
                 }
+                this.autosave();
             },
             isTriggerExtra(value) {
                 return (value == this.triggerValue)
@@ -88,6 +96,10 @@
 
             if (this.needSync !== undefined) {
                 console.log(this.field + ' need sync');
+            }
+
+            if (this.labelDescription !== undefined) {
+                $('a[title="' + this.labelDescription + '"]').tooltip();
             }
         },
         computed: {

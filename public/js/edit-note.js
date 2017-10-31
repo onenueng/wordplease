@@ -827,20 +827,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['field', 'value', 'label', 'grid', 'readonly'],
+    props: ['field', 'value', 'label', 'grid', 'readonly', 'size', 'needSync', 'placeholder'],
     data: function data() {
         return {
             userInput: ''
         };
     },
     mounted: function mounted() {
+        if (this.needSync !== undefined) {
+            console.log(this.field + ' need sync');
+        }
         this.userInput = this.value;
     },
 
     methods: {
         getGrid: function getGrid() {
+            if (this.grid === undefined) {
+                return '';
+            }
             var grid = this.grid.split('-').map(function (x) {
                 return 12 / x;
             });
@@ -854,6 +861,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     console.log(error);
                 });
             }
+        },
+        getSize: function getSize() {
+            if (this.size == 'normal') {
+                return 'form-group has-feedback';
+            }
+            return 'form-group-sm has-feedback';
+        }
+    },
+    computed: {
+        hasLabel: function hasLabel() {
+            return !(this.label === undefined);
         }
     }
 });
@@ -867,10 +885,14 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { class: _vm.getGrid() }, [
-    _c("div", { staticClass: "form-group-sm" }, [
-      _c("label", { staticClass: "control-label", attrs: { for: _vm.field } }, [
-        _vm._v(_vm._s(_vm.label))
-      ]),
+    _c("div", { class: _vm.getSize() }, [
+      _vm.hasLabel
+        ? _c(
+            "label",
+            { staticClass: "control-label", attrs: { for: _vm.field } },
+            [_vm._v(_vm._s(_vm.label))]
+          )
+        : _vm._e(),
       _vm._v(" "),
       _c("input", {
         directives: [
@@ -882,22 +904,23 @@ var render = function() {
           }
         ],
         staticClass: "form-control",
-        attrs: { type: "text", readonly: _vm.readonly, name: _vm.field },
+        attrs: {
+          type: "text",
+          readonly: _vm.readonly,
+          name: _vm.field,
+          id: _vm.field,
+          placeholder: _vm.placeholder
+        },
         domProps: { value: _vm.userInput },
         on: {
-          input: [
-            function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.userInput = $event.target.value
-            },
-            function($event) {
-              _vm.fx()
-            }
-          ],
           blur: function($event) {
             _vm.autosave()
+          },
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.userInput = $event.target.value
           }
         }
       })
@@ -1377,8 +1400,6 @@ Vue.component('input-textarea', __webpack_require__(91));
 Vue.component('input-radio', __webpack_require__(96));
 Vue.component('input-check', __webpack_require__(101));
 Vue.component('input-check-group', __webpack_require__(104));
-
-Vue.component('input-select-new', __webpack_require__(120));
 
 window.app = new Vue({
     el: '#app',
@@ -2185,7 +2206,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.lastData = this.userInput = this.value;
         this.showReset = this.value != '';
         $(this.domRef).autocomplete({
-            serviceUrl: this.serviceUrl,
+            serviceUrl: this.getServiceUrl,
             onSelect: function onSelect(suggestion) {
                 _this.showReset = true;
                 _this.data = suggestion.data;
@@ -2239,6 +2260,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 return 'form-group has-feedback';
             }
             return 'form-group-sm has-feedback';
+        }
+    },
+    computed: {
+        getServiceUrl: function getServiceUrl() {
+            if (this.serviceUrl === undefined) {
+                return '/get-select-choices/' + this.field;
+            }
+
+            return this.serviceUrl + '/' + this.field;
         }
     }
 });
@@ -2449,6 +2479,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['field', 'value', 'label', 'grid', 'readonly', 'maxChars'],
@@ -2591,6 +2622,7 @@ var render = function() {
           attrs: {
             readonly: _vm.readonly,
             name: _vm.field,
+            id: _vm.field,
             rows: "1",
             maxlength: _vm.maxChars
           },
@@ -3209,228 +3241,6 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-0d896361", module.exports)
-  }
-}
-
-/***/ }),
-/* 107 */,
-/* 108 */,
-/* 109 */,
-/* 110 */,
-/* 111 */,
-/* 112 */,
-/* 113 */,
-/* 114 */,
-/* 115 */,
-/* 116 */,
-/* 117 */,
-/* 118 */,
-/* 119 */,
-/* 120 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(0)
-/* script */
-var __vue_script__ = __webpack_require__(121)
-/* template */
-var __vue_template__ = __webpack_require__(122)
-/* template functional */
-  var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/InputSelectNew.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-2d6f676a", Component.options)
-  } else {
-    hotAPI.reload("data-v-2d6f676a", Component.options)
-' + '  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 121 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* WEBPACK VAR INJECTION */(function($) {//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['field', 'value', 'label', 'grid', 'serviceUrl', 'minChars', 'notAllowOther'],
-    data: function data() {
-        return {
-            userInput: '',
-            domRef: 'input[name=' + this.field + ']',
-            showReset: false,
-            lastData: ''
-        };
-    },
-    mounted: function mounted() {
-        var _this = this;
-
-        this.lastData = this.userInput = this.value;
-        this.showReset = this.value != '';
-        $(this.domRef).autocomplete({
-            serviceUrl: this.serviceUrl,
-            onSelect: function onSelect(suggestion) {
-                _this.showReset = true;
-                _this.data = suggestion.data;
-                _this.userInput = suggestion.value;
-                _this.autosave();
-            },
-            minChars: this.minChars,
-            maxHeight: 200
-        });
-        this.autosave = _.debounce(function () {
-            if (_this.field != '') {
-                app.$data.autosaving = true;
-                if (_this.userInput != _this.lastData) {
-                    axios.post('/autosave', JSON.parse('{"' + _this.field + '": "' + _this.userInput + '"}')).then(function (response) {
-                        console.log(response.data);app.$data.autosaving = false;
-                    }).catch(function (error) {
-                        console.log(error);app.$data.autosaving = false;
-                    });
-                    _this.lastData = _this.userInput;
-                } else {
-                    app.$data.autosaving = false;
-                }
-            }
-        }, 1000);
-    },
-
-    methods: {
-        getGrid: function getGrid() {
-            var grid = this.grid.split('-').map(function (x) {
-                return 12 / x;
-            });
-            return 'col-xs-' + grid[0] + ' col-sm-' + grid[1] + ' col-md-' + grid[2];
-        },
-        autosave: function autosave() {},
-        reset: function reset() {
-            this.showReset = false;
-            this.userInput = '';
-            this.onblur();
-        },
-        isAllowOther: function isAllowOther() {
-            return this.notAllowOther === undefined ? 'return true;' : 'return false;';
-        },
-        onblur: function onblur() {
-            this.autosave();
-        },
-        focusInput: function focusInput() {
-            $('input[name=' + this.field + ']').focus();
-        }
-    }
-});
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(1)))
-
-/***/ }),
-/* 122 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { class: _vm.getGrid() }, [
-    _c("div", { staticClass: "form-group has-feedback" }, [
-      _c(
-        "label",
-        { staticClass: "control-label", attrs: { for: "inputSuccess4" } },
-        [_vm._v("Input with success")]
-      ),
-      _vm._v(" "),
-      _c("input", {
-        directives: [
-          {
-            name: "model",
-            rawName: "v-model",
-            value: _vm.userInput,
-            expression: "userInput"
-          }
-        ],
-        staticClass: "form-control",
-        attrs: {
-          type: "text",
-          name: _vm.field,
-          onkeypress: _vm.isAllowOther()
-        },
-        domProps: { value: _vm.userInput },
-        on: {
-          blur: function($event) {
-            _vm.onblur()
-          },
-          input: [
-            function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.userInput = $event.target.value
-            },
-            function($event) {
-              _vm.showReset = _vm.userInput != ""
-            }
-          ]
-        }
-      }),
-      _vm._v(" "),
-      _c("span", {
-        staticClass: "fa fa-check form-control-feedback",
-        attrs: { "aria-hidden": "true" }
-      })
-    ])
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-2d6f676a", module.exports)
   }
 }
 

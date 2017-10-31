@@ -33,11 +33,11 @@
             if (this.needSync !== undefined) {
                 console.log(this.field + ' need sync');
             }
-            
+
             this.lastData = this.userInput = this.value;
             this.showReset = (this.value != '');
             $(this.domRef).autocomplete({
-                serviceUrl: this.serviceUrl,
+                serviceUrl: this.getServiceUrl,
                 onSelect: (suggestion) => {
                     this.showReset = true;
                     this.data = suggestion.data;
@@ -88,6 +88,15 @@
                     return 'form-group has-feedback';   
                 }
                 return 'form-group-sm has-feedback';
+            }
+        },
+        computed: {
+            getServiceUrl() {
+                if (this.serviceUrl === undefined) {
+                    return '/get-select-choices/' + this.field;
+                }
+
+                return  this.serviceUrl + '/' + this.field;
             }
         }
     }

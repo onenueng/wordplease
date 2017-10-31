@@ -11,6 +11,11 @@
 |
 */
 
+// production route start here
+Route::get('/get-select-choices/{fieldName}', 'SelectItemController@query');
+
+// dev route start here
+
 Route::get('/', function () {
     return view('webpack');
 });

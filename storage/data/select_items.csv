@@ -1,0 +1,21 @@
+field_name,value,label,order
+admit_reason,1,Curative,1
+admit_reason,2,Curative+Palliative,2
+admit_reason,3,Palliative only,3
+admit_reason,4,Investigation,4
+admit_reason,5,Rehabilitation,5
+comorbid_stroke_ischemic,0,no,1
+comorbid_stroke_ischemic,1,left hemiparesis,2
+comorbid_stroke_ischemic,2,right hemiparesis,3
+comorbid_stroke_ischemic,3,left hemiplegia,4
+comorbid_stroke_ischemic,4,right hemiplegia,5
+comorbid_stroke_hemorrhagic,0,no,1
+comorbid_stroke_hemorrhagic,1,left hemiparesis,2
+comorbid_stroke_hemorrhagic,2,right hemiparesis,3
+comorbid_stroke_hemorrhagic,3,left hemiplegia,4
+comorbid_stroke_hemorrhagic,4,right hemiplegia,5
+comorbid_stroke_Iembolic,0,no,1
+comorbid_stroke_Iembolic,1,left hemiparesis,2
+comorbid_stroke_Iembolic,2,right hemiparesis,3
+comorbid_stroke_Iembolic,3,left hemiplegia,4
+comorbid_stroke_Iembolic,4,right hemiplegia,5

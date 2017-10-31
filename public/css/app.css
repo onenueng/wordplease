@@ -11556,38 +11556,10 @@ div.form-group-sm label.checkbox-inline input {
   margin-top: 6px !important;
 }
 
-/* enable absolute positioning */
+/* custom fix .form-inline padding */
 
-.inner-addon {
-  position: relative;
-}
-
-/* style font awesome */
-
-.inner-addon .fa {
-  position: absolute;
-  padding: 10px;
-  pointer-events: none;
-}
-
-/* align font awesome */
-
-.left-addon .fa {
-  left: 0px;
-}
-
-.right-addon .fa {
-  right: 0px;
-}
-
-/* add padding  */
-
-.left-addon input {
-  padding-left: 30px;
-}
-
-.right-addon input {
-  padding-right: 30px;
+.form-inline {
+  padding-bottom: 5px;
 }
 
 /* Hover effect Bounce To Bottom */

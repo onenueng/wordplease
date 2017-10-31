@@ -6,6 +6,7 @@
                 :class="controlClass"
                 :readonly="readonly"
                 :name="field"
+                :id="field"
                 v-model="userInput"
                 @input="oninput()"
                 @blur="autosave()"

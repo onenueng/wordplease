@@ -91,8 +91,7 @@
                     <!-- admit reason -->
                     <input-select
                         field="admit_reason"
-                        value="hello"
-                        service-url="/get-ajax"
+                        value=""
                         min-chars="0"
                         label="Reason to admit :"
                         grid="1-2-4"
@@ -115,7 +114,7 @@
 
                     <div class="col-xs-12"><hr class="line" /></div>
 
-                    <div class="col-xs-12 col-sm-6 col-md-4">
+                    <div class="col-xs-12 col-sm-6 col-md-4"><!-- comorbid DM, VHD, Asthma -->
                         
                         <!-- DM comorbid and its extra contents -->
                         <input-radio field="comorbid_DM"
@@ -155,13 +154,58 @@
                                                     {"field": "comorbid_DM_insulin", "label": "Insulin"}
                                                ]'
                                                need-sync>
-                            </input-check-group><!-- DM comorbid and its extra contents -->
-                        </input-radio>
+                            </input-check-group>
+                        </input-radio><!-- DM comorbid and its extra contents -->
                         
                         <div><hr class="line"></div>
-                    </div>
 
-                    <div class="col-xs-12 col-sm-6 col-md-4">
+                        <!-- valvular heart disease comorbid -->
+                        <input-radio field="comorbid_valvular_heart_disease"
+                                     label="Valvular heart disease :"
+                                     options='[
+                                        {"label": "No data", "value": 255},
+                                        {"label": "No", "value": 0},
+                                        {"label": "Yes", "value": 1}
+                                     ]'
+                                     trigger-value="1">
+                            <!-- valvular heart disease specify AS, Ar, MS, MR, TR  -->
+                            <input-check-group label="Specify : "
+                                               checks='[
+                                                    {"field": "comorbid_valvular_heart_disease_AS", "label": "AS"},
+                                                    {"field": "comorbid_valvular_heart_disease_AR", "label": "AR"},
+                                                    {"field": "comorbid_valvular_heart_disease_MS", "label": "MS"},
+                                                    {"field": "comorbid_valvular_heart_disease_MR", "label": "MR"},
+                                                    {"field": "comorbid_valvular_heart_disease_TR", "label": "TR"}
+                                               ]'
+                                               need-sync>
+                            </input-check-group>
+
+                            <!-- valvular heart disease specify other -->
+                            <input-text
+                                field="comorbid_valvular_heart_disease_other"
+                                value=""
+                                size="normal"
+                                placeholder="Other specific, type here."
+                                need-sync>
+                            </input-text>
+                        </input-radio><!-- comorbid valvular heart disease -->
+                        
+                        <div><hr class="line"></div>
+
+                        <!-- asthma comorbid -->
+                        <input-radio field="comorbid_asthma"
+                                     label="Asthma :"
+                                     options='[
+                                        {"label": "No data", "value": 255},
+                                        {"label": "No", "value": 0},
+                                        {"label": "Yes", "value": 1}
+                                     ]'>
+                        </input-radio>
+
+                        <div><hr class="line"></div>
+                    </div><!-- comorbid DM, VHD, Asthma -->
+
+                    <div class="col-xs-12 col-sm-6 col-md-4"><!-- comorbid HT, Stroke, CKD -->
                         
                         <!-- HT comorbid -->
                         <input-radio field="comorbid_HT"
@@ -174,9 +218,66 @@
                         </input-radio>
 
                         <div><hr class="line"></div>
-                    </div>
 
-                    <div class="col-xs-12 col-sm-6 col-md-4">
+                        <!-- stroke comorbid and its extra contents -->
+                        <input-radio field="comorbid_stroke"
+                                     label="Stroke : "
+                                     options='[
+                                        {"label": "No data", "value": 255},
+                                        {"label": "No", "value": 0},
+                                        {"label": "Yes", "value": 1}
+                                     ]'
+                                     trigger-value="1">
+                            
+                            <!-- foreach stroke symptom -->
+                            @foreach ( ['Ischemic', 'Hemorrhagic', 'Iembolic'] as $symptom )
+                                <div class="form-inline">
+                                    <input-select
+                                        field="comorbid_stroke_{{ strtolower($symptom) }}"
+                                        value=""
+                                        service-url="/get-ajax"
+                                        min-chars="0"
+                                        label="{{ $symptom }} :"
+                                        size="normal"
+                                        not-allow-other
+                                        need-sync>
+                                    </input-select>
+                                </div>
+                            @endforeach
+                        </input-radio><!-- stroke comorbid and its extra contents -->
+
+                        <div><hr class="line"></div>
+
+                        <!-- CKD comorbid and its extra contents -->
+                        <input-radio field="comorbid_CKD"
+                                     label="CKD "
+                                     label-description="Chronic Kidney Disease"
+                                     options='[
+                                        {"label": "No data", "value": 255},
+                                        {"label": "No", "value": 0},
+                                        {"label": "Yes", "value": 1}
+                                     ]'
+                                     trigger-value="1">
+                            
+                            <!-- CKD stage -->
+                            <div class="form-inline">
+                                <input-select
+                                    field="comorbid_CKD_stage"
+                                    value=""
+                                    service-url="/get-ajax"
+                                    min-chars="0"
+                                    label="Stage :"
+                                    size="normal"
+                                    not-allow-other
+                                    need-sync>
+                                </input-select>
+                            </div>
+                        </input-radio><!-- CKD comorbid and its extra contents -->
+                        
+                        <div><hr class="line"></div>
+                    </div><!-- comorbid HT, Stroke, CKD -->
+
+                    <div class="col-xs-12 col-sm-6 col-md-4"><!-- CAD, COPD, Hyperlipidemia-->
                         
                         <!-- CAD comorbid and its extra contents -->
                         <input-radio field="comorbid_CAD"
@@ -205,7 +306,47 @@
                         </input-radio><!-- CAD comorbid and its extra contents -->
                         
                         <div><hr class="line"></div>
-                    </div>
+
+                        <!-- COPD comorbid -->
+                        <input-radio field="comorbid_COPD"
+                                     label="COPD :"
+                                     options='[
+                                        {"label": "No data", "value": 255},
+                                        {"label": "No", "value": 0},
+                                        {"label": "Yes", "value": 1}
+                                     ]'>
+                        </input-radio>
+
+                        <div><hr class="line"></div>
+
+                        <!-- hyperlipidemia comorbid and its extra contents -->
+                        <input-radio field="comorbid_hyperlipidemia"
+                                     label="Hyperlipidemia : "
+                                     options='[
+                                        {"label": "No data", "value": 255},
+                                        {"label": "No", "value": 0},
+                                        {"label": "Yes", "value": 1}
+                                     ]'
+                                     trigger-value="1">
+                            
+                            <!-- hyperlipidemia specify -->
+                            <div class="form-inline">
+                                <input-select
+                                    field="comorbid_hyperlipidemia_specify"
+                                    value=""
+                                    service-url="/get-ajax"
+                                    min-chars="0"
+                                    label="Specify :"
+                                    size="normal"
+                                    not-allow-other
+                                    need-sync>
+                                </input-select>
+                            </div>
+                        </input-radio><!-- hyperlipidemia comorbid and its extra contents -->
+                        
+                        <div><hr class="line"></div>
+                    </div><!-- CAD, COPD, Hyperlipidemia-->
+
                 </div>
             </panel><!-- Panel Hisroty -->
         </div><!-- note content -->

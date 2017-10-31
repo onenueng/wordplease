@@ -131,20 +131,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['field', 'value', 'label', 'grid', 'readonly'],
+    props: ['field', 'value', 'label', 'grid', 'readonly', 'size', 'needSync', 'placeholder'],
     data: function data() {
         return {
             userInput: ''
         };
     },
     mounted: function mounted() {
+        if (this.needSync !== undefined) {
+            console.log(this.field + ' need sync');
+        }
         this.userInput = this.value;
     },
 
     methods: {
         getGrid: function getGrid() {
+            if (this.grid === undefined) {
+                return '';
+            }
             var grid = this.grid.split('-').map(function (x) {
                 return 12 / x;
             });
@@ -158,6 +165,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     console.log(error);
                 });
             }
+        },
+        getSize: function getSize() {
+            if (this.size == 'normal') {
+                return 'form-group has-feedback';
+            }
+            return 'form-group-sm has-feedback';
+        }
+    },
+    computed: {
+        hasLabel: function hasLabel() {
+            return !(this.label === undefined);
         }
     }
 });
@@ -172,10 +190,14 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { class: _vm.getGrid() }, [
-    _c("div", { staticClass: "form-group-sm" }, [
-      _c("label", { staticClass: "control-label", attrs: { for: _vm.field } }, [
-        _vm._v(_vm._s(_vm.label))
-      ]),
+    _c("div", { class: _vm.getSize() }, [
+      _vm.hasLabel
+        ? _c(
+            "label",
+            { staticClass: "control-label", attrs: { for: _vm.field } },
+            [_vm._v(_vm._s(_vm.label))]
+          )
+        : _vm._e(),
       _vm._v(" "),
       _c("input", {
         directives: [
@@ -187,22 +209,23 @@ var render = function() {
           }
         ],
         staticClass: "form-control",
-        attrs: { type: "text", readonly: _vm.readonly, name: _vm.field },
+        attrs: {
+          type: "text",
+          readonly: _vm.readonly,
+          name: _vm.field,
+          id: _vm.field,
+          placeholder: _vm.placeholder
+        },
         domProps: { value: _vm.userInput },
         on: {
-          input: [
-            function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.userInput = $event.target.value
-            },
-            function($event) {
-              _vm.fx()
-            }
-          ],
           blur: function($event) {
             _vm.autosave()
+          },
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.userInput = $event.target.value
           }
         }
       })

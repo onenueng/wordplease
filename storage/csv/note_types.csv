@@ -1,0 +1,12 @@
+id,class_id,owner_id,name,resource_name,view_path,gender
+1,2,100,Discharge Summary,facultynotes,faculty.notes.discharge.form,2
+2,2,400,Labour and Delivery Summary,obgynnotes,obgyn.notes.delivery.form,0
+3,2,400,Newborn Summary,obgynnotes,obgyn.notes.newborn.form,2
+4,2,400,Undelivery Summary,obgynnotes,obgyn.notes.undelivery.form,0
+5,2,400,Pregnancy with Abortive Outcome Summary,obgynnotes,obgyn.notes.abortion.form,0
+6,2,300,Discharge Summary,ophthalmologynotes,ophthalmology.notes.discharge.form,2
+7,1,200,Admission Note,medicinenotes,medicine.notes.admission.form,2
+8,2,200,Discharge Summary,medicinenotes,medicine.notes.discharge.form,2
+9,1,100,General - Admission Note,facultynotes,faculty.notes.admission.form,2
+10,1,201,The Heart - Admission Note,medicinenotes,medicine.notes.the-heart.admission.form,2
+11,3,201,In hospital adverse event,medicinenotes,medicine.notes.the-heart.in-hospital-adverse-event.form,2

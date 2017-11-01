@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Lists\SelectItem;
 use Illuminate\Http\Request;
+use App\Models\Lists\SelectItem;
 
-class SelectItemController extends Controller
+class ListController extends Controller
 {
     /**
      * Return input select choices by field_name.

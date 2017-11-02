@@ -13,9 +13,12 @@
         <alert-box
             v-if="showAlertbox"
             :status="alertStatus"
-            :duration="alertDuration">
-            @{{ alertboxMessage }}
+            :duration="alertDuration"
+            :message="alertboxMessage">
         </alert-box>
+
+        <!-- Child-Pugh's score -->
+        <modal-document></modal-document>
 
         <!-- edit note navbar -->
         <navbar
@@ -27,7 +30,7 @@
 
         <div class="container-fluid"><!-- note content -->
             
-            <panel heading='Admission data'>
+            <panel heading='Admission data'><!-- Panel Admission Data -->
                 
                 <div class="row"><!-- wrap content with row class -->
                     
@@ -114,7 +117,7 @@
 
                     <div class="col-xs-12"><hr class="line" /></div>
 
-                    <div class="col-xs-12 col-sm-6 col-md-4"><!-- comorbid DM, VHD, Asthma -->
+                    <div class="col-xs-12 col-sm-6 col-md-4"><!-- comorbid DM, VHD, Asthma, Cirrhosis, HCV -->
                         
                         <!-- DM comorbid and its extra contents -->
                         <input-radio field="comorbid_DM"
@@ -203,9 +206,70 @@
                         </input-radio>
 
                         <div><hr class="line"></div>
-                    </div><!-- comorbid DM, VHD, Asthma -->
 
-                    <div class="col-xs-12 col-sm-6 col-md-4"><!-- comorbid HT, Stroke, CKD -->
+                        <!-- cirrhosis comorbid -->
+                        <input-radio field="comorbid_cirrhosis"
+                                     label="Cirrhosis :"
+                                     options='[
+                                        {"label": "No data", "value": 255},
+                                        {"label": "No", "value": 0},
+                                        {"label": "Yes", "value": 1}
+                                     ]'
+                                     trigger-value="1">
+                            <!-- cirrhosis Child-Pugh's score -->
+                            <input-radio 
+                                field="comorbid_cirrhosis_child_pugh_score"
+                                label="Child-Pugh's Score :"
+                                label-action='{
+                                    "emit": "cirrhosis", 
+                                    "icon": "question-circle", 
+                                    "title": "Click to learn more about Child-Pugh&rsquo;s Score"
+                                }'
+                                options='[
+                                    {"label": "No data", "value": 255},
+                                    {"label": "No", "value": 0},
+                                    {"label": "Yes", "value": 1}
+                                ]'>
+                            </input-radio>
+                            <!-- cirrhosis specify HBV, HCV, NASH, Cryptogenic  -->
+                            <input-check-group 
+                                label="Specify : "
+                                checks='[
+                                    {"field": "comorbid_cirrhosis_HBV", "label": "HBV", "emitOnCheck": "HBV-checked|1|1"},
+                                    {"field": "comorbid_cirrhosis_HCV", "label": "HCV", "emitOnCheck": "HCV-checked|1|1"},
+                                    {"field": "comorbid_cirrhosis_NASH", "label": "NASH"},
+                                    {"field": "comorbid_cirrhosis_cryptogenic", "label": "Cryptogenic", "emitOnCheck": "HBV-HCV-unchecked"}
+                                ]'
+                                need-sync>
+                            </input-check-group>
+
+                            <!-- cirrhosis specify other -->
+                            <input-text
+                                field="comorbid_cirrhosis_other"
+                                value=""
+                                size="normal"
+                                placeholder="Other specific, type here."
+                                need-sync>
+                            </input-text>
+                        </input-radio><!-- comorbid cirrhosis -->
+                        
+                        <div><hr class="line"></div>
+
+                        <!-- HCV comorbid -->
+                        <input-radio field="comorbid_HCV"
+                                     label="HCV infection :"
+                                     options='[
+                                        {"label": "No data", "value": 255},
+                                        {"label": "No", "value": 0},
+                                        {"label": "Yes", "value": 1}
+                                     ]'
+                                     setter-event='HCV-checked'>
+                        </input-radio>
+
+                        <div><hr class="line"></div>
+                    </div><!-- comorbid DM, VHD, Asthma, Cirrhosis, HCV -->
+
+                    <div class="col-xs-12 col-sm-6 col-md-4"><!-- comorbid HT, Stroke, CKD, Coagulopathy -->
                         
                         <!-- HT comorbid -->
                         <input-radio field="comorbid_HT"
@@ -275,9 +339,21 @@
                         </input-radio><!-- CKD comorbid and its extra contents -->
                         
                         <div><hr class="line"></div>
-                    </div><!-- comorbid HT, Stroke, CKD -->
 
-                    <div class="col-xs-12 col-sm-6 col-md-4"><!-- CAD, COPD, Hyperlipidemia-->
+                        <!-- coagulopathy comorbid -->
+                        <input-radio field="comorbid_coagulopathy"
+                                     label="Coagulopathy :"
+                                     options='[
+                                        {"label": "No data", "value": 255},
+                                        {"label": "No", "value": 0},
+                                        {"label": "Yes", "value": 1}
+                                     ]'>
+                        </input-radio>
+
+                        <div><hr class="line"></div>
+                    </div><!-- comorbid HT, Stroke, CKD, Coagulopathy -->
+
+                    <div class="col-xs-12 col-sm-6 col-md-4"><!-- CAD, COPD, Hyperlipidemia, HBV -->
                         
                         <!-- CAD comorbid and its extra contents -->
                         <input-radio field="comorbid_CAD"
@@ -331,9 +407,9 @@
                             <!-- hyperlipidemia specify -->
                             <div class="form-inline">
                                 <input-select
-                                    field="comorbid_hyperlipidemia_specify"
+                                    field="comorbid_hyperlipidemia_specific"
                                     value=""
-                                    service-url="/get-ajax"
+                                    service-url="/get-select-choices"
                                     min-chars="0"
                                     label="Specify :"
                                     size="normal"
@@ -344,7 +420,20 @@
                         </input-radio><!-- hyperlipidemia comorbid and its extra contents -->
                         
                         <div><hr class="line"></div>
-                    </div><!-- CAD, COPD, Hyperlipidemia-->
+
+                        <!-- HBV comorbid -->
+                        <input-radio field="comorbid_HBV"
+                                     label="HBV infection :"
+                                     options='[
+                                        {"label": "No data", "value": 255},
+                                        {"label": "No", "value": 0},
+                                        {"label": "Yes", "value": 1}
+                                     ]'
+                                     setter-event='HBV-checked'>
+                        </input-radio>
+
+                        <div><hr class="line"></div>
+                    </div><!-- CAD, COPD, Hyperlipidemia, HBV -->
 
                 </div>
             </panel><!-- Panel Hisroty -->

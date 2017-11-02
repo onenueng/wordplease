@@ -10,7 +10,7 @@
 
 <script>
     export default {
-        props: ['field', 'label', 'checked', 'needSync'],
+        props: ['field', 'label', 'checked', 'needSync', 'emitOnCheck', 'triggerEvent'],
         data () {
             return {
                 thisChecked: ''
@@ -32,6 +32,7 @@
             if (this.needSync !== undefined) {
                 console.log(this.field + ' need sync');
             }
+
         },
         beforeDestroy() {
             
@@ -43,7 +44,15 @@
                 axios.post('/autosave', JSON.parse('{"' + this.field + '": ' + JSON.stringify((this.thisChecked.length > 0)) + '}'))
                      .then((response) => { console.log(response.data); this.dirty = false; app.$data.autosaving = false; })
                      .catch((error) => { console.log(error); app.$data.autosaving = false; });
-                console.log(this.thisChecked.length);
+
+                if (this.emitOnCheck !== undefined) {
+                    // [name][mode 1:checked 2:unchecked][value]
+                    let emitParams = this.emitOnCheck.split('|')
+                    if ((emitParams[1] && (this.thisChecked == 'checked')) || 
+                        (emitParams[2] && (this.thisChecked == '')) ) {
+                        EventBus.$emit(emitParams[0], emitParams[2]);
+                    }
+                }
             }
         }
     }

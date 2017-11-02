@@ -195,6 +195,227 @@ function toComment(sourceMap) {
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
+/*
+  MIT License http://www.opensource.org/licenses/mit-license.php
+  Author Tobias Koppers @sokra
+  Modified by Evan You @yyx990803
+*/
+
+var hasDocument = typeof document !== 'undefined'
+
+if (typeof DEBUG !== 'undefined' && DEBUG) {
+  if (!hasDocument) {
+    throw new Error(
+    'vue-style-loader cannot be used in a non-browser environment. ' +
+    "Use { target: 'node' } in your Webpack config to indicate a server-rendering environment."
+  ) }
+}
+
+var listToStyles = __webpack_require__(22)
+
+/*
+type StyleObject = {
+  id: number;
+  parts: Array<StyleObjectPart>
+}
+
+type StyleObjectPart = {
+  css: string;
+  media: string;
+  sourceMap: ?string
+}
+*/
+
+var stylesInDom = {/*
+  [id: number]: {
+    id: number,
+    refs: number,
+    parts: Array<(obj?: StyleObjectPart) => void>
+  }
+*/}
+
+var head = hasDocument && (document.head || document.getElementsByTagName('head')[0])
+var singletonElement = null
+var singletonCounter = 0
+var isProduction = false
+var noop = function () {}
+
+// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+// tags it will allow on a page
+var isOldIE = typeof navigator !== 'undefined' && /msie [6-9]\b/.test(navigator.userAgent.toLowerCase())
+
+module.exports = function (parentId, list, _isProduction) {
+  isProduction = _isProduction
+
+  var styles = listToStyles(parentId, list)
+  addStylesToDom(styles)
+
+  return function update (newList) {
+    var mayRemove = []
+    for (var i = 0; i < styles.length; i++) {
+      var item = styles[i]
+      var domStyle = stylesInDom[item.id]
+      domStyle.refs--
+      mayRemove.push(domStyle)
+    }
+    if (newList) {
+      styles = listToStyles(parentId, newList)
+      addStylesToDom(styles)
+    } else {
+      styles = []
+    }
+    for (var i = 0; i < mayRemove.length; i++) {
+      var domStyle = mayRemove[i]
+      if (domStyle.refs === 0) {
+        for (var j = 0; j < domStyle.parts.length; j++) {
+          domStyle.parts[j]()
+        }
+        delete stylesInDom[domStyle.id]
+      }
+    }
+  }
+}
+
+function addStylesToDom (styles /* Array<StyleObject> */) {
+  for (var i = 0; i < styles.length; i++) {
+    var item = styles[i]
+    var domStyle = stylesInDom[item.id]
+    if (domStyle) {
+      domStyle.refs++
+      for (var j = 0; j < domStyle.parts.length; j++) {
+        domStyle.parts[j](item.parts[j])
+      }
+      for (; j < item.parts.length; j++) {
+        domStyle.parts.push(addStyle(item.parts[j]))
+      }
+      if (domStyle.parts.length > item.parts.length) {
+        domStyle.parts.length = item.parts.length
+      }
+    } else {
+      var parts = []
+      for (var j = 0; j < item.parts.length; j++) {
+        parts.push(addStyle(item.parts[j]))
+      }
+      stylesInDom[item.id] = { id: item.id, refs: 1, parts: parts }
+    }
+  }
+}
+
+function createStyleElement () {
+  var styleElement = document.createElement('style')
+  styleElement.type = 'text/css'
+  head.appendChild(styleElement)
+  return styleElement
+}
+
+function addStyle (obj /* StyleObjectPart */) {
+  var update, remove
+  var styleElement = document.querySelector('style[data-vue-ssr-id~="' + obj.id + '"]')
+
+  if (styleElement) {
+    if (isProduction) {
+      // has SSR styles and in production mode.
+      // simply do nothing.
+      return noop
+    } else {
+      // has SSR styles but in dev mode.
+      // for some reason Chrome can't handle source map in server-rendered
+      // style tags - source maps in <style> only works if the style tag is
+      // created and inserted dynamically. So we remove the server rendered
+      // styles and inject new ones.
+      styleElement.parentNode.removeChild(styleElement)
+    }
+  }
+
+  if (isOldIE) {
+    // use singleton mode for IE9.
+    var styleIndex = singletonCounter++
+    styleElement = singletonElement || (singletonElement = createStyleElement())
+    update = applyToSingletonTag.bind(null, styleElement, styleIndex, false)
+    remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true)
+  } else {
+    // use multi-style-tag mode in all other cases
+    styleElement = createStyleElement()
+    update = applyToTag.bind(null, styleElement)
+    remove = function () {
+      styleElement.parentNode.removeChild(styleElement)
+    }
+  }
+
+  update(obj)
+
+  return function updateStyle (newObj /* StyleObjectPart */) {
+    if (newObj) {
+      if (newObj.css === obj.css &&
+          newObj.media === obj.media &&
+          newObj.sourceMap === obj.sourceMap) {
+        return
+      }
+      update(obj = newObj)
+    } else {
+      remove()
+    }
+  }
+}
+
+var replaceText = (function () {
+  var textStore = []
+
+  return function (index, replacement) {
+    textStore[index] = replacement
+    return textStore.filter(Boolean).join('\n')
+  }
+})()
+
+function applyToSingletonTag (styleElement, index, remove, obj) {
+  var css = remove ? '' : obj.css
+
+  if (styleElement.styleSheet) {
+    styleElement.styleSheet.cssText = replaceText(index, css)
+  } else {
+    var cssNode = document.createTextNode(css)
+    var childNodes = styleElement.childNodes
+    if (childNodes[index]) styleElement.removeChild(childNodes[index])
+    if (childNodes.length) {
+      styleElement.insertBefore(cssNode, childNodes[index])
+    } else {
+      styleElement.appendChild(cssNode)
+    }
+  }
+}
+
+function applyToTag (styleElement, obj) {
+  var css = obj.css
+  var media = obj.media
+  var sourceMap = obj.sourceMap
+
+  if (media) {
+    styleElement.setAttribute('media', media)
+  }
+
+  if (sourceMap) {
+    // https://developer.chrome.com/devtools/docs/javascript-debugging
+    // this makes source maps inside style tags work properly in Chrome
+    css += '\n/*# sourceURL=' + sourceMap.sources[0] + ' */'
+    // http://stackoverflow.com/a/26603875
+    css += '\n/*# sourceMappingURL=data:application/json;base64,' + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + ' */'
+  }
+
+  if (styleElement.styleSheet) {
+    styleElement.styleSheet.cssText = css
+  } else {
+    while (styleElement.firstChild) {
+      styleElement.removeChild(styleElement.firstChild)
+    }
+    styleElement.appendChild(document.createTextNode(css))
+  }
+}
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
 /* WEBPACK VAR INJECTION */(function(__webpack_provided_window_dot_jQuery) {window._ = __webpack_require__(13);
 
 /**
@@ -236,7 +457,7 @@ if (token) {
 
 window.Vue = __webpack_require__(16);
 
-__webpack_require__(5);
+__webpack_require__(6);
 window.flatpickr = __webpack_require__(17); // const flatpickr = require("flatpickr");
 
 window.autosize = __webpack_require__(18);
@@ -259,13 +480,13 @@ __webpack_require__(19);
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(6);
+var content = __webpack_require__(7);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -273,7 +494,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(7)(content, options);
+var update = __webpack_require__(8)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -290,7 +511,7 @@ if(false) {
 }
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)(undefined);
@@ -304,7 +525,7 @@ exports.push([module.i, ".flatpickr-calendar {\n  background: transparent;\n  ov
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -350,7 +571,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(8);
+var	fixUrls = __webpack_require__(9);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -663,7 +884,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports) {
 
 
@@ -758,15 +979,15 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(10)
+var __vue_script__ = __webpack_require__(11)
 /* template */
-var __vue_template__ = __webpack_require__(11)
+var __vue_template__ = __webpack_require__(12)
 /* template functional */
   var __vue_template_functional__ = false
 /* styles */
@@ -806,7 +1027,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -877,7 +1098,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -936,227 +1157,6 @@ if (false) {
     require("vue-hot-reload-api")      .rerender("data-v-8f03b692", module.exports)
   }
 }
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/*
-  MIT License http://www.opensource.org/licenses/mit-license.php
-  Author Tobias Koppers @sokra
-  Modified by Evan You @yyx990803
-*/
-
-var hasDocument = typeof document !== 'undefined'
-
-if (typeof DEBUG !== 'undefined' && DEBUG) {
-  if (!hasDocument) {
-    throw new Error(
-    'vue-style-loader cannot be used in a non-browser environment. ' +
-    "Use { target: 'node' } in your Webpack config to indicate a server-rendering environment."
-  ) }
-}
-
-var listToStyles = __webpack_require__(22)
-
-/*
-type StyleObject = {
-  id: number;
-  parts: Array<StyleObjectPart>
-}
-
-type StyleObjectPart = {
-  css: string;
-  media: string;
-  sourceMap: ?string
-}
-*/
-
-var stylesInDom = {/*
-  [id: number]: {
-    id: number,
-    refs: number,
-    parts: Array<(obj?: StyleObjectPart) => void>
-  }
-*/}
-
-var head = hasDocument && (document.head || document.getElementsByTagName('head')[0])
-var singletonElement = null
-var singletonCounter = 0
-var isProduction = false
-var noop = function () {}
-
-// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-// tags it will allow on a page
-var isOldIE = typeof navigator !== 'undefined' && /msie [6-9]\b/.test(navigator.userAgent.toLowerCase())
-
-module.exports = function (parentId, list, _isProduction) {
-  isProduction = _isProduction
-
-  var styles = listToStyles(parentId, list)
-  addStylesToDom(styles)
-
-  return function update (newList) {
-    var mayRemove = []
-    for (var i = 0; i < styles.length; i++) {
-      var item = styles[i]
-      var domStyle = stylesInDom[item.id]
-      domStyle.refs--
-      mayRemove.push(domStyle)
-    }
-    if (newList) {
-      styles = listToStyles(parentId, newList)
-      addStylesToDom(styles)
-    } else {
-      styles = []
-    }
-    for (var i = 0; i < mayRemove.length; i++) {
-      var domStyle = mayRemove[i]
-      if (domStyle.refs === 0) {
-        for (var j = 0; j < domStyle.parts.length; j++) {
-          domStyle.parts[j]()
-        }
-        delete stylesInDom[domStyle.id]
-      }
-    }
-  }
-}
-
-function addStylesToDom (styles /* Array<StyleObject> */) {
-  for (var i = 0; i < styles.length; i++) {
-    var item = styles[i]
-    var domStyle = stylesInDom[item.id]
-    if (domStyle) {
-      domStyle.refs++
-      for (var j = 0; j < domStyle.parts.length; j++) {
-        domStyle.parts[j](item.parts[j])
-      }
-      for (; j < item.parts.length; j++) {
-        domStyle.parts.push(addStyle(item.parts[j]))
-      }
-      if (domStyle.parts.length > item.parts.length) {
-        domStyle.parts.length = item.parts.length
-      }
-    } else {
-      var parts = []
-      for (var j = 0; j < item.parts.length; j++) {
-        parts.push(addStyle(item.parts[j]))
-      }
-      stylesInDom[item.id] = { id: item.id, refs: 1, parts: parts }
-    }
-  }
-}
-
-function createStyleElement () {
-  var styleElement = document.createElement('style')
-  styleElement.type = 'text/css'
-  head.appendChild(styleElement)
-  return styleElement
-}
-
-function addStyle (obj /* StyleObjectPart */) {
-  var update, remove
-  var styleElement = document.querySelector('style[data-vue-ssr-id~="' + obj.id + '"]')
-
-  if (styleElement) {
-    if (isProduction) {
-      // has SSR styles and in production mode.
-      // simply do nothing.
-      return noop
-    } else {
-      // has SSR styles but in dev mode.
-      // for some reason Chrome can't handle source map in server-rendered
-      // style tags - source maps in <style> only works if the style tag is
-      // created and inserted dynamically. So we remove the server rendered
-      // styles and inject new ones.
-      styleElement.parentNode.removeChild(styleElement)
-    }
-  }
-
-  if (isOldIE) {
-    // use singleton mode for IE9.
-    var styleIndex = singletonCounter++
-    styleElement = singletonElement || (singletonElement = createStyleElement())
-    update = applyToSingletonTag.bind(null, styleElement, styleIndex, false)
-    remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true)
-  } else {
-    // use multi-style-tag mode in all other cases
-    styleElement = createStyleElement()
-    update = applyToTag.bind(null, styleElement)
-    remove = function () {
-      styleElement.parentNode.removeChild(styleElement)
-    }
-  }
-
-  update(obj)
-
-  return function updateStyle (newObj /* StyleObjectPart */) {
-    if (newObj) {
-      if (newObj.css === obj.css &&
-          newObj.media === obj.media &&
-          newObj.sourceMap === obj.sourceMap) {
-        return
-      }
-      update(obj = newObj)
-    } else {
-      remove()
-    }
-  }
-}
-
-var replaceText = (function () {
-  var textStore = []
-
-  return function (index, replacement) {
-    textStore[index] = replacement
-    return textStore.filter(Boolean).join('\n')
-  }
-})()
-
-function applyToSingletonTag (styleElement, index, remove, obj) {
-  var css = remove ? '' : obj.css
-
-  if (styleElement.styleSheet) {
-    styleElement.styleSheet.cssText = replaceText(index, css)
-  } else {
-    var cssNode = document.createTextNode(css)
-    var childNodes = styleElement.childNodes
-    if (childNodes[index]) styleElement.removeChild(childNodes[index])
-    if (childNodes.length) {
-      styleElement.insertBefore(cssNode, childNodes[index])
-    } else {
-      styleElement.appendChild(cssNode)
-    }
-  }
-}
-
-function applyToTag (styleElement, obj) {
-  var css = obj.css
-  var media = obj.media
-  var sourceMap = obj.sourceMap
-
-  if (media) {
-    styleElement.setAttribute('media', media)
-  }
-
-  if (sourceMap) {
-    // https://developer.chrome.com/devtools/docs/javascript-debugging
-    // this makes source maps inside style tags work properly in Chrome
-    css += '\n/*# sourceURL=' + sourceMap.sources[0] + ' */'
-    // http://stackoverflow.com/a/26603875
-    css += '\n/*# sourceMappingURL=data:application/json;base64,' + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + ' */'
-  }
-
-  if (styleElement.styleSheet) {
-    styleElement.styleSheet.cssText = css
-  } else {
-    while (styleElement.firstChild) {
-      styleElement.removeChild(styleElement.firstChild)
-    }
-    styleElement.appendChild(document.createTextNode(css))
-  }
-}
-
 
 /***/ }),
 /* 13 */,
@@ -1383,23 +1383,24 @@ module.exports = __webpack_require__(73);
 /* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(4);
+/* WEBPACK VAR INJECTION */(function($) {__webpack_require__(5);
 
 // in case of need to use global event bus
-// window.EventBus = new Vue();
-
+window.EventBus = new Vue();
 
 Vue.component('alert-box', __webpack_require__(74));
 Vue.component('navbar', __webpack_require__(79));
 Vue.component('appbar-right', __webpack_require__(23));
 Vue.component('panel', __webpack_require__(82));
-Vue.component('input-text', __webpack_require__(9));
+Vue.component('input-text', __webpack_require__(10));
 Vue.component('input-suggestion', __webpack_require__(85));
 Vue.component('input-select', __webpack_require__(88));
 Vue.component('input-textarea', __webpack_require__(91));
 Vue.component('input-radio', __webpack_require__(96));
 Vue.component('input-check', __webpack_require__(101));
 Vue.component('input-check-group', __webpack_require__(104));
+
+Vue.component('modal-document', __webpack_require__(107));
 
 window.app = new Vue({
     el: '#app',
@@ -1409,6 +1410,12 @@ window.app = new Vue({
         alertStatus: "warning",
         alertDuration: 5000,
         autosaving: false
+    },
+    mounted: function mounted() {
+        EventBus.$on('cirrhosis', function () {
+            $('#modal-child-pugh-score').modal('show');
+            // toggleAlertbox("<a href='/index' class='alert-link'>Learn more about Child-Pugh's Score ?</a> ", 'success', 10000);
+        });
     }
 });
 
@@ -1424,6 +1431,7 @@ window.toggleAlertbox = function (message, status) {
 };
 
 // window.EventBus = new Vue;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
 /* 74 */
@@ -1488,7 +1496,7 @@ var content = __webpack_require__(76);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(12)("17d78054", content, false);
+var update = __webpack_require__(4)("17d78054", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -1541,7 +1549,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['status', 'duration'],
+    props: ['message', 'status', 'duration'],
     data: function data() {
         return {
             class: "alert alert-dismissible fade in alert-" + this.status,
@@ -1599,7 +1607,7 @@ var render = function() {
         _vm._v(" "),
         _c("span", { class: this.setIcon(), attrs: { id: "alert-icon" } }),
         _vm._v(" "),
-        _c("p", [_vm._t("default")], 2)
+        _c("p", { domProps: { innerHTML: _vm._s(_vm.message) } })
       ])
     ])
   ])
@@ -2422,7 +2430,7 @@ var content = __webpack_require__(93);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(12)("7258981c", content, false);
+var update = __webpack_require__(4)("7258981c", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -2735,7 +2743,7 @@ var content = __webpack_require__(98);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(12)("703bb3c0", content, false);
+var update = __webpack_require__(4)("703bb3c0", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -2802,9 +2810,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['field', 'label', 'options', 'triggerValue', 'needSync', 'labelDescription'],
+    props: ['field', 'label', 'options', 'triggerValue', 'needSync', 'labelDescription', 'labelAction', 'setterEvent'],
     data: function data() {
         return {
             showReset: false,
@@ -2858,9 +2869,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         isTriggerExtra: function isTriggerExtra(value) {
             return value == this.triggerValue;
+        },
+        emitLabelActionEvent: function emitLabelActionEvent() {
+            EventBus.$emit(this.labelActionEmitEventName);
         }
     },
     mounted: function mounted() {
+        var _this2 = this;
+
         // in case of need to use global event bus
         // if (this.onCloseExtra !== undefined) {    
         //     EventBus.$on(this.onCloseExtra, () => {
@@ -2878,11 +2894,39 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         if (this.labelDescription !== undefined) {
             $('a[title="' + this.labelDescription + '"]').tooltip();
         }
+
+        if (this.labelAction !== undefined) {
+            $('a[title="' + this.labelActionTitle + '"]').tooltip();
+        }
+
+        if (this.setterEvent !== undefined) {
+            EventBus.$on(this.setterEvent, function (value) {
+                _this2.check(value);
+            });
+        }
     },
 
     computed: {
         hasDefaultSlot: function hasDefaultSlot() {
             return !!this.$slots.default;
+        },
+        labelActionEmitEventName: function labelActionEmitEventName() {
+            if (this.labelAction !== undefined) {
+                return JSON.parse(this.labelAction).emit;
+            }
+            return '';
+        },
+        labelActionIcon: function labelActionIcon() {
+            if (this.labelAction !== undefined) {
+                return 'fa fa-' + JSON.parse(this.labelAction).icon;
+            }
+            return '';
+        },
+        labelActionTitle: function labelActionTitle() {
+            if (this.labelAction !== undefined) {
+                return JSON.parse(this.labelAction).title;
+            }
+            return '';
         }
     },
     beforeDestroy: function beforeDestroy() {}
@@ -2906,6 +2950,25 @@ var render = function() {
         [
           _c("label", { staticClass: "control-label" }, [
             _vm._v(_vm._s(_vm.label) + "\n            "),
+            _vm.labelAction !== undefined
+              ? _c(
+                  "a",
+                  {
+                    attrs: {
+                      role: "button",
+                      "data-toggle": "tooltip",
+                      title: _vm.labelActionTitle
+                    },
+                    on: {
+                      click: function($event) {
+                        _vm.emitLabelActionEvent()
+                      }
+                    }
+                  },
+                  [_c("i", { class: _vm.labelActionIcon })]
+                )
+              : _vm._e(),
+            _vm._v(" "),
             _vm.labelDescription !== undefined
               ? _c(
                   "a",
@@ -3059,7 +3122,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['field', 'label', 'checked', 'needSync'],
+    props: ['field', 'label', 'checked', 'needSync', 'emitOnCheck', 'triggerEvent'],
     data: function data() {
         return {
             thisChecked: ''
@@ -3095,7 +3158,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).catch(function (error) {
                 console.log(error);app.$data.autosaving = false;
             });
-            console.log(this.thisChecked.length);
+
+            if (this.emitOnCheck !== undefined) {
+                // [name][mode 1:checked 2:unchecked][value]
+                var emitParams = this.emitOnCheck.split('|');
+                if (emitParams[1] && this.thisChecked == 'checked' || emitParams[2] && this.thisChecked == '') {
+                    EventBus.$emit(emitParams[0], emitParams[2]);
+                }
+            }
         }
     }
 });
@@ -3198,6 +3268,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['label', 'checks', 'needSync']
@@ -3226,6 +3298,8 @@ var render = function() {
             field: check.field,
             label: check.label,
             checked: check.checked,
+            "emit-on-check": check.emitOnCheck,
+            "trigger-event": check.triggerEvent,
             "need-sync": _vm.needSync
           }
         })
@@ -3241,6 +3315,392 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-0d896361", module.exports)
+  }
+}
+
+/***/ }),
+/* 107 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(108)
+}
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = null
+/* template */
+var __vue_template__ = __webpack_require__(110)
+/* template functional */
+  var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/ModalDocument.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-058e6708", Component.options)
+  } else {
+    hotAPI.reload("data-v-058e6708", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 108 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(109);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(4)("2ce2a2df", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-058e6708\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./ModalDocument.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-058e6708\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./ModalDocument.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 109 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(3)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "\n#modal-body-child-pugh {\n    font-size: 12pt;\n}\n#modal-body-child-pugh td {\n    padding-left: 5px;\n}\n#modal-body-child-pugh p {\n    padding-top: 5px;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 110 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm._m(0)
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: { id: "modal-child-pugh-score", tabindex: "-1", role: "dialog" }
+      },
+      [
+        _c(
+          "div",
+          { staticClass: "modal-dialog", attrs: { role: "document" } },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _c(
+                "div",
+                {
+                  staticClass: "modal-header alert alert-default",
+                  attrs: { id: "modal-sms-box-header" }
+                },
+                [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "close",
+                      attrs: {
+                        type: "button",
+                        "data-dismiss": "modal",
+                        "aria-label": "Close"
+                      }
+                    },
+                    [
+                      _c("span", { attrs: { "aria-hidden": "true" } }, [
+                        _vm._v("×")
+                      ])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("p", { staticClass: "modal-title" }, [
+                    _c("span", {
+                      staticClass: "fa fa-comment-o",
+                      attrs: { "aria-hidden": "true" }
+                    }),
+                    _vm._v(" Child-Pugh's Score")
+                  ])
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "modal-body",
+                  staticStyle: {
+                    "max-height": "calc(100vh - 30vh)",
+                    "overflow-y": "auto"
+                  },
+                  attrs: { id: "modal-body-child-pugh" }
+                },
+                [
+                  _c("p", [
+                    _vm._v(
+                      "The score employs five clinical measures of liver disease. Each measure is scored 1-3, with 3 indicating most severe derangement."
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "table",
+                    {
+                      staticStyle: { "border-collapse": "collapse" },
+                      attrs: { cellpadding: "3", cellspacing: "0", border: "1" }
+                    },
+                    [
+                      _c(
+                        "tr",
+                        { staticStyle: { "background-color": "#aad" } },
+                        [
+                          _c(
+                            "th",
+                            {
+                              staticClass: "text-center",
+                              staticStyle: { width: "20%" }
+                            },
+                            [_vm._v("Measure")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "th",
+                            {
+                              staticClass: "text-center",
+                              staticStyle: { width: "10%" }
+                            },
+                            [_vm._v("1 point")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "th",
+                            {
+                              staticClass: "text-center",
+                              staticStyle: { width: "35%" }
+                            },
+                            [_vm._v("2 points")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "th",
+                            {
+                              staticClass: "text-center",
+                              staticStyle: { width: "35%" }
+                            },
+                            [_vm._v("3 points")]
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c("td", [_vm._v("Total bilirubin (mg/dl)")]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v("<2")]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v("2-3")]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(">3")])
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c("td", [_vm._v("Serum albumin (g/dl)")]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(">3.5")]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v("2.8-3.5")]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v("<2.8")])
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c("td", [_vm._v("Prothrombin time (secs)")]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v("<4.0")]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v("4.0-6.0")]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v("> 6.0")])
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c("td", [_vm._v("Ascites")]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v("None")]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v("Mild")]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v("Moderate to Severe")])
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c("td", [_vm._v("Hepatic encephalopathy")]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v("None")]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _vm._v("Grade I-II (or suppressed with medication)")
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v("Grade III-IV (or refractory)")])
+                      ])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("p", [
+                    _vm._v(
+                      "Different textbooks and publications use different measures. Some older reference works substitute PT prolongation for INR."
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("p", [
+                    _vm._v("In "),
+                    _c(
+                      "a",
+                      { attrs: { title: "Primary sclerosing cholangitis" } },
+                      [_vm._v("primary sclerosing cholangitis")]
+                    ),
+                    _vm._v(" (PSC) and "),
+                    _c("a", { attrs: { title: "Primary biliary cirrhosis" } }, [
+                      _vm._v("primary biliary cirrhosis")
+                    ]),
+                    _vm._v(
+                      " (PBC), the bilirubin references are changed to reflect the fact that these diseases feature high conjugated bilirubin levels. The upper limit for 1 point is 4 mg/dl and the upper limit for 2 points is 10 mg/dl."
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "table",
+                    {
+                      staticStyle: { "border-collapse": "collapse" },
+                      attrs: { cellpadding: "3", cellspacing: "0", border: "1" }
+                    },
+                    [
+                      _c("tr", [
+                        _c("td", { attrs: { bgcolor: "#AAAADD" } }, [
+                          _c("b", [_vm._v("Points")])
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { attrs: { bgcolor: "#AAAADD" } }, [
+                          _c("b", [_vm._v("Class")])
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { attrs: { bgcolor: "#AAAADD" } }, [
+                          _c("b", [_vm._v("One year survival")])
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { attrs: { bgcolor: "#AAAADD" } }, [
+                          _c("b", [_vm._v("Two year survival")])
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c("td", [_vm._v("5-6")]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v("A")]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v("100%")]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v("85%")])
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c("td", [_vm._v("7-9")]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v("B")]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v("81%")]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v("57%")])
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c("td", [_vm._v("10-15")]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v("C")]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v("45%")]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v("35%")])
+                      ])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("p", [
+                    _vm._v(
+                      "Chronic liver disease is classified into Child-Pugh class A to C, employing the added score from above."
+                    )
+                  ])
+                ]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-footer" }, [
+                _c(
+                  "a",
+                  {
+                    staticClass: "btn btn-default",
+                    attrs: { id: "modal-sms-box-btn", "data-dismiss": "modal" }
+                  },
+                  [_vm._v("OK")]
+                )
+              ])
+            ])
+          ]
+        )
+      ]
+    )
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-058e6708", module.exports)
   }
 }
 

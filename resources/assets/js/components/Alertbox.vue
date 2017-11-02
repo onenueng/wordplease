@@ -8,7 +8,7 @@
                     </span>
                 </button>
                 <span :class="this.setIcon()" id="alert-icon"></span>
-                <p><slot></slot></p>
+                <p v-html="message"></p>
             </div>
         </div>
     </transition>
@@ -16,7 +16,7 @@
 
 <script>
     export default {
-        props: ['status', 'duration'],
+        props: ['message', 'status', 'duration'],
         data () {
             return {
                 class: "alert alert-dismissible fade in alert-" + this.status,

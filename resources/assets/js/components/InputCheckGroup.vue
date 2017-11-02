@@ -6,6 +6,8 @@
                      :field="check.field"
                      :label="check.label"
                      :checked="check.checked"
+                     :emit-on-check="check.emitOnCheck"
+                     :trigger-event="check.triggerEvent"
                      :need-sync="needSync">
         </input-check>
     </div>

@@ -2,6 +2,9 @@
     <div>
         <div class="form-group-sm">
             <label class="control-label">{{ label }}
+                <a v-if="labelAction !== undefined" role="button" @click="emitLabelActionEvent()" data-toggle="tooltip" :title="labelActionTitle">
+                    <i :class="labelActionIcon"></i>
+                </a>
                 <a v-if="labelDescription !== undefined" role="button" data-toggle="tooltip" :title="labelDescription">
                     <i class="fa fa-info-circle"></i>
                 </a>
@@ -32,7 +35,7 @@
 
 <script>
     export default {
-        props: ['field','label', 'options', 'triggerValue', 'needSync', 'labelDescription'],
+        props: ['field','label', 'options', 'triggerValue', 'needSync', 'labelDescription', 'labelAction', 'setterEvent'],
         data () {
             return {
                 showReset: false,
@@ -81,6 +84,9 @@
             },
             isTriggerExtra(value) {
                 return (value == this.triggerValue)
+            },
+            emitLabelActionEvent() {
+                EventBus.$emit(this.labelActionEmitEventName);
             }
         },
         mounted () {
@@ -101,10 +107,38 @@
             if (this.labelDescription !== undefined) {
                 $('a[title="' + this.labelDescription + '"]').tooltip();
             }
+
+            if (this.labelAction !== undefined) {
+                $('a[title="' + this.labelActionTitle + '"]').tooltip();
+            }
+
+            if (this.setterEvent !== undefined) {
+                EventBus.$on(this.setterEvent, (value) => {
+                    this.check(value)
+                });
+            }
         },
         computed: {
             hasDefaultSlot() {
                 return !!this.$slots.default;
+            },
+            labelActionEmitEventName() {
+                if (this.labelAction !== undefined) {
+                    return JSON.parse(this.labelAction).emit;
+                }
+                return '';
+            },
+            labelActionIcon() {
+                if (this.labelAction !== undefined) {
+                    return 'fa fa-' + JSON.parse(this.labelAction).icon;
+                }
+                return '';
+            },
+            labelActionTitle() {
+                if (this.labelAction !== undefined) {
+                    return JSON.parse(this.labelAction).title;
+                }
+                return '';
             }
         },
         beforeDestroy() {

@@ -88,7 +88,25 @@ class MedicineNotesController extends Controller
 		if (!isset($parentNote->note_type_id))
 			return $parentNote;
 		switch ($parentNote->note_type_id) {
-			case '7':
+            case '1':
+                $note = MedicineAdmissionNote::find($id);
+                break;
+            case '2':
+                $note = MedicineAdmissionNote::find($id);
+                break;
+            case '3':
+                $note = MedicineAdmissionNote::find($id);
+                break;
+            case '4':
+                $note = MedicineAdmissionNote::find($id);
+                break;
+            case '5':
+                $note = MedicineAdmissionNote::find($id);
+                break;
+            case '6':
+                $note = MedicineAdmissionNote::find($id);
+                break;
+            case '7':
 				$note = MedicineAdmissionNote::find($id);
 				break;
 			case '8':

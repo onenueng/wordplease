@@ -4,13 +4,117 @@ use App\User;
 use App\IPDNote\Note;
 use App\Itemizes\Patient;
 use App\IPDNote\Faculty\FacultyDischargeNote;
+use App\IPDNote\Medicine\MedicineServiceNote;
 use App\IPDNote\Medicine\MedicineAdmissionNote;
 use App\IPDNote\Medicine\MedicineDischargeNote;
-use App\IPDNote\Medicine\MedicineServiceNote;
 use App\IPDNote\Ophthalmology\OphthalmologyGeneralNote;
 use Carbon\Carbon;
 
 class Initial {
+	
+	public static function initData()
+	{
+		// create users
+		$user = User::create([
+				'sap_id' => 'simed',
+				'password' => bcrypt('111111'),
+				'name' => 'พ.ญ. ทดสอบ อายุรศาสตร์',
+				'division_id' => 200,
+				'role_id' => 3,
+				'licence_no' => 22222,
+				'email' => 'simed@siriraj.ac.th',
+		]);
+		$user->active = 1;
+		$user->save();
+
+		// General admission note
+		Initial::createNotes(57963408, 9, new MedicineAdmissionNote);
+
+		// General Discharge Summary note
+		Initial::createNotes(54251638, 1, new MedicineAdmissionNote);
+
+		// medicine admission note
+		Initial::createNotes(56487882, 7, new MedicineAdmissionNote);
+
+		// medicine admission note
+		Initial::createNotes(56154986, 8, new MedicineAdmissionNote);
+
+		// The Heart admission note
+		Initial::createNotes(58796324, 10, new MedicineAdmissionNote);
+
+		// The Heart In hospital adverse note
+		Initial::createNotes(59745925, 11, new MedicineAdmissionNote);
+
+		// $user = User::create([
+		// 		'sap_id' => 'siobgyn',
+		// 		'password' => bcrypt('111111'),
+		// 		'name' => 'พ.ญ. ทดสอบ สูตินรีเวช',
+		// 		'division_id' => 400,
+		// 		'role_id' => 3,
+		// 		'licence_no' => 44444,
+		// 		'email' => 'siobgyn@siriraj.ac.th',
+		// ]);
+		// $user->active = 1;
+		// $user->save();
+
+		// Labour and Delivery Summary
+		Initial::createNotes(52789462, 2, new MedicineAdmissionNote);
+
+		// Newborn Summary
+		Initial::createNotes(54159622, 3, new MedicineAdmissionNote);
+
+		// Undelivery Summary
+		Initial::createNotes(58900124, 4, new MedicineAdmissionNote);
+
+		// Pregnancy with Abortive Outcome Summary
+		Initial::createNotes(58102310, 5, new MedicineAdmissionNote);
+
+		// $user = User::create([
+		// 		'sap_id' => 'siophthal',
+		// 		'password' => bcrypt('111111'),
+		// 		'name' => 'พ.ญ. ทดสอบ จักษุวิทยา',
+		// 		'division_id' => 300,
+		// 		'role_id' => 3,
+		// 		'licence_no' => 33333,
+		// 		'email' => 'siophthal@siriraj.ac.th',
+		// ]);
+		// $user->active = 1;
+		// $user->save();
+
+		// ophthalmology Discharge Summary note
+		Initial::createNotes(57426585, 6, new MedicineAdmissionNote);
+
+		return true;
+	}
+
+	public static function createNotes($AN, $noteTypeId, $subNote, $userId = 1)
+	{
+		$api = new \App\APIs\FakePatientData();
+		$admit = $api->getAdmission($AN);
+		$patientData = $api->getAdmission($admit['hn']);
+		
+		$patient = new Patient;
+		$patient->HN = $admit['hn'];
+		$patient->first_name = $patientData['first_name'];
+		$patient->last_name = $patientData['last_name'];
+		$patient->dob = Carbon::createFromFormat('Y-m-d' ,$patientData['dob'])->format('d-m-Y');
+		$patient->gender = FALSE;
+		$patient->title_id = 2;
+
+		$patient->save();
+
+		$note = new Note;
+		$note->AN = $AN;
+		$note->patient_id = $patient->id;
+		$note->note_type_id = $noteTypeId;
+		$note->division_id = 100;
+		$note->creator_id = $userId;
+		$note->save();
+		// $subNote = new MedicineAdmissionNote;
+		$subNote->id = $note->id;
+		$subNote->save();
+	}
+
 	public static function initUsers() {
 		$user = User::create([
 				'sap_id' => 'simed',

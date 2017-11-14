@@ -1,15 +1,13 @@
 <template>
     <transition name="slide-fade">
-        <div id="alert-box">
-            <div :class="this.class" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">
-                        <span class="fa fa-times-circle"></span>
-                    </span>
-                </button>
-                <span :class="this.setIcon()" id="alert-icon"></span>
-                <p v-html="message"></p>
-            </div>
+        <div :class="this.class" role="alert" id="alert-box">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">
+                    <span class="fa fa-times-circle"></span>
+                </span>
+            </button>
+            <span :class="this.setIcon()" id="alert-icon"></span>
+            <p v-html="message"></p>
         </div>
     </transition>
 </template>

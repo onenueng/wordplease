@@ -5,6 +5,7 @@
                      :key="check.field"
                      :field="check.field"
                      :label="check.label"
+                     :label-description="check.labelDescription"
                      :checked="check.checked"
                      :emit-on-check="check.emitOnCheck"
                      :trigger-event="check.triggerEvent"
@@ -15,6 +16,22 @@
 
 <script>
     export default {
-        props: ['label','checks', 'needSync']
+        // props: ['label','checks', 'needSync']
+        props: {
+            label: {
+                type: String,
+                required: false
+            },
+            // JSON input-check excluded needSync
+            checks: {
+                type: String,
+                required: true
+            },
+            // need to sync value with database on render or not ['needSync' or undefined].
+            needSync: {
+                type: String,
+                required: false
+            }
+        }
     }
 </script>

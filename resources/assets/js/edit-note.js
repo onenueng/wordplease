@@ -5,6 +5,7 @@ window.EventBus = new Vue();
 
 
 Vue.component('alert-box', require('./components/Alertbox.vue'));
+Vue.component('modal-dialog', require('./components/ModalDialog.vue'));
 Vue.component('navbar', require('./components/EditNoteNavbar.vue'));
 Vue.component('appbar-right', require('./components/AppbarRight.vue'));
 Vue.component('panel', require('./components/Panel.vue'));
@@ -26,13 +27,69 @@ window.app = new Vue({
         alertboxMessage: "Hello World",
         alertStatus: "warning",
         alertDuration: 5000,
-        autosaving: false
+        autosaving: false,
+
+        dialogHeading: 'Wordplease Say',
+        dialogMessage: 'Hello world!!',
+        dialogButtonLabel: 'OK',
     },
     mounted() {
-        EventBus.$on('cirrhosis', () => {
+        EventBus.$on('show-child-pugh-score', () => {
             $('#modal-child-pugh-score').modal('show');
-            // toggleAlertbox("<a href='/index' class='alert-link'>Learn more about Child-Pugh's Score ?</a> ", 'success', 10000);
         });
+
+        EventBus.$on('error-419', () => {
+            this.dialogHeading = 'Attention please !!'
+            this.dialogMessage = 'Your are now logged off, Please reload this page or loss your data.'
+            this.dialogButtonLabel = 'Got it'
+            $('#modal-dialog').modal('show')
+        });
+
+        EventBus.$on('autosave', (field, value, ref) => {
+            if (ref === undefined) {
+                axios.post('/autosave', JSON.parse('{"' + field + '": ' + JSON.stringify(value) + '}'))
+                     .then((response) => {
+                        console.log(response.data);
+                        this.autosaving = false;
+                     })
+                     .catch((error) => {
+                        this.autosaving = false;
+                        if (error.response) {
+                            // The request was made and the server responded with a status code
+                            // that falls out of the range of 2xx
+                            console.log(error.response.data);
+                            console.log(error.response.status);
+                            console.log(error.response.headers);
+                            if (error.response.status == 419) {
+                                EventBus.$emit('error-419');
+                            }
+                        } else if (error.request) {
+                            // The request was made but no response was received
+                            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                            // http.ClientRequest in node.js
+                            console.log(error.request);
+                        } else {
+                            // Something happened in setting up the request that triggered an Error
+                            console.log('Error', error.message);
+                        }
+                        console.log(error.config);
+                     });
+            }
+        })
+
+        $(window).on("focus", (e) => {
+            console.log("doc Focused");
+        });
+    },
+    methods : {
+        showSms() {
+            if (! this.showAlertbox) {
+                this.alertboxMessage = 'Your are now logged off, Please reload this page or loss your data.'
+                this.alertStatus = 'danger';
+                this.alertDuration = 10000;
+                this.showAlertbox = true;
+            }
+        }
     }
 });
 
@@ -44,5 +101,3 @@ window.toggleAlertbox = (message, status, duration = 5000) => {
         app.$data.showAlertbox = true;
     }
 }
-
-// window.EventBus = new Vue;

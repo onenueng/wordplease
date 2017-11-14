@@ -2,25 +2,42 @@
     <div>
         <div class="form-group-sm">
             <label class="control-label">{{ label }}
-                <a v-if="labelAction !== undefined" role="button" @click="emitLabelActionEvent()" data-toggle="tooltip" :title="labelActionTitle">
+                <a  v-if="labelAction !== undefined"
+                    role="button"
+                    @click="emitLabelActionEvent()"
+                    data-toggle="tooltip"
+                    :title="labelActionTitle">
                     <i :class="labelActionIcon"></i>
                 </a>
-                <a v-if="labelDescription !== undefined" role="button" data-toggle="tooltip" :title="labelDescription">
+                <a  v-if="labelDescription !== undefined"
+                    role="button"
+                    data-toggle="tooltip"
+                    :title="labelDescription">
                     <i class="fa fa-info-circle"></i>
                 </a>
                 <span v-if="labelDescription !== undefined">:</span>
             </label>
             <transition name="slide-fade">
-                <a @click="reset()" role="button" v-show="showReset"><i class="fa fa-remove"></i></a>
+                <a  @click="reset()"
+                    role="button"
+                    v-show="showReset">
+                    <i class="fa fa-remove"></i>
+                </a>
             </transition>
-            <label class="radio-inline" v-for="option in JSON.parse(options)">
+            <label class="radio-inline" v-for="option in JSON.parse(options)"> 
                 <input
                     type="radio"
                     :name="field"
                     :value="option.value"
                     @click="check(option.value)"
                     :checked="option.value == currentValue" />
-                 {{ option.label }}
+                {{ option.label }}
+                <a  v-if="option.labelDescription !== undefined"
+                    role="button"
+                    data-toggle="tooltip"
+                    :title="option.labelDescription">
+                    <i class="fa fa-info-circle"></i>
+                </a>
             </label>
         </div>
 
@@ -35,7 +52,42 @@
 
 <script>
     export default {
-        props: ['field','label', 'options', 'triggerValue', 'needSync', 'labelDescription', 'labelAction', 'setterEvent'],
+        props: {
+            // field name on database.
+            field: {
+                type: String,
+                required: true
+            },
+            label: {
+                type: String,
+                required: true  
+            },
+            // tooltip for label.
+            labelDescription: {
+                type: String,
+                required: false
+            },
+            // string in form of json {"emit": "", "icon": "", "title": "" }.
+            labelAction: {
+                type: String,
+                required: false
+            },
+            // string in form fo array of json [{"label": "","value": ""},{...}].
+            options: {
+                type: String,
+                required: true  
+            },
+            // value to trigger extra content.
+            triggerValue: {
+                type: String,
+                required: false
+            },
+            // listen to this event name to set this component value.
+            setterEvent: {
+                type: String,
+                required: false
+            }
+        },
         data () {
             return {
                 showReset: false,
@@ -45,122 +97,111 @@
         },
         methods: {
             autosave() {
-                app.$data.autosaving = true;
-                axios.post('/autosave', JSON.parse('{"' + this.field + '": ' + JSON.stringify(this.currentValue) + '}'))
-                     .then((response) => { console.log(response.data); this.dirty = false; app.$data.autosaving = false; })
-                     .catch((error) => { console.log(error); app.$data.autosaving = false; });
+                EventBus.$emit('autosave', this.field, this.currentValue)
             },
             check(value) {
+                // check if has extra contents.
                 if (this.hasDefaultSlot) {
                     if (this.isTriggerExtra(value)) {
                         if (!this.showExtra) {
-                            this.showExtra = true;
+                            this.showExtra = true
                         }
                     } else {
                         if (this.showExtra) {
-                            this.showExtra = false;
-                            // in case of need to use global event bus
-                            // EventBus.$emit(this.emitCloseExtra);
+                            this.showExtra = false
                         }
                     }
                 }
 
+                // show reset icon.
                 if (!this.showReset) {
-                    this.showReset = true;
+                    this.showReset = true
                 }
 
+                // check if value change.
                 if (this.currentValue != value) {
-                    this.currentValue = value;
-                    this.autosave();
+                    this.currentValue = value
+                    this.autosave()
                 }
             },
+            // reset to unchecked all options.
             reset() {
-                this.showReset = false;
-                this.currentValue = null;
+                this.showReset = false
+                this.currentValue = null
                 if (this.hasDefaultSlot) {
-                    this.showExtra = false;
+                    this.showExtra = false
                 }
                 this.autosave();
             },
+            // return checked value is trigger value or not.
             isTriggerExtra(value) {
                 return (value == this.triggerValue)
             },
+            // emit event on label action.
             emitLabelActionEvent() {
-                EventBus.$emit(this.labelActionEmitEventName);
+                EventBus.$emit(this.labelActionEmitEventName)
             }
         },
         mounted () {
-            // in case of need to use global event bus
-            // if (this.onCloseExtra !== undefined) {    
-            //     EventBus.$on(this.onCloseExtra, () => {
-            //         axios.post('/autosave', JSON.parse('{"' + this.field + '": ' + JSON.stringify(null) + '}'))
-            //              .then((response) => { console.log(response.data); this.dirty = false; app.$data.autosaving = false; })
-            //              .catch((error) => { console.log(error); app.$data.autosaving = false; });
-            //         console.log(this.field);
-            //     });
-            // }
-
-            if (this.needSync !== undefined) {
-                console.log(this.field + ' need sync');
-            }
-
+            // init label tooltip if available.
             if (this.labelDescription !== undefined) {
-                $('a[title="' + this.labelDescription + '"]').tooltip();
+                $('a[title="' + this.labelDescription + '"]').tooltip()
             }
 
+            // init label action icon tooltip if available.
             if (this.labelAction !== undefined) {
-                $('a[title="' + this.labelActionTitle + '"]').tooltip();
+                $('a[title="' + this.labelActionTitle + '"]').tooltip()
             }
 
+            // init each option label tooltip if available.
+            JSON.parse(this.options).forEach((option) => {
+                if (option.labelDescription !== undefined) {
+                    $('a[title="' + option.labelDescription + '"]').tooltip()
+                }
+            })
+
+            // listen to event to set option value.
             if (this.setterEvent !== undefined) {
                 EventBus.$on(this.setterEvent, (value) => {
                     this.check(value)
                 });
             }
+
+            if (this.needSync !== undefined) {
+                console.log(this.field + ' need sync')
+            }
         },
         computed: {
+            // check if has content in default slot.
             hasDefaultSlot() {
                 return !!this.$slots.default;
             },
+            // extract label action emit event name.
             labelActionEmitEventName() {
                 if (this.labelAction !== undefined) {
                     return JSON.parse(this.labelAction).emit;
                 }
                 return '';
             },
+            // extract label action icon.
             labelActionIcon() {
                 if (this.labelAction !== undefined) {
                     return 'fa fa-' + JSON.parse(this.labelAction).icon;
                 }
                 return '';
             },
+            // extract label action icon title.
             labelActionTitle() {
                 if (this.labelAction !== undefined) {
                     return JSON.parse(this.labelAction).title;
                 }
                 return '';
             }
-        },
-        beforeDestroy() {
-            
         }
     }
 </script>
 
 <style>
-    .slide-fade-enter-active {
-      /*transition: all .3s ease;*/
-      transition: all .8s ease;
-    }
-    .slide-fade-leave-active {
-      /*transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);*/
-      transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-    }
-    .slide-fade-enter, .slide-fade-leave-to
-    /* .slide-fade-leave-active below version 2.1.8 */ {
-      transform: translateX(10px);
-      opacity: 0;
-    }
     div.extra {
         font-style: italic;
         color: #757575;

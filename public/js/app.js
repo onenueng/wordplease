@@ -186,7 +186,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     props: ['field', 'value', 'label', 'grid', 'readonly', 'size', 'needSync', 'placeholder'],
     data: function data() {
         return {
-            userInput: ''
+            userInput: '',
+            lastSave: ''
         };
     },
     mounted: function mounted() {
@@ -207,9 +208,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return 'col-xs-' + grid[0] + ' col-sm-' + grid[1] + ' col-md-' + grid[2];
         },
         autosave: function autosave() {
-            if (this.readonly != '') {
+            var _this = this;
+
+            if (this.readonly != '' && this.userInput != this.lastSave) {
                 axios.post('/autosave', JSON.parse('{"' + this.field + '": "' + this.userInput + '"}')).then(function (response) {
                     console.log(response.data);
+                    _this.lastSave = _this.userInput;
                 }).catch(function (error) {
                     console.log(error);
                 });

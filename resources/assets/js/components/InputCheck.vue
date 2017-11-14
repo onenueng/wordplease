@@ -5,46 +5,75 @@
                :checked="thisChecked"
                @click="check()"/>
         {{ label }}
+        <a v-if="labelDescription !== undefined"
+           role="button"
+           data-toggle="tooltip"
+           :title="labelDescription">
+            <i class="fa fa-info-circle"></i>
+        </a>
     </label>
 </template>
 
 <script>
     export default {
-        props: ['field', 'label', 'checked', 'needSync', 'emitOnCheck', 'triggerEvent'],
+        props: {
+            // field name on database.
+            field: {
+                type: String,
+                required: true
+            },
+            label: {
+                type: String,
+                required: true  
+            },
+            // tooltip for label.
+            labelDescription: {
+                type: String,
+                required: false
+            },
+            // checked state ['checked' or undefined].
+            checked: {
+                type: String,
+                required: false
+            },
+            // need to sync value with database on render or not ['needSync' or undefined].
+            needSync: {
+                type: String,
+                required: false
+            },
+            // event emit when checked/unchecked.
+            emitOnCheck: {
+                type: String,
+                required: false
+            }
+        },
         data () {
             return {
+                // this element checked state ['checked' or ''].
                 thisChecked: ''
             }
         },
         mounted() {
+            // render checked state or not.
             this.thisChecked = (this.checked === undefined) ? '' : this.checked;
-            
-            // in case of need to use global event bus
-            // if (this.onCloseExtra !== undefined) {
-            //     EventBus.$on(this.onCloseExtra, () => {
-            //         axios.post('/autosave', JSON.parse('{"' + this.field + '": ' + JSON.stringify(false) + '}'))
-            //              .then((response) => { console.log(response.data); this.dirty = false; app.$data.autosaving = false; })
-            //              .catch((error) => { console.log(error); app.$data.autosaving = false; });
-            //         console.log(this.field);
-            //     });
-            // }
+
+            // init BT tooltip if labelDescription available.
+            if (this.labelDescription !== undefined) {
+                $('a[title="' + this.labelDescription + '"]').tooltip();
+            }
 
             if (this.needSync !== undefined) {
                 console.log(this.field + ' need sync');
             }
 
         },
-        beforeDestroy() {
-            
-        },
         methods: {
+            // handle check event.
             check() {
-                this.thisChecked = (this.thisChecked == '') ? 'checked' : '' ;
-                app.$data.autosaving = true;
-                axios.post('/autosave', JSON.parse('{"' + this.field + '": ' + JSON.stringify((this.thisChecked.length > 0)) + '}'))
-                     .then((response) => { console.log(response.data); this.dirty = false; app.$data.autosaving = false; })
-                     .catch((error) => { console.log(error); app.$data.autosaving = false; });
-
+                this.thisChecked = (this.thisChecked == '') ? 'checked' : ''
+                
+                EventBus.$emit('autosave', this.field, (this.thisChecked.length > 0))
+                
                 if (this.emitOnCheck !== undefined) {
                     // [name][mode 1:checked 2:unchecked][value]
                     let emitParams = this.emitOnCheck.split('|')

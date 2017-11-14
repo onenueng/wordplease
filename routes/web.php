@@ -15,6 +15,10 @@
 Route::get('/get-select-choices/{fieldName}', 'ListController@getSelectChoices');
 
 // dev route start here
+Route::get('/btm', function () {
+    return view('btm');
+});
+
 
 Route::get('/', function () {
     return view('webpack');

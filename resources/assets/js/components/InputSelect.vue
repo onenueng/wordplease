@@ -3,16 +3,17 @@
         <div :class="getSize()">
             <label class="control-label" :for="field">
                 {{ label }}
-                <a @click="reset()" role="button" v-show="showReset"><i class="fa fa-remove"></i></a>
+                <a @click="reset()" role="button" v-show="showReset">
+                    <i class="fa fa-remove"></i>
+                </a>
             </label>
-            <input
-                type="text"
-                class="form-control"
-                :name="field"
-                v-model="userInput"
-                @blur="onblur()"
-                @input="showReset = (userInput != '')"
-                :onkeypress="isAllowOther()" />
+            <input  type="text"
+                    class="form-control"
+                    :name="field"
+                    v-model="userInput"
+                    @blur="autosave()"
+                    @input="showReset = (userInput != '')"
+                    :onkeypress="isAllowOther()" />
             <span class="fa fa-chevron-down form-control-feedback" aria-hidden="true"></span>
         </div>
     </div>
@@ -20,7 +21,52 @@
 
 <script>
     export default {
-        props: ['field', 'value', 'label', 'grid', 'serviceUrl', 'minChars', 'notAllowOther', 'size', 'needSync'],
+        props: {
+            // field name on database.
+            field: {
+                type: String,
+                required: false
+            },
+            label: {
+                type: String,
+                required: true  
+            },
+            // define Bootstrap grid class in mobile-tablet-desktop order
+            grid: {
+                type: String,
+                required: false  
+            },
+            // endpoint to get options.
+            serviceUrl: {
+                type: String,
+                required: false  
+            },
+            // min chars to trigger suggestions.
+            minChars: {
+                type: String,
+                required: true  
+            },
+            // initial value.
+            value: {
+                type: String,
+                required: true
+            },
+            // allow user type-in or not, Just mention this option.
+            notAllowOther: {
+                type: String,
+                required: false
+            },
+            // define Bootstrap form-group has-feedback which size of form-group should use.
+            size: {
+                type: String,
+                required: false
+            },
+            // need to sync value with database on render or not ['needSync' or undefined].
+            needSync: {
+                type: String,
+                required: false
+            }
+        },
         data () {
             return {
                 userInput: '',
@@ -30,73 +76,64 @@
             }
         },
         mounted () {
+            
             if (this.needSync !== undefined) {
-                console.log(this.field + ' need sync');
+                console.log(this.field + ' need sync')
             }
 
-            this.lastData = this.userInput = this.value;
-            this.showReset = (this.value != '');
+            this.lastData = this.userInput = this.value
+
+            this.showReset = (this.value != '')
+
+            // init autocomplete.
             $(this.domRef).autocomplete({
                 serviceUrl: this.getServiceUrl,
                 onSelect: (suggestion) => {
-                    this.showReset = true;
-                    this.data = suggestion.data;
-                    this.userInput = suggestion.value;
-                    this.autosave();
+                    this.showReset = true
+                    this.data = suggestion.data
+                    this.userInput = suggestion.value
+                    this.autosave()
                 },
                 minChars: this.minChars,
-                maxHeight: 200
-            });
-            this.autosave = _.debounce( () => {
-                if ( this.field != '') {
-                    app.$data.autosaving = true;
-                    if (this.userInput != this.lastData) {
-                        axios.post('/autosave', JSON.parse('{"' + this.field + '": "' + this.userInput + '"}'))
-                             .then((response) => { console.log(response.data); app.$data.autosaving = false; })
-                             .catch((error) => { console.log(error); app.$data.autosaving = false; });
-                        this.lastData = this.userInput;
-                    } else {
-                        app.$data.autosaving = false;
-                    }
-                }
-            }, 1000);
+                maxHeight: 240
+            })
         },
         methods: {
             getGrid() {
                 if (this.grid === undefined) {
-                    return '';
+                    return ''
                 }
-                let grid = this.grid.split('-').map((x) => 12/x);
-                return 'col-xs-' + (grid[0]) + ' col-sm-' + (grid[1]) + ' col-md-' + (grid[2]);
-            },
-            autosave() {
-                
-            },
-            reset() {
-                this.showReset = false;
-                this.userInput = '';
-                this.onblur();
-            },
-            isAllowOther() {
-                return this.notAllowOther === undefined ? 'return true;' : 'return false;' ;
-            },
-            onblur() {
-                this.autosave();
+                let grid = this.grid.split('-').map((x) => 12/x)
+                return 'col-xs-' + (grid[0]) + ' col-sm-' + (grid[1]) + ' col-md-' + (grid[2])
             },
             getSize() {
                 if (this.size == 'normal') {
-                    return 'form-group has-feedback';   
+                    return 'form-group has-feedback'
                 }
-                return 'form-group-sm has-feedback';
+                return 'form-group-sm has-feedback'
+            },
+            reset() {
+                this.showReset = false
+                this.userInput = ''
+                this.onblur()
+            },
+            isAllowOther() {
+                return this.notAllowOther === undefined ? 'return true;' : 'return false;'
+            },
+            autosave() {
+                if (this.field !== undefined && this.userInput != this.lastData) {
+                    EventBus.$emit('autosave', this.field, this.userInput)
+                    this.lastData = this.userInput
+                }
             }
         },
         computed: {
             getServiceUrl() {
                 if (this.serviceUrl === undefined) {
-                    return '/get-select-choices/' + this.field;
+                    return '/lists/select/' + this.field
                 }
 
-                return  this.serviceUrl + '/' + this.field;
+                return  '/' + this.serviceUrl
             }
         }
     }

@@ -1435,33 +1435,32 @@ window.app = new Vue({
         });
 
         EventBus.$on('autosave', function (field, value, ref) {
-            if (ref === undefined) {
-                axios.post('/autosave', JSON.parse('{"' + field + '": ' + JSON.stringify(value) + '}')).then(function (response) {
-                    console.log(response.data);
-                    _this.autosaving = false;
-                }).catch(function (error) {
-                    _this.autosaving = false;
-                    if (error.response) {
-                        // The request was made and the server responded with a status code
-                        // that falls out of the range of 2xx
-                        console.log(error.response.data);
-                        console.log(error.response.status);
-                        console.log(error.response.headers);
-                        if (error.response.status == 419) {
-                            EventBus.$emit('error-419');
-                        }
-                    } else if (error.request) {
-                        // The request was made but no response was received
-                        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                        // http.ClientRequest in node.js
-                        console.log(error.request);
-                    } else {
-                        // Something happened in setting up the request that triggered an Error
-                        console.log('Error', error.message);
+            if (ref === undefined) {}
+            axios.post('/autosave', JSON.parse('{"' + field + '": ' + JSON.stringify(value) + '}')).then(function (response) {
+                console.log(response.data);
+                _this.autosaving = false;
+            }).catch(function (error) {
+                _this.autosaving = false;
+                if (error.response) {
+                    // The request was made and the server responded with a status code
+                    // that falls out of the range of 2xx
+                    console.log(error.response.data);
+                    console.log(error.response.status);
+                    console.log(error.response.headers);
+                    if (error.response.status == 419) {
+                        EventBus.$emit('error-419');
                     }
-                    console.log(error.config);
-                });
-            }
+                } else if (error.request) {
+                    // The request was made but no response was received
+                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                    // http.ClientRequest in node.js
+                    console.log(error.request);
+                } else {
+                    // Something happened in setting up the request that triggered an Error
+                    console.log('Error', error.message);
+                }
+                console.log(error.config);
+            });
         });
 
         $(window).on("focus", function (e) {
@@ -2447,9 +2446,55 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['field', 'value', 'label', 'grid', 'serviceUrl', 'minChars', 'notAllowOther', 'size', 'needSync'],
+    props: {
+        // field name on database.
+        field: {
+            type: String,
+            required: false
+        },
+        label: {
+            type: String,
+            required: true
+        },
+        // define Bootstrap grid class in mobile-tablet-desktop order
+        grid: {
+            type: String,
+            required: false
+        },
+        // endpoint to get options.
+        serviceUrl: {
+            type: String,
+            required: false
+        },
+        // min chars to trigger suggestions.
+        minChars: {
+            type: String,
+            required: true
+        },
+        // initial value.
+        value: {
+            type: String,
+            required: true
+        },
+        // allow user type-in or not, Just mention this option.
+        notAllowOther: {
+            type: String,
+            required: false
+        },
+        // define Bootstrap form-group has-feedback which size of form-group should use.
+        size: {
+            type: String,
+            required: false
+        },
+        // need to sync value with database on render or not ['needSync' or undefined].
+        needSync: {
+            type: String,
+            required: false
+        }
+    },
     data: function data() {
         return {
             userInput: '',
@@ -2466,7 +2511,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
 
         this.lastData = this.userInput = this.value;
+
         this.showReset = this.value != '';
+
+        // init autocomplete.
         $(this.domRef).autocomplete({
             serviceUrl: this.getServiceUrl,
             onSelect: function onSelect(suggestion) {
@@ -2476,23 +2524,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this.autosave();
             },
             minChars: this.minChars,
-            maxHeight: 200
+            maxHeight: 240
         });
-        this.autosave = _.debounce(function () {
-            if (_this.field != '') {
-                app.$data.autosaving = true;
-                if (_this.userInput != _this.lastData) {
-                    axios.post('/autosave', JSON.parse('{"' + _this.field + '": "' + _this.userInput + '"}')).then(function (response) {
-                        console.log(response.data);app.$data.autosaving = false;
-                    }).catch(function (error) {
-                        console.log(error);app.$data.autosaving = false;
-                    });
-                    _this.lastData = _this.userInput;
-                } else {
-                    app.$data.autosaving = false;
-                }
-            }
-        }, 1000);
     },
 
     methods: {
@@ -2505,7 +2538,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
             return 'col-xs-' + grid[0] + ' col-sm-' + grid[1] + ' col-md-' + grid[2];
         },
-        autosave: function autosave() {},
+        getSize: function getSize() {
+            if (this.size == 'normal') {
+                return 'form-group has-feedback';
+            }
+            return 'form-group-sm has-feedback';
+        },
         reset: function reset() {
             this.showReset = false;
             this.userInput = '';
@@ -2514,23 +2552,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         isAllowOther: function isAllowOther() {
             return this.notAllowOther === undefined ? 'return true;' : 'return false;';
         },
-        onblur: function onblur() {
-            this.autosave();
-        },
-        getSize: function getSize() {
-            if (this.size == 'normal') {
-                return 'form-group has-feedback';
+        autosave: function autosave() {
+            if (this.field !== undefined && this.userInput != this.lastData) {
+                EventBus.$emit('autosave', this.field, this.userInput);
+                this.lastData = this.userInput;
             }
-            return 'form-group-sm has-feedback';
         }
     },
     computed: {
         getServiceUrl: function getServiceUrl() {
             if (this.serviceUrl === undefined) {
-                return '/get-select-choices/' + this.field;
+                return '/lists/select/' + this.field;
             }
 
-            return this.serviceUrl + '/' + this.field;
+            return '/' + this.serviceUrl;
         }
     }
 });
@@ -2588,7 +2623,7 @@ var render = function() {
         domProps: { value: _vm.userInput },
         on: {
           blur: function($event) {
-            _vm.onblur()
+            _vm.autosave()
           },
           input: [
             function($event) {
@@ -3083,14 +3118,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: {
         // field name on database.
         field: {
             type: String,
-            required: true
+            required: false
         },
         label: {
             type: String,
@@ -3116,6 +3150,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             type: String,
             required: false
         },
+        // need to sync value with database on render or not ['needSync' or undefined].
+        needSync: {
+            type: String,
+            required: false
+        },
         // listen to this event name to set this component value.
         setterEvent: {
             type: String,
@@ -3132,7 +3171,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         autosave: function autosave() {
-            EventBus.$emit('autosave', this.field, this.currentValue);
+            if (this.field !== undefined) EventBus.$emit('autosave', this.field, this.currentValue);
         },
         check: function check(value) {
             // check if has extra contents.
@@ -3338,7 +3377,9 @@ var render = function() {
                 }
               }),
               _vm._v(
-                "\n            " + _vm._s(option.label) + "\n            "
+                "\n                    " +
+                  _vm._s(option.label) +
+                  "\n            "
               ),
               option.labelDescription !== undefined
                 ? _c(
@@ -3459,7 +3500,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         // field name on database.
         field: {
             type: String,
-            required: true
+            required: false
         },
         label: {
             type: String,
@@ -3511,7 +3552,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         check: function check() {
             this.thisChecked = this.thisChecked == '' ? 'checked' : '';
 
-            EventBus.$emit('autosave', this.field, this.thisChecked.length > 0);
+            if (this.field !== undefined) EventBus.$emit('autosave', this.field, this.thisChecked.length > 0);
 
             if (this.emitOnCheck !== undefined) {
                 // [name][mode 1:checked 2:unchecked][value]

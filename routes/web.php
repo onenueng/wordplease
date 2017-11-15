@@ -12,7 +12,7 @@
 */
 
 // production route start here
-Route::get('/get-select-choices/{fieldName}', 'ListController@getSelectChoices');
+Route::get('/lists/{type}/{fieldName}', 'ListController@getSelectChoices');
 
 // dev route start here
 Route::get('/btm', function () {

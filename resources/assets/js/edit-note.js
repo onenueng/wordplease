@@ -47,34 +47,35 @@ window.app = new Vue({
 
         EventBus.$on('autosave', (field, value, ref) => {
             if (ref === undefined) {
-                axios.post('/autosave', JSON.parse('{"' + field + '": ' + JSON.stringify(value) + '}'))
-                     .then((response) => {
-                        console.log(response.data);
-                        this.autosaving = false;
-                     })
-                     .catch((error) => {
-                        this.autosaving = false;
-                        if (error.response) {
-                            // The request was made and the server responded with a status code
-                            // that falls out of the range of 2xx
-                            console.log(error.response.data);
-                            console.log(error.response.status);
-                            console.log(error.response.headers);
-                            if (error.response.status == 419) {
-                                EventBus.$emit('error-419');
-                            }
-                        } else if (error.request) {
-                            // The request was made but no response was received
-                            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                            // http.ClientRequest in node.js
-                            console.log(error.request);
-                        } else {
-                            // Something happened in setting up the request that triggered an Error
-                            console.log('Error', error.message);
-                        }
-                        console.log(error.config);
-                     });
+                
             }
+            axios.post('/autosave', JSON.parse('{"' + field + '": ' + JSON.stringify(value) + '}'))
+                 .then((response) => {
+                    console.log(response.data);
+                    this.autosaving = false;
+                 })
+                 .catch((error) => {
+                    this.autosaving = false;
+                    if (error.response) {
+                        // The request was made and the server responded with a status code
+                        // that falls out of the range of 2xx
+                        console.log(error.response.data);
+                        console.log(error.response.status);
+                        console.log(error.response.headers);
+                        if (error.response.status == 419) {
+                            EventBus.$emit('error-419');
+                        }
+                    } else if (error.request) {
+                        // The request was made but no response was received
+                        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                        // http.ClientRequest in node.js
+                        console.log(error.request);
+                    } else {
+                        // Something happened in setting up the request that triggered an Error
+                        console.log('Error', error.message);
+                    }
+                    console.log(error.config);
+                 })
         })
 
         $(window).on("focus", (e) => {

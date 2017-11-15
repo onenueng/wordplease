@@ -423,7 +423,6 @@
                                         <input-select
                                             field="comorbid_stroke_{{ strtolower($symptom) }}"
                                             value=""
-                                            service-url="/get-select-choices"
                                             min-chars="0"
                                             label="{{ $symptom }} :"
                                             size="normal"
@@ -455,7 +454,6 @@
                                     <input-select
                                         field="comorbid_CKD_stage"
                                         value=""
-                                        service-url="/get-select-choices"
                                         min-chars="0"
                                         label="Stage :"
                                         size="normal"
@@ -534,7 +532,6 @@
                                     <input-select
                                         field="comorbid_lymphoma_specific"
                                         value=""
-                                        service-url="/get-select-choices"
                                         min-chars="0"
                                         label="Specify :"
                                         size="normal"
@@ -669,7 +666,6 @@
                                     <input-select
                                         field="comorbid_CAD_specific"
                                         value="apple"
-                                        service-url="/get-select-choices"
                                         min-chars="0"
                                         label="Specify :"
                                         size="normal"
@@ -711,7 +707,6 @@
                                     <input-select
                                         field="comorbid_hyperlipidemia_specific"
                                         value=""
-                                        service-url="/get-select-choices"
                                         min-chars="0"
                                         label="Specify :"
                                         size="normal"
@@ -755,7 +750,6 @@
                                     <input-select
                                         field="comorbid_epilepsy_specific"
                                         value=""
-                                        service-url="/get-select-choices"
                                         min-chars="0"
                                         label="Specify :"
                                         size="normal"

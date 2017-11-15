@@ -1,14 +1,14 @@
 <template>
     <label class="checkbox-inline">
-        <input type="checkbox"
-               :name="field"
-               :checked="thisChecked"
-               @click="check()"/>
+        <input  type="checkbox"
+                :name="field"
+                :checked="thisChecked"
+                @click="check()"/>
         {{ label }}
-        <a v-if="labelDescription !== undefined"
-           role="button"
-           data-toggle="tooltip"
-           :title="labelDescription">
+        <a  v-if="labelDescription !== undefined"
+            role="button"
+            data-toggle="tooltip"
+            :title="labelDescription">
             <i class="fa fa-info-circle"></i>
         </a>
     </label>
@@ -20,7 +20,7 @@
             // field name on database.
             field: {
                 type: String,
-                required: true
+                required: false
             },
             label: {
                 type: String,
@@ -72,7 +72,8 @@
             check() {
                 this.thisChecked = (this.thisChecked == '') ? 'checked' : ''
                 
-                EventBus.$emit('autosave', this.field, (this.thisChecked.length > 0))
+                if (this.field !== undefined)
+                    EventBus.$emit('autosave', this.field, (this.thisChecked.length > 0))
                 
                 if (this.emitOnCheck !== undefined) {
                     // [name][mode 1:checked 2:unchecked][value]

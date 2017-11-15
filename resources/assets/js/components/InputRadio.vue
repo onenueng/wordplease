@@ -25,13 +25,12 @@
                 </a>
             </transition>
             <label class="radio-inline" v-for="option in JSON.parse(options)"> 
-                <input
-                    type="radio"
-                    :name="field"
-                    :value="option.value"
-                    @click="check(option.value)"
-                    :checked="option.value == currentValue" />
-                {{ option.label }}
+                <input  type="radio"
+                        :name="field"
+                        :value="option.value"
+                        @click="check(option.value)"
+                        :checked="option.value == currentValue" />
+                        {{ option.label }}
                 <a  v-if="option.labelDescription !== undefined"
                     role="button"
                     data-toggle="tooltip"
@@ -56,7 +55,7 @@
             // field name on database.
             field: {
                 type: String,
-                required: true
+                required: false
             },
             label: {
                 type: String,
@@ -82,6 +81,11 @@
                 type: String,
                 required: false
             },
+            // need to sync value with database on render or not ['needSync' or undefined].
+            needSync: {
+                type: String,
+                required: false
+            },
             // listen to this event name to set this component value.
             setterEvent: {
                 type: String,
@@ -96,9 +100,12 @@
             }
         },
         methods: {
+
             autosave() {
-                EventBus.$emit('autosave', this.field, this.currentValue)
+                if (this.field !== undefined)
+                    EventBus.$emit('autosave', this.field, this.currentValue)
             },
+            
             check(value) {
                 // check if has extra contents.
                 if (this.hasDefaultSlot) {
@@ -131,7 +138,7 @@
                 if (this.hasDefaultSlot) {
                     this.showExtra = false
                 }
-                this.autosave();
+                this.autosave()
             },
             // return checked value is trigger value or not.
             isTriggerExtra(value) {

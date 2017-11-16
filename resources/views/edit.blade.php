@@ -101,7 +101,6 @@
                     <input-select
                         field="admit_reason"
                         value=""
-                        min-chars="0"
                         label="Reason to admit :"
                         grid="1-2-4"
                         >
@@ -423,7 +422,6 @@
                                         <input-select
                                             field="comorbid_stroke_{{ strtolower($symptom) }}"
                                             value=""
-                                            min-chars="0"
                                             label="{{ $symptom }} :"
                                             size="normal"
                                             not-allow-other
@@ -454,7 +452,6 @@
                                     <input-select
                                         field="comorbid_CKD_stage"
                                         value=""
-                                        min-chars="0"
                                         label="Stage :"
                                         size="normal"
                                         not-allow-other
@@ -532,7 +529,6 @@
                                     <input-select
                                         field="comorbid_lymphoma_specific"
                                         value=""
-                                        min-chars="0"
                                         label="Specify :"
                                         size="normal"
                                         need-sync>
@@ -666,7 +662,6 @@
                                     <input-select
                                         field="comorbid_CAD_specific"
                                         value="apple"
-                                        min-chars="0"
                                         label="Specify :"
                                         size="normal"
                                         need-sync>
@@ -707,7 +702,6 @@
                                     <input-select
                                         field="comorbid_hyperlipidemia_specific"
                                         value=""
-                                        min-chars="0"
                                         label="Specify :"
                                         size="normal"
                                         not-allow-other
@@ -750,7 +744,6 @@
                                     <input-select
                                         field="comorbid_epilepsy_specific"
                                         value=""
-                                        min-chars="0"
                                         label="Specify :"
                                         size="normal"
                                         need-sync>

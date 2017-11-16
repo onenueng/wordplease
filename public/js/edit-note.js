@@ -2243,7 +2243,11 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* WEBPACK VAR INJECTION */(function($) {//
+/* WEBPACK VAR INJECTION */(function($) {var _props$props$data$mou;
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
 //
 //
 //
@@ -2261,51 +2265,72 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
-/* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['field', 'value', 'label', 'grid', 'serviceUrl'],
-    data: function data() {
-        return {
-            userInput: '',
-            domRef: 'input[name=' + this.field + ']',
-            data: ''
-        };
+/* harmony default export */ __webpack_exports__["default"] = (_props$props$data$mou = {
+    props: ['field', 'value', 'label', 'grid', 'serviceUrl', 'minChars']
+}, _defineProperty(_props$props$data$mou, 'props', {
+    // field name on database.
+    field: {
+        type: String,
+        required: false
     },
-    mounted: function mounted() {
-        var _this = this;
-
-        this.userInput = this.value;
-        $(this.domRef).autocomplete({
-            serviceUrl: "/get-ajax",
-            onSelect: function onSelect(suggestion) {
-                _this.data = suggestion.data;
-                _this.autosave();
-            },
-            minChars: 1,
-            maxHeight: 200
-        });
+    label: {
+        type: String,
+        required: false
     },
-
-    methods: {
-        getGrid: function getGrid() {
-            var grid = this.grid.split('-').map(function (x) {
-                return 12 / x;
-            });
-            return 'col-xs-' + grid[0] + ' col-sm-' + grid[1] + ' col-md-' + grid[2];
-        },
-        autosave: function autosave() {
-            if (this.data != '') {
-                axios.post('/autosave', JSON.parse('{"' + this.field + '": "' + this.data + '"}')).then(function (response) {
-                    console.log(response.data);
-                }).catch(function (error) {
-                    console.log(error);
-                });
-            }
-        },
-        getRegex: function getRegex() {
-            return 'hello regex';
-        }
+    // define Bootstrap grid class in mobile-tablet-desktop order
+    grid: {
+        type: String,
+        required: false
+    },
+    // endpoint to get options.
+    serviceUrl: {
+        type: String,
+        required: false
+    },
+    // min chars to trigger suggestions.
+    minChars: {
+        type: String,
+        required: true
     }
-});
+}), _defineProperty(_props$props$data$mou, 'data', function data() {
+    return {
+        userInput: '',
+        domRef: 'input[name=' + this.field + ']',
+        data: ''
+    };
+}), _defineProperty(_props$props$data$mou, 'mounted', function mounted() {
+    var _this = this;
+
+    this.userInput = this.value;
+    $(this.domRef).autocomplete({
+        serviceUrl: "/get-ajax",
+        onSelect: function onSelect(suggestion) {
+            _this.data = suggestion.data;
+            _this.autosave();
+        },
+        minChars: this.minChars === undefined ? 1 : this.minChars,
+        maxHeight: 200
+    });
+}), _defineProperty(_props$props$data$mou, 'methods', {
+    getGrid: function getGrid() {
+        var grid = this.grid.split('-').map(function (x) {
+            return 12 / x;
+        });
+        return 'col-xs-' + grid[0] + ' col-sm-' + grid[1] + ' col-md-' + grid[2];
+    },
+    autosave: function autosave() {
+        if (this.data != '') {
+            axios.post('/autosave', JSON.parse('{"' + this.field + '": "' + this.data + '"}')).then(function (response) {
+                console.log(response.data);
+            }).catch(function (error) {
+                console.log(error);
+            });
+        }
+    },
+    getRegex: function getRegex() {
+        return 'hello regex';
+    }
+}), _props$props$data$mou);
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(1)))
 
 /***/ }),
@@ -2457,7 +2482,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         label: {
             type: String,
-            required: true
+            required: false
         },
         // define Bootstrap grid class in mobile-tablet-desktop order
         grid: {
@@ -2468,11 +2493,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         serviceUrl: {
             type: String,
             required: false
-        },
-        // min chars to trigger suggestions.
-        minChars: {
-            type: String,
-            required: true
         },
         // initial value.
         value: {
@@ -2523,7 +2543,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this.userInput = suggestion.value;
                 _this.autosave();
             },
-            minChars: this.minChars,
+            minChars: 0, // render options on focus
             maxHeight: 240
         });
     },
@@ -2581,29 +2601,35 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { class: _vm.getGrid() }, [
     _c("div", { class: _vm.getSize() }, [
-      _c("label", { staticClass: "control-label", attrs: { for: _vm.field } }, [
-        _vm._v("\n            " + _vm._s(_vm.label) + "\n            "),
-        _c(
-          "a",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.showReset,
-                expression: "showReset"
-              }
-            ],
-            attrs: { role: "button" },
-            on: {
-              click: function($event) {
-                _vm.reset()
-              }
-            }
-          },
-          [_c("i", { staticClass: "fa fa-remove" })]
-        )
-      ]),
+      _vm.label !== undefined
+        ? _c(
+            "label",
+            { staticClass: "control-label", attrs: { for: _vm.field } },
+            [
+              _vm._v("\n            " + _vm._s(_vm.label) + "\n            "),
+              _c(
+                "a",
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: _vm.showReset,
+                      expression: "showReset"
+                    }
+                  ],
+                  attrs: { role: "button" },
+                  on: {
+                    click: function($event) {
+                      _vm.reset()
+                    }
+                  }
+                },
+                [_c("i", { staticClass: "fa fa-remove" })]
+              )
+            ]
+          )
+        : _vm._e(),
       _vm._v(" "),
       _c("input", {
         directives: [

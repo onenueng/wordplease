@@ -1,7 +1,7 @@
 <template>
     <div :class="getGrid()">
         <div :class="getSize()">
-            <label class="control-label" :for="field">
+            <label class="control-label" :for="field" v-if="label !== undefined">
                 {{ label }}
                 <a @click="reset()" role="button" v-show="showReset">
                     <i class="fa fa-remove"></i>
@@ -29,7 +29,7 @@
             },
             label: {
                 type: String,
-                required: true  
+                required: false  
             },
             // define Bootstrap grid class in mobile-tablet-desktop order
             grid: {
@@ -40,11 +40,6 @@
             serviceUrl: {
                 type: String,
                 required: false  
-            },
-            // min chars to trigger suggestions.
-            minChars: {
-                type: String,
-                required: true  
             },
             // initial value.
             value: {
@@ -94,7 +89,7 @@
                     this.userInput = suggestion.value
                     this.autosave()
                 },
-                minChars: this.minChars,
+                minChars: 0, // render options on focus
                 maxHeight: 240
             })
         },

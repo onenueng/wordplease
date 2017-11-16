@@ -17,7 +17,33 @@
 
 <script>
     export default {
-        props: ['field', 'value', 'label', 'grid', 'serviceUrl'],
+        props: ['field', 'value', 'label', 'grid', 'serviceUrl', 'minChars'],
+        props: {
+            // field name on database.
+            field: {
+                type: String,
+                required: false
+            },
+            label: {
+                type: String,
+                required: false  
+            },
+            // define Bootstrap grid class in mobile-tablet-desktop order
+            grid: {
+                type: String,
+                required: false  
+            },
+            // endpoint to get options.
+            serviceUrl: {
+                type: String,
+                required: false  
+            },
+            // min chars to trigger suggestions.
+            minChars: {
+                type: String,
+                required: true  
+            },
+        },
         data () {
             return {
                 userInput: '',
@@ -33,7 +59,7 @@
                     this.data = suggestion.data;
                     this.autosave();
                 },
-                minChars: 1,
+                minChars: this.minChars === undefined ? 1 : this.minChars,
                 maxHeight: 200
             });
         },

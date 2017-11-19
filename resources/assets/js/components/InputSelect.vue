@@ -10,6 +10,7 @@
             <input  type="text"
                     class="form-control"
                     :name="field"
+                    :id="field"
                     v-model="userInput"
                     @blur="autosave()"
                     @input="showReset = (userInput != '')"
@@ -131,7 +132,7 @@
                     return '/lists/select/' + this.field
                 }
 
-                return  '/' + this.serviceUrl
+                return  '/lists/' + this.serviceUrl
             }
         }
     }

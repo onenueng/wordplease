@@ -47,7 +47,6 @@
                     
                     <!-- datetime_admit -->
                     <input-text
-                        field=""
                         value="12-Jun-2015 12:35"
                         label="Admit :"
                         grid="1-2-4"
@@ -56,7 +55,6 @@
                     
                     <!-- datetime_discharge -->
                     <input-text
-                        field=""
                         value="22-Jun-2015 12:35"
                         label="Discharge :"
                         grid="1-2-4"
@@ -65,7 +63,6 @@
                     
                     <!-- Length of stay -->
                     <input-text
-                        field=""
                         value="30 days"
                         label="Length of stay :"
                         grid="1-2-4"

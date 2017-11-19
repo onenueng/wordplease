@@ -1048,10 +1048,48 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['field', 'value', 'label', 'grid', 'readonly', 'size', 'needSync', 'placeholder'],
+    props: {
+        // field name on database.
+        field: {
+            type: String,
+            required: false
+        },
+        label: {
+            type: String,
+            required: false
+        },
+        // define Bootstrap grid class in mobile-tablet-desktop order
+        grid: {
+            type: String,
+            required: false
+        },
+        // initial value.
+        value: {
+            type: String,
+            required: false
+        },
+        // allow user type-in or not, Just mention this option.
+        readonly: {
+            type: String,
+            required: false
+        },
+        // define Bootstrap form-group has-feedback which size of form-group should use.
+        size: {
+            type: String,
+            required: false
+        },
+        // need to sync value with database on render or not ['needSync' or undefined].
+        needSync: {
+            type: String,
+            required: false
+        },
+        placeholder: {
+            type: String,
+            required: false
+        }
+    },
     data: function data() {
         return {
             userInput: '',
@@ -1076,15 +1114,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return 'col-xs-' + grid[0] + ' col-sm-' + grid[1] + ' col-md-' + grid[2];
         },
         autosave: function autosave() {
-            var _this = this;
-
             if (this.readonly != '' && this.userInput != this.lastSave) {
-                axios.post('/autosave', JSON.parse('{"' + this.field + '": "' + this.userInput + '"}')).then(function (response) {
-                    console.log(response.data);
-                    _this.lastSave = _this.userInput;
-                }).catch(function (error) {
-                    console.log(error);
-                });
+                EventBus.$emit('autosave', this.field, this.userInput);
+                this.lastSave = this.userInput;
             }
         },
         getSize: function getSize() {

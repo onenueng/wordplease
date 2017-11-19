@@ -1048,10 +1048,48 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['field', 'value', 'label', 'grid', 'readonly', 'size', 'needSync', 'placeholder'],
+    props: {
+        // field name on database.
+        field: {
+            type: String,
+            required: false
+        },
+        label: {
+            type: String,
+            required: false
+        },
+        // define Bootstrap grid class in mobile-tablet-desktop order
+        grid: {
+            type: String,
+            required: false
+        },
+        // initial value.
+        value: {
+            type: String,
+            required: false
+        },
+        // allow user type-in or not, Just mention this option.
+        readonly: {
+            type: String,
+            required: false
+        },
+        // define Bootstrap form-group has-feedback which size of form-group should use.
+        size: {
+            type: String,
+            required: false
+        },
+        // need to sync value with database on render or not ['needSync' or undefined].
+        needSync: {
+            type: String,
+            required: false
+        },
+        placeholder: {
+            type: String,
+            required: false
+        }
+    },
     data: function data() {
         return {
             userInput: '',
@@ -1076,15 +1114,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return 'col-xs-' + grid[0] + ' col-sm-' + grid[1] + ' col-md-' + grid[2];
         },
         autosave: function autosave() {
-            var _this = this;
-
             if (this.readonly != '' && this.userInput != this.lastSave) {
-                axios.post('/autosave', JSON.parse('{"' + this.field + '": "' + this.userInput + '"}')).then(function (response) {
-                    console.log(response.data);
-                    _this.lastSave = _this.userInput;
-                }).catch(function (error) {
-                    console.log(error);
-                });
+                EventBus.$emit('autosave', this.field, this.userInput);
+                this.lastSave = this.userInput;
             }
         },
         getSize: function getSize() {
@@ -2283,10 +2315,7 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* WEBPACK VAR INJECTION */(function($) {var _props$props$data$mou;
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
+/* WEBPACK VAR INJECTION */(function($) {//
 //
 //
 //
@@ -2306,111 +2335,116 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 
-/* harmony default export */ __webpack_exports__["default"] = (_props$props$data$mou = {
-    props: ['field', 'value', 'label', 'grid', 'serviceUrl', 'minChars']
-}, _defineProperty(_props$props$data$mou, 'props', {
-    // field name on database.
-    field: {
-        type: String,
-        required: false
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: {
+        // field name on database.
+        field: {
+            type: String,
+            required: false
+        },
+        label: {
+            type: String,
+            required: false
+        },
+        // define Bootstrap grid class in mobile-tablet-desktop order
+        grid: {
+            type: String,
+            required: false
+        },
+        // initial value.
+        value: {
+            type: String,
+            required: false
+        },
+        // endpoint to get options.
+        serviceUrl: {
+            type: String,
+            required: false
+        },
+        // min chars to trigger suggestions.
+        minChars: {
+            type: String,
+            required: false
+        }
     },
-    label: {
-        type: String,
-        required: false
+    data: function data() {
+        return {
+            userInput: '',
+            domRef: 'input[name=' + this.field + ']',
+            lastData: ''
+        };
     },
-    // define Bootstrap grid class in mobile-tablet-desktop order
-    grid: {
-        type: String,
-        required: false
-    },
-    // initial value.
-    value: {
-        type: String,
-        required: false
-    },
-    // endpoint to get options.
-    serviceUrl: {
-        type: String,
-        required: false
-    },
-    // min chars to trigger suggestions.
-    minChars: {
-        type: String,
-        required: false
-    }
-}), _defineProperty(_props$props$data$mou, 'data', function data() {
-    return {
-        userInput: '',
-        domRef: 'input[name=' + this.field + ']',
-        lastData: ''
-    };
-}), _defineProperty(_props$props$data$mou, 'mounted', function mounted() {
-    var _this = this;
+    mounted: function mounted() {
+        var _this = this;
 
-    // initial data
-    if (this.value === undefined) this.lastData = this.userInput = this.value = '';else this.lastData = this.userInput = this.value;
+        // initial data
+        if (this.value === undefined) this.lastData = this.userInput = this.value = '';else this.lastData = this.userInput = this.value;
 
-    // initial autocomplete instance
-    $(this.domRef).autocomplete({
-        // setup sservice endpoint
-        serviceUrl: this.getServiceUrl,
-        // format suggestions
-        beforeRender: function beforeRender(container, suggestions) {
-            for (var i = 0; i < container.children().length; i++) {
-                var strHTML = container.children().eq(i).html();
-                // custom format if there is not aleardy formatted
-                if (strHTML.search('<strong>') < 0 && strHTML.search(_this.userInput[0]) >= 0) {
-                    var strHTMLNew = '';
-                    var lastPos = 0; // last sub string position
-                    for (var j = 0; j < _this.userInput.length; j++) {
-                        for (var k = lastPos; k < strHTML.length; k++) {
-                            // apply <strong><strong> to highlight matched character
-                            if (strHTML[k] == _this.userInput[j]) {
-                                strHTMLNew += '<strong>' + _this.userInput[j] + '</strong>';
-                                lastPos = k + 1;
-                                break;
-                            } else {
-                                strHTMLNew += strHTML[k];
+        // initial autocomplete instance
+        $(this.domRef).autocomplete({
+            // setup sservice endpoint
+            serviceUrl: this.getServiceUrl,
+            // format suggestions
+            beforeRender: function beforeRender(container, suggestions) {
+                for (var i = 0; i < container.children().length; i++) {
+                    var strHTML = container.children().eq(i).html();
+                    // custom format if there is not aleardy formatted
+                    if (strHTML.search('<strong>') < 0 && strHTML.search(_this.userInput[0]) >= 0) {
+                        var strHTMLNew = '';
+                        var lastPos = 0; // last sub string position
+                        for (var j = 0; j < _this.userInput.length; j++) {
+                            for (var k = lastPos; k < strHTML.length; k++) {
+                                // apply strong element to highlight matched character
+                                if (strHTML[k] == _this.userInput[j]) {
+                                    strHTMLNew += '<strong>' + _this.userInput[j] + '</strong>';
+                                    lastPos = k + 1;
+                                    break;
+                                } else {
+                                    strHTMLNew += strHTML[k];
+                                }
                             }
                         }
+                        // concat remain string
+                        for (var _k = lastPos; _k < strHTML.length; _k++) {
+                            strHTMLNew += strHTML[_k];
+                        }
+                        container.children().eq(i).html(strHTMLNew);
                     }
-                    // concat remain string
-                    for (var _k = lastPos; _k < strHTML.length; _k++) {
-                        strHTMLNew += strHTML[_k];
-                    }
-                    container.children().eq(i).html(strHTMLNew);
                 }
-            }
-        },
-        onSelect: function onSelect(suggestion) {
-            _this.userInput = suggestion.value;
-            _this.autosave();
-        },
-        minChars: this.minChars === undefined ? 3 : this.minChars,
-        maxHeight: 240
-    });
-}), _defineProperty(_props$props$data$mou, 'methods', {
-    getGrid: function getGrid() {
-        var grid = this.grid.split('-').map(function (x) {
-            return 12 / x;
+            },
+            onSelect: function onSelect(suggestion) {
+                _this.userInput = suggestion.value;
+                _this.autosave();
+            },
+            minChars: this.minChars === undefined ? 3 : this.minChars,
+            maxHeight: 240
         });
-        return 'col-xs-' + grid[0] + ' col-sm-' + grid[1] + ' col-md-' + grid[2];
     },
-    autosave: function autosave() {
-        if (this.field !== undefined && this.userInput != this.lastData) {
-            EventBus.$emit('autosave', this.field, this.userInput);
-            this.lastData = this.userInput;
-        }
-    }
-}), _defineProperty(_props$props$data$mou, 'computed', {
-    getServiceUrl: function getServiceUrl() {
-        if (this.serviceUrl === undefined) {
-            return '/lists/autocomplete/' + this.field;
-        }
 
-        return '/lists/' + this.serviceUrl;
+    methods: {
+        getGrid: function getGrid() {
+            var grid = this.grid.split('-').map(function (x) {
+                return 12 / x;
+            });
+            return 'col-xs-' + grid[0] + ' col-sm-' + grid[1] + ' col-md-' + grid[2];
+        },
+        autosave: function autosave() {
+            if (this.field !== undefined && this.userInput != this.lastData) {
+                EventBus.$emit('autosave', this.field, this.userInput);
+                this.lastData = this.userInput;
+            }
+        }
+    },
+    computed: {
+        getServiceUrl: function getServiceUrl() {
+            if (this.serviceUrl === undefined) {
+                return '/lists/autocomplete/' + this.field;
+            }
+
+            return '/lists/' + this.serviceUrl;
+        }
     }
-}), _props$props$data$mou);
+});
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(1)))
 
 /***/ }),
@@ -2440,7 +2474,7 @@ var render = function() {
             }
           ],
           staticClass: "form-control",
-          attrs: { type: "text", name: _vm.field },
+          attrs: { type: "text", name: _vm.field, id: _vm.field },
           domProps: { value: _vm.userInput },
           on: {
             blur: function($event) {
@@ -2532,6 +2566,7 @@ module.exports = Component.exports
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */(function($) {//
+//
 //
 //
 //
@@ -2665,7 +2700,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 return '/lists/select/' + this.field;
             }
 
-            return '/' + this.serviceUrl;
+            return '/lists/' + this.serviceUrl;
         }
     }
 });
@@ -2724,6 +2759,7 @@ var render = function() {
         attrs: {
           type: "text",
           name: _vm.field,
+          id: _vm.field,
           onkeypress: _vm.isAllowOther()
         },
         domProps: { value: _vm.userInput },

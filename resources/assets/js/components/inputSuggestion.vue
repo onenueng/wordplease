@@ -9,6 +9,7 @@
                 <input  type="text"
                         class="form-control"
                         :name="field"
+                        :id="field"
                         v-model="userInput"
                         @blur="autosave()" />
             </div>
@@ -18,7 +19,6 @@
 
 <script>
     export default {
-        props: ['field', 'value', 'label', 'grid', 'serviceUrl', 'minChars'],
         props: {
             // field name on database.
             field: {
@@ -78,7 +78,7 @@
                             let lastPos = 0 // last sub string position
                             for (let j = 0; j < this.userInput.length; j++) {
                                 for (let k = lastPos; k < strHTML.length; k++) {
-                                    // apply <strong><strong> to highlight matched character
+                                    // apply strong element to highlight matched character
                                     if (strHTML[k] == this.userInput[j]) {
                                         strHTMLNew += '<strong>' + this.userInput[j] + '</strong>'
                                         lastPos = k+1

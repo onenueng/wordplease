@@ -13,6 +13,9 @@
 
 // production route start here
 Route::get('/lists/{type}/{listName}', 'ListController@getList');
+Route::get('/is-session-active', function(Illuminate\Http\Request $request) {
+    return ['active' => ($request->header('X-CSRF-TOKEN') == csrf_token())];
+});
 
 // dev route start here
 Route::get('/btm', function () {

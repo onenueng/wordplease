@@ -32,8 +32,12 @@ window.app = new Vue({
         dialogHeading: 'Wordplease Say',
         dialogMessage: 'Hello world!!',
         dialogButtonLabel: 'OK',
+
+        lastActiveSessionCheck: 0
     },
     mounted() {
+        this.lastActiveSessionCheck = Date.now()
+
         EventBus.$on('show-child-pugh-score', () => {
             $('#modal-child-pugh-score').modal('show');
         });
@@ -79,7 +83,20 @@ window.app = new Vue({
         })
 
         $(window).on("focus", (e) => {
-            console.log("doc Focused");
+            let timeDiff = Date.now() - this.lastActiveSessionCheck
+            if ((timeDiff) > (1000 * 60 * 60)) {
+                axios.get('/is-session-active')
+                     .then((response) => {
+                        if (response.data.active) {
+                            this.lastActiveSessionCheck = Date.now()
+                            // console.log('active')
+                        } else {
+                            EventBus.$emit('error-419')
+                            // console.log('error-419')
+                        }
+                        // console.log('timeDiff => ' + timeDiff)
+                     })
+            }
         });
     },
     methods : {

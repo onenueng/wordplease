@@ -75,18 +75,17 @@
                     <!-- ward -->
                     <input-suggestion
                         field="ward"
-                        value="84"
-                        service-url="/get-ajax"
+                        value=""
                         label="Ward :"
                         grid="1-2-4"
+                        min-chars="2"
                         >
                     </input-suggestion>
 
                     <!-- attending -->
                     <input-suggestion
                         field="attending"
-                        value="john"
-                        {{-- service-url="attending_staffs" --}}
+                        value=""
                         label="Attending :"
                         grid="1-2-4"
                         >
@@ -94,11 +93,11 @@
 
                     <!-- devision -->
                     <input-suggestion
-                        field="devision"
-                        value="med"
-                        service-url="/get-ajax"
+                        field="division"
+                        value=""
                         label="Specialty :"
                         grid="1-2-4"
+                        min-chars="2"
                         >
                     </input-suggestion>
 

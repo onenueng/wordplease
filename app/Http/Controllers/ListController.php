@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-// use DB;
-use Illuminate\Http\Request;
-use App\Models\Lists\SelectItem;
 use App\Models\Lists\AttendingStaff as Attending;
-
-
+use App\Models\Lists\Division;
+use App\Models\Lists\SelectItem;
+use App\Models\Lists\Ward;
+use Illuminate\Http\Request;
 
 class ListController extends Controller
 {
@@ -34,10 +33,15 @@ class ListController extends Controller
             return response()->json($items);
         }
 
-        $query = $request->input('query');
         switch ($listName) {
-            case 'attending' :
-                $data = $this->getAttending($request->input('query'));
+            case 'attending':
+                $data = $this->getAttendingList($request->input('query'));
+                break;
+            case 'ward':
+                $data = $this->getWardList($request->input('query'));
+                break;
+            case 'division':
+                $data = $this->getDivisionList($request->input('query'));
                 break;
         }
 
@@ -45,17 +49,32 @@ class ListController extends Controller
         return response()->json($items);
     }
 
-    protected function getAttending($query)
+    protected function getAttendingList($query)
     {
         return Attending::select('id as data', 'name as value')
                           ->where('name', 'like', $this->getSearchCondition($query))
                           ->get();
     }
 
+    protected function getWardList($query)
+    {
+        return Ward::select('id as data', 'name as value')
+                     ->where('name', 'like', $this->getSearchCondition($query))
+                     ->get();
+    }
+
+    protected function getDivisionList($query)
+    {
+        return Division::select('id as data', 'name as value')
+                         ->where('name', 'like', $this->getSearchCondition($query))
+                         ->orWhere('name_eng', 'like', $this->getSearchCondition($query))
+                         ->get();
+    }
+
     protected function getSearchCondition($query)
     {
         $pattern = '%';
-        for ($i=0; $i < strlen($query); $i++) { 
+        for ($i=0; $i < strlen($query); $i++) {
             $pattern .= (mb_substr($query, $i, 1) . '%');
         }
         return $pattern;

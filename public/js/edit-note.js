@@ -2359,7 +2359,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             for (var i = 0; i < container.children().length; i++) {
                 var strHTML = container.children().eq(i).html();
                 // custom format if there is not aleardy formatted
-                if (strHTML.search('<strong>') < 0) {
+                if (strHTML.search('<strong>') < 0 && strHTML.search(_this.userInput[0]) >= 0) {
                     var strHTMLNew = '';
                     var lastPos = 0; // last sub string position
                     for (var j = 0; j < _this.userInput.length; j++) {

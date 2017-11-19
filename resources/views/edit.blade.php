@@ -8,7 +8,8 @@
     <title>$AN@$NOTE-NAME</title>
 </head>
 <body>
-    <div id="app"><!-- Vue app -->
+    <!-- Vue app -->
+    <div id="app">
         <!-- app alert box -->
         <alert-box
             v-if="showAlertbox"
@@ -17,6 +18,7 @@
             :message="alertboxMessage">
         </alert-box>
 
+        <!-- app modal diaglog -->
         <modal-dialog
             :heading="dialogHeading"
             :message="dialogMessage"
@@ -34,11 +36,14 @@
             :show-saving="autosaving">
         </navbar>
 
-        <div class="container-fluid"><!-- note content -->
+        <!-- note content -->
+        <div class="container-fluid">
             
-            <panel heading='Admission data'><!-- Panel Admission Data -->
+            <!-- Panel Admission Data -->
+            <panel heading='Admission data'>
                 
-                <div class="row"><!-- wrap content with row class -->
+                <!-- wrap content with row class -->
+                <div class="row">
                     
                     <!-- datetime_admit -->
                     <input-text
@@ -81,7 +86,7 @@
                     <input-suggestion
                         field="attending"
                         value="john"
-                        service-url="/get-ajax"
+                        {{-- service-url="attending_staffs" --}}
                         label="Attending :"
                         grid="1-2-4"
                         >

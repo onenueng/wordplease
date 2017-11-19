@@ -3,13 +3,14 @@
         <div class="form-group-sm">
             <label class="control-label" :for="field">{{ label }}</label>
             <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-lightbulb-o"></i></span>
-                <input
-                    type="text"
-                    class="form-control"
-                    :name="field"
-                    v-model="userInput"
-                    @blur="autosave()" />
+                <span class="input-group-addon">
+                    <i class="fa fa-lightbulb-o"></i>
+                </span>
+                <input  type="text"
+                        class="form-control"
+                        :name="field"
+                        v-model="userInput"
+                        @blur="autosave()" />
             </div>
         </div>
     </div>
@@ -33,6 +34,11 @@
                 type: String,
                 required: false  
             },
+            // initial value.
+            value: {
+                type: String,
+                required: false
+            },
             // endpoint to get options.
             serviceUrl: {
                 type: String,
@@ -41,42 +47,82 @@
             // min chars to trigger suggestions.
             minChars: {
                 type: String,
-                required: true  
-            },
+                required: false  
+            }
         },
         data () {
             return {
                 userInput: '',
                 domRef: 'input[name=' + this.field + ']',
-                data: ''
+                lastData: ''
             }
         },
         mounted () {
-            this.userInput = this.value;
+            // initial data
+            if (this.value === undefined)
+                this.lastData = this.userInput = this.value = ''
+            else
+                this.lastData = this.userInput = this.value
+
+            // initial autocomplete instance
             $(this.domRef).autocomplete({
-                serviceUrl: "/get-ajax",
-                onSelect: (suggestion) => {
-                    this.data = suggestion.data;
-                    this.autosave();
+                // setup sservice endpoint
+                serviceUrl: this.getServiceUrl,
+                // format suggestions
+                beforeRender: (container, suggestions) => {
+                    for (let i = 0; i < container.children().length; i++) {
+                        let strHTML = container.children().eq(i).html()
+                        // custom format if there is not aleardy formatted
+                        if (strHTML.search('<strong>') < 0) {
+                            let strHTMLNew = ''
+                            let lastPos = 0 // last sub string position
+                            for (let j = 0; j < this.userInput.length; j++) {
+                                for (let k = lastPos; k < strHTML.length; k++) {
+                                    // apply <strong><strong> to highlight matched character
+                                    if (strHTML[k] == this.userInput[j]) {
+                                        strHTMLNew += '<strong>' + this.userInput[j] + '</strong>'
+                                        lastPos = k+1
+                                        break
+                                    } else {
+                                        strHTMLNew += strHTML[k]
+                                    }
+                                }
+                            }
+                            // concat remain string
+                            for (let k = lastPos; k < strHTML.length; k++) {
+                                strHTMLNew += strHTML[k]
+                            }
+                            container.children().eq(i).html(strHTMLNew)
+                        }
+                    }
                 },
-                minChars: this.minChars === undefined ? 1 : this.minChars,
-                maxHeight: 200
+                onSelect: (suggestion) => {
+                    this.userInput = suggestion.value
+                    this.autosave()
+                },
+                minChars: this.minChars === undefined ? 3 : this.minChars,
+                maxHeight: 240
             });
         },
         methods: {
             getGrid() {
-                let grid = this.grid.split('-').map((x) => 12/x);
-                return 'col-xs-' + (grid[0]) + ' col-sm-' + (grid[1]) + ' col-md-' + (grid[2]);
+                let grid = this.grid.split('-').map((x) => 12/x)
+                return 'col-xs-' + (grid[0]) + ' col-sm-' + (grid[1]) + ' col-md-' + (grid[2])
             },
             autosave() {
-                if ( this.data != '') {
-                    axios.post('/autosave', JSON.parse('{"' + this.field + '": "' + this.data + '"}'))
-                         .then((response) => { console.log(response.data) })
-                         .catch((error) => { console.log(error) })
+                if (this.field !== undefined && this.userInput != this.lastData) {
+                    EventBus.$emit('autosave', this.field, this.userInput)
+                    this.lastData = this.userInput
                 }
-            },
-            getRegex() {
-                return 'hello regex';
+            }
+        },
+        computed: {
+            getServiceUrl() {
+                if (this.serviceUrl === undefined) {
+                    return '/lists/autocomplete/' + this.field
+                }
+
+                return  '/lists/' + this.serviceUrl
             }
         }
     }

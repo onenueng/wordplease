@@ -12,7 +12,7 @@ trait DataImportable
      */
     protected static function loadCSV($fileName)
     {
-        $fileName = storage_path('/lists/' . $fileName . '.csv');
+        $fileName = storage_path('/app/lists/' . $fileName . '.csv');
         if (!file_exists($fileName) || !is_readable($fileName)) {
             return [];
         } else {

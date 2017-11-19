@@ -44,7 +44,7 @@
             // initial value.
             value: {
                 type: String,
-                required: true
+                required: false
             },
             // allow user type-in or not, Just mention this option.
             notAllowOther: {
@@ -76,7 +76,10 @@
                 console.log(this.field + ' need sync')
             }
 
-            this.lastData = this.userInput = this.value
+            if (this.value === undefined)
+                this.lastData = this.userInput = this.value = ''
+            else
+                this.lastData = this.userInput = this.value
 
             this.showReset = (this.value != '')
 
@@ -110,7 +113,7 @@
             reset() {
                 this.showReset = false
                 this.userInput = ''
-                this.onblur()
+                this.autosave()
             },
             isAllowOther() {
                 return this.notAllowOther === undefined ? 'return true;' : 'return false;'

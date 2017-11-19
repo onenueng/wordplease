@@ -2885,7 +2885,7 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, "\n.textarea-warning {\n    /*Important stuff here*/\n    -webkit-transition: flash-warning 3s ease-out;\n    transition: flash-warning 3s ease-out;\n    -webkit-animation: flash-warning 3s forwards linear normal;\n            animation: flash-warning 3s forwards linear normal;\n}\n@-webkit-keyframes flash-warning {\n0% {\n        background:#fff;\n}\n50% {\n        background:#f0ad4e;\n}\n100% {\n        background:#fff;\n}\n}\n@keyframes flash-warning {\n0% {\n        background:#fff;\n}\n50% {\n        background:#f0ad4e;\n}\n100% {\n        background:#fff;\n}\n}\n.textarea-danger {\n    /*Important stuff here*/\n    -webkit-transition: flash-danger 3s ease-out;\n    transition: flash-danger 3s ease-out;\n    -webkit-animation: flash-danger 3s forwards linear normal;\n            animation: flash-danger 3s forwards linear normal;\n}\n@-webkit-keyframes flash-danger {\n0% {\n        background:#fff;\n}\n50% {\n        background:#d9534f;\n}\n100% {\n        background:#fff;\n}\n}\n@keyframes flash-danger {\n0% {\n        background:#fff;\n}\n50% {\n        background:#d9534f;\n}\n100% {\n        background:#fff;\n}\n}\n.slide-fade-enter-active {\n  /*transition: all .3s ease;*/\n  -webkit-transition: all .8s ease;\n  transition: all .8s ease;\n}\n.slide-fade-leave-active {\n  /*transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);*/\n  -webkit-transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);\n  transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);\n}\n.slide-fade-enter, .slide-fade-leave-to\n/* .slide-fade-leave-active below version 2.1.8 */ {\n  -webkit-transform: translateX(10px);\n          transform: translateX(10px);\n  opacity: 0;\n}\n", ""]);
+exports.push([module.i, "\n.textarea-warning {\n    /*Important stuff here*/\n    -webkit-transition: flash-warning 3s ease-out;\n    transition: flash-warning 3s ease-out;\n    -webkit-animation: flash-warning 3s forwards linear normal;\n            animation: flash-warning 3s forwards linear normal;\n}\n@-webkit-keyframes flash-warning {\n0% {\n        background:#fff;\n}\n50% {\n        background:#f0ad4e;\n}\n100% {\n        background:#fff;\n}\n}\n@keyframes flash-warning {\n0% {\n        background:#fff;\n}\n50% {\n        background:#f0ad4e;\n}\n100% {\n        background:#fff;\n}\n}\n.textarea-danger {\n    /*Important stuff here*/\n    -webkit-transition: flash-danger 3s ease-out;\n    transition: flash-danger 3s ease-out;\n    -webkit-animation: flash-danger 3s forwards linear normal;\n            animation: flash-danger 3s forwards linear normal;\n}\n@-webkit-keyframes flash-danger {\n0% {\n        background:#fff;\n}\n50% {\n        background:#d9534f;\n}\n100% {\n        background:#fff;\n}\n}\n@keyframes flash-danger {\n0% {\n        background:#fff;\n}\n50% {\n        background:#d9534f;\n}\n100% {\n        background:#fff;\n}\n}\n", ""]);
 
 // exports
 
@@ -2918,10 +2918,38 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['field', 'value', 'label', 'grid', 'readonly', 'maxChars'],
+    props: {
+        // field name on database.
+        field: {
+            type: String,
+            required: false
+        },
+        label: {
+            type: String,
+            required: false
+        },
+        // define Bootstrap grid class in mobile-tablet-desktop order
+        grid: {
+            type: String,
+            required: false
+        },
+        // initial value.
+        value: {
+            type: String,
+            required: false
+        },
+        // allow user type-in or not, Just mention this option.
+        readonly: {
+            type: String,
+            required: false
+        },
+        maxChars: {
+            type: String,
+            required: false
+        }
+    },
     data: function data() {
         return {
             userInput: '',
@@ -2965,15 +2993,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return 'col-xs-' + grid[0] + ' col-sm-' + grid[1] + ' col-md-' + grid[2];
         },
         autosave: function autosave() {
-            var _this2 = this;
-
             if (this.readonly != '' && this.dirty) {
-                app.$data.autosaving = true;
-                axios.post('/autosave', JSON.parse('{"' + this.field + '": ' + JSON.stringify(this.userInput) + '}')).then(function (response) {
-                    console.log(response.data);_this2.dirty = false;app.$data.autosaving = false;
-                }).catch(function (error) {
-                    console.log(error);app.$data.autosaving = false;
-                });
+                EventBus.$emit('autosave', this.field, this.userInput);
+                this.dirty = false;
                 this.showCharsRemaining = false;
                 this.toggleStatus('');
             }
@@ -2993,8 +3015,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.onkeypress();
             this.onkeypressSave();
         },
-        onkeypress: function onkeypress() {},
-        onkeypressSave: function onkeypressSave() {},
+        onkeypress: function onkeypress() {
+            // define on mounted
+        },
+        onkeypressSave: function onkeypressSave() {
+            // define on mounted
+        },
         toggleStatus: function toggleStatus(status) {
             var baseClass = '';
             var subClass = '';

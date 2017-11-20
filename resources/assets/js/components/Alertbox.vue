@@ -1,7 +1,7 @@
 <template>
     <transition name="slide-fade">
         <div :class="this.class" role="alert" id="alert-box">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <button type="button" class="close" @click="noShow()" aria-label="Close">
                 <span aria-hidden="true">
                     <span class="fa fa-times-circle"></span>
                 </span>
@@ -22,10 +22,14 @@
             }
         },
         mounted () {
-            this._timeout = setTimeout(() => { app.$data.showAlertbox = false }, this.duration);
+            this.timer = setTimeout(() => { app.$data.showAlertbox = false }, this.duration);
             this.setIcon();
         },
         methods: {
+            noShow() {
+                clearTimeout(this.timer)
+                app.$data.showAlertbox = false
+            },
             setIcon() {
                 switch (this.status) {
                     case 'warning':

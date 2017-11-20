@@ -75,8 +75,7 @@
                         value=""
                         label="Ward :"
                         grid="1-2-4"
-                        min-chars="2"
-                        >
+                        min-chars="2">
                     </input-suggestion>
 
                     <!-- attending -->
@@ -84,8 +83,7 @@
                         field="attending"
                         value=""
                         label="Attending :"
-                        grid="1-2-4"
-                        >
+                        grid="1-2-4">
                     </input-suggestion>
 
                     <!-- devision -->
@@ -94,8 +92,7 @@
                         value=""
                         label="Specialty :"
                         grid="1-2-4"
-                        min-chars="2"
-                        >
+                        min-chars="2">
                     </input-suggestion>
 
                     <!-- admit reason -->
@@ -103,8 +100,7 @@
                         field="admit_reason"
                         value=""
                         label="Reason to admit :"
-                        grid="1-2-4"
-                        >
+                        grid="1-2-4">
                     </input-select>
                 </div><!-- wrap content with row class -->
             </panel><!-- Panel Admission Data -->
@@ -138,7 +134,6 @@
                             <input-radio 
                                 field="comorbid_DM"
                                 label="DM :"
-                                value="1"
                                 options="{{ $comorbidOptions }}"
                                 trigger-value="1">
                                 

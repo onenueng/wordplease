@@ -177,6 +177,7 @@
             if (this.setterEvent !== undefined) {
                 EventBus.$on(this.setterEvent, (value) => {
                     this.check(value)
+                    EventBus.$emit('show-alert', this.label.replace(' :', '') + ' also checked', 'success')
                 });
             }
 

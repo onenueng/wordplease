@@ -1458,10 +1458,19 @@ window.app = new Vue({
     mounted: function mounted() {
         var _this = this;
 
-        this.lastActiveSessionCheck = Date.now();
-
         EventBus.$on('show-child-pugh-score', function () {
             $('#modal-child-pugh-score').modal('show');
+        });
+
+        EventBus.$on('show-alert', function (message, status) {
+            var duration = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 5000;
+
+            if (!_this.showAlertbox) {
+                _this.alertboxMessage = message;
+                _this.alertStatus = status;
+                _this.alertDuration = duration;
+                _this.showAlertbox = true;
+            }
         });
 
         EventBus.$on('error-419', function () {
@@ -1500,6 +1509,7 @@ window.app = new Vue({
             });
         });
 
+        this.lastActiveSessionCheck = Date.now();
         $(window).on("focus", function (e) {
             var timeDiff = Date.now() - _this.lastActiveSessionCheck;
             if (timeDiff > 1000 * 60 * 60) {
@@ -1515,27 +1525,16 @@ window.app = new Vue({
     },
 
     methods: {
-        showSms: function showSms() {
-            if (!this.showAlertbox) {
-                this.alertboxMessage = 'Your are now logged off, Please reload this page or loss your data.';
-                this.alertStatus = 'danger';
-                this.alertDuration = 10000;
-                this.showAlertbox = true;
-            }
-        }
+        // showSms() {
+        //     if (! this.showAlertbox) {
+        //         this.alertboxMessage = 'Your are now logged off, Please reload this page or loss your data.'
+        //         this.alertStatus = 'danger';
+        //         this.alertDuration = 10000;
+        //         this.showAlertbox = true;
+        //     }
+        // }
     }
 });
-
-window.toggleAlertbox = function (message, status) {
-    var duration = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 5000;
-
-    if (!app.$data.showAlertbox) {
-        app.$data.alertboxMessage = message;
-        app.$data.alertStatus = status;
-        app.$data.alertDuration = duration;
-        app.$data.showAlertbox = true;
-    }
-};
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
@@ -1660,13 +1659,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
     mounted: function mounted() {
-        this._timeout = setTimeout(function () {
+        this.timer = setTimeout(function () {
             app.$data.showAlertbox = false;
         }, this.duration);
         this.setIcon();
     },
 
     methods: {
+        noShow: function noShow() {
+            clearTimeout(this.timer);
+            app.$data.showAlertbox = false;
+        },
         setIcon: function setIcon() {
             switch (this.status) {
                 case 'warning':
@@ -1697,10 +1700,11 @@ var render = function() {
           "button",
           {
             staticClass: "close",
-            attrs: {
-              type: "button",
-              "data-dismiss": "alert",
-              "aria-label": "Close"
+            attrs: { type: "button", "aria-label": "Close" },
+            on: {
+              click: function($event) {
+                _vm.noShow()
+              }
             }
           },
           [
@@ -3434,6 +3438,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         if (this.setterEvent !== undefined) {
             EventBus.$on(this.setterEvent, function (value) {
                 _this.check(value);
+                EventBus.$emit('show-alert', _this.label.replace(' :', '') + ' also checked', 'success');
             });
         }
 

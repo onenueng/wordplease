@@ -36,11 +36,19 @@ window.app = new Vue({
         lastActiveSessionCheck: 0
     },
     mounted() {
-        this.lastActiveSessionCheck = Date.now()
 
         EventBus.$on('show-child-pugh-score', () => {
             $('#modal-child-pugh-score').modal('show');
         });
+
+        EventBus.$on('show-alert', (message, status, duration = 5000) => {
+            if (! this.showAlertbox) {
+                this.alertboxMessage = message
+                this.alertStatus = status;
+                this.alertDuration = duration;
+                this.showAlertbox = true;
+            }
+        })
 
         EventBus.$on('error-419', () => {
             this.dialogHeading = 'Attention please !!'
@@ -82,6 +90,7 @@ window.app = new Vue({
                  })
         })
 
+        this.lastActiveSessionCheck = Date.now()
         $(window).on("focus", (e) => {
             let timeDiff = Date.now() - this.lastActiveSessionCheck
             if ((timeDiff) > (1000 * 60 * 60)) {
@@ -97,22 +106,13 @@ window.app = new Vue({
         });
     },
     methods : {
-        showSms() {
-            if (! this.showAlertbox) {
-                this.alertboxMessage = 'Your are now logged off, Please reload this page or loss your data.'
-                this.alertStatus = 'danger';
-                this.alertDuration = 10000;
-                this.showAlertbox = true;
-            }
-        }
+        // showSms() {
+        //     if (! this.showAlertbox) {
+        //         this.alertboxMessage = 'Your are now logged off, Please reload this page or loss your data.'
+        //         this.alertStatus = 'danger';
+        //         this.alertDuration = 10000;
+        //         this.showAlertbox = true;
+        //     }
+        // }
     }
 });
-
-window.toggleAlertbox = (message, status, duration = 5000) => {
-    if (! app.$data.showAlertbox) {
-        app.$data.alertboxMessage = message;
-        app.$data.alertStatus = status;
-        app.$data.alertDuration = duration;
-        app.$data.showAlertbox = true;
-    }
-}

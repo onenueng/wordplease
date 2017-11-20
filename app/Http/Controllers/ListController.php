@@ -52,26 +52,26 @@ class ListController extends Controller
     protected function getAttendingList($query)
     {
         return Attending::select('id as data', 'name as value')
-                          ->where('name', 'like', $this->getSearchCondition($query))
+                          ->where('name', 'like', $this->getSearchPattern($query))
                           ->get();
     }
 
     protected function getWardList($query)
     {
         return Ward::select('id as data', 'name as value')
-                     ->where('name', 'like', $this->getSearchCondition($query))
+                     ->where('name', 'like', $this->getSearchPattern($query))
                      ->get();
     }
 
     protected function getDivisionList($query)
     {
         return Division::select('id as data', 'name as value')
-                         ->where('name', 'like', $this->getSearchCondition($query))
-                         ->orWhere('name_eng', 'like', $this->getSearchCondition($query))
+                         ->where('name', 'like', $this->getSearchPattern($query))
+                         ->orWhere('name_eng', 'like', $this->getSearchPattern($query))
                          ->get();
     }
 
-    protected function getSearchCondition($query)
+    protected function getSearchPattern($query)
     {
         $pattern = '%';
         for ($i=0; $i < strlen($query); $i++) {

@@ -138,6 +138,7 @@
                             <input-radio 
                                 field="comorbid_DM"
                                 label="DM :"
+                                value="1"
                                 options="{{ $comorbidOptions }}"
                                 trigger-value="1">
                                 

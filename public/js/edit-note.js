@@ -2530,6 +2530,10 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(131)
+}
 var normalizeComponent = __webpack_require__(0)
 /* script */
 var __vue_script__ = __webpack_require__(96)
@@ -2538,7 +2542,7 @@ var __vue_template__ = __webpack_require__(97)
 /* template functional */
   var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = null
+var __vue_styles__ = injectStyle
 /* scopeId */
 var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
@@ -2769,7 +2773,7 @@ var render = function() {
             expression: "userInput"
           }
         ],
-        staticClass: "form-control",
+        staticClass: "form-control cursor-pointer",
         attrs: {
           type: "text",
           name: _vm.field,
@@ -3313,6 +3317,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             type: String,
             required: true
         },
+        value: {
+            type: String,
+            required: false
+        },
         // tooltip for label.
         labelDescription: {
             type: String,
@@ -3427,6 +3435,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             EventBus.$on(this.setterEvent, function (value) {
                 _this.check(value);
             });
+        }
+
+        if (this.value !== undefined) {
+
+            this.currentValue = this.value;
+
+            this.showReset = true;
+
+            if (this.value == this.triggerValue) {
+                this.showExtra = true;
+            }
         }
 
         if (this.needSync !== undefined) {
@@ -4339,6 +4358,59 @@ if (false) {
     require("vue-hot-reload-api")      .rerender("data-v-058e6708", module.exports)
   }
 }
+
+/***/ }),
+/* 118 */,
+/* 119 */,
+/* 120 */,
+/* 121 */,
+/* 122 */,
+/* 123 */,
+/* 124 */,
+/* 125 */,
+/* 126 */,
+/* 127 */,
+/* 128 */,
+/* 129 */,
+/* 130 */,
+/* 131 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(132);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(4)("4cd23991", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0130fef4\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./InputSelect.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0130fef4\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./InputSelect.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 132 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(3)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "\n.cursor-pointer {\n    cursor:pointer;\n}\n", ""]);
+
+// exports
+
 
 /***/ })
 ],[72]);

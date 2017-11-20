@@ -79,7 +79,6 @@
             if (this.needSync !== undefined) {
                 console.log(this.field + ' need sync')
             }
-
         },
         methods: {
             // handle check event.
@@ -97,7 +96,6 @@
                             EventBus.$emit(event[0], event[2])
                         }    
                     })
-                    
                 }
             },
             autosave() {

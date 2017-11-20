@@ -8,7 +8,7 @@
                 </a>
             </label>
             <input  type="text"
-                    class="form-control"
+                    class="form-control cursor-pointer"
                     :name="field"
                     :id="field"
                     v-model="userInput"
@@ -137,3 +137,9 @@
         }
     }
 </script>
+
+<style>
+    .cursor-pointer {
+        cursor:pointer;
+    }
+</style>

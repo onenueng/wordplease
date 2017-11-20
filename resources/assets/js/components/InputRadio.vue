@@ -61,6 +61,10 @@
                 type: String,
                 required: true  
             },
+            value: {
+                type: String,
+                required: false  
+            },
             // tooltip for label.
             labelDescription: {
                 type: String,
@@ -150,6 +154,8 @@
             }
         },
         mounted () {
+
+
             // init label tooltip if available.
             if (this.labelDescription !== undefined) {
                 $('a[title="' + this.labelDescription + '"]').tooltip()
@@ -172,6 +178,18 @@
                 EventBus.$on(this.setterEvent, (value) => {
                     this.check(value)
                 });
+            }
+
+            if (this.value !== undefined) {
+                
+                this.currentValue = this.value
+                
+                this.showReset = true
+
+                if (this.value == this.triggerValue) {
+                    this.showExtra = true
+                }
+
             }
 
             if (this.needSync !== undefined) {

@@ -1,6 +1,6 @@
 <template>
     <transition name="slide-fade">
-        <div :class="this.class" role="alert" id="alert-box">
+        <div  :class="this.class" role="alert" id="alert-box">
             <button type="button" class="close" @click="noShow()" aria-label="Close">
                 <span aria-hidden="true">
                     <span class="fa fa-times-circle"></span>
@@ -22,13 +22,13 @@
             }
         },
         mounted () {
-            this.timer = setTimeout(() => { app.$data.showAlertbox = false }, this.duration);
+            this.timer = setTimeout(() => { EventBus.$emit('close-alert') }, this.duration);
             this.setIcon();
         },
         methods: {
             noShow() {
                 clearTimeout(this.timer)
-                app.$data.showAlertbox = false
+                EventBus.$emit('close-alert')
             },
             setIcon() {
                 switch (this.status) {
@@ -58,19 +58,5 @@
         font-size:2em;
         float:left;
         margin-right: .5em;
-    }
-
-    .slide-fade-enter-active {
-      /*transition: all .3s ease;*/
-      transition: all .8s ease;
-    }
-    .slide-fade-leave-active {
-      /*transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);*/
-      transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-    }
-    .slide-fade-enter, .slide-fade-leave-to
-    /* .slide-fade-leave-active below version 2.1.8 */ {
-      transform: translateX(10px);
-      opacity: 0;
     }
 </style>

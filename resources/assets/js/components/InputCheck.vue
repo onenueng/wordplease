@@ -90,9 +90,7 @@
                 if (this.emitOnCheck !== undefined) {
                     this.emitOnCheck.forEach((event) => {
                         // [name][mode 1:checked 2:unchecked][value]
-                        // let emitParams = event.split('|')
-                        if ((event[1] && (this.thisChecked == 'checked')) || 
-                            (event[2] && (this.thisChecked == '')) ) {
+                        if (event[1] == this.thisChecked) {
                             EventBus.$emit(event[0], event[2])
                         }    
                     })

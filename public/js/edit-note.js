@@ -1473,6 +1473,10 @@ window.app = new Vue({
             }
         });
 
+        EventBus.$on('close-alert', function () {
+            _this.showAlertbox = false;
+        });
+
         EventBus.$on('error-419', function () {
             _this.dialogHeading = 'Attention please !!';
             _this.dialogMessage = 'Your are now logged off, Please reload this page or loss your data.';
@@ -1624,7 +1628,7 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, "\n#alert-box {\n    font-size: 1em;\n    width: 400px;\n    position: fixed;\n    top: 105px;\n    right: 15px;\n    z-index:10;\n}\n#alert-icon {\n    font-size:2em;\n    float:left;\n    margin-right: .5em;\n}\n.slide-fade-enter-active {\n  /*transition: all .3s ease;*/\n  -webkit-transition: all .8s ease;\n  transition: all .8s ease;\n}\n.slide-fade-leave-active {\n  /*transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);*/\n  -webkit-transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);\n  transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);\n}\n.slide-fade-enter, .slide-fade-leave-to\n/* .slide-fade-leave-active below version 2.1.8 */ {\n  -webkit-transform: translateX(10px);\n          transform: translateX(10px);\n  opacity: 0;\n}\n", ""]);
+exports.push([module.i, "\n#alert-box {\n    font-size: 1em;\n    width: 400px;\n    position: fixed;\n    top: 105px;\n    right: 15px;\n    z-index:10;\n}\n#alert-icon {\n    font-size:2em;\n    float:left;\n    margin-right: .5em;\n}\n", ""]);
 
 // exports
 
@@ -1660,7 +1664,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     mounted: function mounted() {
         this.timer = setTimeout(function () {
-            app.$data.showAlertbox = false;
+            EventBus.$emit('close-alert');
         }, this.duration);
         this.setIcon();
     },
@@ -1668,7 +1672,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     methods: {
         noShow: function noShow() {
             clearTimeout(this.timer);
-            app.$data.showAlertbox = false;
+            EventBus.$emit('close-alert');
         },
         setIcon: function setIcon() {
             switch (this.status) {
@@ -3782,8 +3786,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (this.emitOnCheck !== undefined) {
                 this.emitOnCheck.forEach(function (event) {
                     // [name][mode 1:checked 2:unchecked][value]
-                    // let emitParams = event.split('|')
-                    if (event[1] && _this2.thisChecked == 'checked' || event[2] && _this2.thisChecked == '') {
+                    if (event[1] == _this2.thisChecked) {
                         EventBus.$emit(event[0], event[2]);
                     }
                 });

@@ -245,8 +245,8 @@
                                             "field": "comorbid_cirrhosis_HBV",
                                             "label": "HBV",
                                             "emitOnCheck": [
-                                                ["HBV-checked",1,1],
-                                                ["cirrhosis-cryptogenic-unchecked",1,""]
+                                                ["HBV-checked","checked",1],
+                                                ["cirrhosis-cryptogenic-unchecked","checked",""]
                                             ],
                                             "setterEvent": "cirrhosis-specify-unchecked"
                                         },
@@ -254,21 +254,21 @@
                                             "field": "comorbid_cirrhosis_HCV",
                                             "label": "HCV",
                                             "emitOnCheck": [
-                                                ["HCV-checked",1,1],
-                                                ["cirrhosis-cryptogenic-unchecked",1,""]
+                                                ["HCV-checked","checked",1],
+                                                ["cirrhosis-cryptogenic-unchecked","checked",""]
                                             ],
                                             "setterEvent": "cirrhosis-specify-unchecked"
                                         },
                                         {
                                             "field": "comorbid_cirrhosis_NASH",
                                             "label": "NASH",
-                                            "emitOnCheck": [["cirrhosis-cryptogenic-unchecked",1,""]],
+                                            "emitOnCheck": [["cirrhosis-cryptogenic-unchecked","checked",""]],
                                             "setterEvent": "cirrhosis-specify-unchecked"
                                         },
                                         {
                                             "field": "comorbid_cirrhosis_cryptogenic",
                                             "label": "Cryptogenic",
-                                            "emitOnCheck": [["cirrhosis-specify-unchecked",1,""]],
+                                            "emitOnCheck": [["cirrhosis-specify-unchecked","checked",""]],
                                             "setterEvent": "cirrhosis-cryptogenic-unchecked"
                                         }
                                     ]'

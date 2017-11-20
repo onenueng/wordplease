@@ -50,6 +50,10 @@ window.app = new Vue({
             }
         })
 
+        EventBus.$on('close-alert', () => {
+            this.showAlertbox = false
+        })
+
         EventBus.$on('error-419', () => {
             this.dialogHeading = 'Attention please !!'
             this.dialogMessage = 'Your are now logged off, Please reload this page or loss your data.'

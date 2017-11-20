@@ -69,7 +69,10 @@
 
             if (this.setterEvent !== undefined) {
                 EventBus.$on(this.setterEvent, (value) => {
-                    this.thisChecked = value
+                    if (value != this.thisChecked) {
+                        this.thisChecked = value
+                        this.autosave()
+                    }
                 })
             }            
 
@@ -83,9 +86,8 @@
             check() {
                 this.thisChecked = (this.thisChecked == '') ? 'checked' : ''
                 
-                if (this.field !== undefined)
-                    EventBus.$emit('autosave', this.field, (this.thisChecked.length > 0))
-                
+                this.autosave()
+
                 if (this.emitOnCheck !== undefined) {
                     this.emitOnCheck.forEach((event) => {
                         // [name][mode 1:checked 2:unchecked][value]
@@ -97,6 +99,10 @@
                     })
                     
                 }
+            },
+            autosave() {
+                if (this.field !== undefined)
+                    EventBus.$emit('autosave', this.field, (this.thisChecked.length > 0))
             }
         }
     }

@@ -3734,7 +3734,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         if (this.setterEvent !== undefined) {
             EventBus.$on(this.setterEvent, function (value) {
-                _this.thisChecked = value;
+                if (value != _this.thisChecked) {
+                    _this.thisChecked = value;
+                    _this.autosave();
+                }
             });
         }
 
@@ -3750,7 +3753,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.thisChecked = this.thisChecked == '' ? 'checked' : '';
 
-            if (this.field !== undefined) EventBus.$emit('autosave', this.field, this.thisChecked.length > 0);
+            this.autosave();
 
             if (this.emitOnCheck !== undefined) {
                 this.emitOnCheck.forEach(function (event) {
@@ -3761,6 +3764,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     }
                 });
             }
+        },
+        autosave: function autosave() {
+            if (this.field !== undefined) EventBus.$emit('autosave', this.field, this.thisChecked.length > 0);
         }
     }
 });

@@ -636,7 +636,38 @@
                                     {"label": "No data", "value": 255},
                                     {"label": "No", "value": 0},
                                     {"label": "Yes", "value": 1}
-                                ]'>
+                                ]'
+                                trigger-value="1">
+                                <input-check-group
+                                    checks= '[
+                                        {
+                                            "field": "comorbid_psychiatric_illness_schizophrenia",
+                                            "label": "Schizophrenia"
+                                        },
+                                        {
+                                            "field": "comorbid_psychiatric_illness_major_depression",
+                                            "label": "Major depression"
+                                        },
+                                        {
+                                            "field": "comorbid_psychiatric_illness_bipolar_disorder",
+                                            "label": "Bipolar disorder"
+                                        },
+                                        {
+                                            "field": "comorbid_psychiatric_illness_adjustment_disorder",
+                                            "label": "Adjustment disorder"
+                                        },
+                                        {
+                                            "field": "comorbid_psychiatric_illness_obcessive_compulsive_disorder",
+                                            "label": "Obcessive compulsive disorder"
+                                        }
+                                    ]'
+                                    need-sync>
+                                </input-check-group>
+                                <input-text
+                                    field="comorbid_psychiatric_illness_other"
+                                    placeholder="Other specific, type here."
+                                    need-sync>
+                                </input-text>
                             </input-radio>
                         </div><!-- Psychiatric illness comorbid -->
                         <div><hr class="line"></div>

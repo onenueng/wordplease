@@ -66,7 +66,11 @@
             if (this.needSync !== undefined) {
                 console.log(this.field + ' need sync')
             }
-            this.userInput = this.value
+
+            if (this.value === undefined)
+                this.lastSave = this.userInput = ''
+            else
+                this.lastSave = this.userInput = this.value
         },
         methods: {
             getGrid() {

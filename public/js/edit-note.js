@@ -1100,7 +1100,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         if (this.needSync !== undefined) {
             console.log(this.field + ' need sync');
         }
-        this.userInput = this.value;
+
+        if (this.value === undefined) this.lastSave = this.userInput = '';else this.lastSave = this.userInput = this.value;
     },
 
     methods: {
@@ -1505,12 +1506,9 @@ window.app = new Vue({
                 axios.get('/is-session-active').then(function (response) {
                     if (response.data.active) {
                         _this.lastActiveSessionCheck = Date.now();
-                        // console.log('active')
                     } else {
                         EventBus.$emit('error-419');
-                        // console.log('error-419')
                     }
-                    // console.log('timeDiff => ' + timeDiff)
                 });
             }
         });
@@ -2394,7 +2392,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         var _this = this;
 
         // initial data
-        if (this.value === undefined) this.lastData = this.userInput = this.value = '';else this.lastData = this.userInput = this.value;
+        if (this.value === undefined) this.lastData = this.userInput = '';else this.lastData = this.userInput = this.value;
 
         // initial autocomplete instance
         $(this.domRef).autocomplete({
@@ -2980,7 +2978,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     mounted: function mounted() {
         var _this = this;
 
-        this.userInput = this.value;
+        if (this.value === undefined) this.userInput = '';else this.userInput = this.value;
+
         autosize($(this.domRef));
         this.onkeypress = _.debounce(function () {
             var countChars = _this.userInput.length;

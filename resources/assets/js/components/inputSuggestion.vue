@@ -60,7 +60,7 @@
         mounted () {
             // initial data
             if (this.value === undefined)
-                this.lastData = this.userInput = this.value = ''
+                this.lastData = this.userInput = ''
             else
                 this.lastData = this.userInput = this.value
 

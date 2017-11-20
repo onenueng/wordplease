@@ -89,12 +89,9 @@ window.app = new Vue({
                      .then((response) => {
                         if (response.data.active) {
                             this.lastActiveSessionCheck = Date.now()
-                            // console.log('active')
                         } else {
                             EventBus.$emit('error-419')
-                            // console.log('error-419')
                         }
-                        // console.log('timeDiff => ' + timeDiff)
                      })
             }
         });

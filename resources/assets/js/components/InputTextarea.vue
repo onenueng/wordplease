@@ -64,7 +64,11 @@
             }
         },
         mounted () {
-            this.userInput = this.value
+            if (this.value === undefined)
+                this.userInput = ''
+            else
+                this.userInput = this.value
+
             autosize($(this.domRef))
             this.onkeypress = _.debounce(() => {
                 let countChars = this.userInput.length

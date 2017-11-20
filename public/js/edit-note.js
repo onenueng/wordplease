@@ -3706,6 +3706,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         // event emit when checked/unchecked.
         emitOnCheck: {
+            type: Array,
+            required: false
+        },
+        // event emit when checked/unchecked.
+        setterEvent: {
             type: String,
             required: false
         }
@@ -3717,12 +3722,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
     mounted: function mounted() {
+        var _this = this;
+
         // render checked state or not.
         this.thisChecked = this.checked === undefined ? '' : this.checked;
 
         // init BT tooltip if labelDescription available.
         if (this.labelDescription !== undefined) {
             $('a[title="' + this.labelDescription + '"]').tooltip();
+        }
+
+        if (this.setterEvent !== undefined) {
+            EventBus.$on(this.setterEvent, function (value) {
+                _this.thisChecked = value;
+            });
         }
 
         if (this.needSync !== undefined) {
@@ -3733,16 +3746,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     methods: {
         // handle check event.
         check: function check() {
+            var _this2 = this;
+
             this.thisChecked = this.thisChecked == '' ? 'checked' : '';
 
             if (this.field !== undefined) EventBus.$emit('autosave', this.field, this.thisChecked.length > 0);
 
             if (this.emitOnCheck !== undefined) {
-                // [name][mode 1:checked 2:unchecked][value]
-                var emitParams = this.emitOnCheck.split('|');
-                if (emitParams[1] && this.thisChecked == 'checked' || emitParams[2] && this.thisChecked == '') {
-                    EventBus.$emit(emitParams[0], emitParams[2]);
-                }
+                this.emitOnCheck.forEach(function (event) {
+                    // [name][mode 1:checked 2:unchecked][value]
+                    // let emitParams = event.split('|')
+                    if (event[1] && _this2.thisChecked == 'checked' || event[2] && _this2.thisChecked == '') {
+                        EventBus.$emit(event[0], event[2]);
+                    }
+                });
             }
         }
     }
@@ -3863,6 +3880,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     // props: ['label','checks', 'needSync']
@@ -3910,6 +3929,7 @@ var render = function() {
             checked: check.checked,
             "emit-on-check": check.emitOnCheck,
             "trigger-event": check.triggerEvent,
+            "setter-event": check.setterEvent,
             "need-sync": _vm.needSync
           }
         })

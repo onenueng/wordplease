@@ -123,6 +123,14 @@
 
                     <div class="col-xs-12"><hr class="line" /></div>
 
+                    <?php 
+                        $comorbidOptions = '[
+                                    {"label": "No data", "value": 255},
+                                    {"label": "No", "value": 0},
+                                    {"label": "Yes", "value": 1}
+                                ]';
+                    ?>
+
                     <div class="col-xs-12 col-sm-6 col-md-4"><!-- comorbid DM, VHD, Asthma, Cirrhosis, HCV -->
                         
                         <!-- DM comorbid and its extra contents -->
@@ -130,11 +138,7 @@
                             <input-radio 
                                 field="comorbid_DM"
                                 label="DM :"
-                                options='[
-                                    {"label": "No data", "value": 255},
-                                    {"label": "No", "value": 0},
-                                    {"label": "Yes", "value": 1}
-                                ]'
+                                options="{{ $comorbidOptions }}"
                                 trigger-value="1">
                                 
                                 <!-- DM type -->
@@ -178,11 +182,7 @@
                             <input-radio 
                                 field="comorbid_valvular_heart_disease"
                                 label="Valvular heart disease :"
-                                options='[
-                                    {"label": "No data", "value": 255},
-                                    {"label": "No", "value": 0},
-                                    {"label": "Yes", "value": 1}
-                                ]'
+                                options="{{ $comorbidOptions }}"
                                 trigger-value="1">
                                 <!-- valvular heart disease specify AS, Ar, MS, MR, TR  -->
                                 <input-check-group
@@ -214,11 +214,7 @@
                             <input-radio
                                 field="comorbid_asthma"
                                 label="Asthma :"
-                                options='[
-                                    {"label": "No data", "value": 255},
-                                    {"label": "No", "value": 0},
-                                    {"label": "Yes", "value": 1}
-                                ]'>
+                                options="{{ $comorbidOptions }}">
                             </input-radio>
                         </div><!-- asthma comorbid -->
                         <div><hr class="line"></div>
@@ -228,11 +224,7 @@
                             <input-radio
                                 field="comorbid_cirrhosis"
                                 label="Cirrhosis :"
-                                options='[
-                                    {"label": "No data", "value": 255},
-                                    {"label": "No", "value": 0},
-                                    {"label": "Yes", "value": 1}
-                                ]'
+                                options="{{ $comorbidOptions }}"
                                 trigger-value="1">
                                 <!-- cirrhosis Child-Pugh's score -->
                                 <input-radio 
@@ -253,10 +245,36 @@
                                 <input-check-group 
                                     label="Specify : "
                                     checks='[
-                                        {"field": "comorbid_cirrhosis_HBV", "label": "HBV", "emitOnCheck": "HBV-checked|1|1"},
-                                        {"field": "comorbid_cirrhosis_HCV", "label": "HCV", "emitOnCheck": "HCV-checked|1|1"},
-                                        {"field": "comorbid_cirrhosis_NASH", "label": "NASH"},
-                                        {"field": "comorbid_cirrhosis_cryptogenic", "label": "Cryptogenic", "emitOnCheck": "HBV-HCV-unchecked"}
+                                        {
+                                            "field": "comorbid_cirrhosis_HBV",
+                                            "label": "HBV",
+                                            "emitOnCheck": [
+                                                ["HBV-checked",1,1],
+                                                ["cirrhosis-cryptogenic-unchecked",1,""]
+                                            ],
+                                            "setterEvent": "cirrhosis-specify-unchecked"
+                                        },
+                                        {
+                                            "field": "comorbid_cirrhosis_HCV",
+                                            "label": "HCV",
+                                            "emitOnCheck": [
+                                                ["HCV-checked",1,1],
+                                                ["cirrhosis-cryptogenic-unchecked",1,""]
+                                            ],
+                                            "setterEvent": "cirrhosis-specify-unchecked"
+                                        },
+                                        {
+                                            "field": "comorbid_cirrhosis_NASH",
+                                            "label": "NASH",
+                                            "emitOnCheck": [["cirrhosis-cryptogenic-unchecked",1,""]],
+                                            "setterEvent": "cirrhosis-specify-unchecked"
+                                        },
+                                        {
+                                            "field": "comorbid_cirrhosis_cryptogenic",
+                                            "label": "Cryptogenic",
+                                            "emitOnCheck": [["cirrhosis-specify-unchecked",1,""]],
+                                            "setterEvent": "cirrhosis-cryptogenic-unchecked"
+                                        }
                                     ]'
                                     need-sync>
                                 </input-check-group>
@@ -278,11 +296,7 @@
                             <input-radio
                                 field="comorbid_HCV"
                                 label="HCV infection :"
-                                options='[
-                                    {"label": "No data", "value": 255},
-                                    {"label": "No", "value": 0},
-                                    {"label": "Yes", "value": 1}
-                                ]'
+                                options="{{ $comorbidOptions }}"
                                 setter-event='HCV-checked'>
                             </input-radio>
                         </div>
@@ -293,11 +307,7 @@
                             <input-radio
                                 field="comorbid_lukemia"
                                 label="Lukemia :"
-                                options='[
-                                    {"label": "No data", "value": 255},
-                                    {"label": "No", "value": 0},
-                                    {"label": "Yes", "value": 1}
-                                ]'
+                                options="{{ $comorbidOptions }}"
                                 trigger-value="1">
                                 <!-- lukemia Child-Pugh's score -->
                                 <input-radio 
@@ -320,11 +330,7 @@
                                 field="comorbid_ICD"
                                 label="ICD "
                                 label-description="Implantable Cardioverter Defibrillator"
-                                options='[
-                                    {"label": "No data", "value": 255},
-                                    {"label": "No", "value": 0},
-                                    {"label": "Yes", "value": 1}
-                                ]'
+                                options="{{ $comorbidOptions }}"
                                 trigger-value="1">
 
                                 <!-- ICD specify other -->
@@ -344,11 +350,7 @@
                             <input-radio 
                                 field="comorbid_SLE"
                                 label="SLE "
-                                options='[
-                                    {"label": "No data", "value": 255},
-                                    {"label": "No", "value": 0},
-                                    {"label": "Yes", "value": 1}
-                                ]'
+                                options="{{ $comorbidOptions }}"
                                 trigger-value="1">
                             </input-radio>
                         </div><!-- comorbid SLE -->
@@ -359,11 +361,7 @@
                             <input-radio
                                 field="comorbid_dementia"
                                 label="Dementia :"
-                                options='[
-                                    {"label": "No data", "value": 255},
-                                    {"label": "No", "value": 0},
-                                    {"label": "Yes", "value": 1}
-                                ]'
+                                options="{{ $comorbidOptions }}"
                                 trigger-value="1">
                                 
                                 <!-- dementia specify Vascular Alzheimer  -->
@@ -396,11 +394,7 @@
                             <input-radio
                                 field="comorbid_HT"
                                 label="HT :"
-                                options='[
-                                    {"label": "No data", "value": 255},
-                                    {"label": "No", "value": 0},
-                                    {"label": "Yes", "value": 1}
-                                ]'>
+                                options="{{ $comorbidOptions }}">
                             </input-radio>
                         </div>
                         <div><hr class="line"></div>
@@ -410,11 +404,7 @@
                             <input-radio
                                 field="comorbid_stroke"
                                 label="Stroke : "
-                                options='[
-                                    {"label": "No data", "value": 255},
-                                    {"label": "No", "value": 0},
-                                    {"label": "Yes", "value": 1}
-                                ]'
+                                options="{{ $comorbidOptions }}"
                                 trigger-value="1">
                                 
                                 <!-- foreach stroke symptom -->
@@ -441,11 +431,7 @@
                                 field="comorbid_CKD"
                                 label="CKD "
                                 label-description="Chronic Kidney Disease"
-                                options='[
-                                    {"label": "No data", "value": 255},
-                                    {"label": "No", "value": 0},
-                                    {"label": "Yes", "value": 1}
-                                ]'
+                                options="{{ $comorbidOptions }}"
                                 trigger-value="1">
                                 
                                 <!-- CKD stage -->
@@ -468,11 +454,7 @@
                             <input-radio
                                 field="comorbid_coagulopathy"
                                 label="Coagulopathy :"
-                                options='[
-                                    {"label": "No data", "value": 255},
-                                    {"label": "No", "value": 0},
-                                    {"label": "Yes", "value": 1}
-                                ]'>
+                                options="{{ $comorbidOptions }}">
                             </input-radio>
                         </div>
                         <div><hr class="line"></div>
@@ -482,11 +464,7 @@
                             <input-radio
                                 field="comorbid_HIV"
                                 label="HIV :"
-                                options='[
-                                    {"label": "No data", "value": 255},
-                                    {"label": "No", "value": 0},
-                                    {"label": "Yes", "value": 1}
-                                ]'
+                                options="{{ $comorbidOptions }}"
                                 trigger-value="1">
 
                                 <!-- HIV Previous opportunistic infection TB, PCP, Candidiasis, CMV -->
@@ -518,11 +496,7 @@
                             <input-radio
                                 field="comorbid_lymphoma"
                                 label="Lymphoma :"
-                                options='[
-                                    {"label": "No data", "value": 255},
-                                    {"label": "No", "value": 0},
-                                    {"label": "Yes", "value": 1}
-                                ]'
+                                options="{{ $comorbidOptions }}"
                                 trigger-value="1">
 
                                 <!-- lymphoma specify -->
@@ -544,11 +518,7 @@
                             <input-radio
                                 field="comorbid_cancer"
                                 label="Cancer :"
-                                options='[
-                                    {"label": "No data", "value": 255},
-                                    {"label": "No", "value": 0},
-                                    {"label": "Yes", "value": 1}
-                                ]'
+                                options="{{ $comorbidOptions }}"
                                 trigger-value="1">
                                 
                                 <!-- cancer specify Lung Liver Colon Breast Prostate Cervix Pancreas Brain  -->
@@ -583,11 +553,7 @@
                             <input-radio
                                 field="comorbid_other_autoimmune_disease"
                                 label="Other Autoimmune Disease :"
-                                options='[
-                                    {"label": "No data", "value": 255},
-                                    {"label": "No", "value": 0},
-                                    {"label": "Yes", "value": 1}
-                                ]'
+                                options="{{ $comorbidOptions }}"
                                 trigger-value="1">
                                 
                                 <!-- Other Autoimmune Disease specify Lung Liver Colon Breast Prostate Cervix Pancreas Brain  -->
@@ -632,11 +598,7 @@
                             <input-radio
                                 field="comorbid_psychiatric_illness"
                                 label="Psychiatric illness :"
-                                options='[
-                                    {"label": "No data", "value": 255},
-                                    {"label": "No", "value": 0},
-                                    {"label": "Yes", "value": 1}
-                                ]'
+                                options="{{ $comorbidOptions }}"
                                 trigger-value="1">
                                 <input-check-group
                                     checks= '[
@@ -682,11 +644,7 @@
                                 field="comorbid_CAD"
                                 label="CAD "
                                 label-description="Coronary Artery Disease"
-                                options='[
-                                    {"label": "No data", "value": 255},
-                                    {"label": "No", "value": 0},
-                                    {"label": "Yes", "value": 1}
-                                ]'
+                                options="{{ $comorbidOptions }}"
                                 trigger-value="1">
                                 
                                 <!-- CAD specify -->
@@ -708,11 +666,7 @@
                             <input-radio
                                 field="comorbid_COPD"
                                 label="COPD :"
-                                options='[
-                                    {"label": "No data", "value": 255},
-                                    {"label": "No", "value": 0},
-                                    {"label": "Yes", "value": 1}
-                                ]'>
+                                options="{{ $comorbidOptions }}">
                             </input-radio>
                         </div>
                         <div><hr class="line"></div>
@@ -722,11 +676,7 @@
                             <input-radio
                                 field="comorbid_hyperlipidemia"
                                 label="Hyperlipidemia : "
-                                options='[
-                                    {"label": "No data", "value": 255},
-                                    {"label": "No", "value": 0},
-                                    {"label": "Yes", "value": 1}
-                                ]'
+                                options="{{ $comorbidOptions }}"
                                 trigger-value="1">
                                 
                                 <!-- hyperlipidemia specify -->
@@ -749,11 +699,7 @@
                             <input-radio
                                 field="comorbid_HBV"
                                 label="HBV infection :"
-                                options='[
-                                    {"label": "No data", "value": 255},
-                                    {"label": "No", "value": 0},
-                                    {"label": "Yes", "value": 1}
-                                ]'
+                                options="{{ $comorbidOptions }}"
                                 setter-event='HBV-checked'>
                             </input-radio>
                         </div>
@@ -764,11 +710,7 @@
                             <input-radio
                                 field="comorbid_epilepsy"
                                 label="Epilepsy :"
-                                options='[
-                                    {"label": "No data", "value": 255},
-                                    {"label": "No", "value": 0},
-                                    {"label": "Yes", "value": 1}
-                                ]'
+                                options="{{ $comorbidOptions }}"
                                 trigger-value="1">
 
                                 <!-- epilepsy specify -->
@@ -790,11 +732,7 @@
                             <input-radio
                                 field="comorbid_pacemaker_implant"
                                 label="Pacemaker implant :"
-                                options='[
-                                    {"label": "No data", "value": 255},
-                                    {"label": "No", "value": 0},
-                                    {"label": "Yes", "value": 1}
-                                ]'
+                                options="{{ $comorbidOptions }}"
                                 trigger-value="1">
                                 <!-- Pacemaker implant Child-Pugh's score -->
                                 <input-radio 
@@ -817,11 +755,7 @@
                             <input-radio
                                 field="comorbid_chronic_arthritis"
                                 label="Chronic arthritis :"
-                                options='[
-                                    {"label": "No data", "value": 255},
-                                    {"label": "No", "value": 0},
-                                    {"label": "Yes", "value": 1}
-                                ]'
+                                options="{{ $comorbidOptions }}"
                                 trigger-value="1">
                                 
                                 <!-- Chronic arthritis specify Lung Liver Colon Breast Prostate Cervix Pancreas Brain  -->
@@ -865,11 +799,7 @@
                             <input-radio
                                 field="comorbid_TB"
                                 label="TB :"
-                                options='[
-                                    {"label": "No data", "value": 255},
-                                    {"label": "No", "value": 0},
-                                    {"label": "Yes", "value": 1}
-                                ]'
+                                options="{{ $comorbidOptions }}"
                                 trigger-value="1">
                                 
                                 <!-- TB specify  -->
@@ -895,7 +825,6 @@
                         <div><hr class="line"></div>
 
                     </div><!-- CAD, COPD, Hyperlipidemia, HBV -->
-
                 </div>
             </panel><!-- Panel Hisroty -->
         </div><!-- note content -->
@@ -905,9 +834,5 @@
     <script src="/js/manifest.js"></script>
     <script src="/js/vendor.js"></script>
     <script src="/js/edit-note.js"></script>
-
-    <script>
-        
-    </script>
 </body>
 </html>

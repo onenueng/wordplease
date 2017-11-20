@@ -1529,14 +1529,16 @@ window.app = new Vue({
     },
 
     methods: {
-        // showSms() {
-        //     if (! this.showAlertbox) {
-        //         this.alertboxMessage = 'Your are now logged off, Please reload this page or loss your data.'
-        //         this.alertStatus = 'danger';
-        //         this.alertDuration = 10000;
-        //         this.showAlertbox = true;
-        //     }
-        // }
+        nodataAll: function nodataAll() {
+            $("input[type=radio][name^=comorbid_]").each(function (index, el) {
+                EventBus.$emit(el.name, 255);
+            });
+        },
+        noComorbidAll: function noComorbidAll() {
+            $("input[type=radio][name^=comorbid_]").each(function (index, el) {
+                EventBus.$emit(el.name, 0);
+            });
+        }
     }
 });
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
@@ -3437,6 +3439,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 $('a[title="' + option.labelDescription + '"]').tooltip();
             }
         });
+
+        if (this.field !== undefined) {
+            EventBus.$on(this.field, function (value) {
+                _this.check(value);
+            });
+        }
 
         // listen to event to set option value.
         if (this.setterEvent !== undefined) {

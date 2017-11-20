@@ -22,6 +22,18 @@ Route::get('/btm', function () {
     return view('btm');
 });
 
+Route::get('/fba', function () {
+    return view('fba');
+});
+
+Route::get('/button', function () {
+    return view('button');
+});
+
+Route::get('/btnm', function () {
+    return view('btnm');
+});
+
 
 Route::get('/', function () {
     return view('webpack');

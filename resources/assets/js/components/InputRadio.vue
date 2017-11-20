@@ -173,12 +173,18 @@
                 }
             })
 
+            if (this.field !== undefined) {
+                EventBus.$on(this.field, (value) => {
+                    this.check(value)
+                })
+            }
+
             // listen to event to set option value.
             if (this.setterEvent !== undefined) {
                 EventBus.$on(this.setterEvent, (value) => {
                     this.check(value)
                     EventBus.$emit('show-alert', this.label.replace(' :', '') + ' also checked', 'success')
-                });
+                })
             }
 
             if (this.value !== undefined) {

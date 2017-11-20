@@ -4143,5 +4143,20 @@
           <a href="http://stas-melnikov.ru" class="melnik909" rel="noopener noreferrer" target="_blank">Developed by Stas Melnikov</a>
         </div>
       </footer>
+  <hr>
+
+  <div class="main-container__section">
+    <label class="main-container__column material-radio-group material-radio-group_info" for="radio4111">
+        <input type="radio" name="radiobox111" id="radio4111" class="material-radiobox"/>
+        <span class="material-radio-group__element material-radio-group__check-radio"></span>
+        <span class="material-radio-group__element material-radio-group__caption">Info</span>
+    </label>
+    <label class="main-container__column material-radio-group material-radio-group_info" for="radio4222">
+        <input type="radio" name="radiobox111" id="radio4222" class="material-radiobox"/>
+        <span class="material-radio-group__element material-radio-group__check-radio"></span>
+        <span class="material-radio-group__element material-radio-group__caption">Info</span>
+    </label>
+  </div>
+
 </body>
 </html>

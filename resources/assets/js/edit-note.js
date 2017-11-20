@@ -107,16 +107,18 @@ window.app = new Vue({
                         }
                      })
             }
-        });
+        })
     },
-    methods : {
-        // showSms() {
-        //     if (! this.showAlertbox) {
-        //         this.alertboxMessage = 'Your are now logged off, Please reload this page or loss your data.'
-        //         this.alertStatus = 'danger';
-        //         this.alertDuration = 10000;
-        //         this.showAlertbox = true;
-        //     }
-        // }
+    methods: {
+        nodataAll() {
+            $("input[type=radio][name^=comorbid_]").each((index, el) => {
+                EventBus.$emit(el.name, 255)
+            })
+        },
+        noComorbidAll() {
+            $("input[type=radio][name^=comorbid_]").each((index, el) => {
+                EventBus.$emit(el.name, 0)
+            })
+        }
     }
 });

@@ -821,7 +821,16 @@
                         <div><hr class="line"></div>
 
                     </div><!-- CAD, COPD, Hyperlipidemia, HBV -->
-                </div>
+
+                    <!-- chief complaint -->
+                    <input-textarea
+                        field="other_comorbid"
+                        value="Lorem ipsum dolor sit amet."
+                        label="Other comorbid :"
+                        grid="1-1-1"
+                        max-chars="50" >
+                    </input-textarea>
+                </div><!-- wrap content with row class -->
             </panel><!-- Panel Hisroty -->
         </div><!-- note content -->
     </div><!-- Vue app -->

@@ -119,6 +119,21 @@
 
                     <div class="col-xs-12"><hr class="line" /></div>
 
+                    <div class="col-xs-12 form-inline">
+                        <button-app
+                            action="comorbid-no-data-all"
+                            status="draft"
+                            label="No Data"
+                            size="sm">
+                        </button-app>
+                        <button-app
+                            action="comorbid-no-at-all"
+                            status="draft"
+                            label="No comorbids"
+                            size="sm">
+                        </button-app>
+                    </div>
+
                     <?php 
                         $comorbidOptions = '[
                                     {"label": "No data", "value": 255},
@@ -833,8 +848,11 @@
                 </div><!-- wrap content with row class -->
             </panel><!-- Panel Hisroty -->
         </div><!-- note content -->
+    
+        
     </div><!-- Vue app -->
 
+    
 
     <script src="/js/manifest.js"></script>
     <script src="/js/vendor.js"></script>

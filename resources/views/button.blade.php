@@ -56,7 +56,7 @@
      --}}
 
     <style>
-        *, *:before, *:after{
+        /**, *:before, *:after{
             box-sizing: border-box;
             margin: 0; padding: 0;
         }
@@ -66,7 +66,7 @@
             margin: 15% auto;
             background: #f2f2f2;
             padding: 5%;
-        }
+        }*/
 
         button{
             border: 3px solid #222;

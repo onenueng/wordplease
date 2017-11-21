@@ -20,6 +20,7 @@
         button:focus {
           outline: none !important;
         }
+        
         .btn {
           border-radius: 2px;
           border: 0;

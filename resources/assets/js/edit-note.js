@@ -5,6 +5,7 @@ window.EventBus = new Vue();
 
 
 Vue.component('alert-box', require('./components/Alertbox.vue'));
+Vue.component('button-app', require('./components/ButtonApp.vue'));
 Vue.component('modal-dialog', require('./components/ModalDialog.vue'));
 Vue.component('navbar', require('./components/EditNoteNavbar.vue'));
 Vue.component('appbar-right', require('./components/AppbarRight.vue'));
@@ -36,10 +37,28 @@ window.app = new Vue({
         lastActiveSessionCheck: 0
     },
     mounted() {
-
+        /**
+         * Note specific events.
+         */
         EventBus.$on('show-child-pugh-score', () => {
             $('#modal-child-pugh-score').modal('show');
         });
+
+        EventBus.$on('comorbid-no-data-all', () => {
+            $("input[type=radio][name^=comorbid_]").each((index, el) => {
+                EventBus.$emit(el.name, 255)
+            })
+        })
+
+        EventBus.$on('comorbid-no-at-all', () => {
+            $("input[type=radio][name^=comorbid_]").each((index, el) => {
+                EventBus.$emit(el.name, 0)
+            })
+        })
+
+        /**
+         * Common events.
+         */
 
         EventBus.$on('show-alert', (message, status, duration = 5000) => {
             if (! this.showAlertbox) {
@@ -111,9 +130,7 @@ window.app = new Vue({
     },
     methods: {
         nodataAll() {
-            $("input[type=radio][name^=comorbid_]").each((index, el) => {
-                EventBus.$emit(el.name, 255)
-            })
+            
         },
         noComorbidAll() {
             $("input[type=radio][name^=comorbid_]").each((index, el) => {

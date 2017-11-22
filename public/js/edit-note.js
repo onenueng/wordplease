@@ -3704,6 +3704,10 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(138)
+}
 var normalizeComponent = __webpack_require__(0)
 /* script */
 var __vue_script__ = __webpack_require__(111)
@@ -3712,7 +3716,7 @@ var __vue_template__ = __webpack_require__(112)
 /* template functional */
   var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = null
+var __vue_styles__ = injectStyle
 /* scopeId */
 var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
@@ -3754,6 +3758,28 @@ module.exports = Component.exports
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */(function($) {//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -3871,31 +3897,50 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("label", { staticClass: "checkbox-inline" }, [
-    _c("input", {
-      attrs: { type: "checkbox", name: _vm.field },
-      domProps: { checked: _vm.thisChecked },
-      on: {
-        click: function($event) {
-          _vm.check()
-        }
-      }
-    }),
-    _vm._v("\n    " + _vm._s(_vm.label) + "\n    "),
-    _vm.labelDescription !== undefined
-      ? _c(
-          "a",
-          {
-            attrs: {
-              role: "button",
-              "data-toggle": "tooltip",
-              title: _vm.labelDescription
+  return _c(
+    "label",
+    { staticClass: "checkbox-inline underline-animate clear-padding" },
+    [
+      _c("div", { staticClass: "material-checkbox-group" }, [
+        _c("input", {
+          staticClass: "material-checkbox",
+          attrs: { type: "checkbox", id: _vm.field, name: _vm.field },
+          domProps: { checked: _vm.thisChecked },
+          on: {
+            click: function($event) {
+              _vm.check()
             }
+          }
+        }),
+        _vm._v(" "),
+        _c(
+          "label",
+          {
+            staticClass: "material-checkbox-group-label",
+            attrs: { for: _vm.field }
           },
-          [_c("i", { staticClass: "fa fa-info-circle" })]
+          [
+            _vm._v(
+              "\n               " + _vm._s(_vm.label) + "\n               "
+            ),
+            _vm.labelDescription !== undefined
+              ? _c(
+                  "a",
+                  {
+                    attrs: {
+                      role: "button",
+                      "data-toggle": "tooltip",
+                      title: _vm.labelDescription
+                    }
+                  },
+                  [_c("i", { staticClass: "fa fa-info-circle" })]
+                )
+              : _vm._e()
+          ]
         )
-      : _vm._e()
-  ])
+      ])
+    ]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -4638,6 +4683,46 @@ if (false) {
     require("vue-hot-reload-api")      .rerender("data-v-1d527ba2", module.exports)
   }
 }
+
+/***/ }),
+/* 138 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(139);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(4)("88834940", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-a0fe9324\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./InputCheck.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-a0fe9324\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./InputCheck.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 139 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "\n.clear-padding {\n    padding-left: 0px!important;\n    margin-right: 5px!important;\n}\nlabel.underline-animate:hover {\n    font-style: italic;\n}\n.underline-animate:after {\n    content: '';\n    position: absolute;\n    bottom: 0;\n    left: 0;\n    width: 0%;\n    border-bottom: 3px solid #636b6f;\n    -webkit-transition: 0.4s;\n    transition: 0.4s;\n}\n.underline-animate:hover:after {\n    width: 100%;\n}\n.material-checkbox-group-label {\n    position: relative;\n    display: block;\n    cursor: pointer;\n    height: 15px;\n    line-height: 15px;\n    /*padding-left: 25px;*/\n    padding-left: 20px; /* between control and label */\n}\n.material-checkbox-group-label:after { /*check marker*/\n    content: \"\";\n    display: block;\n    /*width: 4px;*/\n    width: 3px;\n    /*height: 12px;*/\n    height: 9px;\n    opacity: .9;\n    border-right: 2px solid #eee;\n    border-top: 2px solid #eee;\n    position: absolute;\n    /*left: 4px;*/\n    left: 3px;\n    /*top: 12px;*/\n    top: 9px;\n    -webkit-transform: scaleX(-1) rotate(135deg);\n    transform: scaleX(-1) rotate(135deg);\n    -webkit-transform-origin: left top;\n    transform-origin: left top;\n}\n.material-checkbox-group-label:before {\n    content: \"\";\n    display: block;\n    border: 2px solid;\n    /*width: 20px;*/\n    width: 15px;\n    /*height: 20px;*/\n    height: 15px;\n    position: absolute;\n    left: 0;\n}\n.material-checkbox-group-label {\n    /*font-size: 14px;*/\n    -webkit-user-select: none;\n    -moz-user-select: none;\n    -ms-user-select: none;\n}\n.material-checkbox:disabled ~ .material-checkbox-group-label {\n    cursor: no-drop;\n}\n.material-checkbox {\n    display: none;\n}\n.material-checkbox-group .material-checkbox:checked + .material-checkbox-group-label:after {\n    -webkit-animation: check 0.8s;\n    animation: check 0.8s;\n    opacity: 1;\n}\n.material-checkbox-group .material-checkbox:checked + .material-checkbox-group-label:after {\n    border-color: #636b6f;\n}\n.material-checkbox-group .material-checkbox:checked + .material-checkbox-group-label:before {\n    background-color: #eee;\n}\n.material-checkbox-group .material-checkbox-group-label:before {\n    border-color: #636b6f;\n}\n.material-checkbox:disabled ~ .material-checkbox-group-label {\n    color: #eee;\n}\n.material-checkbox-group_primary .material-checkbox:checked + .material-checkbox-group-label:after {\n    border-color: #fff;\n}\n.material-checkbox-group_primary .material-checkbox:checked + .material-checkbox-group-label:before {\n    background-color: #4092d9;\n}\n.material-checkbox-group_primary .material-checkbox-group-label:before {\n    border-color: #4092d9;\n}\n.material-checkbox-group_success .material-checkbox:checked + .material-checkbox-group-label:after {\n    border-color: #fff;\n}\n.material-checkbox-group_success .material-checkbox:checked + .material-checkbox-group-label:before {\n    background-color: #68c368;\n}\n.material-checkbox-group_success .material-checkbox-group-label:before {\n    border-color: #68c368;\n}\n.material-checkbox-group_info .material-checkbox:checked + .material-checkbox-group-label:after {\n    border-color: #fff;\n}\n.material-checkbox-group_info .material-checkbox:checked + .material-checkbox-group-label:before {\n    background-color: #8bdaf2;\n}\n.material-checkbox-group_info .material-checkbox-group-label:before {\n    border-color: #8bdaf2;\n}\n.material-checkbox-group_warning .material-checkbox:checked + .material-checkbox-group-label:after {\n    border-color: #fff;\n}\n.material-checkbox-group_warning .material-checkbox:checked + .material-checkbox-group-label:before {\n    background-color: #f2a12e;\n}\n.material-checkbox-group_warning .material-checkbox-group-label:before {\n    border-color: #f2a12e;\n}\n.material-checkbox-group_danger .material-checkbox:checked + .material-checkbox-group-label:after {\n    border-color: #fff;\n}\n.material-checkbox-group_danger .material-checkbox:checked + .material-checkbox-group-label:before {\n    background-color: #f3413c;\n}\n.material-checkbox-group_danger .material-checkbox-group-label:before {\n    border-color: #f3413c;\n}\n@-webkit-keyframes check {\n0% {\n        height: 0;\n        width: 0;\n}\n25% {\n        height: 0;\n        /*width: 4px;*/\n        width: 3px;\n}\n50% {\n        /*height: 12px;*/\n        height: 9px;\n        /*width: 4px;*/\n        width: 3px;\n}\n}\n@keyframes check {\n0% {\n        height: 0;\n        width: 0;\n}\n25% {\n        height: 0;\n        /*width: 4px;*/\n        width: 3px;\n}\n50% {\n        /*height: 12px;*/\n        height: 9px;\n        /*width: 4px;*/\n        width: 3px;\n}\n}\n", ""]);
+
+// exports
+
 
 /***/ })
 ],[72]);

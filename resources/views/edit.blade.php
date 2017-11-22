@@ -39,8 +39,7 @@
         <!-- note content -->
         <div class="container-fluid">
             
-            <!-- Panel Admission Data -->
-            <panel heading='Admission data'>
+            <panel heading='Admission data'><!-- Panel Admission Data -->
                 
                 <!-- wrap content with row class -->
                 <div class="row">
@@ -105,7 +104,7 @@
                 </div><!-- wrap content with row class -->
             </panel><!-- Panel Admission Data -->
 
-            <panel heading='History'>
+            <panel heading='History'><!-- Panel Hisroty -->
                 <div class="row"><!-- wrap content with row class -->
                     
                     <!-- chief complaint -->
@@ -837,7 +836,7 @@
 
                     </div><!-- CAD, COPD, Hyperlipidemia, HBV -->
 
-                    <!-- chief complaint -->
+                    <!-- other comorbid  -->
                     <input-textarea
                         field="other_comorbid"
                         value="Lorem ipsum dolor sit amet."
@@ -845,14 +844,69 @@
                         grid="1-1-1"
                         max-chars="50" >
                     </input-textarea>
+                    <div class="col-xs-12"><hr class="line" /></div>
+
+                    <!-- history of present illness  -->
+                    <input-textarea
+                        field="history_of_present_illness"
+                        label="History of present illness :"
+                        grid="1-1-1"
+                        max-chars="50" >
+                    </input-textarea>
+                    <div class="col-xs-12"><hr class="line" /></div>
+
+                    <!-- history of past illness  -->
+                    <input-textarea
+                        field="history_of_past_illness"
+                        label="History of past illness :"
+                        grid="1-1-1"
+                        max-chars="50" >
+                    </input-textarea>
+                    <div class="col-xs-12"><hr class="line" /></div>
                 </div><!-- wrap content with row class -->
             </panel><!-- Panel Hisroty -->
+
+            <panel heading="Personal and Social history"><!-- panel Personal and Social history -->
+                <div class="row">
+                    <!-- personal social history -->
+                    <input-textarea
+                        field="personal_social_history"
+                        label="Personal social history:"
+                        grid="1-1-1"
+                        max-chars="50" >
+                    </input-textarea>
+                </div>
+            </panel><!-- panel Personal and Social history -->
+
+            <panel heading="Special requirement"><!-- panel Special requirement -->
+                <div class="row">
+                    <div class="col-xs-12">
+                        <input-check-group
+                            checks='[
+                                {"label": "NG tube", "field": "NG_tube"},
+                                {"label": "NG suction", "field": "NG_suction"},
+                                {"label": "Gastrostomy feeding", "field": "gastrostomy_feeding"},
+                                {"label": "Urinary cath. care", "field": "urinary_cath_care"},
+                                {"label": "Tracheostomy care", "field": "tracheostomy_care"},
+                                {"label": "Hearing impaiment", "field": "hearing_impaiment"},
+                                {"label": "Isolation room", "field": "isolation_room"}
+                            ]'>
+                        </input-check-group>
+                    </div>
+
+                    <!-- other special requirement -->
+                    <input-textarea
+                        field="other_special_requirement"
+                        label="Other special requirement:"
+                        grid="1-1-1"
+                        max-chars="50" >
+                    </input-textarea>
+                </div>
+            </panel><!-- panel Special requirement -->
         </div><!-- note content -->
     
         
     </div><!-- Vue app -->
-
-    
 
     <script src="/js/manifest.js"></script>
     <script src="/js/vendor.js"></script>

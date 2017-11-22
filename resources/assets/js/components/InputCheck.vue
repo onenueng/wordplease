@@ -127,9 +127,13 @@
 </script>
 
 <style>
+    label.material-checkbox-group-label {
+        font-weight: normal !important;
+    }
     .clear-padding {
         padding-left: 0px!important;
         margin-right: 5px!important;
+        
     }
     
     label.underline-animate:hover {
@@ -147,6 +151,8 @@
     .underline-animate:hover:after {
         width: 100%;
     }
+
+    
 
     .material-checkbox-group-label {
         position: relative;

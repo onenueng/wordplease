@@ -897,7 +897,7 @@
                     <!-- other special requirement -->
                     <input-textarea
                         field="other_special_requirement"
-                        label="Other special requirement:"
+                        placeholder="Other requirement, type here"
                         grid="1-1-1"
                         max-chars="50" >
                     </input-textarea>

@@ -1,17 +1,22 @@
 <template>
     <div :class="getGrid()">
         <div class="form-group-sm">
-            <label class="control-label" :for="field">{{ label }}</label>
-            <textarea :class="controlClass"
-                      :readonly="readonly"
-                      :name="field"
-                      :id="field"
-                      v-model="userInput"
-                      @input="oninput()"
-                      @blur="autosave()"
-                      @focus="onfocus()"
-                      rows="1"
-                      :maxlength="maxChars" >
+            <label  class="control-label"
+                    v-if="label != undefined"
+                    :for="field">
+                    {{ label }}
+            </label>
+            <textarea   :class="controlClass"
+                        :readonly="readonly"
+                        :name="field"
+                        :id="field"
+                        :maxlength="maxChars" 
+                        :placeholder="placeholderNew"
+                        v-model="userInput"
+                        @input="oninput()"
+                        @blur="autosave()"
+                        @focus="onfocus()"
+                        rows="1">
             </textarea>
             <transition name="slide-fade">
                 <p :class="helperClass" v-if="showCharsRemaining"><strong>{{ charsRemaining }} chars remain.</strong></p>
@@ -47,6 +52,10 @@
                 type: String,
                 required: false
             },
+            placeholder: {
+                type: String,
+                required: false
+            },
             maxChars: {
                 type: String,
                 required: false  
@@ -60,7 +69,8 @@
                 controlClass: 'form-control',
                 helperClass: 'text-muted',
                 showCharsRemaining: false,
-                charsRemaining: 0
+                charsRemaining: 0,
+                placeholderNew: ''
             }
         },
         mounted () {
@@ -68,6 +78,15 @@
                 this.userInput = ''
             else
                 this.userInput = this.value
+
+            if (this.placeholder !== undefined) {
+                if (this.placeholder !== undefined) {
+                    this.placeholderNew = this.placeholder + ' - ' + this.maxChars + ' chars max'
+                } else {
+                    this.placeholderNew = this.placeholder
+                }
+            }
+
 
             autosize($(this.domRef))
             this.onkeypress = _.debounce(() => {
@@ -89,7 +108,11 @@
         methods: {
             getGrid() {
                 let grid = this.grid.split('-').map((x) => 12/x)
-                return 'col-xs-' + (grid[0]) + ' col-sm-' + (grid[1]) + ' col-md-' + (grid[2])
+                let divClass = 'col-xs-' + (grid[0]) + ' col-sm-' + (grid[1]) + ' col-md-' + (grid[2])
+                if (this.label === undefined) {
+                    divClass = divClass + ' fix-margin'
+                }
+                return divClass 
             },
             autosave() {
                 if ( this.readonly != '' && this.dirty) {
@@ -155,6 +178,10 @@
 </script>
 
 <style>
+    .fix-margin {
+        margin-top: .3em;
+    }
+
     .textarea-warning {
         /*Important stuff here*/
         -webkit-transition: flash-warning 3s ease-out;

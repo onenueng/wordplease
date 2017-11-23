@@ -1478,6 +1478,18 @@ window.app = new Vue({
             });
         });
 
+        EventBus.$on('append-current-medications', function () {
+            EventBus.$emit('set-current-medications', $('#current_medications_helper').val(), 'append');
+            $('#current_medications_helper').val('');
+            $('#current_medications_helper').focus();
+        });
+
+        EventBus.$on('put-current-medications', function () {
+            EventBus.$emit('set-current-medications', $('#current_medications_helper').val(), 'put');
+            $('#current_medications_helper').val('');
+            $('#current_medications_helper').focus();
+        });
+
         /**
          * Common events.
          */
@@ -2610,10 +2622,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             type: String,
             required: false
         },
-        emitOnUpdate: {
+        targetId: {
             type: String,
             required: false
         }
+
     },
     data: function data() {
         return {
@@ -2626,6 +2639,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         // initial data
         if (this.value === undefined) this.lastData = this.userInput = '';else this.lastData = this.userInput = this.value;
+
+        // listen to event to trigger event
+        if (this.interfaceEvent !== undefined) {
+            EventBus.$on(this.interfaceEvent, function () {
+                _this.emitUpdate();
+            });
+        }
 
         // initial autocomplete instance
         $('#' + this.id).autocomplete({
@@ -2661,7 +2681,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             },
             onSelect: function onSelect(suggestion) {
                 _this.userInput = suggestion.value;
-                _this.emitUpdate();
                 _this.autosave();
             },
             minChars: this.minChars == undefined ? 3 : Number(this.minChars),
@@ -2674,25 +2693,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (this.grid == undefined) {
                 return 'col-xs-12';
             }
-            var grid = this.grid.split('-').map(function (x) {
-                return 12 / x;
-            });
+            var grid = this.grid.split('-');
             return 'col-xs-' + grid[0] + ' col-sm-' + grid[1] + ' col-md-' + grid[2];
         },
         autosave: function autosave() {
             if (this.field !== undefined && this.userInput != this.lastData) {
                 EventBus.$emit('autosave', this.field, this.userInput);
                 this.lastData = this.userInput;
-            }
-        },
-        emitUpdate: function emitUpdate() {
-            var _this2 = this;
-
-            if (this.emitOnUpdate !== undefined) {
-                // cannot pass array to prop, so we need to parse string to array
-                this.emitEvents.forEach(function (event) {
-                    EventBus.$emit(event[0], _this2.userInput, event[1]);
-                });
             }
         }
     },
@@ -2704,14 +2711,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return '/lists/' + this.serviceUrl;
         },
         id: function id() {
-            if (this.field === undefined) {
-                return Date.now() + this.serviceUrl.replace(new RegExp('/', 'g'), '');
-            } else {
-                return this.field;
-            }
-        },
-        emitEvents: function emitEvents() {
-            return JSON.parse(this.emitOnUpdate);
+            if (this.targetId !== undefined) return this.targetId;
+
+            if (this.field !== undefined) return this.field;
+
+            return Date.now() + this.serviceUrl.replace(new RegExp('/', 'g'), '');
         }
     }
 });
@@ -3327,7 +3331,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }
                 console.log(mode + ' => ' + value);
                 _this.dirty = true;
-                // autosize.update($(this.domRef))
                 _this.autosave();
             });
         }
@@ -3383,7 +3386,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 this.showCharsRemaining = false;
             }
 
-            // seem like Vue delay update so, we delay autosize process
+            // seem like Vue delay update so, we delay autosize process to take effect
             setTimeout(function () {
                 autosize.update($(_this2.domRef));
             }, 100);

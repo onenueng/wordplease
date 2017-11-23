@@ -56,6 +56,18 @@ window.app = new Vue({
             })
         })
 
+        EventBus.$on('append-current-medications', () => {
+            EventBus.$emit('set-current-medications', $('#current_medications_helper').val(), 'append')
+            $('#current_medications_helper').val('')
+            $('#current_medications_helper').focus()
+        })
+
+        EventBus.$on('put-current-medications', () => {
+            EventBus.$emit('set-current-medications', $('#current_medications_helper').val(), 'put')
+            $('#current_medications_helper').val('')
+            $('#current_medications_helper').focus()
+        })
+
         /**
          * Common events.
          */

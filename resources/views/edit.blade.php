@@ -73,7 +73,7 @@
                         field="ward"
                         value=""
                         label="Ward :"
-                        grid="1-2-4"
+                        grid="12-6-3"
                         min-chars="2">
                     </input-suggestion>
 
@@ -82,7 +82,7 @@
                         field="attending"
                         value=""
                         label="Attending :"
-                        grid="1-2-4">
+                        grid="12-6-3">
                     </input-suggestion>
 
                     <!-- devision -->
@@ -90,7 +90,7 @@
                         field="division"
                         value=""
                         label="Specialty :"
-                        grid="1-2-4"
+                        grid="12-6-3"
                         min-chars="2">
                     </input-suggestion>
 
@@ -919,14 +919,29 @@
                 <div class="row"><!-- wrap with row -->
                     <!-- drug search helper -->
                     <input-suggestion
-                        emit-on-update='[["current_medications", "append"]]'
+                        target-id="current_medications_helper"
+                        grid="8-8-4"
                         service-url="autocomplete/drug"
                         placeholder="search drug using generic, trade or synonym name">
                     </input-suggestion>
 
+                    <button-app
+                        action="append-current-medications"
+                        label="Append"
+                        status="draft"
+                        size="sm">
+                    </button-app>
+
+                    <button-app
+                        action="put-current-medications"
+                        label="Put"
+                        status="draft"
+                        size="sm">
+                    </button-app>
+
                     <input-textarea
                         field="current_medications"
-                        setter-event="current_medications">
+                        setter-event="set-current-medications">
                     </input-textarea>
                     
                 </div><!-- wrap with row -->

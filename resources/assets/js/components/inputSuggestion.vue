@@ -58,10 +58,11 @@
                 type: String,
                 required: false  
             },
-            emitOnUpdate: {
+            targetId: {
                 type: String,
                 required: false  
             }
+
         },
         data () {
             return {
@@ -75,6 +76,13 @@
                 this.lastData = this.userInput = ''
             else
                 this.lastData = this.userInput = this.value
+
+            // listen to event to trigger event
+            if (this.interfaceEvent !== undefined) {
+                EventBus.$on(this.interfaceEvent, () => {
+                    this.emitUpdate()
+                })
+            }
 
             // initial autocomplete instance
             $('#' + this.id).autocomplete({
@@ -110,7 +118,6 @@
                 },
                 onSelect: (suggestion) => {
                     this.userInput = suggestion.value
-                    this.emitUpdate()
                     this.autosave()
                 },
                 minChars: this.minChars == undefined ? 3 : Number(this.minChars),
@@ -122,21 +129,13 @@
                 if (this.grid == undefined) {
                     return 'col-xs-12'
                 }
-                let grid = this.grid.split('-').map((x) => 12/x)
+                let grid = this.grid.split('-')
                 return 'col-xs-' + (grid[0]) + ' col-sm-' + (grid[1]) + ' col-md-' + (grid[2])
             },
             autosave() {
                 if (this.field !== undefined && this.userInput != this.lastData) {
                     EventBus.$emit('autosave', this.field, this.userInput)
                     this.lastData = this.userInput
-                }
-            },
-            emitUpdate() {
-                if (this.emitOnUpdate !== undefined) {
-                    // cannot pass array to prop, so we need to parse string to array
-                    (this.emitEvents).forEach((event) => {
-                        EventBus.$emit(event[0], this.userInput, event[1])
-                    })
                 }
             }
         },
@@ -148,14 +147,15 @@
                 return  '/lists/' + this.serviceUrl
             },
             id() {
-                if(this.field === undefined) {
-                    return Date.now() + this.serviceUrl.replace(new RegExp('/', 'g'), '')
-                } else {
+                if (this.targetId !== undefined)
+                    return this.targetId
+                
+                if (this.field !== undefined)
                     return this.field
-                }
-            },
-            emitEvents() {
-                return JSON.parse(this.emitOnUpdate)
+                
+                return Date.now() + this.serviceUrl.replace(new RegExp('/', 'g'), '')
+                
+
             }
         }
     }

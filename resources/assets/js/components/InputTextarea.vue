@@ -105,7 +105,6 @@
                     }
                     console.log(mode + ' => ' + value)
                     this.dirty = true
-                    // autosize.update($(this.domRef))
                     this.autosave()
                 })
             }
@@ -154,7 +153,7 @@
                     this.showCharsRemaining = false
                 }
 
-                // seem like Vue delay update so, we delay autosize process
+                // seem like Vue delay update so, we delay autosize process to take effect
                 setTimeout(() => { autosize.update($(this.domRef)) }, 100)
 
             },

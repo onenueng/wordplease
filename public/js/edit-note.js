@@ -2651,13 +2651,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this.userInput = suggestion.value;
                 _this.autosave();
             },
-            minChars: this.minChars === undefined ? 3 : this.minChars,
+            minChars: this.minChars == undefined ? 3 : Number(this.minChars),
             maxHeight: 240
         });
     },
 
     methods: {
         getGrid: function getGrid() {
+            if (this.grid == undefined) {
+                return 'col-xs-12';
+            }
             var grid = this.grid.split('-').map(function (x) {
                 return 12 / x;
             });

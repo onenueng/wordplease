@@ -2,12 +2,14 @@
 
 namespace App\Models\Lists;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Contracts\ListItem;
 use App\Traits\DataImportable;
+use App\Traits\ListQueryable;
+use Illuminate\Database\Eloquent\Model;
 
-class Drug extends Model
+class Drug extends Model implements ListItem
 {
-    use DataImportable;
+    use DataImportable, ListQueryable;
 
     /**
      * The attributes that are mass assignable.
@@ -20,7 +22,7 @@ class Drug extends Model
         'generic_name',
         'trade_name',
         'synonyms',
-        'key',
+        'key', // maybe should remove
     ];
 
     /**
@@ -33,33 +35,24 @@ class Drug extends Model
         return 'id';
     }
 
-    public static function search($key)
+    /**
+     * Get fields whiches selected for query.
+     *
+     * @return array
+     */
+    public static function selectFields()
     {
-        $start = microtime(true);
-        $cri = '%' . $key . '%';
-        $query = static::select('id', 'name')
-                            ->where('name', 'like', $cri)
-                            ->orWhere('generic_name', 'like', $cri)
-                            ->orWhere('trade_name', 'like', $cri)
-                            ->orWhere('synonyms', 'like', $cri)
-                            ->get();
-        return microtime(true) - $start;
+        return ['id as data', 'name as value'];
     }
 
-    public static function search2($key)
+    /**
+     * Get fields whiches make where(or) in the query.
+     *
+     * @return array
+     */
+    public static function whereFields()
     {
-        $start = microtime(true);
-        $cri = "%";
-        for ($i = 0; $i < strlen($key); $i++)
-            $cri .= ($key[$i] . '%');
-
-        $query = static::select('id', 'name')
-                            ->where('name', 'like', $cri)
-                            ->orWhere('generic_name', 'like', $cri)
-                            ->orWhere('trade_name', 'like', $cri)
-                            ->orWhere('synonyms', 'like', $cri)
-                            ->get();
-        return microtime(true) - $start;
+        return ['name', 'generic_name', 'trade_name', 'synonyms'];
     }
     
 }

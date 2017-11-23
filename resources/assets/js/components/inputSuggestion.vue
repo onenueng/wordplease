@@ -100,12 +100,15 @@
                     this.userInput = suggestion.value
                     this.autosave()
                 },
-                minChars: this.minChars === undefined ? 3 : this.minChars,
+                minChars: this.minChars == undefined ? 3 : Number(this.minChars),
                 maxHeight: 240
             });
         },
         methods: {
             getGrid() {
+                if (this.grid == undefined) {
+                    return 'col-xs-12'
+                }
                 let grid = this.grid.split('-').map((x) => 12/x)
                 return 'col-xs-' + (grid[0]) + ' col-sm-' + (grid[1]) + ' col-md-' + (grid[2])
             },

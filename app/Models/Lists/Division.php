@@ -2,14 +2,16 @@
 
 namespace App\Models\Lists;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Contracts\AutoId;
+use App\Contracts\ListItem;
 use App\Traits\AutoIdInsertable;
 use App\Traits\DataImportable;
+use App\Traits\ListQueryable;
+use Illuminate\Database\Eloquent\Model;
 
-class Division extends Model implements AutoId
+class Division extends Model implements AutoId, ListItem
 {
-    use AutoIdInsertable, DataImportable;
+    use AutoIdInsertable, DataImportable, ListQueryable;
 
     /**
      * The attributes that are mass assignable.
@@ -31,6 +33,26 @@ class Division extends Model implements AutoId
     public static function getIdType()
     {
         return 'id';
+    }
+
+    /**
+     * Get fields whiches selected for query.
+     *
+     * @return array
+     */
+    public static function selectFields()
+    {
+        return ['id as data', 'name as value'];
+    }
+
+    /**
+     * Get fields whiches make where(or) in the query.
+     *
+     * @return array
+     */
+    public static function whereFields()
+    {
+        return ['name', 'name_eng'];
     }
     
 }

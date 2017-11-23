@@ -879,7 +879,7 @@
             </panel><!-- panel Personal and Social history -->
 
             <panel heading="Special requirement"><!-- panel Special requirement -->
-                <div class="row">
+                <div class="row"><!-- wrap with row -->
                     <div class="col-xs-12">
                         <input-check-group
                             checks='[
@@ -901,8 +901,30 @@
                         grid="1-1-1"
                         max-chars="50" >
                     </input-textarea>
-                </div>
+                </div><!-- wrap with row -->
             </panel><!-- panel Special requirement -->
+
+            <panel heading="Family history"><!-- panel Family history -->
+                <div class="row"><!-- wrap with row -->
+                    <!-- family history -->
+                    <input-textarea
+                        field="family_history"
+                        grid="1-1-1"
+                        max-chars="50" >
+                    </input-textarea>
+                </div><!-- wrap with row -->
+            </panel><!-- panel Family history -->
+
+            <panel heading="Current medications"><!-- panel Current medications -->
+                <div class="row"><!-- wrap with row -->
+                    <!-- drug search helper -->
+                    <input-suggestion
+                        field="drug">
+                        
+                    </input-suggestion>
+                    
+                </div><!-- wrap with row -->
+            </panel><!-- panel Current medications -->
         </div><!-- note content -->
     
         

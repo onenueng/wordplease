@@ -64,8 +64,8 @@
                 required: false
             },
             // event emit when checked/unchecked.
-            emitOnCheck: {
-                type: Array,
+            emitOnUpdate: {
+                
                 required: false
             },
             // event emit when checked/unchecked.
@@ -109,8 +109,8 @@
                 
                 this.autosave()
 
-                if (this.emitOnCheck !== undefined) {
-                    this.emitOnCheck.forEach((event) => {
+                if (this.emitOnUpdate !== undefined) {
+                    (this.emitEvents).forEach((event) => {
                         // [name][mode 1:checked 2:unchecked][value]
                         if (event[1] == this.thisChecked) {
                             EventBus.$emit(event[0], event[2])
@@ -121,6 +121,14 @@
             autosave() {
                 if (this.field !== undefined)
                     EventBus.$emit('autosave', this.field, (this.thisChecked.length > 0))
+            }
+        },
+        computed: {
+            emitEvents() {
+                if (typeof this.emitOnUpdate == 'String') {
+                    return JSON.parse(this.emitOnUpdate)
+                }
+                return this.emitOnUpdate
             }
         }
     }

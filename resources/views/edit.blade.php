@@ -258,7 +258,7 @@
                                         {
                                             "field": "comorbid_cirrhosis_HBV",
                                             "label": "HBV",
-                                            "emitOnCheck": [
+                                            "emitOnUpdate": [
                                                 ["HBV-checked","checked",1],
                                                 ["cirrhosis-cryptogenic-unchecked","checked",""]
                                             ],
@@ -267,7 +267,7 @@
                                         {
                                             "field": "comorbid_cirrhosis_HCV",
                                             "label": "HCV",
-                                            "emitOnCheck": [
+                                            "emitOnUpdate": [
                                                 ["HCV-checked","checked",1],
                                                 ["cirrhosis-cryptogenic-unchecked","checked",""]
                                             ],
@@ -276,13 +276,13 @@
                                         {
                                             "field": "comorbid_cirrhosis_NASH",
                                             "label": "NASH",
-                                            "emitOnCheck": [["cirrhosis-cryptogenic-unchecked","checked",""]],
+                                            "emitOnUpdate": [["cirrhosis-cryptogenic-unchecked","checked",""]],
                                             "setterEvent": "cirrhosis-specify-unchecked"
                                         },
                                         {
                                             "field": "comorbid_cirrhosis_cryptogenic",
                                             "label": "Cryptogenic",
-                                            "emitOnCheck": [["cirrhosis-specify-unchecked","checked",""]],
+                                            "emitOnUpdate": [["cirrhosis-specify-unchecked","checked",""]],
                                             "setterEvent": "cirrhosis-cryptogenic-unchecked"
                                         }
                                     ]'
@@ -919,9 +919,15 @@
                 <div class="row"><!-- wrap with row -->
                     <!-- drug search helper -->
                     <input-suggestion
-                        field="drug">
-                        
+                        emit-on-update='[["current_medications", "append"]]'
+                        service-url="autocomplete/drug"
+                        placeholder="search drug using generic, trade or synonym name">
                     </input-suggestion>
+
+                    <input-textarea
+                        field="current_medications"
+                        setter-event="current_medications">
+                    </input-textarea>
                     
                 </div><!-- wrap with row -->
             </panel><!-- panel Current medications -->

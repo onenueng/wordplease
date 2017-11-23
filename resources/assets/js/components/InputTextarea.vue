@@ -59,6 +59,10 @@
             maxChars: {
                 type: String,
                 required: false  
+            },
+            setterEvent: {
+                type: String,
+                required: false  
             }
         },
         data () {
@@ -87,6 +91,24 @@
                 }
             }
 
+            if (this.setterEvent !== undefined) {
+                EventBus.$on(this.setterEvent, (value, mode = 'put') => {
+                    // autosize.update($(this.domRef))
+                    if (mode == 'put') {
+                        this.userInput = value;
+                    } else {
+                        if (this.userInput == '') {
+                            this.userInput += (value)
+                        } else {
+                            this.userInput += ('\n' + value)
+                        }
+                    }
+                    console.log(mode + ' => ' + value)
+                    this.dirty = true
+                    // autosize.update($(this.domRef))
+                    this.autosave()
+                })
+            }
 
             autosize($(this.domRef))
             this.onkeypress = _.debounce(() => {
@@ -107,10 +129,16 @@
         },
         methods: {
             getGrid() {
-                let grid = this.grid.split('-').map((x) => 12/x)
-                let divClass = 'col-xs-' + (grid[0]) + ' col-sm-' + (grid[1]) + ' col-md-' + (grid[2])
+                let divClass = ''
+                if (this.grid == undefined) {
+                    divClass = 'col-xs-12'
+                } else {
+                    let grid = this.grid.split('-').map((x) => 12/x)
+                    divClass = 'col-xs-' + (grid[0]) + ' col-sm-' + (grid[1]) + ' col-md-' + (grid[2])
+                }
+
                 if (this.label === undefined) {
-                    divClass = divClass + ' fix-margin'
+                    divClass += ' fix-margin'
                 }
                 return divClass 
             },
@@ -125,6 +153,10 @@
                 if(this.showCharsRemaining) {
                     this.showCharsRemaining = false
                 }
+
+                // seem like Vue delay update so, we delay autosize process
+                setTimeout(() => { autosize.update($(this.domRef)) }, 100)
+
             },
             oninput() {
                 if(!this.dirty && (this.userInput.length < this.maxChars)) {

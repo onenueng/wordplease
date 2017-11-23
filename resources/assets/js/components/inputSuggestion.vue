@@ -1,7 +1,11 @@
 <template>
     <div :class="getGrid()">
         <div class="form-group-sm">
-            <label class="control-label" :for="field">{{ label }}</label>
+            <label  class="control-label"
+                    :for="id"
+                    v-if="label !== undefined">
+                {{ label }}
+            </label>
             <div class="input-group">
                 <span class="input-group-addon">
                     <i class="fa fa-lightbulb-o"></i>
@@ -9,7 +13,8 @@
                 <input  type="text"
                         class="form-control"
                         :name="field"
-                        :id="field"
+                        :id="id"
+                        :placeholder="placeholder"
                         v-model="userInput"
                         @blur="autosave()" />
             </div>
@@ -26,6 +31,10 @@
                 required: false
             },
             label: {
+                type: String,
+                required: false  
+            },
+            placeholder: {
                 type: String,
                 required: false  
             },
@@ -48,12 +57,15 @@
             minChars: {
                 type: String,
                 required: false  
+            },
+            emitOnUpdate: {
+                type: String,
+                required: false  
             }
         },
         data () {
             return {
                 userInput: '',
-                domRef: 'input[name=' + this.field + ']',
                 lastData: ''
             }
         },
@@ -65,7 +77,7 @@
                 this.lastData = this.userInput = this.value
 
             // initial autocomplete instance
-            $(this.domRef).autocomplete({
+            $('#' + this.id).autocomplete({
                 // setup sservice endpoint
                 serviceUrl: this.getServiceUrl,
                 // format suggestions
@@ -98,6 +110,7 @@
                 },
                 onSelect: (suggestion) => {
                     this.userInput = suggestion.value
+                    this.emitUpdate()
                     this.autosave()
                 },
                 minChars: this.minChars == undefined ? 3 : Number(this.minChars),
@@ -117,15 +130,32 @@
                     EventBus.$emit('autosave', this.field, this.userInput)
                     this.lastData = this.userInput
                 }
+            },
+            emitUpdate() {
+                if (this.emitOnUpdate !== undefined) {
+                    // cannot pass array to prop, so we need to parse string to array
+                    (this.emitEvents).forEach((event) => {
+                        EventBus.$emit(event[0], this.userInput, event[1])
+                    })
+                }
             }
         },
         computed: {
             getServiceUrl() {
-                if (this.serviceUrl === undefined) {
+                if (this.serviceUrl == undefined) {
                     return '/lists/autocomplete/' + this.field
                 }
-
                 return  '/lists/' + this.serviceUrl
+            },
+            id() {
+                if(this.field === undefined) {
+                    return Date.now() + this.serviceUrl.replace(new RegExp('/', 'g'), '')
+                } else {
+                    return this.field
+                }
+            },
+            emitEvents() {
+                return JSON.parse(this.emitOnUpdate)
             }
         }
     }

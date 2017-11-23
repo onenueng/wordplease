@@ -1,6 +1,7 @@
 <template>
     <div class="form-group-sm">
         <label class="control-label">{{ label }}</label>
+        <!-- set key to prevent Vue warning -->
         <input-check 
             v-for="check in JSON.parse(checks)"
             :key="check.field"
@@ -8,8 +9,7 @@
             :label="check.label"
             :label-description="check.labelDescription"
             :checked="check.checked"
-            :emit-on-check="check.emitOnCheck"
-            :trigger-event="check.triggerEvent"
+            :emit-on-update="check.emitOnUpdate"
             :setter-event="check.setterEvent"
             :need-sync="needSync">
         </input-check>

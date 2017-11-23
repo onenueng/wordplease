@@ -2569,6 +2569,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: {
@@ -2578,6 +2583,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             required: false
         },
         label: {
+            type: String,
+            required: false
+        },
+        placeholder: {
             type: String,
             required: false
         },
@@ -2600,12 +2609,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         minChars: {
             type: String,
             required: false
+        },
+        emitOnUpdate: {
+            type: String,
+            required: false
         }
     },
     data: function data() {
         return {
             userInput: '',
-            domRef: 'input[name=' + this.field + ']',
             lastData: ''
         };
     },
@@ -2616,7 +2628,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         if (this.value === undefined) this.lastData = this.userInput = '';else this.lastData = this.userInput = this.value;
 
         // initial autocomplete instance
-        $(this.domRef).autocomplete({
+        $('#' + this.id).autocomplete({
             // setup sservice endpoint
             serviceUrl: this.getServiceUrl,
             // format suggestions
@@ -2649,6 +2661,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             },
             onSelect: function onSelect(suggestion) {
                 _this.userInput = suggestion.value;
+                _this.emitUpdate();
                 _this.autosave();
             },
             minChars: this.minChars == undefined ? 3 : Number(this.minChars),
@@ -2671,15 +2684,34 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 EventBus.$emit('autosave', this.field, this.userInput);
                 this.lastData = this.userInput;
             }
+        },
+        emitUpdate: function emitUpdate() {
+            var _this2 = this;
+
+            if (this.emitOnUpdate !== undefined) {
+                // cannot pass array to prop, so we need to parse string to array
+                this.emitEvents.forEach(function (event) {
+                    EventBus.$emit(event[0], _this2.userInput, event[1]);
+                });
+            }
         }
     },
     computed: {
         getServiceUrl: function getServiceUrl() {
-            if (this.serviceUrl === undefined) {
+            if (this.serviceUrl == undefined) {
                 return '/lists/autocomplete/' + this.field;
             }
-
             return '/lists/' + this.serviceUrl;
+        },
+        id: function id() {
+            if (this.field === undefined) {
+                return Date.now() + this.serviceUrl.replace(new RegExp('/', 'g'), '');
+            } else {
+                return this.field;
+            }
+        },
+        emitEvents: function emitEvents() {
+            return JSON.parse(this.emitOnUpdate);
         }
     }
 });
@@ -2695,9 +2727,13 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { class: _vm.getGrid() }, [
     _c("div", { staticClass: "form-group-sm" }, [
-      _c("label", { staticClass: "control-label", attrs: { for: _vm.field } }, [
-        _vm._v(_vm._s(_vm.label))
-      ]),
+      _vm.label !== undefined
+        ? _c(
+            "label",
+            { staticClass: "control-label", attrs: { for: _vm.id } },
+            [_vm._v("\n            " + _vm._s(_vm.label) + "\n        ")]
+          )
+        : _vm._e(),
       _vm._v(" "),
       _c("div", { staticClass: "input-group" }, [
         _vm._m(0),
@@ -2712,7 +2748,12 @@ var render = function() {
             }
           ],
           staticClass: "form-control",
-          attrs: { type: "text", name: _vm.field, id: _vm.field },
+          attrs: {
+            type: "text",
+            name: _vm.field,
+            id: _vm.id,
+            placeholder: _vm.placeholder
+          },
           domProps: { value: _vm.userInput },
           on: {
             blur: function($event) {
@@ -3239,6 +3280,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         maxChars: {
             type: String,
             required: false
+        },
+        setterEvent: {
+            type: String,
+            required: false
         }
     },
     data: function data() {
@@ -3266,6 +3311,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
         }
 
+        if (this.setterEvent !== undefined) {
+            EventBus.$on(this.setterEvent, function (value) {
+                var mode = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'put';
+
+                // autosize.update($(this.domRef))
+                if (mode == 'put') {
+                    _this.userInput = value;
+                } else {
+                    if (_this.userInput == '') {
+                        _this.userInput += value;
+                    } else {
+                        _this.userInput += '\n' + value;
+                    }
+                }
+                console.log(mode + ' => ' + value);
+                _this.dirty = true;
+                // autosize.update($(this.domRef))
+                _this.autosave();
+            });
+        }
+
         autosize($(this.domRef));
         this.onkeypress = _.debounce(function () {
             var countChars = _this.userInput.length;
@@ -3288,16 +3354,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         getGrid: function getGrid() {
-            var grid = this.grid.split('-').map(function (x) {
-                return 12 / x;
-            });
-            var divClass = 'col-xs-' + grid[0] + ' col-sm-' + grid[1] + ' col-md-' + grid[2];
+            var divClass = '';
+            if (this.grid == undefined) {
+                divClass = 'col-xs-12';
+            } else {
+                var grid = this.grid.split('-').map(function (x) {
+                    return 12 / x;
+                });
+                divClass = 'col-xs-' + grid[0] + ' col-sm-' + grid[1] + ' col-md-' + grid[2];
+            }
+
             if (this.label === undefined) {
-                divClass = divClass + ' fix-margin';
+                divClass += ' fix-margin';
             }
             return divClass;
         },
         autosave: function autosave() {
+            var _this2 = this;
+
             if (this.readonly != '' && this.dirty) {
                 EventBus.$emit('autosave', this.field, this.userInput);
                 this.dirty = false;
@@ -3308,6 +3382,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (this.showCharsRemaining) {
                 this.showCharsRemaining = false;
             }
+
+            // seem like Vue delay update so, we delay autosize process
+            setTimeout(function () {
+                autosize.update($(_this2.domRef));
+            }, 100);
         },
         oninput: function oninput() {
             if (!this.dirty && this.userInput.length < this.maxChars) {
@@ -4086,8 +4165,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             required: false
         },
         // event emit when checked/unchecked.
-        emitOnCheck: {
-            type: Array,
+        emitOnUpdate: {
+
             required: false
         },
         // event emit when checked/unchecked.
@@ -4136,8 +4215,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.autosave();
 
-            if (this.emitOnCheck !== undefined) {
-                this.emitOnCheck.forEach(function (event) {
+            if (this.emitOnUpdate !== undefined) {
+                this.emitEvents.forEach(function (event) {
                     // [name][mode 1:checked 2:unchecked][value]
                     if (event[1] == _this2.thisChecked) {
                         EventBus.$emit(event[0], event[2]);
@@ -4147,6 +4226,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         autosave: function autosave() {
             if (this.field !== undefined) EventBus.$emit('autosave', this.field, this.thisChecked.length > 0);
+        }
+    },
+    computed: {
+        emitEvents: function emitEvents() {
+            if (typeof this.emitOnUpdate == 'String') {
+                return JSON.parse(this.emitOnUpdate);
+            }
+            return this.emitOnUpdate;
         }
     }
 });
@@ -4332,8 +4419,7 @@ var render = function() {
             label: check.label,
             "label-description": check.labelDescription,
             checked: check.checked,
-            "emit-on-check": check.emitOnCheck,
-            "trigger-event": check.triggerEvent,
+            "emit-on-update": check.emitOnUpdate,
             "setter-event": check.setterEvent,
             "need-sync": _vm.needSync
           }

@@ -36,25 +36,4 @@ class AttendingStaff extends Model implements AutoId, ListItem
     {
         return 'id';
     }
-
-    /**
-     * Get fields whiches selected for query.
-     *
-     * @return array
-     */
-    public static function selectFields()
-    {
-        return ['id as data', 'name as value'];
-    }
-
-    /**
-     * Get fields whiches make where(or) in the query.
-     *
-     * @return array
-     */
-    public static function whereFields()
-    {
-        return ['name'];
-    }
-    
 }

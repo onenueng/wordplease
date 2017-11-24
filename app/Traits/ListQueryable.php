@@ -4,6 +4,26 @@ namespace App\Traits;
 
 trait ListQueryable
 {
+
+    /**
+     * Get fields whiches selected for query.
+     *
+     * @return array
+     */
+    public static function selectFields()
+    {
+        return ['id as data', 'name as value'];
+    }
+
+    /**
+     * Get fields whiches make where(or) in the query.
+     *
+     * @return array
+     */
+    public static function whereFields()
+    {
+        return ['name'];
+    }
     
     /**
      * Get list of list.
@@ -12,6 +32,11 @@ trait ListQueryable
      */
     public static function getList($keyWord)
     {
+        $query = static::extraProcedure($keyWord);
+        if (count($query) > 0) {
+            return $query;
+        }
+
         $rowsLimit = 50; // limit rows result
 
         /**
@@ -90,5 +115,15 @@ trait ListQueryable
             $pattern .= (mb_substr($keyWord, $i, 1) . '%');
         }
         return $pattern;
+    }
+
+    /**
+     * Specific procedure for specific list class
+     *
+     * @return string
+     */
+    protected static function extraProcedure($keyWord)
+    {
+        return [];
     }
 }

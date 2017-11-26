@@ -63,17 +63,17 @@ body { padding-top: 70px; }
 
 /* page theme */
 html, body {
-    font-family: 'Roboto', 'PraJad', Helvetica, Arial, sans-serif;
+    font-family: 'Roboto', 'PraJad';
     font-weight: 100;
     height: 100vh; /* full height */
     margin: 0; /* full screen */
 }
 
 input, textarea, option {
-    font-size: 1em!important;
+    font-size: 1.05em!important;
 }
 
-.form-group-sm {font-size: 1em!important;}
+.form-group-sm {font-size: 1.05em!important;}
 /* end page theme */
 
 /* navbar common theme */

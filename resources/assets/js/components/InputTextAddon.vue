@@ -11,14 +11,11 @@
                 </a>
                 <span v-if="labelDescription !== undefined">:</span>
             </label>
-            <input type="text"
-                   class="form-control"
-                   :readonly="readonly"
-                   :name="field"
-                   :id="field"
-                   :placeholder="placeholder"
-                   v-model="userInput"
-                   @blur="autosave()" />
+            <div class="input-group">
+                <span class="input-group-addon" v-if="frontAddon !== undefined" v-html="frontAddon"></span>
+                <input type="text" class="form-control" />
+                <span class="input-group-addon" v-if="rearAddon !== undefined" v-html="rearAddon"></span>
+            </div>
         </div>
     </div>
 </template>
@@ -67,6 +64,14 @@
             placeholder: {
                 type: String,
                 required: false
+            },
+            frontAddon: {
+                type: String,
+                required: false  
+            },
+            rearAddon: {
+                type: String,
+                required: false  
             }
         },
         data () {
@@ -80,6 +85,16 @@
             if (this.labelDescription !== undefined) {
                 $('a[title="' + this.labelDescription + '"]').tooltip()
             }
+
+            if (this.frontAddon !== undefined && this.frontAddon.search('data-toggle="tooltip"') >= 0) {
+                $('span.input-group-addon a[data-toggle=tooltip]').tooltip()
+            } else {
+                if (this.rearAddon !== undefined && this.rearAddon.search('data-toggle="tooltip"') >= 0) {
+                    $('span.input-group-addon a[data-toggle=tooltip]').tooltip()
+                }    
+            }
+
+            
 
             if (this.needSync !== undefined) {
                 console.log(this.field + ' need sync')

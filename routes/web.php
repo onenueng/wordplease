@@ -64,7 +64,7 @@ Route::post('test-post', function (Illuminate\Http\Request $request) {
 });
 
 Route::post('autosave', function (Illuminate\Http\Request $request) {
-    // sleep(1);
+    // sleep(2);
     return $request->all();
 });
 

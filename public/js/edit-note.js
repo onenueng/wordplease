@@ -1032,6 +1032,15 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* WEBPACK VAR INJECTION */(function($) {//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -1057,6 +1066,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             required: false
         },
         label: {
+            type: String,
+            required: false
+        },
+        labelDescription: {
             type: String,
             required: false
         },
@@ -1097,6 +1110,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
     mounted: function mounted() {
+        // init label tooltip if available.
+        if (this.labelDescription !== undefined) {
+            $('a[title="' + this.labelDescription + '"]').tooltip();
+        }
+
         if (this.needSync !== undefined) {
             console.log(this.field + ' need sync');
         }
@@ -1105,34 +1123,33 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     methods: {
-        getGrid: function getGrid() {
-            if (this.grid === undefined) {
-                return '';
-            }
-            var grid = this.grid.split('-').map(function (x) {
-                return 12 / x;
-            });
-            return 'col-xs-' + grid[0] + ' col-sm-' + grid[1] + ' col-md-' + grid[2];
-        },
         autosave: function autosave() {
             if (this.readonly != '' && this.userInput != this.lastSave) {
                 EventBus.$emit('autosave', this.field, this.userInput);
                 this.lastSave = this.userInput;
             }
-        },
-        getSize: function getSize() {
-            if (this.size == 'normal') {
-                return 'form-group has-feedback';
-            }
-            return 'form-group-sm has-feedback';
         }
     },
     computed: {
         hasLabel: function hasLabel() {
             return !(this.label === undefined);
+        },
+        sizeClass: function sizeClass() {
+            if (this.size == 'normal') {
+                return 'form-group';
+            }
+            return 'form-group-sm';
+        },
+        gridClass: function gridClass() {
+            if (this.grid === undefined) {
+                return '';
+            }
+            var grid = this.grid.split('-');
+            return 'col-xs-' + grid[0] + ' col-sm-' + grid[1] + ' col-md-' + grid[2];
         }
     }
 });
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(1)))
 
 /***/ }),
 /* 12 */
@@ -1142,13 +1159,32 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { class: _vm.getGrid() }, [
-    _c("div", { class: _vm.getSize() }, [
+  return _c("div", { class: _vm.gridClass }, [
+    _c("div", { class: _vm.sizeClass }, [
       _vm.hasLabel
         ? _c(
             "label",
             { staticClass: "control-label", attrs: { for: _vm.field } },
-            [_vm._v(_vm._s(_vm.label))]
+            [
+              _vm._v("\n            " + _vm._s(_vm.label) + "\n            "),
+              _vm.labelDescription !== undefined
+                ? _c(
+                    "a",
+                    {
+                      attrs: {
+                        role: "button",
+                        "data-toggle": "tooltip",
+                        title: _vm.labelDescription
+                      }
+                    },
+                    [_c("i", { staticClass: "fa fa-info-circle" })]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.labelDescription !== undefined
+                ? _c("span", [_vm._v(":")])
+                : _vm._e()
+            ]
           )
         : _vm._e(),
       _vm._v(" "),
@@ -1438,6 +1474,7 @@ Vue.component('input-textarea', __webpack_require__(105));
 Vue.component('input-radio', __webpack_require__(110));
 Vue.component('input-check', __webpack_require__(115));
 Vue.component('input-check-group', __webpack_require__(120));
+Vue.component('input-text-addon', __webpack_require__(140));
 
 Vue.component('modal-document', __webpack_require__(123));
 
@@ -1517,10 +1554,13 @@ window.app = new Vue({
         });
 
         EventBus.$on('autosave', function (field, value, ref) {
-            if (ref === undefined) {}
+            _this.autosaving = true;
             axios.post('/autosave', JSON.parse('{"' + field + '": ' + JSON.stringify(value) + '}')).then(function (response) {
                 console.log(response.data);
-                _this.autosaving = false;
+                // remove timeout later
+                setTimeout(function () {
+                    _this.autosaving = false;
+                }, 1000);
             }).catch(function (error) {
                 _this.autosaving = false;
                 if (error.response) {
@@ -2972,7 +3012,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             console.log(this.field + ' need sync');
         }
 
-        if (this.value === undefined) this.lastData = this.userInput = this.value = '';else this.lastData = this.userInput = this.value;
+        if (this.value === undefined) this.lastData = this.userInput = '';else this.lastData = this.userInput = this.value;
 
         this.showReset = this.value != '';
 
@@ -2995,9 +3035,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (this.grid === undefined) {
                 return '';
             }
-            var grid = this.grid.split('-').map(function (x) {
-                return 12 / x;
-            });
+            // let grid = this.grid.split('-').map((x) => 12/x)
+            var grid = this.grid.split('-');
             return 'col-xs-' + grid[0] + ' col-sm-' + grid[1] + ' col-md-' + grid[2];
         },
         getSize: function getSize() {
@@ -3309,7 +3348,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         if (this.placeholder !== undefined) {
             if (this.placeholder !== undefined) {
-                this.placeholderNew = this.placeholder + ' - ' + this.maxChars + ' chars max';
+                this.placeholderNew = this.placeholder + ' - ' + this.getMaxChars + ' chars max';
             } else {
                 this.placeholderNew = this.placeholder;
             }
@@ -3319,7 +3358,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             EventBus.$on(this.setterEvent, function (value) {
                 var mode = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'put';
 
-                // autosize.update($(this.domRef))
                 if (mode == 'put') {
                     _this.userInput = value;
                 } else {
@@ -3329,7 +3367,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         _this.userInput += '\n' + value;
                     }
                 }
-                console.log(mode + ' => ' + value);
                 _this.dirty = true;
                 _this.autosave();
             });
@@ -3338,10 +3375,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         autosize($(this.domRef));
         this.onkeypress = _.debounce(function () {
             var countChars = _this.userInput.length;
-            if (countChars > .5 * _this.maxChars) {
-                _this.charsRemaining = _this.maxChars - _this.userInput.length;
+            if (countChars > .5 * _this.getMaxChars) {
+                _this.charsRemaining = _this.getMaxChars - _this.userInput.length;
                 _this.showCharsRemaining = true;
-                if (countChars > .75 * _this.maxChars) {
+                if (countChars > .75 * _this.getMaxChars) {
                     _this.toggleStatus('danger');
                 } else {
                     _this.toggleStatus('warning');
@@ -3359,11 +3396,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         getGrid: function getGrid() {
             var divClass = '';
             if (this.grid == undefined) {
-                divClass = 'col-xs-12';
+                divClass = '';
             } else {
-                var grid = this.grid.split('-').map(function (x) {
-                    return 12 / x;
-                });
+                // let grid = this.grid.split('-').map((x) => 12/x)
+                var grid = this.grid.split('-');
                 divClass = 'col-xs-' + grid[0] + ' col-sm-' + grid[1] + ' col-md-' + grid[2];
             }
 
@@ -3392,13 +3428,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }, 100);
         },
         oninput: function oninput() {
-            if (!this.dirty && this.userInput.length < this.maxChars) {
+
+            if (!this.dirty && this.userInput.length < this.getMaxChars) {
                 this.dirty = true;
             }
 
             if (this.showCharsRemaining) {
-                this.charsRemaining = this.maxChars - this.userInput.length;
+                this.charsRemaining = this.getMaxChars - this.userInput.length;
             }
+
             this.onkeypress();
             this.onkeypressSave();
         },
@@ -3434,9 +3472,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
         },
         onfocus: function onfocus() {
-            if (this.userInput.length == this.maxChars) {
+            if (this.userInput.length == this.getMaxChars) {
                 this.toggleStatus('danger');
             }
+        }
+    },
+    computed: {
+        getMaxChars: function getMaxChars() {
+            return this.maxChars === undefined ? 255 : this.maxChars;
         }
     }
 });
@@ -3625,7 +3668,9 @@ exports.push([module.i, "\ndiv.extra {\n    font-style: italic;\n    color: #757
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* WEBPACK VAR INJECTION */(function($) {//
+/* WEBPACK VAR INJECTION */(function($) {var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+//
 //
 //
 //
@@ -3773,7 +3818,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         // return checked value is trigger value or not.
         isTriggerExtra: function isTriggerExtra(value) {
-            return value == this.triggerValue;
+            if (_typeof(this.triggerValues) == 'object') {
+                var show = false;
+                this.triggerValues.forEach(function (eachValue) {
+                    console.log("each: " + eachValue + "=> click:" + value);
+                    if (eachValue == value) {
+                        show = true;
+                    }
+                });
+                return show;
+            }
+            return value == this.triggerValues;
         },
 
         // emit event on label action.
@@ -3859,6 +3914,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 return JSON.parse(this.labelAction).title;
             }
             return '';
+        },
+        triggerValues: function triggerValues() {
+            if (this.triggerValue !== undefined) {
+                return JSON.parse(this.triggerValue);
+            }
+            return null;
         }
     }
 });
@@ -3879,45 +3940,51 @@ var render = function() {
         "div",
         { staticClass: "form-group-sm" },
         [
-          _c("label", { staticClass: "control-label" }, [
-            _vm._v(_vm._s(_vm.label) + "\n            "),
-            _vm.labelAction !== undefined
-              ? _c(
-                  "a",
-                  {
-                    attrs: {
-                      role: "button",
-                      "data-toggle": "tooltip",
-                      title: _vm.labelActionTitle
-                    },
-                    on: {
-                      click: function($event) {
-                        _vm.emitLabelActionEvent()
+          _c(
+            "label",
+            {
+              staticClass: "control-label",
+              domProps: { innerHTML: _vm._s(_vm.label) }
+            },
+            [
+              _vm.labelAction !== undefined
+                ? _c(
+                    "a",
+                    {
+                      attrs: {
+                        role: "button",
+                        "data-toggle": "tooltip",
+                        title: _vm.labelActionTitle
+                      },
+                      on: {
+                        click: function($event) {
+                          _vm.emitLabelActionEvent()
+                        }
                       }
-                    }
-                  },
-                  [_c("i", { class: _vm.labelActionIcon })]
-                )
-              : _vm._e(),
-            _vm._v(" "),
-            _vm.labelDescription !== undefined
-              ? _c(
-                  "a",
-                  {
-                    attrs: {
-                      role: "button",
-                      "data-toggle": "tooltip",
-                      title: _vm.labelDescription
-                    }
-                  },
-                  [_c("i", { staticClass: "fa fa-info-circle" })]
-                )
-              : _vm._e(),
-            _vm._v(" "),
-            _vm.labelDescription !== undefined
-              ? _c("span", [_vm._v(":")])
-              : _vm._e()
-          ]),
+                    },
+                    [_c("i", { class: _vm.labelActionIcon })]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.labelDescription !== undefined
+                ? _c(
+                    "a",
+                    {
+                      attrs: {
+                        role: "button",
+                        "data-toggle": "tooltip",
+                        title: _vm.labelDescription
+                      }
+                    },
+                    [_c("i", { staticClass: "fa fa-info-circle" })]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.labelDescription !== undefined
+                ? _c("span", [_vm._v(":")])
+                : _vm._e()
+            ]
+          ),
           _vm._v(" "),
           _c("transition", { attrs: { name: "slide-fade" } }, [
             _c(
@@ -4825,6 +4892,272 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-058e6708", module.exports)
+  }
+}
+
+/***/ }),
+/* 127 */,
+/* 128 */,
+/* 129 */,
+/* 130 */,
+/* 131 */,
+/* 132 */,
+/* 133 */,
+/* 134 */,
+/* 135 */,
+/* 136 */,
+/* 137 */,
+/* 138 */,
+/* 139 */,
+/* 140 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(141)
+/* template */
+var __vue_template__ = __webpack_require__(142)
+/* template functional */
+  var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/InputTextAddon.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-57acc40e", Component.options)
+  } else {
+    hotAPI.reload("data-v-57acc40e", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 141 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* WEBPACK VAR INJECTION */(function($) {//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: {
+        // field name on database.
+        field: {
+            type: String,
+            required: false
+        },
+        label: {
+            type: String,
+            required: false
+        },
+        labelDescription: {
+            type: String,
+            required: false
+        },
+        // define Bootstrap grid class in mobile-tablet-desktop order
+        grid: {
+            type: String,
+            required: false
+        },
+        // initial value.
+        value: {
+            type: String,
+            required: false
+        },
+        // allow user type-in or not, Just mention this option.
+        readonly: {
+            type: String,
+            required: false
+        },
+        // define Bootstrap form-group has-feedback which size of form-group should use.
+        size: {
+            type: String,
+            required: false
+        },
+        // need to sync value with database on render or not ['needSync' or undefined].
+        needSync: {
+            type: String,
+            required: false
+        },
+        placeholder: {
+            type: String,
+            required: false
+        },
+        frontAddon: {
+            type: String,
+            required: false
+        },
+        rearAddon: {
+            type: String,
+            required: false
+        }
+    },
+    data: function data() {
+        return {
+            userInput: '',
+            lastSave: ''
+        };
+    },
+    mounted: function mounted() {
+        // init label tooltip if available.
+        if (this.labelDescription !== undefined) {
+            $('a[title="' + this.labelDescription + '"]').tooltip();
+        }
+
+        if (this.frontAddon !== undefined && this.frontAddon.search('data-toggle="tooltip"') >= 0) {
+            $('span.input-group-addon a[data-toggle=tooltip]').tooltip();
+        } else {
+            if (this.rearAddon !== undefined && this.rearAddon.search('data-toggle="tooltip"') >= 0) {
+                $('span.input-group-addon a[data-toggle=tooltip]').tooltip();
+            }
+        }
+
+        if (this.needSync !== undefined) {
+            console.log(this.field + ' need sync');
+        }
+
+        if (this.value === undefined) this.lastSave = this.userInput = '';else this.lastSave = this.userInput = this.value;
+    },
+
+    methods: {
+        autosave: function autosave() {
+            if (this.readonly != '' && this.userInput != this.lastSave) {
+                EventBus.$emit('autosave', this.field, this.userInput);
+                this.lastSave = this.userInput;
+            }
+        }
+    },
+    computed: {
+        hasLabel: function hasLabel() {
+            return !(this.label === undefined);
+        },
+        sizeClass: function sizeClass() {
+            if (this.size == 'normal') {
+                return 'form-group';
+            }
+            return 'form-group-sm';
+        },
+        gridClass: function gridClass() {
+            if (this.grid === undefined) {
+                return '';
+            }
+            var grid = this.grid.split('-');
+            return 'col-xs-' + grid[0] + ' col-sm-' + grid[1] + ' col-md-' + grid[2];
+        }
+    }
+});
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(1)))
+
+/***/ }),
+/* 142 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { class: _vm.gridClass }, [
+    _c("div", { class: _vm.sizeClass }, [
+      _vm.hasLabel
+        ? _c(
+            "label",
+            { staticClass: "control-label", attrs: { for: _vm.field } },
+            [
+              _vm._v("\n            " + _vm._s(_vm.label) + "\n            "),
+              _vm.labelDescription !== undefined
+                ? _c(
+                    "a",
+                    {
+                      attrs: {
+                        role: "button",
+                        "data-toggle": "tooltip",
+                        title: _vm.labelDescription
+                      }
+                    },
+                    [_c("i", { staticClass: "fa fa-info-circle" })]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.labelDescription !== undefined
+                ? _c("span", [_vm._v(":")])
+                : _vm._e()
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c("div", { staticClass: "input-group" }, [
+        _vm.frontAddon !== undefined
+          ? _c("span", {
+              staticClass: "input-group-addon",
+              domProps: { innerHTML: _vm._s(_vm.frontAddon) }
+            })
+          : _vm._e(),
+        _vm._v(" "),
+        _c("input", { staticClass: "form-control", attrs: { type: "text" } }),
+        _vm._v(" "),
+        _vm.rearAddon !== undefined
+          ? _c("span", {
+              staticClass: "input-group-addon",
+              domProps: { innerHTML: _vm._s(_vm.rearAddon) }
+            })
+          : _vm._e()
+      ])
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-57acc40e", module.exports)
   }
 }
 

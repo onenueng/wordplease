@@ -17,6 +17,7 @@ Vue.component('input-textarea', require('./components/InputTextarea.vue'));
 Vue.component('input-radio', require('./components/InputRadio.vue'));
 Vue.component('input-check', require('./components/InputCheck.vue'));
 Vue.component('input-check-group', require('./components/InputCheckGroup.vue'));
+Vue.component('input-text-addon', require('./components/InputTextAddon.vue'));
 
 Vue.component('modal-document', require('./components/ModalDocument.vue'));
 
@@ -93,13 +94,12 @@ window.app = new Vue({
         });
 
         EventBus.$on('autosave', (field, value, ref) => {
-            if (ref === undefined) {
-                
-            }
+            this.autosaving = true
             axios.post('/autosave', JSON.parse('{"' + field + '": ' + JSON.stringify(value) + '}'))
                  .then((response) => {
-                    console.log(response.data);
-                    this.autosaving = false;
+                    console.log(response.data)
+                    // remove timeout later
+                    setTimeout(() => { this.autosaving = false }, 1000)
                  })
                  .catch((error) => {
                     this.autosaving = false;

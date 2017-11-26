@@ -164,6 +164,15 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* WEBPACK VAR INJECTION */(function($) {//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -189,6 +198,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             required: false
         },
         label: {
+            type: String,
+            required: false
+        },
+        labelDescription: {
             type: String,
             required: false
         },
@@ -229,6 +242,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
     mounted: function mounted() {
+        // init label tooltip if available.
+        if (this.labelDescription !== undefined) {
+            $('a[title="' + this.labelDescription + '"]').tooltip();
+        }
+
         if (this.needSync !== undefined) {
             console.log(this.field + ' need sync');
         }
@@ -237,34 +255,33 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     methods: {
-        getGrid: function getGrid() {
-            if (this.grid === undefined) {
-                return '';
-            }
-            var grid = this.grid.split('-').map(function (x) {
-                return 12 / x;
-            });
-            return 'col-xs-' + grid[0] + ' col-sm-' + grid[1] + ' col-md-' + grid[2];
-        },
         autosave: function autosave() {
             if (this.readonly != '' && this.userInput != this.lastSave) {
                 EventBus.$emit('autosave', this.field, this.userInput);
                 this.lastSave = this.userInput;
             }
-        },
-        getSize: function getSize() {
-            if (this.size == 'normal') {
-                return 'form-group has-feedback';
-            }
-            return 'form-group-sm has-feedback';
         }
     },
     computed: {
         hasLabel: function hasLabel() {
             return !(this.label === undefined);
+        },
+        sizeClass: function sizeClass() {
+            if (this.size == 'normal') {
+                return 'form-group';
+            }
+            return 'form-group-sm';
+        },
+        gridClass: function gridClass() {
+            if (this.grid === undefined) {
+                return '';
+            }
+            var grid = this.grid.split('-');
+            return 'col-xs-' + grid[0] + ' col-sm-' + grid[1] + ' col-md-' + grid[2];
         }
     }
 });
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(1)))
 
 /***/ }),
 
@@ -275,13 +292,32 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { class: _vm.getGrid() }, [
-    _c("div", { class: _vm.getSize() }, [
+  return _c("div", { class: _vm.gridClass }, [
+    _c("div", { class: _vm.sizeClass }, [
       _vm.hasLabel
         ? _c(
             "label",
             { staticClass: "control-label", attrs: { for: _vm.field } },
-            [_vm._v(_vm._s(_vm.label))]
+            [
+              _vm._v("\n            " + _vm._s(_vm.label) + "\n            "),
+              _vm.labelDescription !== undefined
+                ? _c(
+                    "a",
+                    {
+                      attrs: {
+                        role: "button",
+                        "data-toggle": "tooltip",
+                        title: _vm.labelDescription
+                      }
+                    },
+                    [_c("i", { staticClass: "fa fa-info-circle" })]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.labelDescription !== undefined
+                ? _c("span", [_vm._v(":")])
+                : _vm._e()
+            ]
           )
         : _vm._e(),
       _vm._v(" "),

@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="form-group-sm">
-            <label class="control-label">{{ label }}
+            <label class="control-label" v-html="label">
                 <a  v-if="labelAction !== undefined"
                     role="button"
                     @click="emitLabelActionEvent()"
@@ -146,7 +146,17 @@
             },
             // return checked value is trigger value or not.
             isTriggerExtra(value) {
-                return (value == this.triggerValue)
+                if ((typeof this.triggerValues) == 'object') {
+                    let show = false
+                    this.triggerValues.forEach((eachValue) => {
+                        console.log("each: " + eachValue + "=> click:" + value)
+                        if (eachValue == value) {
+                            show = true
+                        }
+                    })
+                    return show
+                }
+                return (value == this.triggerValues)
             },
             // emit event on label action.
             emitLabelActionEvent() {
@@ -154,8 +164,6 @@
             }
         },
         mounted () {
-
-
             // init label tooltip if available.
             if (this.labelDescription !== undefined) {
                 $('a[title="' + this.labelDescription + '"]').tooltip()
@@ -228,6 +236,12 @@
                     return JSON.parse(this.labelAction).title;
                 }
                 return '';
+            },
+            triggerValues() {
+                if (this.triggerValue !== undefined) {
+                    return JSON.parse(this.triggerValue)
+                }
+                return null
             }
         }
     }

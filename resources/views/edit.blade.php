@@ -48,7 +48,7 @@
                     <input-text
                         value="12-Jun-2015 12:35"
                         label="Admit :"
-                        grid="1-2-4"
+                        grid="12-6-3"
                         readonly>
                     </input-text>
                     
@@ -56,7 +56,7 @@
                     <input-text
                         value="22-Jun-2015 12:35"
                         label="Discharge :"
-                        grid="1-2-4"
+                        grid="12-6-3"
                         readonly>
                     </input-text>
                     
@@ -64,7 +64,7 @@
                     <input-text
                         value="30 days"
                         label="Length of stay :"
-                        grid="1-2-4"
+                        grid="12-6-3"
                         readonly>
                     </input-text>
                     
@@ -95,12 +95,12 @@
                     </input-suggestion>
 
                     <!-- admit reason -->
-                    <input-select
+            <input-select
                         field="admit_reason"
                         value=""
                         label="Reason to admit :"
-                        grid="1-2-4">
-                    </input-select>
+                        grid="12-6-3">
+                t>
                 </div><!-- wrap content with row class -->
             </panel><!-- Panel Admission Data -->
 
@@ -112,7 +112,7 @@
                         field="chief_complaint"
                         value="Lorem ipsum dolor sit amet."
                         label="Chief complaint :"
-                        grid="1-1-1"
+                        grid="12-12-12"
                         max-chars="50" >
                     </input-textarea>
 
@@ -194,7 +194,7 @@
                                 label="Valvular heart disease :"
                                 options="{{ $comorbidOptions }}"
                                 trigger-value="1">
-                                <!-- valvular heart disease specify AS, Ar, MS, MR, TR  -->
+                                <!-- valvular heart disease specify AS, AR, MS, MR, TR  -->
                                 <input-check-group
                                     label="Specify : "
                                     checks='[
@@ -804,8 +804,7 @@
                         </div><!-- comorbid Chronic arthritis -->
                         <div><hr class="line"></div>
 
-                        <!-- TB comorbid -->
-                        <div class="material-box">
+                        <div class="material-box"><!-- TB comorbid -->
                             <input-radio
                                 field="comorbid_TB"
                                 label="TB :"
@@ -841,7 +840,7 @@
                         field="other_comorbid"
                         value="Lorem ipsum dolor sit amet."
                         label="Other comorbid :"
-                        grid="1-1-1"
+                        grid="12-12-12"
                         max-chars="50" >
                     </input-textarea>
                     <div class="col-xs-12"><hr class="line" /></div>
@@ -850,29 +849,94 @@
                     <input-textarea
                         field="history_of_present_illness"
                         label="History of present illness :"
-                        grid="1-1-1"
+                        grid="12-12-6"
                         max-chars="50" >
                     </input-textarea>
-                    <div class="col-xs-12"><hr class="line" /></div>
-
+                    
                     <!-- history of past illness  -->
                     <input-textarea
                         field="history_of_past_illness"
                         label="History of past illness :"
-                        grid="1-1-1"
+                        grid="12-12-6"
                         max-chars="50" >
                     </input-textarea>
-                    <div class="col-xs-12"><hr class="line" /></div>
+                    
                 </div><!-- wrap content with row class -->
             </panel><!-- Panel Hisroty -->
 
             <panel heading="Personal and Social history"><!-- panel Personal and Social history -->
                 <div class="row">
+                    
+                    <div class="col-xs-12 col-sm-6 col-md-4">
+                        <div class="material-box">
+                            <input-radio
+                                field="pregnancy"
+                                label="Pregnant : "
+                                options='[
+                                    {"label": "No", "value": "0"},
+                                    {"label": "Yes", "value": "1"},
+                                    {"label": "Uncertain", "value": "2"}
+                                ]'
+                                trigger-value="1">
+                                <input-text-addon
+                                    field="gastation_weeks"
+                                    front-addon="Gastation"
+                                    rear-addon="Weeks">
+                                </input-text-addon>
+                            </input-radio>
+
+                            <input-text-addon
+                                field="LMP"
+                                front-addon='LMP <a role="button" data-toggle="tooltip" title="ลงข้อมูล LMP เป็นวันที่ในรูปแบบ dd/mm/yyyy หรือหากไม่ทราบให้บรรยายเช่น 10 ปีที่ผ่านมา เป็นต้น"><i class="fa fa-info-circle"></i></a>'>
+                            </input-text-addon>
+                        </div>    
+                    </div>
+                    
+                    <div class="col-xs-12 col-sm-6 col-md-4">
+                        <div class="material-box">
+                            <input-radio
+                                field="alcohol"
+                                label="Alcohol : "
+                                options='[
+                                    {"label": "No", "value": "0"},
+                                    {"label": "Yes", "value": "1"},
+                                    {"label": "Ex-drinker", "value": "2"}
+                                ]'
+                                trigger-value="[1,2]">
+                                <!-- alcohol_description  -->
+                                <input-textarea
+                                    field="alcohol_description"
+                                    placeholder="description">
+                                </input-textarea>
+                            </input-radio>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-6 col-md-4">
+                        <div class="material-box">
+                            <input-radio
+                                field="cigarette_smoking"
+                                label="Cigarette smoking : "
+                                options='[
+                                    {"label": "No", "value": "0"},
+                                    {"label": "Yes", "value": "1"},
+                                    {"label": "Ex-smoker", "value": "2"}
+                                ]'
+                                trigger-value="[1,2]">
+                                <!-- smoke_description  -->
+                                <input-textarea
+                                    field="smoke_description"
+                                    placeholder="description">
+                                </input-textarea>
+                            </input-radio>
+                        </div>
+                    </div>
+                    <div class="col-xs-12"><hr class="line" /></div>
                     <!-- personal social history -->
                     <input-textarea
                         field="personal_social_history"
-                        label="Personal social history:"
-                        grid="1-1-1"
+                        placeholder="personal and social history description"
+                        grid="12-12-12"
                         max-chars="50" >
                     </input-textarea>
                 </div>
@@ -898,7 +962,7 @@
                     <input-textarea
                         field="other_special_requirement"
                         placeholder="Other requirement, type here"
-                        grid="1-1-1"
+                        grid="12-12-12"
                         max-chars="50" >
                     </input-textarea>
                 </div><!-- wrap with row -->
@@ -909,8 +973,8 @@
                     <!-- family history -->
                     <input-textarea
                         field="family_history"
-                        grid="1-1-1"
-                        max-chars="50" >
+                        grid="12-12-12"
+                        max-chars="50">
                     </input-textarea>
                 </div><!-- wrap with row -->
             </panel><!-- panel Family history -->
@@ -925,6 +989,7 @@
                         placeholder="search drug using generic, trade or synonym name">
                     </input-suggestion>
 
+                    <!-- med append button -->
                     <button-app
                         action="append-current-medications"
                         label="Append"
@@ -932,6 +997,7 @@
                         size="sm">
                     </button-app>
 
+                    <!-- med put button -->
                     <button-app
                         action="put-current-medications"
                         label="Put"
@@ -939,15 +1005,264 @@
                         size="sm">
                     </button-app>
 
+                    <!-- current medications -->
                     <input-textarea
                         field="current_medications"
-                        setter-event="set-current-medications">
+                        setter-event="set-current-medications"
+                        grid="12-12-12">
                     </input-textarea>
                     
                 </div><!-- wrap with row -->
             </panel><!-- panel Current medications -->
+            
+            <panel heading="Allergy/Adverse event (Drug, Food, Chemical)"><!-- Panel allergy -->
+                <div class="row"><!-- wrap with row -->
+                    <!-- allergy -->
+                    <input-textarea
+                        field="allergy"
+                        grid="12-12-12">
+                    </input-textarea>
+                </div><!-- wrap with row -->
+            </panel><!-- Panel allergy -->
+
+            <?php 
+                $examChoice = '[{"label": "Normal", "value": 1}, {"label": "Abnormal", "value": 2}]';
+                $reviewFields = [
+                    ["label" => "Hair and Skin :","field" => "review_system_hair_and_skin"],
+                    ["label" => "Head :","field" => "review_system_head"],
+                    ["label" => "Eye/ENT :","field" => "review_system_eye_ENT"],
+                    ["label" => "Breast :","field" => "review_system_breast"],
+                    ["label" => "CVS :","field" => "review_system_CVS"],
+                    ["label" => "RS :","field" => "review_system_RS"],
+                    ["label" => "GI :","field" => "review_system_GI"],
+                    ["label" => "GU :","field" => "review_system_GU"],
+                    ["label" => "Musculoskeletal :","field" => "review_system_musculoskeletal"],
+                    ["label" => "Nervous system :","field" => "review_system_nervous_system"],
+                    ["label" => "Psychological symptoms :","field" => "review_system_psychological_symptoms"]
+                ];
+            ?>
+            <panel heading="Review of systems"><!-- Review of systems -->
+                <div class="row"><!-- wrap with row -->
+                    <!-- General symptoms -->
+                    <input-textarea
+                        field="general_symptoms"
+                        label="General symptoms :"
+                        grid="12-12-12">
+                    </input-textarea>
+
+                    <div class="col-xs-12"><hr class="line" /></div>
+
+                    <div class="col-xs-12 col-md-6">
+                        @foreach($reviewFields as $index => $field)
+                        @if($index < (count($reviewFields)/2))
+                            <div class="col-xs-12">
+                                <!-- {{ $field['label'] }} -->
+                                <input-radio
+                                    field="{{ $field['field'] }}"
+                                    label="{{ $field['label'] }}"
+                                    options="{{ $examChoice }}">
+                                </input-radio>
+                            </div>
+                            <!-- {{ $field['label'] }} description -->
+                            <input-textarea
+                                field="{{ $field['field'] }}_description"
+                                placeholder="description"
+                                grid="12-12-12">
+                            </input-textarea>
+
+                            <div class="col-xs-12"><hr class="line" /></div>
+                        @endif
+                        @endforeach
+                    </div>
+                    
+                    <div class="col-xs-12 col-md-6">
+                        @foreach($reviewFields as $index => $field)
+                        @if($index >= (count($reviewFields)/2))
+                        <div class="col-xs-12">
+                            <!-- {{ $field['label'] }} -->
+                            <input-radio
+                                field="{{ $field['field'] }}"
+                                label="{{ $field['label'] }}"
+                                options="{{ $examChoice }}">
+                            </input-radio>
+                        </div>
+                        <!-- {{ $field['label'] }} description -->
+                        <input-textarea
+                            field="{{ $field['field'] }}_description"
+                            placeholder="description"
+                            grid="12-12-12">
+                        </input-textarea>
+
+                        <div class="col-xs-12"><hr class="line" /></div>
+                        @endif
+                        @endforeach
+                    </div>
+
+                    <!-- Others -->
+                    <input-textarea
+                        field="review_system_oters"
+                        placeholder="Ohters system review"
+                        grid="12-12-12">
+                    </input-textarea>
+                </div><!-- wrap with row -->
+            </panel><!-- Review of systems -->
+
+            <panel heading="Vital signs">
+                <h1>underconstruction</h1>
+            </panel>
+
+            
+            <?php 
+                $examFields = [
+                    ["label" => "Skin :","field" => "physical_exam_skin"],
+                    ["label" => "Head :","field" => "physical_exam_head"],
+                    ["label" => "Eye/ENT :","field" => "physical_exam_eye_ENT"],
+                    ["label" => "Neck :","field" => "physical_exam_neck"],
+                    ["label" => "Heart :","field" => "physical_exam_heart"],
+                    ["label" => "Lung :","field" => "physical_exam_lang"],
+                    ["label" => "Abdomen :","field" => "physical_exam_abdomen"],
+                    ["label" => "Nervous system :","field" => "physical_exam_nervous_system"],
+                    ["label" => "Extremities :","field" => "physical_exam_extremities"],
+                    ["label" => "Lymph nodes :","field" => "physical_exam_lymph_nodes"],
+                    ["label" => "Breasts :","field" => "physical_exam_breasts"],
+                    ["label" => "Genitalia :","field" => "physical_exam_genitalia"],
+                    ["label" => "Rectal examination :","field" => "physical_exam_rectal_examination"],
+                ];
+            ?>
+            <panel heading="Physical examinations"><!-- Physical examinations -->
+                <div class="row"><!-- wrap with row -->
+                    <!-- General appearance -->
+                    <input-textarea
+                        field="general_appearance"
+                        label="General appearance :"
+                        placeholder="Specify important findings"
+                        grid="12-12-12">
+                    </input-textarea>
+
+                    <div class="col-xs-12"><hr class="line" /></div>
+                    
+                    <div class="col-xs-12 col-md-6">
+                        @foreach($examFields as $index => $field)
+                        @if($index < (count($examFields)/2))
+                        <div class="col-xs-12">                    
+                            <!-- {{ $field['label'] }} -->
+                            <input-radio
+                                field="{{ $field['field'] }}"
+                                label="{{ $field['label'] }}"
+                                options="{{ $examChoice }}">
+                            </input-radio>
+                        </div>
+                        <!-- {{ $field['label'] }} description -->
+                        <input-textarea
+                            field="{{ $field['field'] }}_description"
+                            placeholder="description"
+                            grid="12-12-12">
+                        </input-textarea>
+                        
+                        <div class="col-xs-12"><hr class="line" /></div>
+                        @endif
+                        @endforeach
+                    </div>
+
+                    <div class="col-xs-12 col-md-6">
+                        @foreach($examFields as $index => $field)
+                        @if($index >= (count($examFields)/2))
+                        <div class="col-xs-12">                    
+                            <!-- {{ $field['label'] }} -->
+                            <input-radio
+                                field="{{ $field['field'] }}"
+                                label="{{ $field['label'] }}"
+                                options="{{ $examChoice }}">
+                            </input-radio>
+                        </div>
+                        <!-- {{ $field['label'] }} description -->
+                        <input-textarea
+                            field="{{ $field['field'] }}_description"
+                            placeholder="description"
+                            grid="12-12-12">
+                        </input-textarea>
+                        
+                        <div class="col-xs-12"><hr class="line" /></div>
+                        @endif
+                        @endforeach
+                    </div>
+
+                    <!-- Pertinent investigation -->
+                    <input-textarea
+                        field="pertinent_investigation"
+                        label="Pertinent investigation : (Please see more detail in laboratory sheet, X-ray report, etc.)"
+                        grid="12-12-12">
+                    </input-textarea>
+                </div><!-- wrap with row -->
+            </panel><!-- Physical examinations -->
+
+            <?php
+                $plans = [
+                    ["label" => "Problem list :", "field" => "problem_list"],
+                    ["label" => "Discussion :", "field" => "discussion"],
+                    ["label" => "Provisional diagnosis :", "field" => "provisional_diagnosis"],
+                    ["label" => "Plan of investigation :", "field" => "investigation_plan"],
+                    ["label" => "Plan of management :", "field" => "management_plan"],
+                    ["label" => "Plan of consultation :", "field" => "consultation_plan"],
+                ];
+            ?>
+
+            <panel heading="Problem list, Discussion and Plan"><!-- Problem list, Discussion and Plan -->
+                <div class="row"><!-- wrap with row -->
+                    <div class="col-xs-12 col-md-6">
+                        @foreach($plans as $index => $plan)
+                        @if($index < (count($plans)/2))
+                            <!-- {{ $plan['label'] }} -->
+                            <input-textarea
+                                field="{{ $plan['field'] }}"
+                                label="{{ $plan['label'] }}">
+                            </input-textarea>
+                            <div class="col-xs-12"><hr class="line" /></div>
+                        @endif
+                        @endforeach
+                    </div>
+
+                    <div class="col-xs-12 col-md-6">
+                        @foreach($plans as $index => $plan)
+                        @if($index >= (count($plans)/2))
+                            <!-- {{ $plan['label'] }} -->
+                            <input-textarea
+                                field="{{ $plan['field'] }}"
+                                label="{{ $plan['label'] }}">
+                            </input-textarea>
+                            <div class="col-xs-12"><hr class="line" /></div>
+                        @endif
+                        @endforeach
+                    </div>
+
+                    <div class="col-xs-12 col-md-6">
+                        <input-select
+                            field="CPG_special_group"
+                            label="Special group (accoring to CPG) :"
+                            not-allow-other>
+                        </input-select>
+                    </div>
+                    <div class="col-xs-12 col-md-6">
+                        <input-text
+                            field="estimated_length_of_stay"
+                            label="Estimated dulation of hospitalization "
+                            label-description="enter approximate length of stay(days) or leave blank if cannot be presently determined">
+                        </input-text>
+                    </div>
+                </div><!-- wrap with row -->
+            </panel><!-- Problem list, Discussion and Plan -->
+
+            <panel heading="MD note"><!-- MD Note -->
+                <div class="row">
+                    <input-text
+                        field="MD_note"
+                        grid="12-12-12">
+                    </input-text>
+                </div>
+            </panel><!-- MD Note -->
         </div><!-- note content -->
     
+        
         
     </div><!-- Vue app -->
 

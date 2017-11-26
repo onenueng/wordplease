@@ -58,7 +58,7 @@
             },
             maxChars: {
                 type: String,
-                required: false  
+                required: false
             },
             setterEvent: {
                 type: String,
@@ -74,7 +74,7 @@
                 helperClass: 'text-muted',
                 showCharsRemaining: false,
                 charsRemaining: 0,
-                placeholderNew: ''
+                placeholderNew: '',
             }
         },
         mounted () {
@@ -85,7 +85,7 @@
 
             if (this.placeholder !== undefined) {
                 if (this.placeholder !== undefined) {
-                    this.placeholderNew = this.placeholder + ' - ' + this.maxChars + ' chars max'
+                    this.placeholderNew = this.placeholder + ' - ' + this.getMaxChars + ' chars max'
                 } else {
                     this.placeholderNew = this.placeholder
                 }
@@ -93,7 +93,6 @@
 
             if (this.setterEvent !== undefined) {
                 EventBus.$on(this.setterEvent, (value, mode = 'put') => {
-                    // autosize.update($(this.domRef))
                     if (mode == 'put') {
                         this.userInput = value;
                     } else {
@@ -103,7 +102,6 @@
                             this.userInput += ('\n' + value)
                         }
                     }
-                    console.log(mode + ' => ' + value)
                     this.dirty = true
                     this.autosave()
                 })
@@ -112,10 +110,10 @@
             autosize($(this.domRef))
             this.onkeypress = _.debounce(() => {
                 let countChars = this.userInput.length
-                if (countChars > (.5*this.maxChars)) {
-                    this.charsRemaining = this.maxChars - this.userInput.length
+                if (countChars > (.5*this.getMaxChars)) {
+                    this.charsRemaining = this.getMaxChars - this.userInput.length
                     this.showCharsRemaining = true
-                    if (countChars > (.75*this.maxChars)) {
+                    if (countChars > (.75*this.getMaxChars)) {
                         this.toggleStatus('danger')
                     } else {
                         this.toggleStatus('warning')
@@ -130,16 +128,17 @@
             getGrid() {
                 let divClass = ''
                 if (this.grid == undefined) {
-                    divClass = 'col-xs-12'
+                    divClass = ''
                 } else {
-                    let grid = this.grid.split('-').map((x) => 12/x)
+                    // let grid = this.grid.split('-').map((x) => 12/x)
+                    let grid = this.grid.split('-')
                     divClass = 'col-xs-' + (grid[0]) + ' col-sm-' + (grid[1]) + ' col-md-' + (grid[2])
                 }
 
                 if (this.label === undefined) {
                     divClass += ' fix-margin'
                 }
-                return divClass 
+                return divClass
             },
             autosave() {
                 if ( this.readonly != '' && this.dirty) {
@@ -158,13 +157,16 @@
 
             },
             oninput() {
-                if(!this.dirty && (this.userInput.length < this.maxChars)) {
+
+                if (!this.dirty && (this.userInput.length < this.getMaxChars)) {
                     this.dirty = true
                 }
                 
-                if(this.showCharsRemaining) {
-                    this.charsRemaining = this.maxChars - this.userInput.length
+                
+                if (this.showCharsRemaining) {
+                    this.charsRemaining = this.getMaxChars - this.userInput.length
                 }
+                
                 this.onkeypress()
                 this.onkeypressSave()
             },
@@ -200,9 +202,14 @@
                 }
             },
             onfocus() {
-                if(this.userInput.length == this.maxChars) {
+                if(this.userInput.length == this.getMaxChars) {
                     this.toggleStatus('danger')
                 }
+            }
+        },
+        computed: {
+            getMaxChars() {
+                return (this.maxChars === undefined) ? 255 : this.maxChars
             }
         }
     }

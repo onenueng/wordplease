@@ -78,7 +78,7 @@
             }
 
             if (this.value === undefined)
-                this.lastData = this.userInput = this.value = ''
+                this.lastData = this.userInput = ''
             else
                 this.lastData = this.userInput = this.value
 
@@ -102,7 +102,8 @@
                 if (this.grid === undefined) {
                     return ''
                 }
-                let grid = this.grid.split('-').map((x) => 12/x)
+                // let grid = this.grid.split('-').map((x) => 12/x)
+                let grid = this.grid.split('-')
                 return 'col-xs-' + (grid[0]) + ' col-sm-' + (grid[1]) + ' col-md-' + (grid[2])
             },
             getSize() {

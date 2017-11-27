@@ -1491,7 +1491,13 @@ window.app = new Vue({
         dialogMessage: 'Hello world!!',
         dialogButtonLabel: 'OK',
 
-        lastActiveSessionCheck: 0
+        lastActiveSessionCheck: 0,
+
+        /**
+         * Note specific data.
+         */
+        height: null,
+        weight: null
     },
     mounted: function mounted() {
         var _this = this;
@@ -1525,6 +1531,16 @@ window.app = new Vue({
             EventBus.$emit('set-current-medications', $('#current_medications_helper').val(), 'put');
             $('#current_medications_helper').val('');
             $('#current_medications_helper').focus();
+        });
+
+        EventBus.$on('BMI-updates-height', function (value) {
+            _this.height = value;
+            _this.calculateBMI();
+        });
+
+        EventBus.$on('BMI-updates-weight', function (value) {
+            _this.weight = value;
+            _this.calculateBMI();
         });
 
         /**
@@ -1601,13 +1617,39 @@ window.app = new Vue({
     },
 
     methods: {
-        nodataAll: function nodataAll() {},
-        noComorbidAll: function noComorbidAll() {
-            $("input[type=radio][name^=comorbid_]").each(function (index, el) {
-                EventBus.$emit(el.name, 0);
-            });
+        /**
+         * Note specific methods.
+         */
+        calculateBMI: function calculateBMI() {
+            var BMI = void 0;
+            if ($.isNumeric(this.height) && $.isNumeric(this.weight)) {
+                BMI = (this.weight / (this.height / 100 * (this.height / 100))).toPrecision(4);
+            } else {
+                BMI = '';
+            }
+            EventBus.$emit('BMI-updates', BMI);
         }
     }
+});
+
+/**
+ * Note specific scripts.
+ */
+// seem like jQuery not support ES6 syntax so, code jQuery in ES5
+$('span.estimated').click(function () {
+    $('input[name=' + $(this).attr('data-target') + ']').click();
+});
+
+$('span.estimated').mouseover(function () {
+    $(this).css({ 'cursor': 'pointer', 'font-style': 'italic' });
+});
+
+$('span.estimated').mouseout(function () {
+    $(this).css({ 'cursor': '', 'font-style': '' });
+});
+
+$('input[name^=estimated_]').click(function () {
+    EventBus.$emit('autosave', $(this).attr('name'), $(this).prop('checked'));
 });
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
@@ -4962,7 +5004,27 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* WEBPACK VAR INJECTION */(function($) {//
+/* WEBPACK VAR INJECTION */(function($) {var _props;
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -4986,7 +5048,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: {
+    props: (_props = {
         // field name on database.
         field: {
             type: String,
@@ -4997,6 +5059,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             required: false
         },
         labelDescription: {
+            type: String,
+            required: false
+        },
+        placeholder: {
             type: String,
             required: false
         },
@@ -5024,20 +5090,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         needSync: {
             type: String,
             required: false
-        },
-        placeholder: {
-            type: String,
-            required: false
-        },
-        frontAddon: {
-            type: String,
-            required: false
-        },
-        rearAddon: {
-            type: String,
-            required: false
         }
-    },
+    }, _defineProperty(_props, 'placeholder', {
+        type: String,
+        required: false
+    }), _defineProperty(_props, 'frontAddon', {
+        type: String,
+        required: false
+    }), _defineProperty(_props, 'rearAddon', {
+        type: String,
+        required: false
+    }), _defineProperty(_props, 'emitOnUpdate', {
+
+        required: false
+    }), _defineProperty(_props, 'setterEvent', {
+        type: String,
+        required: false
+    }), _props),
     data: function data() {
         return {
             userInput: '',
@@ -5045,6 +5114,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
     mounted: function mounted() {
+        var _this = this;
+
         // init label tooltip if available.
         if (this.labelDescription !== undefined) {
             $('a[title="' + this.labelDescription + '"]').tooltip();
@@ -5056,6 +5127,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (this.rearAddon !== undefined && this.rearAddon.search('data-toggle="tooltip"') >= 0) {
                 $('span.input-group-addon a[data-toggle=tooltip]').tooltip();
             }
+        }
+
+        if (this.setterEvent !== undefined) {
+            EventBus.$on(this.setterEvent, function (value) {
+                if (value != _this.userInput) {
+                    _this.userInput = value;
+                    _this.autosave();
+                }
+            });
         }
 
         if (this.needSync !== undefined) {
@@ -5070,6 +5150,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (this.readonly != '' && this.userInput != this.lastSave) {
                 EventBus.$emit('autosave', this.field, this.userInput);
                 this.lastSave = this.userInput;
+            }
+        },
+        oninput: function oninput() {
+            var _this2 = this;
+
+            if (this.emitOnUpdateEvents !== null) {
+                this.emitOnUpdateEvents.forEach(function (event) {
+                    // console.log(event + " => " + this.userInput)
+                    EventBus.$emit(event, _this2.userInput);
+                });
             }
         }
     },
@@ -5089,6 +5179,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
             var grid = this.grid.split('-');
             return 'col-xs-' + grid[0] + ' col-sm-' + grid[1] + ' col-md-' + grid[2];
+        },
+        emitOnUpdateEvents: function emitOnUpdateEvents() {
+            if (this.emitOnUpdate !== undefined) {
+                return JSON.parse(this.emitOnUpdate);
+            }
+            return null;
         }
     }
 });
@@ -5139,7 +5235,41 @@ var render = function() {
             })
           : _vm._e(),
         _vm._v(" "),
-        _c("input", { staticClass: "form-control", attrs: { type: "text" } }),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.userInput,
+              expression: "userInput"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: {
+            type: "text",
+            readonly: _vm.readonly,
+            placeholder: _vm.placeholder,
+            name: _vm.field,
+            id: _vm.field
+          },
+          domProps: { value: _vm.userInput },
+          on: {
+            input: [
+              function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.userInput = $event.target.value
+              },
+              function($event) {
+                _vm.oninput()
+              }
+            ],
+            blur: function($event) {
+              _vm.autosave()
+            }
+          }
+        }),
         _vm._v(" "),
         _vm.rearAddon !== undefined
           ? _c("span", {

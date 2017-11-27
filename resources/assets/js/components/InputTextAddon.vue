@@ -1,7 +1,9 @@
 <template>
     <div :class="gridClass">
         <div :class="sizeClass">
-            <label v-if="hasLabel" class="control-label" :for="field">
+            <label  v-if="hasLabel"
+                    class="control-label"
+                    :for="field">
                 {{ label }}
                 <a  v-if="labelDescription !== undefined"
                     role="button"
@@ -12,9 +14,23 @@
                 <span v-if="labelDescription !== undefined">:</span>
             </label>
             <div class="input-group">
-                <span class="input-group-addon" v-if="frontAddon !== undefined" v-html="frontAddon"></span>
-                <input type="text" class="form-control" />
-                <span class="input-group-addon" v-if="rearAddon !== undefined" v-html="rearAddon"></span>
+                <span   v-if="frontAddon !== undefined"
+                        class="input-group-addon"
+                        v-html="frontAddon">
+                </span>
+                <input  type="text"
+                        class="form-control"
+                        :readonly="readonly"
+                        :placeholder="placeholder"
+                        :name="field"
+                        :id="field"
+                        v-model="userInput"
+                        @input="oninput()"
+                        @blur="autosave()" />
+                <span   v-if="rearAddon !== undefined"
+                        class="input-group-addon"
+                        v-html="rearAddon">
+                </span>
             </div>
         </div>
     </div>
@@ -33,6 +49,10 @@
                 required: false  
             },
             labelDescription: {
+                type: String,
+                required: false  
+            },
+            placeholder: {
                 type: String,
                 required: false  
             },
@@ -72,6 +92,16 @@
             rearAddon: {
                 type: String,
                 required: false  
+            },
+            // event emit when checked/unchecked.
+            emitOnUpdate: {
+                
+                required: false
+            },
+            // event emit when checked/unchecked.
+            setterEvent: {
+                type: String,
+                required: false
             }
         },
         data () {
@@ -94,7 +124,14 @@
                 }    
             }
 
-            
+            if (this.setterEvent !== undefined) {
+                EventBus.$on(this.setterEvent, (value) => {
+                    if (value != this.userInput) {
+                        this.userInput = value
+                        this.autosave()
+                    }
+                })
+            } 
 
             if (this.needSync !== undefined) {
                 console.log(this.field + ' need sync')
@@ -110,6 +147,14 @@
                 if ( this.readonly != '' && (this.userInput != this.lastSave)) {
                     EventBus.$emit('autosave', this.field, this.userInput)
                     this.lastSave = this.userInput
+                }
+            },
+            oninput() {
+                if ( this.emitOnUpdateEvents !== null) {
+                    this.emitOnUpdateEvents.forEach((event) => {
+                        // console.log(event + " => " + this.userInput)
+                        EventBus.$emit(event, this.userInput)
+                    })
                 }
             }
         },
@@ -129,6 +174,12 @@
                 }
                 let grid = this.grid.split('-')
                 return 'col-xs-' + (grid[0]) + ' col-sm-' + (grid[1]) + ' col-md-' + (grid[2])
+            },
+            emitOnUpdateEvents() {
+                if ( this.emitOnUpdate !== undefined) {
+                    return JSON.parse(this.emitOnUpdate)
+                }
+                return null
             }
         }
     }

@@ -8,6 +8,7 @@
     <title>$AN@$NOTE-NAME</title>
 </head>
 <body>
+
     <!-- Vue app -->
     <div id="app">
         <!-- app alert box -->
@@ -1108,7 +1109,73 @@
             </panel><!-- Review of systems -->
 
             <panel heading="Vital signs">
-                <h1>underconstruction</h1>
+                <div class="row"><!-- wrap with row -->
+                    <!-- Temperature -->
+                    <input-text-addon
+                        field="temperature_celsius"
+                        label="Temperature :"
+                        rear-addon="&deg;C"
+                        grid="12-6-3">
+                    </input-text-addon>
+
+                    <!-- Pulse -->
+                    <input-text-addon
+                        field="pulse_rate_per_min"
+                        label="Pulse :"
+                        rear-addon="/min"
+                        grid="12-6-3">
+                    </input-text-addon>
+
+                    <!-- Respiratory rate -->
+                    <input-text-addon
+                        field="respiratory_rate_per_min"
+                        label="Respiratory rate :"
+                        rear-addon="/min"
+                        grid="12-6-3">
+                    </input-text-addon>
+
+                    <!-- BP -->
+                    <input-text-addon
+                        field="BP"
+                        label="Blood presure :"
+                        rear-addon="mmHg"
+                        placeholder="SBP/DBP"
+                        grid="12-6-3">
+                    </input-text-addon>
+                    
+
+
+                    <!-- Height -->
+                    <input-text-addon
+                        field="height_cm"
+                        label="Height :"
+                        front-addon='<input type="checkbox" name="estimated_height" /> <span class="estimated" data-target="estimated_height">estimated</span>'
+                        rear-addon="cm"
+                        emit-on-update='["BMI-updates-height"]'
+                        grid="12-6-3">
+                    </input-text-addon>
+
+                    <!-- Weight -->
+                    <input-text-addon
+                        field="weight_kg"
+                        label="Weight :"
+                        front-addon='<input type="checkbox" name="estimated_weight" /> <span class="estimated" data-target="estimated_weight">estimated</span>'
+                        rear-addon="kg"
+                        emit-on-update='["BMI-updates-weight"]'
+                        grid="12-6-3">
+                    </input-text-addon>
+
+                    <!-- BMI -->
+                    <input-text-addon
+                        label="BMI "
+                        label-description="Auto calculate"
+                        rear-addon="kg/m<sup>2</sup>"
+                        grid="12-6-3"
+                        setter-event="BMI-updates"
+                        readonly>
+                    </input-text-addon>
+
+                </div><!-- wrap with row -->
             </panel>
 
             

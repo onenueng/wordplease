@@ -1,25 +1,24 @@
-require('./bootstrap');
+require('./bootstrap')
 
 // in case of need to use global event bus
-window.EventBus = new Vue();
+window.EventBus = new Vue()
 
+Vue.component('alert-box', require('./components/Alertbox.vue'))
+Vue.component('button-app', require('./components/ButtonApp.vue'))
+Vue.component('modal-dialog', require('./components/ModalDialog.vue'))
+Vue.component('navbar', require('./components/EditNoteNavbar.vue'))
+Vue.component('appbar-right', require('./components/AppbarRight.vue'))
+Vue.component('panel', require('./components/Panel.vue'))
+Vue.component('input-text', require('./components/InputText.vue'))
+Vue.component('input-suggestion', require('./components/InputSuggestion.vue'))
+Vue.component('input-select', require('./components/InputSelect.vue'))
+Vue.component('input-textarea', require('./components/InputTextarea.vue'))
+Vue.component('input-radio', require('./components/InputRadio.vue'))
+Vue.component('input-check', require('./components/InputCheck.vue'))
+Vue.component('input-check-group', require('./components/InputCheckGroup.vue'))
+Vue.component('input-text-addon', require('./components/InputTextAddon.vue'))
 
-Vue.component('alert-box', require('./components/Alertbox.vue'));
-Vue.component('button-app', require('./components/ButtonApp.vue'));
-Vue.component('modal-dialog', require('./components/ModalDialog.vue'));
-Vue.component('navbar', require('./components/EditNoteNavbar.vue'));
-Vue.component('appbar-right', require('./components/AppbarRight.vue'));
-Vue.component('panel', require('./components/Panel.vue'));
-Vue.component('input-text', require('./components/InputText.vue'));
-Vue.component('input-suggestion', require('./components/InputSuggestion.vue'));
-Vue.component('input-select', require('./components/InputSelect.vue'));
-Vue.component('input-textarea', require('./components/InputTextarea.vue'));
-Vue.component('input-radio', require('./components/InputRadio.vue'));
-Vue.component('input-check', require('./components/InputCheck.vue'));
-Vue.component('input-check-group', require('./components/InputCheckGroup.vue'));
-Vue.component('input-text-addon', require('./components/InputTextAddon.vue'));
-
-Vue.component('modal-document', require('./components/ModalDocument.vue'));
+Vue.component('modal-document', require('./components/ModalDocument.vue'))
 
 
 window.app = new Vue({
@@ -35,14 +34,20 @@ window.app = new Vue({
         dialogMessage: 'Hello world!!',
         dialogButtonLabel: 'OK',
 
-        lastActiveSessionCheck: 0
+        lastActiveSessionCheck: 0,
+
+        /**
+         * Note specific data.
+         */
+        height: null,
+        weight: null
     },
     mounted() {
         /**
          * Note specific events.
          */
         EventBus.$on('show-child-pugh-score', () => {
-            $('#modal-child-pugh-score').modal('show');
+            $('#modal-child-pugh-score').modal('show')
         });
 
         EventBus.$on('comorbid-no-data-all', () => {
@@ -69,6 +74,16 @@ window.app = new Vue({
             $('#current_medications_helper').focus()
         })
 
+        EventBus.$on('BMI-updates-height', (value) => {
+            this.height = value
+            this.calculateBMI()
+        })
+
+        EventBus.$on('BMI-updates-weight', (value) => {
+            this.weight = value
+            this.calculateBMI()
+        })
+
         /**
          * Common events.
          */
@@ -76,9 +91,9 @@ window.app = new Vue({
         EventBus.$on('show-alert', (message, status, duration = 5000) => {
             if (! this.showAlertbox) {
                 this.alertboxMessage = message
-                this.alertStatus = status;
-                this.alertDuration = duration;
-                this.showAlertbox = true;
+                this.alertStatus = status
+                this.alertDuration = duration
+                this.showAlertbox = true
             }
         })
 
@@ -106,9 +121,9 @@ window.app = new Vue({
                     if (error.response) {
                         // The request was made and the server responded with a status code
                         // that falls out of the range of 2xx
-                        console.log(error.response.data);
-                        console.log(error.response.status);
-                        console.log(error.response.headers);
+                        console.log(error.response.data)
+                        console.log(error.response.status)
+                        console.log(error.response.headers)
                         if (error.response.status == 419) {
                             EventBus.$emit('error-419');
                         }
@@ -116,12 +131,12 @@ window.app = new Vue({
                         // The request was made but no response was received
                         // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
                         // http.ClientRequest in node.js
-                        console.log(error.request);
+                        console.log(error.request)
                     } else {
                         // Something happened in setting up the request that triggered an Error
-                        console.log('Error', error.message);
+                        console.log('Error', error.message)
                     }
-                    console.log(error.config);
+                    console.log(error.config)
                  })
         })
 
@@ -141,13 +156,38 @@ window.app = new Vue({
         })
     },
     methods: {
-        nodataAll() {
-            
-        },
-        noComorbidAll() {
-            $("input[type=radio][name^=comorbid_]").each((index, el) => {
-                EventBus.$emit(el.name, 0)
-            })
+        /**
+         * Note specific methods.
+         */
+        calculateBMI() {
+            let BMI
+            if ($.isNumeric(this.height) && $.isNumeric(this.weight)) {
+                BMI = (this.weight / ((this.height / 100) * (this.height / 100))).toPrecision(4)
+            } else {
+                BMI = ''
+            }
+            EventBus.$emit('BMI-updates', BMI)
         }
     }
+})
+
+
+/**
+ * Note specific scripts.
+ */
+// seem like jQuery not support ES6 syntax so, code jQuery in ES5
+$('span.estimated').click( function() {
+    $('input[name=' + $(this).attr('data-target') + ']').click();
+});
+
+$('span.estimated').mouseover( function() {
+    $(this).css({'cursor': 'pointer', 'font-style': 'italic'});
+});
+
+$('span.estimated').mouseout( function() {
+    $(this).css({'cursor': '', 'font-style': ''});
+});
+
+$('input[name^=estimated_]').click( function () {
+    EventBus.$emit('autosave', $(this).attr('name'), $(this).prop('checked'));
 });

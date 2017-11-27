@@ -30,7 +30,7 @@
                         :value="option.value"
                         @click="check(option.value)"
                         :checked="option.value == currentValue" />
-                        {{ option.label }}
+                        <span v-html="option.label"></span>
                 <a  v-if="option.labelDescription !== undefined"
                     role="button"
                     data-toggle="tooltip"
@@ -94,6 +94,9 @@
             setterEvent: {
                 type: String,
                 required: false
+            },
+            emitOnUpdate: {
+                required: false
             }
         },
         data () {
@@ -133,6 +136,10 @@
                 if (this.currentValue != value) {
                     this.currentValue = value
                     this.autosave()
+
+                    if ( this.emitOnUpdate !== undefined ) {
+                        EventBus.$emit(this.emitOnUpdate, this.currentValue)
+                    }
                 }
             },
             // reset to unchecked all options.

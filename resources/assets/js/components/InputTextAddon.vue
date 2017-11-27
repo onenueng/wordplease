@@ -4,7 +4,7 @@
             <label  v-if="hasLabel"
                     class="control-label"
                     :for="field">
-                {{ label }}
+                <span v-html="label"></span>
                 <a  v-if="labelDescription !== undefined"
                     role="button"
                     data-toggle="tooltip"
@@ -16,7 +16,7 @@
             <div class="input-group">
                 <span   v-if="frontAddon !== undefined"
                         class="input-group-addon"
-                        v-html="frontAddon">
+                        v-html="frontAddonHtml">
                 </span>
                 <input  type="text"
                         class="form-control"
@@ -29,7 +29,7 @@
                         @blur="autosave()" />
                 <span   v-if="rearAddon !== undefined"
                         class="input-group-addon"
-                        v-html="rearAddon">
+                        v-html="rearAddonHtml">
                 </span>
             </div>
         </div>
@@ -102,12 +102,22 @@
             setterEvent: {
                 type: String,
                 required: false
+            },
+            setterFrontAddon: {
+                type: String,
+                required: false
+            },
+            setterRearAddon: {
+                type: String,
+                required: false
             }
         },
         data () {
             return {
                 userInput: '',
                 lastSave: '',
+                frontAddonHtml: '',
+                rearAddonHtml: ''
             }
         },
         mounted () {
@@ -131,7 +141,27 @@
                         this.autosave()
                     }
                 })
-            } 
+            }
+
+            if (this.rearAddon !== undefined) {
+                this.rearAddonHtml = this.rearAddon
+            }
+
+            if (this.frontAddon !== undefined) {
+                this.frontAddonHtml = this.frontAddon
+            }
+
+            if (this.setterRearAddon !== undefined) {
+                EventBus.$on(this.setterRearAddon, (html) => {
+                    this.rearAddonHtml = html
+                })
+            }
+
+            if (this.setterFrontAddon !== undefined) {
+                EventBus.$on(this.setterFrontAddon, (html) => {
+                    this.frontAddonHtml = html
+                })   
+            }
 
             if (this.needSync !== undefined) {
                 console.log(this.field + ' need sync')
@@ -152,7 +182,6 @@
             oninput() {
                 if ( this.emitOnUpdateEvents !== null) {
                     this.emitOnUpdateEvents.forEach((event) => {
-                        // console.log(event + " => " + this.userInput)
                         EventBus.$emit(event, this.userInput)
                     })
                 }
@@ -164,9 +193,9 @@
             },
             sizeClass() {
                 if (this.size == 'normal') {
-                    return 'form-group'
+                    return 'form-group add-margin-bottom'
                 }
-                return 'form-group-sm'
+                return 'form-group-sm add-margin-bottom'
             },
             gridClass() {
                 if (this.grid === undefined) {
@@ -184,3 +213,9 @@
         }
     }
 </script>
+
+<style>
+    .add-margin-bottom {
+        margin-bottom: 5px;
+    }
+</style>

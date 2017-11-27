@@ -84,6 +84,14 @@ window.app = new Vue({
             this.calculateBMI()
         })
 
+        EventBus.$on('breathing-updates', (value) => {
+            if (value == 2 || value == 3) {
+                EventBus.$emit('set-o2-rate-rear-addon', 'L/min')
+            } else if (value == 4) {
+                EventBus.$emit('set-o2-rate-rear-addon', 'FiO<sub>2</sub>')
+            }
+        })
+
         /**
          * Common events.
          */

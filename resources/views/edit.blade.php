@@ -96,12 +96,12 @@
                     </input-suggestion>
 
                     <!-- admit reason -->
-            <input-select
+                    <input-select
                         field="admit_reason"
                         value=""
                         label="Reason to admit :"
                         grid="12-6-3">
-                t>
+                    </input-select>
                 </div><!-- wrap content with row class -->
             </panel><!-- Panel Admission Data -->
 
@@ -1175,6 +1175,41 @@
                         readonly>
                     </input-text-addon>
 
+                    <!-- SpO2 -->
+                    <input-text-addon
+                        field="SpO2"
+                        label='SpO<sub>2</sub> '
+                        label-description="as indicated"
+                        rear-addon="%"
+                        grid="12-6-3">
+                    </input-text-addon>
+
+                    <div class="col-xs-12 col-sm-6 col-md-4">
+                        <div class="material-box">
+                            <input-radio
+                                field="breathing"
+                                label="Breathing :"
+                                options='[
+                                    {"label": "Room air", "value": 1},
+                                    {"label": "O<sub>2</sub> - Canula", "value": 2},
+                                    {"label": "O<sub>2</sub> - Mask with bag", "value": 3},
+                                    {"label": "O<sub>2</sub> - On ventilator", "value": 4}
+                                ]'
+                                trigger-value="[2,3,4]"
+                                emit-on-update="breathing-updates">
+                                <div class="form-inline">
+                                    <input-text-addon
+                                        field="O2_rate"
+                                        label="O<sub>2</sub> rate :"
+                                        rear-addon="L/min"
+                                        setter-rear-addon="set-o2-rate-rear-addon">
+                                    </input-text-addon>
+                                </div>
+                            </input-radio>
+                        </div>
+                    </div>
+
+
                 </div><!-- wrap with row -->
             </panel>
 
@@ -1306,6 +1341,7 @@
                         <input-select
                             field="CPG_special_group"
                             label="Special group (accoring to CPG) :"
+                            value=""
                             not-allow-other>
                         </input-select>
                     </div>

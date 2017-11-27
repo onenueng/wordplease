@@ -40,7 +40,10 @@ window.app = new Vue({
          * Note specific data.
          */
         height: null,
-        weight: null
+        weight: null,
+        GCS_E: null,
+        GCS_V: null,
+        GCS_M: null
     },
     mounted() {
         /**
@@ -90,6 +93,18 @@ window.app = new Vue({
             } else if (value == 4) {
                 EventBus.$emit('set-o2-rate-rear-addon', 'FiO<sub>2</sub>')
             }
+        })
+
+        EventBus.$on('GCS-updates-E', (value) => {
+            this.calculateGCS(value, 'E')
+        })
+
+        EventBus.$on('GCS-updates-V', (value) => {
+            this.calculateGCS(value, 'V')
+        })
+
+        EventBus.$on('GCS-updates-M', (value) => {
+            this.calculateGCS(value, 'M')
         })
 
         /**
@@ -175,6 +190,35 @@ window.app = new Vue({
                 BMI = ''
             }
             EventBus.$emit('BMI-updates', BMI)
+        },
+        calculateGCS(value, factor) {
+            let score = value === null ? null : parseInt(((value.split(' ')[0]).replace('[','')).replace(']',''))
+            if (factor == 'E') {
+                this.GCS_E = score
+            } else if (factor == 'V') {
+                this.GCS_V = score
+            } else {
+                this.GCS_M = score
+            }
+
+            if ($.isNumeric(this.GCS_E) && $.isNumeric(this.GCS_V) && $.isNumeric(this.GCS_M)) {
+                let sum = this.GCS_E + this.GCS_V + this.GCS_M
+                let gcs, gcsLabel
+                if (sum < 9) {
+                    gcs = 3;
+                    gcsLabel = 'Severe [GCS < 9]';
+                } else if (sum < 13) {
+                    gcs = 2;
+                    gcsLabel = 'Moderate [9 <= GCS < 13]';
+                } else {
+                    gcs = 1;
+                    gcsLabel = 'Minor [13 <= GCS <= 15]'
+                }
+
+                EventBus.$emit('GCS-updated', gcsLabel)
+            } else {
+                EventBus.$emit('GCS-updated', null)
+            }
         }
     }
 })

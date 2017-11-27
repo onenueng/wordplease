@@ -234,6 +234,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         placeholder: {
             type: String,
             required: false
+        },
+        setterEvent: {
+            type: String,
+            required: false
         }
     },
     data: function data() {
@@ -243,6 +247,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
     mounted: function mounted() {
+        var _this = this;
+
         // init label tooltip if available.
         if (this.labelDescription !== undefined) {
             $('a[title="' + this.labelDescription + '"]').tooltip();
@@ -253,6 +259,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
 
         if (this.value === undefined) this.lastSave = this.userInput = '';else this.lastSave = this.userInput = this.value;
+
+        if (this.setterEvent !== undefined) {
+            EventBus.$on(this.setterEvent, function (value) {
+                _this.userInput = value;
+                _this.autosave();
+            });
+        }
     },
 
     methods: {

@@ -1247,34 +1247,38 @@
                             <div class="form-inline">
                                 <input-text
                                     placeholder="Glassglow coma score:Auto Calculate"
-                                    readonly>
+                                    readonly
+                                    setter-event="GCS-updated">
                                 </input-text>
                             </div>
                             <div class="form-inline">
                                 <input-select
                                     field="GCS_E"
-                                    value=""
+                                    
                                     size="normal"
                                     not-allow-other
-                                    placeholder="select GCS - E">
+                                    placeholder="select GCS - E"
+                                    emit-on-update="GCS-updates-E">
                                 </input-select>
                             </div>
                             <div class="form-inline">
                                 <input-select
                                     field="GCS_V"
-                                    value=""
+                                    
                                     size="normal"
                                     not-allow-other
-                                    placeholder="select GCS - V">
+                                    placeholder="select GCS - V"
+                                    emit-on-update="GCS-updates-V">
                                 </input-select>
                             </div>
                             <div class="form-inline">
                                 <input-select
                                     field="GCS_M"
-                                    value=""
+                                    
                                     size="normal"
                                     not-allow-other
-                                    placeholder="select GCS - M">
+                                    placeholder="select GCS - M"
+                                    emit-on-update="GCS-updates-M">
                                 </input-select>
                             </div>
                         </div>
@@ -1411,7 +1415,6 @@
                         <input-select
                             field="CPG_special_group"
                             label="Special group (accoring to CPG) :"
-                            value=""
                             not-allow-other>
                         </input-select>
                     </div>

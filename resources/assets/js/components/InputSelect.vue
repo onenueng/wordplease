@@ -6,6 +6,9 @@
         <div :class="componentSize" :style="isMaxWidthDiv">
             <label class="control-label" :for="field" v-if="label !== undefined">
                 {{ label }}
+                <a @click="reset()" role="button" v-show="showReset">
+                    <i class="fa fa-remove"></i>
+                </a>
             </label>
             <input  type="text"
                     class="form-control cursor-pointer"
@@ -89,11 +92,11 @@
             }
 
             if (this.value === undefined)
-                this.lastData = this.userInput = ''
+                this.lastData = this.userInput = null
             else
                 this.lastData = this.userInput = this.value
 
-            this.showReset = (this.value != '')
+            this.showReset = (this.value !== undefined)
 
             // init autocomplete.
             $(this.domRef).autocomplete({

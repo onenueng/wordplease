@@ -68,6 +68,10 @@
             placeholder: {
                 type: String,
                 required: false
+            },
+            setterEvent: {
+                type: String,
+                required: false  
             }
         },
         data () {
@@ -90,6 +94,13 @@
                 this.lastSave = this.userInput = ''
             else
                 this.lastSave = this.userInput = this.value
+
+            if ( this.setterEvent !== undefined ) {
+                EventBus.$on(this.setterEvent, (value) => {
+                    this.userInput = value
+                    this.autosave()
+                })
+            }
         },
         methods: {
             autosave() {

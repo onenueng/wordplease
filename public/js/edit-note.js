@@ -1102,6 +1102,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         placeholder: {
             type: String,
             required: false
+        },
+        setterEvent: {
+            type: String,
+            required: false
         }
     },
     data: function data() {
@@ -1111,6 +1115,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
     mounted: function mounted() {
+        var _this = this;
+
         // init label tooltip if available.
         if (this.labelDescription !== undefined) {
             $('a[title="' + this.labelDescription + '"]').tooltip();
@@ -1121,6 +1127,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
 
         if (this.value === undefined) this.lastSave = this.userInput = '';else this.lastSave = this.userInput = this.value;
+
+        if (this.setterEvent !== undefined) {
+            EventBus.$on(this.setterEvent, function (value) {
+                _this.userInput = value;
+                _this.autosave();
+            });
+        }
     },
 
     methods: {
@@ -1505,7 +1518,10 @@ window.app = new Vue({
          * Note specific data.
          */
         height: null,
-        weight: null
+        weight: null,
+        GCS_E: null,
+        GCS_V: null,
+        GCS_M: null
     },
     mounted: function mounted() {
         var _this = this;
@@ -1557,6 +1573,18 @@ window.app = new Vue({
             } else if (value == 4) {
                 EventBus.$emit('set-o2-rate-rear-addon', 'FiO<sub>2</sub>');
             }
+        });
+
+        EventBus.$on('GCS-updates-E', function (value) {
+            _this.calculateGCS(value, 'E');
+        });
+
+        EventBus.$on('GCS-updates-V', function (value) {
+            _this.calculateGCS(value, 'V');
+        });
+
+        EventBus.$on('GCS-updates-M', function (value) {
+            _this.calculateGCS(value, 'M');
         });
 
         /**
@@ -1644,6 +1672,36 @@ window.app = new Vue({
                 BMI = '';
             }
             EventBus.$emit('BMI-updates', BMI);
+        },
+        calculateGCS: function calculateGCS(value, factor) {
+            var score = value === null ? null : parseInt(value.split(' ')[0].replace('[', '').replace(']', ''));
+            if (factor == 'E') {
+                this.GCS_E = score;
+            } else if (factor == 'V') {
+                this.GCS_V = score;
+            } else {
+                this.GCS_M = score;
+            }
+
+            if ($.isNumeric(this.GCS_E) && $.isNumeric(this.GCS_V) && $.isNumeric(this.GCS_M)) {
+                var sum = this.GCS_E + this.GCS_V + this.GCS_M;
+                var gcs = void 0,
+                    gcsLabel = void 0;
+                if (sum < 9) {
+                    gcs = 3;
+                    gcsLabel = 'Severe [GCS < 9]';
+                } else if (sum < 13) {
+                    gcs = 2;
+                    gcsLabel = 'Moderate [9 <= GCS < 13]';
+                } else {
+                    gcs = 1;
+                    gcsLabel = 'Minor [13 <= GCS <= 15]';
+                }
+
+                EventBus.$emit('GCS-updated', gcsLabel);
+            } else {
+                EventBus.$emit('GCS-updated', null);
+            }
         }
     }
 });
@@ -3015,6 +3073,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: {
@@ -3081,9 +3142,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             console.log(this.field + ' need sync');
         }
 
-        if (this.value === undefined) this.lastData = this.userInput = '';else this.lastData = this.userInput = this.value;
+        if (this.value === undefined) this.lastData = this.userInput = null;else this.lastData = this.userInput = this.value;
 
-        this.showReset = this.value != '';
+        this.showReset = this.value !== undefined;
 
         // init autocomplete.
         $(this.domRef).autocomplete({
@@ -3202,7 +3263,29 @@ var render = function() {
         ? _c(
             "label",
             { staticClass: "control-label", attrs: { for: _vm.field } },
-            [_vm._v("\n            " + _vm._s(_vm.label) + "\n        ")]
+            [
+              _vm._v("\n            " + _vm._s(_vm.label) + "\n            "),
+              _c(
+                "a",
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: _vm.showReset,
+                      expression: "showReset"
+                    }
+                  ],
+                  attrs: { role: "button" },
+                  on: {
+                    click: function($event) {
+                      _vm.reset()
+                    }
+                  }
+                },
+                [_c("i", { staticClass: "fa fa-remove" })]
+              )
+            ]
           )
         : _vm._e(),
       _vm._v(" "),

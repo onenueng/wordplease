@@ -11522,6 +11522,7 @@ a.navbar-brand.active:hover {
   padding: 2px 5px;
   white-space: nowrap;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .autocomplete-selected {

@@ -26,6 +26,7 @@
             :button-label="dialogButtonLabel">
         </modal-dialog>
 
+        {{-- *** NOTE SPECIFIC COMPONENTS *** --}}
         <!-- Child-Pugh's score -->
         <modal-document></modal-document>
 
@@ -815,9 +816,7 @@
                                 <!-- TB specify  -->
                                 <input-check-group 
                                     checks='[
-                                        {
-                                            "field": "comorbid_TB_pulmonary", "label": "Pulmonary"
-                                        }
+                                        {"field": "comorbid_TB_pulmonary", "label": "Pulmonary"}
                                     ]'
                                     need-sync>
                                 </input-check-group>
@@ -1184,16 +1183,16 @@
                         grid="12-6-3">
                     </input-text-addon>
 
-                    <div class="col-xs-12 col-sm-6 col-md-4">
+                    <div class="col-xs-12 col-md-6">
                         <div class="material-box">
                             <input-radio
                                 field="breathing"
                                 label="Breathing :"
                                 options='[
                                     {"label": "Room air", "value": 1},
-                                    {"label": "O<sub>2</sub> - Canula", "value": 2},
-                                    {"label": "O<sub>2</sub> - Mask with bag", "value": 3},
-                                    {"label": "O<sub>2</sub> - On ventilator", "value": 4}
+                                    {"label": "O<sub>2</sub>-Canula", "value": 2},
+                                    {"label": "O<sub>2</sub>-Mask with bag", "value": 3},
+                                    {"label": "O<sub>2</sub>-On ventilator", "value": 4}
                                 ]'
                                 trigger-value="[2,3,4]"
                                 emit-on-update="breathing-updates">
@@ -1207,8 +1206,79 @@
                                 </div>
                             </input-radio>
                         </div>
+
+                        <div class="material-box">
+                            <!-- Mental evaluation -->
+                            <input-radio
+                                field="mental_evaluation"
+                                label="Mental evaluation :"
+                                options='[
+                                    {"label": "Awake", "value": 1},
+                                    {"label": "Drowsy", "value": 2},
+                                    {"label": "Stuporous", "value": 3},
+                                    {"label": "Unconscious", "value": 4}
+                                ]'>
+                            </input-radio>
+                            
+                            <input-check-group
+                                label="Mental orientation :"
+                                checks='[
+                                    {"field": "mental_orientation_to_time", "label": "to Time"},
+                                    {"field": "mental_orientation_to_place", "label": "to Place"},
+                                    {"field": "mental_orientation_to_person", "label": "to Person"}
+                                ]'>
+                                
+                            </input-check-group>
+                        </div>
                     </div>
 
+                    <div class="col-xs-12 col-md-6">
+                        <div class="material-box">
+                            <input-radio
+                                field="level_of_consciousness"
+                                label="Level of consciousness :"
+                                options='[
+                                    {"label": "Appropriate", "value": 1},
+                                    {"label": "Retardation", "value": 2},
+                                    {"label": "Depressed", "value": 3},
+                                    {"label": "Psychotic", "value": 4}
+                                ]'>
+                            </input-radio>
+                            <div class="form-inline">
+                                <input-text
+                                    placeholder="Glassglow coma score:Auto Calculate"
+                                    readonly>
+                                </input-text>
+                            </div>
+                            <div class="form-inline">
+                                <input-select
+                                    field="GCS_E"
+                                    value=""
+                                    size="normal"
+                                    not-allow-other
+                                    placeholder="select GCS - E">
+                                </input-select>
+                            </div>
+                            <div class="form-inline">
+                                <input-select
+                                    field="GCS_V"
+                                    value=""
+                                    size="normal"
+                                    not-allow-other
+                                    placeholder="select GCS - V">
+                                </input-select>
+                            </div>
+                            <div class="form-inline">
+                                <input-select
+                                    field="GCS_M"
+                                    value=""
+                                    size="normal"
+                                    not-allow-other
+                                    placeholder="select GCS - M">
+                                </input-select>
+                            </div>
+                        </div>
+                    </div>
 
                 </div><!-- wrap with row -->
             </panel>

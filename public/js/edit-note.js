@@ -1057,6 +1057,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: {
@@ -1134,18 +1135,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         hasLabel: function hasLabel() {
             return !(this.label === undefined);
         },
-        sizeClass: function sizeClass() {
+        componentSize: function componentSize() {
             if (this.size == 'normal') {
                 return 'form-group';
             }
             return 'form-group-sm';
         },
-        gridClass: function gridClass() {
+        componentGrid: function componentGrid() {
             if (this.grid === undefined) {
                 return '';
             }
             var grid = this.grid.split('-');
             return 'col-xs-' + grid[0] + ' col-sm-' + grid[1] + ' col-md-' + grid[2];
+        },
+        isMaxWidth: function isMaxWidth() {
+            if (this.label === undefined) {
+                return "width: 100%;";
+            }
+            return "";
         }
     }
 });
@@ -1159,8 +1166,8 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { class: _vm.gridClass }, [
-    _c("div", { class: _vm.sizeClass }, [
+  return _c("div", { class: _vm.componentGrid }, [
+    _c("div", { class: _vm.componentSize, style: _vm.isMaxWidth }, [
       _vm.hasLabel
         ? _c(
             "label",
@@ -1198,6 +1205,7 @@ var render = function() {
           }
         ],
         staticClass: "form-control",
+        style: _vm.isMaxWidth,
         attrs: {
           type: "text",
           readonly: _vm.readonly,
@@ -3004,6 +3012,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: {
@@ -3045,6 +3056,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         needSync: {
             type: String,
             required: false
+        },
+        placeholder: {
+            type: String,
+            required: false
+        },
+        emitOnUpdate: {
+            type: String,
+            required: false
         }
     },
     data: function data() {
@@ -3068,6 +3087,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         // init autocomplete.
         $(this.domRef).autocomplete({
+            // width: this.maxWid,
             serviceUrl: this.getServiceUrl,
             onSelect: function onSelect(suggestion) {
                 _this.showReset = true;
@@ -3081,32 +3101,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     methods: {
-        getGrid: function getGrid() {
-            if (this.grid === undefined) {
-                return '';
-            }
-            // let grid = this.grid.split('-').map((x) => 12/x)
-            var grid = this.grid.split('-');
-            return 'col-xs-' + grid[0] + ' col-sm-' + grid[1] + ' col-md-' + grid[2];
-        },
-        getSize: function getSize() {
-            if (this.size == 'normal') {
-                return 'form-group has-feedback';
-            }
-            return 'form-group-sm has-feedback';
-        },
         reset: function reset() {
             this.showReset = false;
             this.userInput = '';
             this.autosave();
         },
-        isAllowOther: function isAllowOther() {
-            return this.notAllowOther === undefined ? 'return true;' : 'return false;';
-        },
         autosave: function autosave() {
             if (this.field !== undefined && this.userInput != this.lastData) {
                 EventBus.$emit('autosave', this.field, this.userInput);
                 this.lastData = this.userInput;
+
+                if (this.emitOnUpdate !== undefined) {
+                    EventBus.$emit(this.emitOnUpdate, this.userInput);
+                }
             }
         }
     },
@@ -3117,6 +3124,41 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
 
             return '/lists/' + this.serviceUrl;
+        },
+        componentGrid: function componentGrid() {
+            if (this.grid === undefined) {
+                return '';
+            }
+            // let grid = this.grid.split('-').map((x) => 12/x)
+            var grid = this.grid.split('-');
+            return 'col-xs-' + grid[0] + ' col-sm-' + grid[1] + ' col-md-' + grid[2];
+        },
+        componentSize: function componentSize() {
+            if (this.size == 'normal') {
+                return 'form-group has-feedback';
+            }
+            return 'form-group-sm has-feedback';
+        },
+        isAllowOther: function isAllowOther() {
+            return this.notAllowOther === undefined ? 'return true;' : 'return false;';
+        },
+        isMaxWidthDiv: function isMaxWidthDiv() {
+            if (this.label === undefined) {
+                return "width: 95%;";
+            }
+            return "";
+        },
+        isMaxWidthInput: function isMaxWidthInput() {
+            if (this.label === undefined) {
+                return "width: 100%;";
+            }
+            return "";
+        },
+        isMaxWidthReset: function isMaxWidthReset() {
+            if (this.label === undefined) {
+                return "width: 5%;";
+            }
+            return "";
         }
     }
 });
@@ -3130,35 +3172,37 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { class: _vm.getGrid() }, [
-    _c("div", { class: _vm.getSize() }, [
+  return _c("div", { class: _vm.componentGrid }, [
+    _vm.label === undefined
+      ? _c(
+          "a",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.showReset,
+                expression: "showReset"
+              }
+            ],
+            style: _vm.isMaxWidthReset,
+            attrs: { role: "button" },
+            on: {
+              click: function($event) {
+                _vm.reset()
+              }
+            }
+          },
+          [_c("i", { staticClass: "fa fa-remove" })]
+        )
+      : _vm._e(),
+    _vm._v(" "),
+    _c("div", { class: _vm.componentSize, style: _vm.isMaxWidthDiv }, [
       _vm.label !== undefined
         ? _c(
             "label",
             { staticClass: "control-label", attrs: { for: _vm.field } },
-            [
-              _vm._v("\n            " + _vm._s(_vm.label) + "\n            "),
-              _c(
-                "a",
-                {
-                  directives: [
-                    {
-                      name: "show",
-                      rawName: "v-show",
-                      value: _vm.showReset,
-                      expression: "showReset"
-                    }
-                  ],
-                  attrs: { role: "button" },
-                  on: {
-                    click: function($event) {
-                      _vm.reset()
-                    }
-                  }
-                },
-                [_c("i", { staticClass: "fa fa-remove" })]
-              )
-            ]
+            [_vm._v("\n            " + _vm._s(_vm.label) + "\n        ")]
           )
         : _vm._e(),
       _vm._v(" "),
@@ -3172,11 +3216,13 @@ var render = function() {
           }
         ],
         staticClass: "form-control cursor-pointer",
+        style: _vm.isMaxWidthInput,
         attrs: {
           type: "text",
           name: _vm.field,
           id: _vm.field,
-          onkeypress: _vm.isAllowOther()
+          onkeypress: _vm.isAllowOther,
+          placeholder: _vm.placeholder
         },
         domProps: { value: _vm.userInput },
         on: {
@@ -3197,10 +3243,7 @@ var render = function() {
         }
       }),
       _vm._v(" "),
-      _c("span", {
-        staticClass: "fa fa-chevron-down form-control-feedback",
-        attrs: { "aria-hidden": "true" }
-      })
+      _c("span", { staticClass: "fa fa-chevron-down form-control-feedback" })
     ])
   ])
 }
@@ -3771,6 +3814,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: {
@@ -3878,7 +3922,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (_typeof(this.triggerValues) == 'object') {
                 var show = false;
                 this.triggerValues.forEach(function (eachValue) {
-                    console.log("each: " + eachValue + "=> click:" + value);
                     if (eachValue == value) {
                         show = true;
                     }
@@ -3997,51 +4040,46 @@ var render = function() {
         "div",
         { staticClass: "form-group-sm" },
         [
-          _c(
-            "label",
-            {
-              staticClass: "control-label",
-              domProps: { innerHTML: _vm._s(_vm.label) }
-            },
-            [
-              _vm.labelAction !== undefined
-                ? _c(
-                    "a",
-                    {
-                      attrs: {
-                        role: "button",
-                        "data-toggle": "tooltip",
-                        title: _vm.labelActionTitle
-                      },
-                      on: {
-                        click: function($event) {
-                          _vm.emitLabelActionEvent()
-                        }
-                      }
+          _c("label", { staticClass: "control-label" }, [
+            _c("span", { domProps: { innerHTML: _vm._s(_vm.label) } }),
+            _vm._v(" "),
+            _vm.labelAction !== undefined
+              ? _c(
+                  "a",
+                  {
+                    attrs: {
+                      role: "button",
+                      "data-toggle": "tooltip",
+                      title: _vm.labelActionTitle
                     },
-                    [_c("i", { class: _vm.labelActionIcon })]
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              _vm.labelDescription !== undefined
-                ? _c(
-                    "a",
-                    {
-                      attrs: {
-                        role: "button",
-                        "data-toggle": "tooltip",
-                        title: _vm.labelDescription
+                    on: {
+                      click: function($event) {
+                        _vm.emitLabelActionEvent()
                       }
-                    },
-                    [_c("i", { staticClass: "fa fa-info-circle" })]
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              _vm.labelDescription !== undefined
-                ? _c("span", [_vm._v(":")])
-                : _vm._e()
-            ]
-          ),
+                    }
+                  },
+                  [_c("i", { class: _vm.labelActionIcon })]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.labelDescription !== undefined
+              ? _c(
+                  "a",
+                  {
+                    attrs: {
+                      role: "button",
+                      "data-toggle": "tooltip",
+                      title: _vm.labelDescription
+                    }
+                  },
+                  [_c("i", { staticClass: "fa fa-info-circle" })]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.labelDescription !== undefined
+              ? _c("span", [_vm._v(":")])
+              : _vm._e()
+          ]),
           _vm._v(" "),
           _c("transition", { attrs: { name: "slide-fade" } }, [
             _c(

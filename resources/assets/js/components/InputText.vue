@@ -1,6 +1,6 @@
 <template>
-    <div :class="gridClass">
-        <div :class="sizeClass">
+    <div :class="componentGrid">
+        <div :class="componentSize" :style="isMaxWidth">
             <label v-if="hasLabel" class="control-label" :for="field">
                 {{ label }}
                 <a  v-if="labelDescription !== undefined"
@@ -18,7 +18,8 @@
                    :id="field"
                    :placeholder="placeholder"
                    v-model="userInput"
-                   @blur="autosave()" />
+                   @blur="autosave()"
+                   :style="isMaxWidth" />
         </div>
     </div>
 </template>
@@ -102,18 +103,24 @@
             hasLabel() {
                 return !(this.label === undefined)
             },
-            sizeClass() {
+            componentSize() {
                 if (this.size == 'normal') {
                     return 'form-group'
                 }
                 return 'form-group-sm'
             },
-            gridClass() {
+            componentGrid() {
                 if (this.grid === undefined) {
                     return ''
                 }
                 let grid = this.grid.split('-')
                 return 'col-xs-' + (grid[0]) + ' col-sm-' + (grid[1]) + ' col-md-' + (grid[2])
+            },
+            isMaxWidth() {
+                if ( this.label === undefined ) {
+                    return "width: 100%;"
+                }
+                return ""
             }
         }
     }

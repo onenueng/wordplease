@@ -1,7 +1,8 @@
 <template>
     <div>
         <div class="form-group-sm">
-            <label class="control-label" v-html="label">
+            <label class="control-label">
+                <span v-html="label"></span>
                 <a  v-if="labelAction !== undefined"
                     role="button"
                     @click="emitLabelActionEvent()"
@@ -156,7 +157,6 @@
                 if ((typeof this.triggerValues) == 'object') {
                     let show = false
                     this.triggerValues.forEach((eachValue) => {
-                        console.log("each: " + eachValue + "=> click:" + value)
                         if (eachValue == value) {
                             show = true
                         }

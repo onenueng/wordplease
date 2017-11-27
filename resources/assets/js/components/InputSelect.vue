@@ -1,11 +1,11 @@
 <template>
-    <div :class="getGrid()">
-        <div :class="getSize()">
+    <div :class="componentGrid">
+        <a v-if="label === undefined" @click="reset()" role="button" v-show="showReset" :style="isMaxWidthReset">
+            <i class="fa fa-remove"></i>
+        </a>
+        <div :class="componentSize" :style="isMaxWidthDiv">
             <label class="control-label" :for="field" v-if="label !== undefined">
                 {{ label }}
-                <a @click="reset()" role="button" v-show="showReset">
-                    <i class="fa fa-remove"></i>
-                </a>
             </label>
             <input  type="text"
                     class="form-control cursor-pointer"
@@ -14,9 +14,12 @@
                     v-model="userInput"
                     @blur="autosave()"
                     @input="showReset = (userInput != '')"
-                    :onkeypress="isAllowOther()" />
-            <span class="fa fa-chevron-down form-control-feedback" aria-hidden="true"></span>
+                    :onkeypress="isAllowOther"
+                    :placeholder="placeholder"
+                    :style="isMaxWidthInput" />
+            <span class="fa fa-chevron-down form-control-feedback"></span>
         </div>
+
     </div>
 </template>
 
@@ -61,6 +64,14 @@
             needSync: {
                 type: String,
                 required: false
+            },
+            placeholder: {
+                type: String,
+                required: false
+            },
+            emitOnUpdate: {
+                type: String,
+                required: false  
             }
         },
         data () {
@@ -86,6 +97,7 @@
 
             // init autocomplete.
             $(this.domRef).autocomplete({
+                // width: this.maxWid,
                 serviceUrl: this.getServiceUrl,
                 onSelect: (suggestion) => {
                     this.showReset = true
@@ -98,32 +110,19 @@
             })
         },
         methods: {
-            getGrid() {
-                if (this.grid === undefined) {
-                    return ''
-                }
-                // let grid = this.grid.split('-').map((x) => 12/x)
-                let grid = this.grid.split('-')
-                return 'col-xs-' + (grid[0]) + ' col-sm-' + (grid[1]) + ' col-md-' + (grid[2])
-            },
-            getSize() {
-                if (this.size == 'normal') {
-                    return 'form-group has-feedback'
-                }
-                return 'form-group-sm has-feedback'
-            },
             reset() {
                 this.showReset = false
                 this.userInput = ''
                 this.autosave()
             },
-            isAllowOther() {
-                return this.notAllowOther === undefined ? 'return true;' : 'return false;'
-            },
             autosave() {
                 if (this.field !== undefined && this.userInput != this.lastData) {
                     EventBus.$emit('autosave', this.field, this.userInput)
                     this.lastData = this.userInput
+
+                    if ( this.emitOnUpdate !== undefined ) {
+                        EventBus.$emit(this.emitOnUpdate, this.userInput)
+                    }
                 }
             }
         },
@@ -134,6 +133,41 @@
                 }
 
                 return  '/lists/' + this.serviceUrl
+            },
+            componentGrid() {
+                if (this.grid === undefined) {
+                    return ''
+                }
+                // let grid = this.grid.split('-').map((x) => 12/x)
+                let grid = this.grid.split('-')
+                return 'col-xs-' + (grid[0]) + ' col-sm-' + (grid[1]) + ' col-md-' + (grid[2])
+            },
+            componentSize() {
+                if (this.size == 'normal') {
+                    return 'form-group has-feedback'
+                }
+                return 'form-group-sm has-feedback'
+            },
+            isAllowOther() {
+                return this.notAllowOther === undefined ? 'return true;' : 'return false;'
+            },
+            isMaxWidthDiv() {
+                if ( this.label === undefined ) {
+                    return "width: 95%;"
+                }
+                return ""
+            },
+            isMaxWidthInput() {
+                if ( this.label === undefined ) {
+                    return "width: 100%;"
+                }
+                return ""
+            },
+            isMaxWidthReset() {
+                if ( this.label === undefined ) {
+                    return "width: 5%;"
+                }
+                return ""
             }
         }
     }

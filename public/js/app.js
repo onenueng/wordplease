@@ -189,6 +189,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: {
@@ -266,18 +267,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         hasLabel: function hasLabel() {
             return !(this.label === undefined);
         },
-        sizeClass: function sizeClass() {
+        componentSize: function componentSize() {
             if (this.size == 'normal') {
                 return 'form-group';
             }
             return 'form-group-sm';
         },
-        gridClass: function gridClass() {
+        componentGrid: function componentGrid() {
             if (this.grid === undefined) {
                 return '';
             }
             var grid = this.grid.split('-');
             return 'col-xs-' + grid[0] + ' col-sm-' + grid[1] + ' col-md-' + grid[2];
+        },
+        isMaxWidth: function isMaxWidth() {
+            if (this.label === undefined) {
+                return "width: 100%;";
+            }
+            return "";
         }
     }
 });
@@ -292,8 +299,8 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { class: _vm.gridClass }, [
-    _c("div", { class: _vm.sizeClass }, [
+  return _c("div", { class: _vm.componentGrid }, [
+    _c("div", { class: _vm.componentSize, style: _vm.isMaxWidth }, [
       _vm.hasLabel
         ? _c(
             "label",
@@ -331,6 +338,7 @@ var render = function() {
           }
         ],
         staticClass: "form-control",
+        style: _vm.isMaxWidth,
         attrs: {
           type: "text",
           readonly: _vm.readonly,

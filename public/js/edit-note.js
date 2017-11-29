@@ -1710,20 +1710,22 @@ window.app = new Vue({
  * Note specific scripts.
  */
 // seem like jQuery not support ES6 syntax so, code jQuery in ES5
-$('span.estimated').click(function () {
-    $('input[name=' + $(this).attr('data-target') + ']').click();
-});
+$(function () {
+    $('span.estimated').click(function () {
+        $('input[name=' + $(this).attr('data-target') + ']').click();
+    });
 
-$('span.estimated').mouseover(function () {
-    $(this).css({ 'cursor': 'pointer', 'font-style': 'italic' });
-});
+    $('span.estimated').mouseover(function () {
+        $(this).css({ 'cursor': 'pointer', 'font-style': 'italic' });
+    });
 
-$('span.estimated').mouseout(function () {
-    $(this).css({ 'cursor': '', 'font-style': '' });
-});
+    $('span.estimated').mouseout(function () {
+        $(this).css({ 'cursor': '', 'font-style': '' });
+    });
 
-$('input[name^=estimated_]').click(function () {
-    EventBus.$emit('autosave', $(this).attr('name'), $(this).prop('checked'));
+    $('input[name^=estimated_]').click(function () {
+        EventBus.$emit('autosave', $(this).attr('name'), $(this).prop('checked'));
+    });
 });
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 

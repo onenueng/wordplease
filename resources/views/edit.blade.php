@@ -98,8 +98,8 @@
                     <!-- admit reason -->
                     <input-select
                         field="admit_reason"
-                        value=""
                         label="Reason to admit :"
+                        placeholder="if other choice, type here"
                         grid="12-6-3">
                     </input-select>
                 </div><!-- wrap content with row class -->
@@ -120,12 +120,15 @@
                     <div class="col-xs-12"><hr class="line" /></div>
 
                     <div class="col-xs-12 form-inline">
+                        <!-- comorbid no data all -->
                         <button-app
                             action="comorbid-no-data-all"
                             status="draft"
                             label="No Data"
                             size="sm">
                         </button-app>
+
+                        <!-- comorbid no at all -->
                         <button-app
                             action="comorbid-no-at-all"
                             status="draft"
@@ -449,7 +452,6 @@
                                 <div class="form-inline">
                                     <input-select
                                         field="comorbid_CKD_stage"
-                                        value=""
                                         label="Stage :"
                                         size="normal"
                                         not-allow-other
@@ -1141,8 +1143,6 @@
                         grid="12-6-3">
                     </input-text-addon>
                     
-
-
                     <!-- Height -->
                     <input-text-addon
                         field="height_cm"
@@ -1198,7 +1198,7 @@
                                 <div class="form-inline">
                                     <input-text-addon
                                         field="O2_rate"
-                                        label="O<sub>2</sub> rate :"
+                                        front-addon="O<sub>2</sub> rate"
                                         rear-addon="L/min"
                                         setter-rear-addon="set-o2-rate-rear-addon">
                                     </input-text-addon>
@@ -1436,9 +1436,6 @@
                 </div>
             </panel><!-- MD Note -->
         </div><!-- note content -->
-    
-        
-        
     </div><!-- Vue app -->
 
     <script src="/js/manifest.js"></script>

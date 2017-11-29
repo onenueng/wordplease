@@ -18,6 +18,10 @@ Route::get('/is-session-active', function(Illuminate\Http\Request $request) {
 });
 
 // dev route start here
+Route::get('draft/{page}', function ($page) {
+    return view('draft.' . $page);
+});
+
 Route::get('/btm', function () {
     return view('btm');
 });

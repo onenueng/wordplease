@@ -10,7 +10,7 @@
         @import url(https://fonts.googleapis.com/css?family=Roboto:100,200,300,400,500);
 
         body {
-          min-height: 100vh;
+          min-height: 100vh;  
           overflow: hidden;
           font-family: Roboto;
           color: #fff;

@@ -73,7 +73,6 @@
                     <!-- ward -->
                     <input-suggestion
                         field="ward"
-                        value=""
                         label="Ward :"
                         grid="12-6-3"
                         min-chars="2">

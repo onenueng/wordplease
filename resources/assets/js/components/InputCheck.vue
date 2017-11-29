@@ -160,8 +160,6 @@
         width: 100%;
     }
 
-    
-
     .material-checkbox-group-label {
         position: relative;
         display: block;

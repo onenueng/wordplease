@@ -26,7 +26,7 @@
                         :id="field"
                         v-model="userInput"
                         @input="oninput()"
-                        @blur="autosave()" />
+                        @blur="onblur()" />
                 <span   v-if="rearAddon !== undefined"
                         class="input-group-addon"
                         v-html="rearAddonHtml">
@@ -110,6 +110,10 @@
             setterRearAddon: {
                 type: String,
                 required: false
+            },
+            pattern: {
+                type: String,
+                required: false
             }
         },
         data () {
@@ -124,14 +128,6 @@
             // init label tooltip if available.
             if (this.labelDescription !== undefined) {
                 $('a[title="' + this.labelDescription + '"]').tooltip()
-            }
-
-            if (this.frontAddon !== undefined && this.frontAddon.search('data-toggle="tooltip"') >= 0) {
-                $('span.input-group-addon a[data-toggle=tooltip]').tooltip()
-            } else {
-                if (this.rearAddon !== undefined && this.rearAddon.search('data-toggle="tooltip"') >= 0) {
-                    $('span.input-group-addon a[data-toggle=tooltip]').tooltip()
-                }    
             }
 
             if (this.setterEvent !== undefined) {
@@ -171,6 +167,14 @@
                 this.lastSave = this.userInput = ''
             else
                 this.lastSave = this.userInput = this.value
+
+            if (this.frontAddon !== undefined && this.frontAddon.search('data-toggle="tooltip"') >= 0) {
+                setTimeout(() => { $('span.input-group-addon a[data-toggle=tooltip]').tooltip() }, 100)
+            } else {
+                if (this.rearAddon !== undefined && this.rearAddon.search('data-toggle="tooltip"') >= 0) {
+                    setTimeout(() => { $('span.input-group-addon a[data-toggle=tooltip]').tooltip() }, 100)
+                }    
+            }
         },
         methods: {
             autosave() {
@@ -179,11 +183,26 @@
                     this.lastSave = this.userInput
                 }
             },
+            isValidate() {
+                if ( this.pattern !== null ) {
+                    if ( this.userInput.match(this.regex) !== null ) {
+                        return true
+                    } else {
+                        return false
+                    }
+                }
+                return true
+            },
             oninput() {
                 if ( this.emitOnUpdateEvents !== null) {
                     this.emitOnUpdateEvents.forEach((event) => {
                         EventBus.$emit(event, this.userInput)
                     })
+                }
+            },
+            onblur() {
+                if ( this.isValidate() ) {
+                    this.autosave()
                 }
             }
         },
@@ -207,6 +226,12 @@
             emitOnUpdateEvents() {
                 if ( this.emitOnUpdate !== undefined) {
                     return JSON.parse(this.emitOnUpdate)
+                }
+                return null
+            },
+            regex() {
+                if ( this.pattern !== null ) {
+                    return new RegExp(this.pattern)
                 }
                 return null
             }

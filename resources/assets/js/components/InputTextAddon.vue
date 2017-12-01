@@ -19,7 +19,7 @@
                         v-html="frontAddonHtml">
                 </span>
                 <input  type="text"
-                        class="form-control"
+                        :class="inputClass"
                         :readonly="readonly"
                         :placeholder="placeholder"
                         :name="field"
@@ -121,7 +121,8 @@
                 userInput: '',
                 lastSave: '',
                 frontAddonHtml: '',
-                rearAddonHtml: ''
+                rearAddonHtml: '',
+                inputClass: 'form-control'
             }
         },
         mounted () {
@@ -175,6 +176,14 @@
                     setTimeout(() => { $('span.input-group-addon a[data-toggle=tooltip]').tooltip() }, 100)
                 }    
             }
+
+            if ( this.pattern !== undefined) {
+                $(this.inputDom).tooltip({
+                    placement: "bottom",
+                    trigger: "hover",
+                    delay: { "show": 100, "hide": 500 }
+                })
+            }
         },
         methods: {
             autosave() {
@@ -186,6 +195,9 @@
             isValidate() {
                 if ( this.pattern !== null ) {
                     if ( this.userInput.match(this.regex) !== null ) {
+                        $(this.inputDom).attr('data-original-title', '')
+                        $(this.inputDom).tooltip('hide')
+
                         return true
                     } else {
                         return false
@@ -203,6 +215,9 @@
             onblur() {
                 if ( this.isValidate() ) {
                     this.autosave()
+                } else {
+                    $(this.inputDom).attr('data-original-title', 'hello not valid')
+                    $(this.inputDom).tooltip('show')
                 }
             }
         },
@@ -234,6 +249,9 @@
                     return new RegExp(this.pattern)
                 }
                 return null
+            },
+            inputDom() {
+                return ( this.field !== undefined ) ? ('#' + this.field) : ''
             }
         }
     }
@@ -241,6 +259,11 @@
 
 <style>
     .add-margin-bottom {
-        margin-bottom: 5px;
+        margin-bottom: 3px;
+    }
+
+    .invalid-input {
+        color: #fff;
+        background:#d9534f;
     }
 </style>

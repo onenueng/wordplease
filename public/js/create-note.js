@@ -1569,7 +1569,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         debouncer: function debouncer() {},
-        assignTolltip: function assignTolltip(message) {
+        assignTooltip: function assignTooltip(message) {
             $('#an').attr('data-original-title', message);
             if (message != '') {
                 if (!this.isTooltip) {
@@ -1593,17 +1593,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 if (_this.an == '') {
                     _this.statusClass = 'form-group has-feedback';
                     _this.iconStatusClass = 'form-control-feedback';
-                    _this.assignTolltip('');
+                    _this.assignTooltip('');
                 } else {
                     _this.statusClass = 'form-group has-feedback has-warning';
                     _this.iconStatusClass = 'form-control-feedback fa fa-warning';
-                    _this.assignTolltip('an ที่ใส่มาไม่ถูกต้องตามรูปแบบนะจ๊ะ');
+                    _this.assignTooltip('an ที่ใส่มาไม่ถูกต้องตามรูปแบบนะจ๊ะ');
                 }
             } else {
                 _this.$emit('validAn');
                 _this.statusClass = 'form-group has-feedback has-success';
                 _this.iconStatusClass = 'form-control-feedback fa fa-check';
-                _this.assignTolltip('');
+                _this.assignTooltip('');
             }
         }, 500);
         $('#an').tooltip({

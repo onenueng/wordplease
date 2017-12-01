@@ -38,17 +38,17 @@
             debouncer () {
 
             },
-            assignTolltip (message) {
-                $('#an').attr('data-original-title', message);
+            assignTooltip (message) {
+                $('#an').attr('data-original-title', message)
                 if (message != '') {
                     if (!this.isTooltip) {
-                        $('#an').tooltip('show');
-                        this.isTooltip = true;
+                        $('#an').tooltip('show')
+                        this.isTooltip = true
                     }
                 } else {
                     if (this.isTooltip) {
-                        $('#an').tooltip('hide');
-                        this.isTooltip = false;
+                        $('#an').tooltip('hide')
+                        this.isTooltip = false
                     }
                 }
             }
@@ -56,29 +56,29 @@
         mounted () {
             this.debouncer = _.debounce( () => {
                 if (!this.validator.test(this.an)) {
-                    this.$emit('invalidAn');
+                    this.$emit('invalidAn')
                     if (this.an == '') {
-                        this.statusClass = 'form-group has-feedback';
-                        this.iconStatusClass = 'form-control-feedback';
-                        this.assignTolltip('');
+                        this.statusClass = 'form-group has-feedback'
+                        this.iconStatusClass = 'form-control-feedback'
+                        this.assignTooltip('')
                         
                     } else {
-                        this.statusClass = 'form-group has-feedback has-warning';
-                        this.iconStatusClass = 'form-control-feedback fa fa-warning';
-                        this.assignTolltip('an ที่ใส่มาไม่ถูกต้องตามรูปแบบนะจ๊ะ');
+                        this.statusClass = 'form-group has-feedback has-warning'
+                        this.iconStatusClass = 'form-control-feedback fa fa-warning'
+                        this.assignTooltip('an ที่ใส่มาไม่ถูกต้องตามรูปแบบนะจ๊ะ')
                     }
                 } else {
-                    this.$emit('validAn');
-                    this.statusClass = 'form-group has-feedback has-success';
-                    this.iconStatusClass = 'form-control-feedback fa fa-check';
-                    this.assignTolltip('');
+                    this.$emit('validAn')
+                    this.statusClass = 'form-group has-feedback has-success'
+                    this.iconStatusClass = 'form-control-feedback fa fa-check'
+                    this.assignTooltip('')
                 }
-            }, 500);
+            }, 500)
             $('#an').tooltip({
                 placement: "bottom",
                 trigger: "hover",
                 delay: { "show": 100, "hide": 500 }
-            });
+            })
         }
     }
 </script>

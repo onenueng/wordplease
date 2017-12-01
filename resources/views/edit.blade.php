@@ -139,10 +139,10 @@
 
                     <?php 
                         $comorbidOptions = '[
-                                    {"label": "No data", "value": 255},
-                                    {"label": "No", "value": 0},
-                                    {"label": "Yes", "value": 1}
-                                ]';
+                            {"label": "No data", "value": 255},
+                            {"label": "No", "value": 0},
+                            {"label": "Yes", "value": 1}
+                        ]';
                     ?>
 
                     <div class="col-xs-12 col-sm-6 col-md-4"><!-- comorbid DM, VHD, Asthma, Cirrhosis, HCV -->
@@ -189,7 +189,7 @@
                                 </input-check-group>
                             </input-radio><!-- DM comorbid and its extra contents -->
                         </div>
-                        <div><hr class="line"></div>
+                        <div><hr class="line" /></div>
 
                         <!-- valvular heart disease comorbid -->
                         <div class="material-box">
@@ -221,7 +221,7 @@
                                 </input-text>
                             </input-radio><!-- comorbid valvular heart disease -->
                         </div><!-- comorbid valvular heart disease -->
-                        <div><hr class="line"></div>
+                        <div><hr class="line" /></div>
 
                         <!-- asthma comorbid -->
                         <div class="material-box">
@@ -231,7 +231,7 @@
                                 options="{{ $comorbidOptions }}">
                             </input-radio>
                         </div><!-- asthma comorbid -->
-                        <div><hr class="line"></div>
+                        <div><hr class="line" /></div>
 
                         <!-- cirrhosis comorbid -->
                         <div class="material-box">
@@ -303,7 +303,7 @@
                                 </input-text>
                             </input-radio>
                         </div><!-- comorbid cirrhosis -->
-                        <div><hr class="line"></div>
+                        <div><hr class="line" /></div>
 
                         <!-- HCV comorbid -->
                         <div class="material-box">
@@ -314,7 +314,7 @@
                                 setter-event='HCV-checked'>
                             </input-radio>
                         </div>
-                        <div><hr class="line"></div>
+                        <div><hr class="line" /></div>
 
                         <!-- lukemia comorbid -->
                         <div class="material-box">
@@ -336,7 +336,7 @@
                                 </input-radio>
                             </input-radio>
                         </div><!-- lukemia cirrhosis -->
-                        <div><hr class="line"></div>
+                        <div><hr class="line" /></div>
 
                         <!-- ICD comorbid -->
                         <div class="material-box">
@@ -357,7 +357,7 @@
                                 </input-text>
                             </input-radio>
                         </div><!-- comorbid ICD -->
-                        <div><hr class="line"></div>
+                        <div><hr class="line" /></div>
 
                         <!-- SLE comorbid -->
                         <div class="material-box">
@@ -368,7 +368,7 @@
                                 trigger-value="1">
                             </input-radio>
                         </div><!-- comorbid SLE -->
-                        <div><hr class="line"></div>
+                        <div><hr class="line" /></div>
 
                         <!-- dementia comorbid -->
                         <div class="material-box">
@@ -397,7 +397,7 @@
                                 </input-text>
                             </input-radio>
                         </div><!-- comorbid dementia -->
-                        <div><hr class="line"></div>
+                        <div><hr class="line" /></div>
 
                     </div><!-- comorbid DM, VHD, Asthma, Cirrhosis, HCV -->
 
@@ -411,7 +411,7 @@
                                 options="{{ $comorbidOptions }}">
                             </input-radio>
                         </div>
-                        <div><hr class="line"></div>
+                        <div><hr class="line" /></div>
 
                         <!-- stroke comorbid and its extra contents -->
                         <div class="material-box">
@@ -437,7 +437,7 @@
                             </input-radio><!-- stroke comorbid and its extra contents -->
                         </div>
 
-                        <div><hr class="line"></div>
+                        <div><hr class="line" /></div>
 
                         <!-- CKD comorbid and its extra contents -->
                         <div class="material-box">
@@ -460,7 +460,7 @@
                                 </div>
                             </input-radio><!-- CKD comorbid and its extra contents -->
                         </div>
-                        <div><hr class="line"></div>
+                        <div><hr class="line" /></div>
 
                         <!-- coagulopathy comorbid -->
                         <div class="material-box">
@@ -470,7 +470,7 @@
                                 options="{{ $comorbidOptions }}">
                             </input-radio>
                         </div>
-                        <div><hr class="line"></div>
+                        <div><hr class="line" /></div>
 
                         <!-- HIV comorbid -->
                         <div class="material-box">
@@ -502,7 +502,7 @@
                                 </input-text>
                             </input-radio>
                         </div>
-                        <div><hr class="line"></div>
+                        <div><hr class="line" /></div>
 
                         <!-- lymphoma comorbid -->
                         <div class="material-box">
@@ -524,7 +524,7 @@
                                 </div>
                             </input-radio>
                         </div><!-- lymphoma comorbid -->
-                        <div><hr class="line"></div>
+                        <div><hr class="line" /></div>
 
                         <!-- cancer comorbid -->
                         <div class="material-box">
@@ -559,7 +559,7 @@
                                 </input-text>
                             </input-radio>
                         </div><!-- comorbid cancer -->
-                        <div><hr class="line"></div>
+                        <div><hr class="line" /></div>
 
                         <!-- Other Autoimmune Disease comorbid -->
                         <div class="material-box">
@@ -604,7 +604,7 @@
                                 </input-text>
                             </input-radio>
                         </div><!-- comorbid Other Autoimmune Disease -->
-                        <div><hr class="line"></div>
+                        <div><hr class="line" /></div>
 
                         <!-- Psychiatric illness comorbid -->
                         <div class="material-box">
@@ -645,7 +645,7 @@
                                 </input-text>
                             </input-radio>
                         </div><!-- Psychiatric illness comorbid -->
-                        <div><hr class="line"></div>
+                        <div><hr class="line" /></div>
 
                     </div><!-- comorbid HT, Stroke, CKD, Coagulopathy, HIV -->
 
@@ -672,7 +672,7 @@
                                 </div>
                             </input-radio><!-- CAD comorbid and its extra contents -->
                         </div>
-                        <div><hr class="line"></div>
+                        <div><hr class="line" /></div>
 
                         <!-- COPD comorbid -->
                         <div class="material-box">
@@ -682,7 +682,7 @@
                                 options="{{ $comorbidOptions }}">
                             </input-radio>
                         </div>
-                        <div><hr class="line"></div>
+                        <div><hr class="line" /></div>
 
                         <!-- hyperlipidemia comorbid and its extra contents -->
                         <div class="material-box">
@@ -705,7 +705,7 @@
                                 </div>
                             </input-radio><!-- hyperlipidemia comorbid and its extra contents -->
                         </div>
-                        <div><hr class="line"></div>
+                        <div><hr class="line" /></div>
 
                         <!-- HBV comorbid -->
                         <div class="material-box">
@@ -716,7 +716,7 @@
                                 setter-event='HBV-checked'>
                             </input-radio>
                         </div>
-                        <div><hr class="line"></div>
+                        <div><hr class="line" /></div>
 
                         <!-- epilepsy comorbid -->
                         <div class="material-box">
@@ -738,7 +738,7 @@
                                 </div>
                             </input-radio>
                         </div><!-- epilepsy comorbid -->
-                        <div><hr class="line"></div>
+                        <div><hr class="line" /></div>
 
                         <!-- Pacemaker implant comorbid -->
                         <div class="material-box">
@@ -761,7 +761,7 @@
                                 </input-radio>
                             </input-radio>
                         </div><!-- Pacemaker implant cirrhosis -->
-                        <div><hr class="line"></div>
+                        <div><hr class="line" /></div>
 
                         <!-- Chronic arthritis comorbid -->
                         <div class="material-box">
@@ -805,7 +805,7 @@
                                 </input-text>
                             </input-radio>
                         </div><!-- comorbid Chronic arthritis -->
-                        <div><hr class="line"></div>
+                        <div><hr class="line" /></div>
 
                         <div class="material-box"><!-- TB comorbid -->
                             <input-radio
@@ -832,7 +832,7 @@
                                 </input-text>
                             </input-radio>
                         </div><!-- comorbid TB -->
-                        <div><hr class="line"></div>
+                        <div><hr class="line" /></div>
 
                     </div><!-- CAD, COPD, Hyperlipidemia, HBV -->
 
@@ -1140,6 +1140,7 @@
                         label="Blood presure :"
                         rear-addon="mmHg"
                         placeholder="SBP/DBP"
+                        pattern='[1-9]\d{1,2}/[1-9]\d{1,2}'
                         grid="12-6-3">
                     </input-text-addon>
                     
@@ -1392,7 +1393,7 @@
                                 field="{{ $plan['field'] }}"
                                 label="{{ $plan['label'] }}">
                             </input-textarea>
-                            <div class="col-xs-12"><hr class="line" /></div>
+                            <div><hr class="line" /></div>
                         @endif
                         @endforeach
                     </div>
@@ -1405,7 +1406,7 @@
                                 field="{{ $plan['field'] }}"
                                 label="{{ $plan['label'] }}">
                             </input-textarea>
-                            <div class="col-xs-12"><hr class="line" /></div>
+                            <div><hr class="line" /></div>
                         @endif
                         @endforeach
                     </div>

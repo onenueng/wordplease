@@ -1,6 +1,6 @@
 require('./bootstrap')
 
-// in case of need to use global event bus add some commit for test
+// in case of need to use global event bus
 window.EventBus = new Vue()
 
 Vue.component('alert-box', require('./components/Alertbox.vue'))

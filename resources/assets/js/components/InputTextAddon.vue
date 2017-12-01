@@ -114,6 +114,10 @@
             pattern: {
                 type: String,
                 required: false
+            },
+            invalidText: {
+                type: String,
+                required: false
             }
         },
         data () {
@@ -197,7 +201,7 @@
                     if ( this.userInput.match(this.regex) !== null ) {
                         $(this.inputDom).attr('data-original-title', '')
                         $(this.inputDom).tooltip('hide')
-
+                        this.inputClass = 'form-control'
                         return true
                     } else {
                         return false
@@ -216,8 +220,9 @@
                 if ( this.isValidate() ) {
                     this.autosave()
                 } else {
-                    $(this.inputDom).attr('data-original-title', 'hello not valid')
+                    $(this.inputDom).attr('data-original-title', this.invalidTextComputed)
                     $(this.inputDom).tooltip('show')
+                    this.inputClass = 'form-control invalid-input'
                 }
             }
         },
@@ -252,6 +257,10 @@
             },
             inputDom() {
                 return ( this.field !== undefined ) ? ('#' + this.field) : ''
+            },
+            invalidTextComputed() {
+                let defaultText = 'Invalid format. Data cannot be saved.'
+                return ( this.invalidText === undefined ) ? defaultText : this.invalidText
             }
         }
     }

@@ -4896,6 +4896,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }), _defineProperty(_props, 'pattern', {
         type: String,
         required: false
+    }), _defineProperty(_props, 'invalidText', {
+        type: String,
+        required: false
     }), _props),
     data: function data() {
         return {
@@ -4982,7 +4985,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 if (this.userInput.match(this.regex) !== null) {
                     $(this.inputDom).attr('data-original-title', '');
                     $(this.inputDom).tooltip('hide');
-
+                    this.inputClass = 'form-control';
                     return true;
                 } else {
                     return false;
@@ -5003,8 +5006,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             if (this.isValidate()) {
                 this.autosave();
             } else {
-                $(this.inputDom).attr('data-original-title', 'hello not valid');
+                $(this.inputDom).attr('data-original-title', this.invalidTextComputed);
                 $(this.inputDom).tooltip('show');
+                this.inputClass = 'form-control invalid-input';
             }
         }
     },
@@ -5039,6 +5043,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         },
         inputDom: function inputDom() {
             return this.field !== undefined ? '#' + this.field : '';
+        },
+        invalidTextComputed: function invalidTextComputed() {
+            var defaultText = 'Invalid format. Data cannot be saved.';
+            return this.invalidText === undefined ? defaultText : this.invalidText;
         }
     }
 });

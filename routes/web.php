@@ -18,43 +18,16 @@ Route::get('/is-session-active', function(Illuminate\Http\Request $request) {
 });
 
 // dev route start here
-Route::get('draft/{page}', function ($page) {
-    return view('draft.' . $page);
+Route::get('draft/{group}/{page}', function ($group, $page) {
+    return view('draft.' . $group . '.' . $page);
 });
 
-Route::get('/btm', function () {
-    return view('btm');
+Route::get('select-refresh', function () {
+    App\Models\Lists\SelectItem::whereNotNull('field_name')->delete();
+    App\Models\Lists\SelectItem::loadData('select_items');
+
+    return "done";
 });
-
-Route::get('/fba', function () {
-    return view('fba');
-});
-
-Route::get('/button', function () {
-    return view('button');
-});
-
-Route::get('/btnm', function () {
-    return view('btnm');
-});
-
-
-Route::get('/', function () {
-    return view('webpack');
-});
-
-Route::get('vue', function () {
-    return view('vue');
-});
-
-Route::get('material', function () {
-    return view('material');
-});
-
-Route::get('sidebar', function () {
-    return view('bt-navbar-sidenav');
-});
-
 Route::get('index', function () {
     return view('index');
 });

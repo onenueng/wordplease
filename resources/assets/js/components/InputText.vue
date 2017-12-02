@@ -1,8 +1,10 @@
 <template>
     <div :class="componentGrid">
         <div :class="componentSize" :style="isMaxWidth">
-            <label v-if="hasLabel" class="control-label" :for="field">
-                {{ label }}
+            <label v-if="hasLabel"
+                   class="control-label"
+                   :for="field">
+                <span v-html="label"></span>
                 <a  v-if="labelDescription !== undefined"
                     role="button"
                     data-toggle="tooltip"
@@ -12,13 +14,13 @@
                 <span v-if="labelDescription !== undefined">:</span>
             </label>
             <input type="text"
-                   class="form-control"
+                   :class="inputClass"
                    :readonly="readonly"
                    :name="field"
                    :id="field"
                    :placeholder="placeholder"
                    v-model="userInput"
-                   @blur="autosave()"
+                   @blur="onblur()"
                    :style="isMaxWidth" />
         </div>
     </div>
@@ -72,12 +74,21 @@
             setterEvent: {
                 type: String,
                 required: false  
+            },
+            pattern: {
+                type: String,
+                required: false
+            },
+            invalidText: {
+                type: String,
+                required: false
             }
         },
         data () {
             return {
                 userInput: '',
                 lastSave: '',
+                inputClass: 'form-control'
             }
         },
         mounted () {
@@ -108,6 +119,28 @@
                     EventBus.$emit('autosave', this.field, this.userInput)
                     this.lastSave = this.userInput
                 }
+            },
+            isValidate() {
+                if ( this.pattern !== null ) {
+                    if ( this.userInput.match(this.regex) !== null ) {
+                        $(this.inputDom).attr('data-original-title', '')
+                        $(this.inputDom).tooltip('hide')
+                        this.inputClass = 'form-control'
+                        return true
+                    } else {
+                        return false
+                    }
+                }
+                return true
+            },
+            onblur() {
+                if ( this.isValidate() ) {
+                    this.autosave()
+                } else {
+                    $(this.inputDom).attr('data-original-title', this.invalidTextComputed)
+                    $(this.inputDom).tooltip('show')
+                    this.inputClass = 'form-control invalid-input'
+                }
             }
         },
         computed: {
@@ -132,6 +165,19 @@
                     return "width: 100%;"
                 }
                 return ""
+            },
+            regex() {
+                if ( this.pattern !== null ) {
+                    return new RegExp(this.pattern)
+                }
+                return null
+            },
+            inputDom() {
+                return ( this.field !== undefined ) ? ('#' + this.field) : ''
+            },
+            invalidTextComputed() {
+                let defaultText = 'Invalid format. Data cannot be saved.'
+                return ( this.invalidText === undefined ) ? defaultText : this.invalidText
             }
         }
     }

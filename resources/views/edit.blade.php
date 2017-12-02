@@ -1430,10 +1430,10 @@
 
             <panel heading="MD note"><!-- MD Note -->
                 <div class="row">
-                    <input-text
+                    <input-textarea
                         field="MD_note"
                         grid="12-12-12">
-                    </input-text>
+                    </input-textarea>
                 </div>
             </panel><!-- MD Note -->
         </div><!-- note content -->

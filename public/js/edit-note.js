@@ -1058,6 +1058,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: {
@@ -1106,12 +1108,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         setterEvent: {
             type: String,
             required: false
+        },
+        pattern: {
+            type: String,
+            required: false
+        },
+        invalidText: {
+            type: String,
+            required: false
         }
     },
     data: function data() {
         return {
             userInput: '',
-            lastSave: ''
+            lastSave: '',
+            inputClass: 'form-control'
         };
     },
     mounted: function mounted() {
@@ -1142,6 +1153,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 EventBus.$emit('autosave', this.field, this.userInput);
                 this.lastSave = this.userInput;
             }
+        },
+        isValidate: function isValidate() {
+            if (this.pattern !== null) {
+                if (this.userInput.match(this.regex) !== null) {
+                    $(this.inputDom).attr('data-original-title', '');
+                    $(this.inputDom).tooltip('hide');
+                    this.inputClass = 'form-control';
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            return true;
+        },
+        onblur: function onblur() {
+            if (this.isValidate()) {
+                this.autosave();
+            } else {
+                $(this.inputDom).attr('data-original-title', this.invalidTextComputed);
+                $(this.inputDom).tooltip('show');
+                this.inputClass = 'form-control invalid-input';
+            }
         }
     },
     computed: {
@@ -1166,6 +1199,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 return "width: 100%;";
             }
             return "";
+        },
+        regex: function regex() {
+            if (this.pattern !== null) {
+                return new RegExp(this.pattern);
+            }
+            return null;
+        },
+        inputDom: function inputDom() {
+            return this.field !== undefined ? '#' + this.field : '';
+        },
+        invalidTextComputed: function invalidTextComputed() {
+            var defaultText = 'Invalid format. Data cannot be saved.';
+            return this.invalidText === undefined ? defaultText : this.invalidText;
         }
     }
 });
@@ -1186,7 +1232,8 @@ var render = function() {
             "label",
             { staticClass: "control-label", attrs: { for: _vm.field } },
             [
-              _vm._v("\n            " + _vm._s(_vm.label) + "\n            "),
+              _c("span", { domProps: { innerHTML: _vm._s(_vm.label) } }),
+              _vm._v(" "),
               _vm.labelDescription !== undefined
                 ? _c(
                     "a",
@@ -1217,7 +1264,7 @@ var render = function() {
             expression: "userInput"
           }
         ],
-        staticClass: "form-control",
+        class: _vm.inputClass,
         style: _vm.isMaxWidth,
         attrs: {
           type: "text",
@@ -1229,7 +1276,7 @@ var render = function() {
         domProps: { value: _vm.userInput },
         on: {
           blur: function($event) {
-            _vm.autosave()
+            _vm.onblur()
           },
           input: function($event) {
             if ($event.target.composing) {
@@ -5016,13 +5063,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         hasLabel: function hasLabel() {
             return !(this.label === undefined);
         },
-        sizeClass: function sizeClass() {
+        componentSize: function componentSize() {
             if (this.size == 'normal') {
                 return 'form-group add-margin-bottom';
             }
             return 'form-group-sm add-margin-bottom';
         },
-        gridClass: function gridClass() {
+        componentGrid: function componentGrid() {
             if (this.grid === undefined) {
                 return '';
             }
@@ -5060,8 +5107,8 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { class: _vm.gridClass }, [
-    _c("div", { class: _vm.sizeClass }, [
+  return _c("div", { class: _vm.componentGrid }, [
+    _c("div", { class: _vm.componentSize }, [
       _vm.hasLabel
         ? _c(
             "label",

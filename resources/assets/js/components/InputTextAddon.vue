@@ -1,6 +1,6 @@
 <template>
-    <div :class="gridClass">
-        <div :class="sizeClass">
+    <div :class="componentGrid">
+        <div :class="componentSize">
             <label  v-if="hasLabel"
                     class="control-label"
                     :for="field">
@@ -230,13 +230,13 @@
             hasLabel() {
                 return !(this.label === undefined)
             },
-            sizeClass() {
+            componentSize() {
                 if (this.size == 'normal') {
                     return 'form-group add-margin-bottom'
                 }
                 return 'form-group-sm add-margin-bottom'
             },
-            gridClass() {
+            componentGrid() {
                 if (this.grid === undefined) {
                     return ''
                 }

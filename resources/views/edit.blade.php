@@ -1254,7 +1254,6 @@
                             <div class="form-inline">
                                 <input-select
                                     field="GCS_E"
-                                    
                                     size="normal"
                                     not-allow-other
                                     placeholder="select GCS - E"
@@ -1264,7 +1263,6 @@
                             <div class="form-inline">
                                 <input-select
                                     field="GCS_V"
-                                    
                                     size="normal"
                                     not-allow-other
                                     placeholder="select GCS - V"
@@ -1274,7 +1272,6 @@
                             <div class="form-inline">
                                 <input-select
                                     field="GCS_M"
-                                    
                                     size="normal"
                                     not-allow-other
                                     placeholder="select GCS - M"

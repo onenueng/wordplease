@@ -54,43 +54,39 @@
 
 <panel heading="History">
     <div class="row">
-    <div class="col-xs-12">
-            <input-textarea
-                field="history"
-                placeholder="history description"
-                max-chars="1000">
-            </input-textarea>
-        </div>
+        <input-textarea
+            field="history"
+            placeholder="history description"
+            max-chars="1000"
+            grid="12-12-12">
+        </input-textarea>
 
-        <div class="col-xs-12 col-md-6">
-            <input-textarea
-                field="history_examination"
-                label="Examination :" 
-                placeholder="description"
-                max-chars="1000">
-            </input-textarea>
-        </div>
+        <input-textarea
+            field="history_examination"
+            label="Examination :" 
+            placeholder="description"
+            max-chars="1000"
+            grid="12-12-6">
+        </input-textarea>
 
-        <div class="col-xs-12 col-md-6">
-            <input-textarea
-                field="history_investigation"
-                label="Investigation"
-                placeholder="description"
-                max-chars="1000">
-            </input-textarea>
-        </div>
+        <input-textarea
+            field="history_investigation"
+            label="Investigation"
+            placeholder="description"
+            max-chars="1000"
+            grid="12-12-6">
+        </input-textarea>
     </div>
 </panel>
 
 <panel heading="Prognosis">
     <div class="row">
-    <div class="col-xs-12">
         <input-textarea
             field="prognosis"
             placeholder="description"
-            max-chars="1000">
+            max-chars="1000"
+            grid="12-12-12">
         </input-textarea>
-    </div>  
     </div>
 </panel>
 

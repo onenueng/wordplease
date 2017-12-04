@@ -73,8 +73,7 @@
                 controlClass: 'form-control',
                 helperClass: 'text-muted',
                 showCharsRemaining: false,
-                charsRemaining: 0,
-                placeholderNew: '',
+                charsRemaining: 0
             }
         },
         mounted () {
@@ -210,6 +209,22 @@
         computed: {
             getMaxChars() {
                 return (this.maxChars === undefined) ? 255 : this.maxChars
+            },
+            placeholderNew() {
+                let placeholder = ''
+                if ( this.placeholder !== undefined ) {
+                    placeholder += this.placeholder
+                    if ( this.getMaxChars !== undefined ) {
+                        return placeholder += this.placeholder + ' - ' + this.getMaxChars + ' chars max'
+                    } else {
+                        return placeholder
+                    }
+                }
+
+                if ( this.getMaxChars !== undefined ) {
+                    return this.getMaxChars + ' chars max'
+                }
+
             }
         }
     }

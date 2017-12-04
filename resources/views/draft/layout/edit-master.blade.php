@@ -101,7 +101,7 @@
                 </div><!-- wrap content with row class -->
             </panel><!-- Panel Admission Data -->
 
-                        
+            @yield('content')
 
             <panel heading="MD note"><!-- MD Note -->
                 <div class="row">

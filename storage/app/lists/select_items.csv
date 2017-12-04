@@ -68,3 +68,13 @@ GCS_M,3,[3] Decorticates,3
 GCS_M,4,[4] Semi-purposeful ตอบสนองต่อ pain ระบุตำแหน่งไม่ได้,4
 GCS_M,5,[5] Localizes pain ตอบสนองต่อ pain ระบุตำแหน่งได้,5
 GCS_M,6,[6] Obey ทำตามสั่งได้,6
+discharge_status,1,COMPLETE RECOVERY,1
+discharge_status,2,IMPROVED,2
+discharge_status,3,NOT IMPROVED,3
+discharge_status,4,DEAD AUTOPSY,4
+discharge_status,5,DEAD NO AUTOPSY,5
+discharge_type,1,WITH APPROVAL,1
+discharge_type,2,AGAINST ADVICE,2
+discharge_type,3,BY ESCAPE,3
+discharge_type,4,BY TRANSFER,4
+discharge_type,5,OTHER SPECIFY,5

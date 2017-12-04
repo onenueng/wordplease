@@ -96,26 +96,20 @@
 
 <panel heading="Appointment">
     <div class="row">
-    <div class="col-xs-12">
         <input-textarea
             field="appointment_note"
-            placeholder="note">
+            placeholder="note"
+            grid="12-12-12">
         </input-textarea>
-    </div>
     </div>
 </panel>
 
 <panel heading="Home medications">
     <div class="row">
-    <div class="col-xs-12">
         <input-textarea
-            field="home_medication">
+            field="home_medication"
+            grid="12-12-12">
         </input-textarea>
     </div>
-    </div>
 </panel>
-
-
-        
-
 @endsection

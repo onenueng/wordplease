@@ -82,14 +82,6 @@
             else
                 this.userInput = this.value
 
-            if (this.placeholder !== undefined) {
-                if (this.placeholder !== undefined) {
-                    this.placeholderNew = this.placeholder + ' - ' + this.getMaxChars + ' chars max'
-                } else {
-                    this.placeholderNew = this.placeholder
-                }
-            }
-
             if (this.setterEvent !== undefined) {
                 EventBus.$on(this.setterEvent, (value, mode = 'put') => {
                     if (mode == 'put') {

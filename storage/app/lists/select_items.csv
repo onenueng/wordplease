@@ -78,3 +78,9 @@ discharge_type,2,AGAINST ADVICE,2
 discharge_type,3,BY ESCAPE,3
 discharge_type,4,BY TRANSFER,4
 discharge_type,5,OTHER SPECIFY,5
+cataract,1,No,1
+cataract,2,senile,2
+cataract,3,mature,3
+cataract,4,pseudophakia,4
+cataract,5,complicated,5
+cataract,6,traumatic,6

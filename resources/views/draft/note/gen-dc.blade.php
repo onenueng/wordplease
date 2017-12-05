@@ -28,7 +28,7 @@
             </input-textarea>
 
             <input-textarea
-                field="result of Treatment"
+                field="result_of_treatment"
                 label="Result of Treatment :"
                 placeholder="description"
                 max-chars="1000">

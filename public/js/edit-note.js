@@ -3125,6 +3125,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: {
@@ -3134,6 +3141,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             required: false
         },
         label: {
+            type: String,
+            required: false
+        },
+        labelDescription: {
             type: String,
             required: false
         },
@@ -3186,6 +3197,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     mounted: function mounted() {
         var _this = this;
+
+        // init label tooltip if available.
+        if (this.labelDescription !== undefined) {
+            $('a[title="' + this.labelDescription + '"]').tooltip();
+        }
 
         if (this.needSync !== undefined) {
             console.log(this.field + ' need sync');
@@ -3313,7 +3329,26 @@ var render = function() {
             "label",
             { staticClass: "control-label", attrs: { for: _vm.field } },
             [
-              _vm._v("\n            " + _vm._s(_vm.label) + "\n            "),
+              _c("span", { domProps: { innerHTML: _vm._s(_vm.label) } }),
+              _vm._v(" "),
+              _vm.labelDescription !== undefined
+                ? _c(
+                    "a",
+                    {
+                      attrs: {
+                        role: "button",
+                        "data-toggle": "tooltip",
+                        title: _vm.labelDescription
+                      }
+                    },
+                    [_c("i", { staticClass: "fa fa-info-circle" })]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.labelDescription !== undefined
+                ? _c("span", [_vm._v(":")])
+                : _vm._e(),
+              _vm._v(" "),
               _c(
                 "a",
                 {

@@ -5,7 +5,14 @@
         </a>
         <div :class="componentSize" :style="isMaxWidthDiv">
             <label class="control-label" :for="field" v-if="label !== undefined">
-                {{ label }}
+                <span v-html="label"></span>
+                <a  v-if="labelDescription !== undefined"
+                    role="button"
+                    data-toggle="tooltip"
+                    :title="labelDescription">
+                    <i class="fa fa-info-circle"></i>
+                </a>
+                <span v-if="labelDescription !== undefined">:</span>
                 <a @click="reset()" role="button" v-show="showReset">
                     <i class="fa fa-remove"></i>
                 </a>
@@ -35,6 +42,10 @@
                 required: false
             },
             label: {
+                type: String,
+                required: false  
+            },
+            labelDescription: {
                 type: String,
                 required: false  
             },
@@ -87,6 +98,11 @@
         },
         mounted () {
             
+            // init label tooltip if available.
+            if (this.labelDescription !== undefined) {
+                $('a[title="' + this.labelDescription + '"]').tooltip()
+            }
+
             if (this.needSync !== undefined) {
                 console.log(this.field + ' need sync')
             }

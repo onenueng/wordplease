@@ -84,3 +84,51 @@ cataract,3,mature,3
 cataract,4,pseudophakia,4
 cataract,5,complicated,5
 cataract,6,traumatic,6
+DC_status,1,COMPLETE RECOVERY,1
+DC_status,2,IMPROVED,2
+DC_status,3,NOT IMPROVED,3
+DC_status,4,DEAD AUTOPSY,4
+DC_status,5,DEAD NO AUTOPSY,5
+DC_type,1,WITH APPROVAL,1
+DC_type,2,AGAINST ADVICE,2
+DC_type,3,BY ESCAPE,3
+DC_type,4,BY TRANSFER,4
+DC_type,5,OTHER SPECIFY,5
+conjunctival_injection,1,No,1
+conjunctival_injection,2,1+,2
+conjunctival_injection,3,2+,3
+conjunctival_injection,4,3+,4
+cornea_cell,1,Clear,1
+cornea_cell,2,No DMF,2
+cornea_cell,3,DMF 1+,3
+cornea_cell,4,DMF 2+,4
+cornea_cell,5,DMF 3+,5
+cornea_edema,1,No,1
+cornea_edema,2,1+,2
+cornea_edema,3,2+,3
+cornea_edema,4,3+,4
+AC,1,Formed,1
+AC,2,deep,2
+AC,3,shallow,3
+AC,4,flat,4
+AC_cell,1,No,1
+AC_cell,2,Trace,1
+AC_cell,3,1+,3
+AC_cell,4,2+,4
+AC_cell,5,3+,5
+AC_cell,6,4+,6
+pupil_shape,1,round,1
+pupil_react,1,RTL,1
+lens,1,clear,1
+lens,2,IOL in place,2
+lens,3,NS (Nuclear Sclerosis),3
+lens,4,PSC (Posterior Subcapsular Cataract),4
+lens,5,ACC (Anterior cortical change),5
+lens,6,cortical cataract,6
+disc_notching,1,No,1
+disc_notching,2,Yes,2
+disc_polar,1,hyperemia,1
+disc_polar,2,pink,2
+disc_polar,3,mildly pale,3
+disc_polar,4,moderately pale,4
+disc_polar,5,markedly pale,5

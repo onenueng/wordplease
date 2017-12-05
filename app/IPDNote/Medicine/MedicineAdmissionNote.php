@@ -1183,4 +1183,14 @@ class MedicineAdmissionNote extends Model
     //     else
     //         $this->attributes['ward_id'] = $value;
     // }
+
+    public function lastSeenAppointmentData()
+    {
+        return 'lastSeenAppointmentData';
+    }
+
+    public function lastSeenPlacentaData()
+    {
+        return 'lastSeenPlacentaData';
+    }
 }

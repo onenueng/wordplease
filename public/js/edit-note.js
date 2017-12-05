@@ -3570,14 +3570,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         if (this.value === undefined) this.userInput = '';else this.userInput = this.value;
 
-        if (this.placeholder !== undefined) {
-            if (this.placeholder !== undefined) {
-                this.placeholderNew = this.placeholder + ' - ' + this.getMaxChars + ' chars max';
-            } else {
-                this.placeholderNew = this.placeholder;
-            }
-        }
-
         if (this.setterEvent !== undefined) {
             EventBus.$on(this.setterEvent, function (value) {
                 var mode = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'put';

@@ -3702,7 +3702,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (this.placeholder !== undefined) {
                 placeholder += this.placeholder;
                 if (this.getMaxChars !== undefined) {
-                    return placeholder += this.placeholder + ' - ' + this.getMaxChars + ' chars max';
+                    return placeholder += ' - ' + this.getMaxChars + ' chars max';
                 } else {
                     return placeholder;
                 }

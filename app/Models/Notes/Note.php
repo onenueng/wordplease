@@ -18,7 +18,14 @@ class Note extends Model implements AutoId
      */
     protected $fillable = [
         'id',
-        'an'
+        'an',
+        'note_type_id',
+        'note_content_id',
+        'datetime_admit',
+        'datetime_discharge',
+        'ward_id',
+        'attending_staff_id',
+        'division_id'
     ];
 
     /**

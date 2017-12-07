@@ -33,16 +33,6 @@ class Patient extends Model implements AutoId
     ];
 
     /**
-     * Get Id type of the model.
-     *
-     * @return stirng
-     */
-    public static function getIdType()
-    {
-        return 'time_based_uuid';
-    }
-
-    /**
      * Set field 'hn'.
      *
      * @param string $value

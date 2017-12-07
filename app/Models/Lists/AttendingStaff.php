@@ -26,14 +26,4 @@ class AttendingStaff extends Model implements AutoId, ListItem
         'licence_no',
         'active'
     ];
-
-    /**
-     * Get Id type of the model.
-     *
-     * @return stirng
-     */
-    public static function getIdType()
-    {
-        return 'id';
-    }
 }

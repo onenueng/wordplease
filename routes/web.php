@@ -28,6 +28,22 @@ Route::get('select-refresh', function () {
 
     return "done";
 });
+Route::get('lists-refresh-all', function () {
+    App\Models\Lists\Drug::whereNotNull('id')->delete();
+    App\Models\Lists\Drug::loadData('drugs');
+
+    App\Models\Lists\AttendingStaff::whereNotNull('id')->delete();
+    App\Models\Lists\AttendingStaff::loadData('attending_staffs');
+
+    App\Models\Lists\Ward::whereNotNull('id')->delete();
+    App\Models\Lists\Ward::loadData('wards');
+
+    App\Models\Lists\Division::whereNotNull('id')->delete();
+    App\Models\Lists\Division::loadData('divisions');
+
+    return "done";
+});
+
 Route::get('index', function () {
     return view('index');
 });

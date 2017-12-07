@@ -29,4 +29,15 @@ trait AutoIdInsertable
         static::create($data);
         return static::find($data['id']);
     }
+
+    /**
+     * This make default id type of model
+     * is the convention increment
+     *
+     * @return stirng
+     */
+    public static function getIdType()
+    {
+        return 'id';
+    }
 }

@@ -26,16 +26,6 @@ class Division extends Model implements AutoId, ListItem
     ];
 
     /**
-     * Get Id type of the model.
-     *
-     * @return stirng
-     */
-    public static function getIdType()
-    {
-        return 'id';
-    }
-
-    /**
      * Get fields whiches make where(or) in the query.
      *
      * @return array

@@ -26,14 +26,4 @@ class NoteType extends Model implements AutoId
         'gender', // 0 => female only/ 1 => male only/ 2 => all gender.
         'table_name',
     ];
-
-    /**
-     * Get Id type of the model.
-     *
-     * @return stirng
-     */
-    public static function getIdType()
-    {
-        return 'id';
-    }
 }

@@ -24,16 +24,6 @@ class DrugRegimen extends Model implements AutoId, ListItem
     ];
 
     /**
-     * Get Id type of the model.
-     *
-     * @return stirng
-     */
-    public static function getIdType()
-    {
-        return 'id';
-    }
-
-    /**
      * Generate regimes of given drug.
      *
      * @param App\Models\Lists\Drug $drug

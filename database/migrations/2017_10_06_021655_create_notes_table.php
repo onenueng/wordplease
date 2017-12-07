@@ -17,12 +17,16 @@ class CreateNotesTable extends Migration
             $table->uuid('id');
             $table->primary('id');
             $table->string('an');
+            $table->tinyInteger('note_type_id')->unsigned()->index();
+            $table->tinyInteger('note_content_id')->unsigned()->index();
             $table->dateTime('datetime_admit')->nullable();
             $table->dateTime('datetime_discharge')->nullable();
-            $table->smallInteger('ward_id')->unsigned()->index();
-            $table->smallInteger('attending_staff_id')->unsigned()->index();
-            $table->smallInteger('division_id')->unsigned()->index();
+            $table->smallInteger('ward_id')->unsigned()->nullable()->index();
+            $table->smallInteger('attending_staff_id')->unsigned()->nullable()->index();
+            $table->smallInteger('division_id')->unsigned()->nullable()->index();
             $table->string('mini_hash', 7)->index();
+            $table->integer('creator')->unsigned()->default(0)->index();
+            $table->integer('updater')->unsigned()->default(0)->index();
             $table->timestamps();
         });
     }

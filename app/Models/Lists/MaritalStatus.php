@@ -20,15 +20,4 @@ class MaritalStatus extends Model implements AutoId
         'id',
         'name'
     ];
-
-    /**
-     * Get Id type of the model.
-     *
-     * @return stirng
-     */
-    public static function getIdType()
-    {
-        return 'id';
-    }
-    
 }

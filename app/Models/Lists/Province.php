@@ -22,15 +22,5 @@ class Province extends Model implements AutoId
         'region',
         'name'
     ];
-
-    /**
-     * Get Id type of the model.
-     *
-     * @return stirng
-     */
-    public static function getIdType()
-    {
-        return 'id';
-    }
     
 }

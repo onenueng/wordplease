@@ -25,16 +25,6 @@ class Postcode extends Model implements AutoId
     ];
 
     /**
-     * Get Id type of the model.
-     *
-     * @return stirng
-     */
-    public static function getIdType()
-    {
-        return 'id';
-    }
-
-    /**
      *
      * Maintain model table.
      * Search table by $name if not found insert new record.

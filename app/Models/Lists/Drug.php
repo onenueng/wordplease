@@ -26,16 +26,6 @@ class Drug extends Model implements ListItem
     ];
 
     /**
-     * Get Id type of the model.
-     *
-     * @return stirng
-     */
-    public static function getIdType()
-    {
-        return 'id';
-    }
-
-    /**
      * Get fields whiches make where(or) in the query.
      *
      * @return array

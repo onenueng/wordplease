@@ -43,6 +43,7 @@ class FakePatientData implements PatientDataAPI
         $data['reply_code'] = 0;
         $data['reply_text'] = 'OK';
         $data['hn'] = $hn;
+        $data['document_id'] = $this->faker->ean13; // random 13 digits
         $data['title'] = $this->gender ? $this->faker->titleFemale : $this->faker->titleMale;
         $data['first_name'] = $this->gender ? $this->faker->firstNameFemale : $this->faker->firstNameMale;
         $data['last_name'] = $this->faker->lastName;

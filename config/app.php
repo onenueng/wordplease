@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'Wordplease'),
 
     /*
     |--------------------------------------------------------------------------
@@ -65,7 +65,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Bangkok',
 
     /*
     |--------------------------------------------------------------------------
@@ -172,11 +172,14 @@ return [
          * Application Service Providers...
          */
         App\Providers\AppServiceProvider::class,
-        App\Providers\APIsServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+
+        // wordplease service providers
+        App\Providers\PatientServiceProvider::class,
+        App\Providers\UserServiceProvider::class,
 
     ],
 
@@ -228,5 +231,9 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
     ],
+
+    // wordplease app config
+    'patient_provider' => env('PATIENT_PROVIDER', 'App\APIs\FakePatientData'),
+    'user_provider' => env('USER_PROVIDER', 'App\APIs\FakeUser')
 
 ];

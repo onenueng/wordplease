@@ -110,15 +110,39 @@ module.exports = function normalizeComponent (
 
 /***/ }),
 
-/***/ 17:
+/***/ 132:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(133);
+
+
+/***/ }),
+
+/***/ 133:
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(5);
+
+Vue.component('register-page', __webpack_require__(134));
+
+window.app = new Vue({
+    el: '#app',
+    mounted: function mounted() {
+        console.log('hello register');
+    }
+});
+
+/***/ }),
+
+/***/ 134:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(18)
+var __vue_script__ = null
 /* template */
-var __vue_template__ = __webpack_require__(19)
+var __vue_template__ = __webpack_require__(135)
 /* template functional */
   var __vue_template_functional__ = false
 /* styles */
@@ -135,7 +159,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/InputText.vue"
+Component.options.__file = "resources/assets/js/components/auth/RegisterPage.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */
@@ -145,9 +169,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-8f03b692", Component.options)
+    hotAPI.createRecord("data-v-58c084b9", Component.options)
   } else {
-    hotAPI.reload("data-v-8f03b692", Component.options)
+    hotAPI.reload("data-v-58c084b9", Component.options)
 ' + '  }
   module.hot.dispose(function (data) {
     disposed = true
@@ -159,276 +183,29 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 18:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* WEBPACK VAR INJECTION */(function($) {//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    props: {
-        // field name on database.
-        field: {
-            type: String,
-            required: false
-        },
-        label: {
-            type: String,
-            required: false
-        },
-        labelDescription: {
-            type: String,
-            required: false
-        },
-        // define Bootstrap grid class in mobile-tablet-desktop order
-        grid: {
-            type: String,
-            required: false
-        },
-        // initial value.
-        value: {
-            type: String,
-            required: false
-        },
-        // allow user type-in or not, Just mention this option.
-        readonly: {
-            type: String,
-            required: false
-        },
-        // define Bootstrap form-group has-feedback which size of form-group should use.
-        size: {
-            type: String,
-            required: false
-        },
-        // need to sync value with database on render or not ['needSync' or undefined].
-        needSync: {
-            type: String,
-            required: false
-        },
-        placeholder: {
-            type: String,
-            required: false
-        },
-        setterEvent: {
-            type: String,
-            required: false
-        },
-        pattern: {
-            type: String,
-            required: false
-        },
-        invalidText: {
-            type: String,
-            required: false
-        }
-    },
-    data: function data() {
-        return {
-            userInput: '',
-            lastSave: '',
-            inputClass: 'form-control'
-        };
-    },
-    mounted: function mounted() {
-        var _this = this;
-
-        // init label tooltip if available.
-        if (this.labelDescription !== undefined) {
-            $('a[title="' + this.labelDescription + '"]').tooltip();
-        }
-
-        if (this.needSync !== undefined) {
-            console.log(this.field + ' need sync');
-        }
-
-        if (this.value === undefined) this.lastSave = this.userInput = '';else this.lastSave = this.userInput = this.value;
-
-        if (this.setterEvent !== undefined) {
-            EventBus.$on(this.setterEvent, function (value) {
-                _this.userInput = value;
-                _this.autosave();
-            });
-        }
-    },
-
-    methods: {
-        autosave: function autosave() {
-            if (this.readonly != '' && this.userInput != this.lastSave) {
-                EventBus.$emit('autosave', this.field, this.userInput);
-                this.lastSave = this.userInput;
-            }
-        },
-        isValidate: function isValidate() {
-            if (this.pattern !== null) {
-                if (this.userInput.match(this.regex) !== null) {
-                    $(this.inputDom).attr('data-original-title', '');
-                    $(this.inputDom).tooltip('hide');
-                    this.inputClass = 'form-control';
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-            return true;
-        },
-        onblur: function onblur() {
-            if (this.isValidate()) {
-                this.autosave();
-            } else {
-                $(this.inputDom).attr('data-original-title', this.invalidTextComputed);
-                $(this.inputDom).tooltip('show');
-                this.inputClass = 'form-control invalid-input';
-            }
-        }
-    },
-    computed: {
-        hasLabel: function hasLabel() {
-            return !(this.label === undefined);
-        },
-        componentSize: function componentSize() {
-            if (this.size == 'normal') {
-                return 'form-group';
-            }
-            return 'form-group-sm';
-        },
-        componentGrid: function componentGrid() {
-            if (this.grid === undefined) {
-                return '';
-            }
-            var grid = this.grid.split('-');
-            return 'col-xs-' + grid[0] + ' col-sm-' + grid[1] + ' col-md-' + grid[2];
-        },
-        isMaxWidth: function isMaxWidth() {
-            if (this.label === undefined) {
-                return "width: 100%;";
-            }
-            return "";
-        },
-        regex: function regex() {
-            if (this.pattern !== null) {
-                return new RegExp(this.pattern);
-            }
-            return null;
-        },
-        inputDom: function inputDom() {
-            return this.field !== undefined ? '#' + this.field : '';
-        },
-        invalidTextComputed: function invalidTextComputed() {
-            var defaultText = 'Invalid format. Data cannot be saved.';
-            return this.invalidText === undefined ? defaultText : this.invalidText;
-        }
-    }
-});
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(1)))
-
-/***/ }),
-
-/***/ 19:
+/***/ 135:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { class: _vm.componentGrid }, [
-    _c("div", { class: _vm.componentSize, style: _vm.isMaxWidth }, [
-      _vm.hasLabel
-        ? _c(
-            "label",
-            { staticClass: "control-label", attrs: { for: _vm.field } },
-            [
-              _c("span", { domProps: { innerHTML: _vm._s(_vm.label) } }),
-              _vm._v(" "),
-              _vm.labelDescription !== undefined
-                ? _c(
-                    "a",
-                    {
-                      attrs: {
-                        role: "button",
-                        "data-toggle": "tooltip",
-                        title: _vm.labelDescription
-                      }
-                    },
-                    [_c("i", { staticClass: "fa fa-info-circle" })]
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              _vm.labelDescription !== undefined
-                ? _c("span", [_vm._v(":")])
-                : _vm._e()
-            ]
-          )
-        : _vm._e(),
-      _vm._v(" "),
-      _c("input", {
-        directives: [
-          {
-            name: "model",
-            rawName: "v-model",
-            value: _vm.userInput,
-            expression: "userInput"
-          }
-        ],
-        class: _vm.inputClass,
-        style: _vm.isMaxWidth,
-        attrs: {
-          type: "text",
-          readonly: _vm.readonly,
-          name: _vm.field,
-          id: _vm.field,
-          placeholder: _vm.placeholder
-        },
-        domProps: { value: _vm.userInput },
-        on: {
-          blur: function($event) {
-            _vm.onblur()
-          },
-          input: function($event) {
-            if ($event.target.composing) {
-              return
-            }
-            _vm.userInput = $event.target.value
-          }
-        }
-      })
-    ])
-  ])
+  return _vm._m(0)
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", [_c("h1", [_vm._v("register")])])
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-8f03b692", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-58c084b9", module.exports)
   }
 }
 
@@ -517,51 +294,6 @@ function toComment(sourceMap) {
 
 /***/ }),
 
-/***/ 32:
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(33);
-module.exports = __webpack_require__(58);
-
-
-/***/ }),
-
-/***/ 33:
-/***/ (function(module, exports, __webpack_require__) {
-
-
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
-
-__webpack_require__(5);
-
-// window.Vue = require('vue');
-
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
-
-Vue.component('example', __webpack_require__(55));
-
-Vue.component('input-text', __webpack_require__(17));
-
-var app = new Vue({
-  el: '#app'
-});
-
-/*  yarn add flatpickr -- flatpickr no need to import css if use default */
-// require("flatpickr/dist/themes/dark.css");
-// window.flatpickr = require("flatpickr"); // const flatpickr = require("flatpickr");
-flatpickr('#tryme');
-autosize(document.querySelectorAll('textarea'));
-
-/***/ }),
-
 /***/ 5:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -627,136 +359,6 @@ __webpack_require__(16);
 //     key: 'your-pusher-key'
 // });
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
-
-/***/ }),
-
-/***/ 55:
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(0)
-/* script */
-var __vue_script__ = __webpack_require__(56)
-/* template */
-var __vue_template__ = __webpack_require__(57)
-/* template functional */
-  var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/Example.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-e9f60aec", Component.options)
-  } else {
-    hotAPI.reload("data-v-e9f60aec", Component.options)
-' + '  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-
-/***/ 56:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    mounted: function mounted() {
-        console.log('Component mounted.');
-    }
-});
-
-/***/ }),
-
-/***/ 57:
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container" }, [
-      _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "col-md-8 col-md-offset-2" }, [
-          _c("div", { staticClass: "panel panel-default" }, [
-            _c("div", { staticClass: "panel-heading" }, [
-              _vm._v("Example Component")
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "panel-body" }, [
-              _vm._v(
-                "\n                    I'm an example component!\n                "
-              )
-            ])
-          ])
-        ])
-      ])
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-e9f60aec", module.exports)
-  }
-}
-
-/***/ }),
-
-/***/ 58:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
 
 /***/ }),
 
@@ -1263,4 +865,4 @@ module.exports = function (css) {
 
 /***/ })
 
-},[32]);
+},[132]);

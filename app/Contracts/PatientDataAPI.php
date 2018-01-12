@@ -26,5 +26,5 @@ interface PatientDataAPI
      * @param string
      * @return array
      */
-    public function getPatientLastestAdmission($hn);
+    public function getPatientRecentlyAdmit($hn);
 }

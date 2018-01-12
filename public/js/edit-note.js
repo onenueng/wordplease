@@ -416,7 +416,7 @@ function applyToTag (styleElement, obj) {
 /* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(__webpack_provided_window_dot_jQuery) {window._ = __webpack_require__(13);
+/* WEBPACK VAR INJECTION */(function(__webpack_provided_window_dot_jQuery) {window._ = __webpack_require__(10);
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -430,14 +430,14 @@ function applyToTag (styleElement, obj) {
 //     require('bootstrap-sass');
 // } catch (e) {}
 window.$ = __webpack_provided_window_dot_jQuery = __webpack_require__(1);
-__webpack_require__(14);
+__webpack_require__(11);
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
  * to our Laravel back-end. This library automatically handles sending the
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-window.axios = __webpack_require__(15);
+window.axios = __webpack_require__(12);
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
@@ -455,14 +455,14 @@ if (token) {
   console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
 
-window.Vue = __webpack_require__(16);
+window.Vue = __webpack_require__(13);
 
 __webpack_require__(6);
-window.flatpickr = __webpack_require__(17); // const flatpickr = require("flatpickr");
+window.flatpickr = __webpack_require__(14); // const flatpickr = require("flatpickr");
 
-window.autosize = __webpack_require__(18);
+window.autosize = __webpack_require__(15);
 
-__webpack_require__(19);
+__webpack_require__(16);
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting
@@ -979,15 +979,22 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 10 */
+/* 10 */,
+/* 11 */,
+/* 12 */,
+/* 13 */,
+/* 14 */,
+/* 15 */,
+/* 16 */,
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(11)
+var __vue_script__ = __webpack_require__(18)
 /* template */
-var __vue_template__ = __webpack_require__(12)
+var __vue_template__ = __webpack_require__(19)
 /* template functional */
   var __vue_template_functional__ = false
 /* styles */
@@ -1027,7 +1034,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 11 */
+/* 18 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1218,7 +1225,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(1)))
 
 /***/ }),
-/* 12 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -1300,13 +1307,6 @@ if (false) {
 }
 
 /***/ }),
-/* 13 */,
-/* 14 */,
-/* 15 */,
-/* 16 */,
-/* 17 */,
-/* 18 */,
-/* 19 */,
 /* 20 */,
 /* 21 */,
 /* 22 */
@@ -1535,7 +1535,7 @@ Vue.component('modal-dialog', __webpack_require__(84));
 Vue.component('navbar', __webpack_require__(89));
 Vue.component('appbar-right', __webpack_require__(23));
 Vue.component('panel', __webpack_require__(92));
-Vue.component('input-text', __webpack_require__(10));
+Vue.component('input-text', __webpack_require__(17));
 Vue.component('input-suggestion', __webpack_require__(97));
 Vue.component('input-select', __webpack_require__(100));
 Vue.component('input-textarea', __webpack_require__(105));

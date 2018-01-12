@@ -25,6 +25,8 @@ class CreateNoteTypesTable extends Migration
             $table->string('table_name');
             $table->timestamps();
         });
+
+        \App\Models\Lists\NoteType::loadData('note_types');
     }
 
     /**

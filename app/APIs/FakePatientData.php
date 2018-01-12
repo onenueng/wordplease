@@ -87,7 +87,7 @@ class FakePatientData implements PatientDataAPI
      * @param string
      * @return array
      */
-    public function getPatientLastestAdmission($hn)
+    public function getPatientRecentlyAdmit($hn)
     {
         $data['reply_code'] = 0;
         $data['reply_text'] = 'OK';

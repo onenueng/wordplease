@@ -17,6 +17,10 @@ Route::get('/is-session-active', function(Illuminate\Http\Request $request) {
     return ['active' => ($request->header('X-CSRF-TOKEN') == csrf_token())];
 });
 
+Route::get('/register', 'Auth\RegisterController@showRegisterForm');
+Route::post('/register/check-id', 'Auth\RegisterController@getUser');
+Route::post('/register/is-data-available', 'Auth\RegisterController@isDataAvailable');
+
 // dev route start here
 Route::get('draft/{group}/{page}', function ($group, $page) {
     return view('draft.' . $group . '.' . $page);
@@ -111,3 +115,9 @@ Route::get('/get-creatable-notes/{an}', function ($an) {
         ],
     ];
 });
+
+Route::get('/test-psp', function (App\Contracts\PatientDataAPI $api) {
+    return $api->getPatient(53344980);
+});
+
+

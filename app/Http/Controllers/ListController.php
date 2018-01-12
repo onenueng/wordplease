@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Lists\AttendingStaff;
-use App\Models\Lists\Division;
-use App\Models\Lists\Drug;
 use App\Models\Lists\SelectItem;
-use App\Models\Lists\Ward;
+use App\Models\Lists\Division;
 use Illuminate\Http\Request;
+use App\Models\Lists\Drug;
+use App\Models\Lists\Ward;
+
 
 class ListController extends Controller
 {

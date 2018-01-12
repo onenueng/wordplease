@@ -25,4 +25,9 @@ mix.js('resources/assets/js/app.js', 'public/js')
     ])
    .js('resources/assets/js/create-note.js', 'public/js')
    .js('resources/assets/js/edit-note.js', 'public/js')
+   .js('resources/assets/js/auth/register.js', 'public/js')
    .sass('resources/assets/sass/app.scss', 'public/css');
+
+if (mix.inProduction()) {
+    mix.version();
+}

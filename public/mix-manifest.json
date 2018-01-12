@@ -2,6 +2,7 @@
     "/js/edit-note.js": "/js/edit-note.js",
     "/js/vendor.js": "/js/vendor.js",
     "/js/create-note.js": "/js/create-note.js",
+    "/js/register.js": "/js/register.js",
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
     "/js/manifest.js": "/js/manifest.js"

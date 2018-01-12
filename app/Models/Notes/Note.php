@@ -28,6 +28,25 @@ class Note extends Model implements AutoId
         'division_id'
     ];
 
+    public static function willComplyUniqueRule($an, $noteTypeId)
+    {
+        if ( $noteTypeId > 2 ) {
+            return false;
+        }
+
+        $notes = static::where('note_type_id', $noteTypeId)
+                         ->where('mini_hash', (new static)->miniHash($an))
+                         ->get();
+
+        foreach ( $notes as $note ) {
+            if ( $note->an == $an ) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     /**
      * Get Id type of the model.
      *

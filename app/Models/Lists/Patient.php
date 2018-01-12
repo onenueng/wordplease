@@ -54,6 +54,66 @@ class Patient extends Model implements AutoId
     }
 
     /**
+     * Set field 'first_name'.
+     *
+     * @param string $value
+     */
+    public function setFirstNameAttribute($value)
+    {
+        $this->attributes['first_name'] = $this->encryptField($value);
+    }
+
+    /**
+     * Get field 'first_name'.
+     *
+     * @return string
+     */
+    public function getFirstNameAttribute()
+    {
+        return $this->decryptField($this->attributes['first_name']);
+    }
+
+    /**
+     * Set field 'middle_name'.
+     *
+     * @param string $value
+     */
+    public function setMiddleNameAttribute($value)
+    {
+        $this->attributes['middle_name'] = $this->encryptField($value);
+    }
+
+    /**
+     * Get field 'middle_name'.
+     *
+     * @return string
+     */
+    public function getMiddleNameAttribute()
+    {
+        return $this->decryptField($this->attributes['middle_name']);
+    }
+
+    /**
+     * Set field 'last_name'.
+     *
+     * @param string $value
+     */
+    public function setLastNameAttribute($value)
+    {
+        $this->attributes['last_name'] = $this->encryptField($value);
+    }
+
+    /**
+     * Get field 'last_name'.
+     *
+     * @return string
+     */
+    public function getLastNameAttribute()
+    {
+        return $this->decryptField($this->attributes['last_name']);
+    }
+
+    /**
      * Set field 'document_id'.
      *
      * @param string $value

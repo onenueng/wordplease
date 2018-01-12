@@ -38,14 +38,26 @@ class NoteCreator
      * @var $an, $noteTypeId, $noteContentId
      * @return stirng
      */
-    public function tryCreateNote($an, $noteTypeId, $noteContentId)
+    public function tryCreate($an, $noteTypeId, $noteContentId)
     {
-        // check if this an data exist
+        // check if we can continue with given $an
+        $admission = $this->api->getAdmission($an);
+        if ( $admission['reply_text'] != 'OK' ) {
+            return $admission;
+        }
 
+        // check if we can continue with given note type
+        if ( $this->willComplyUniqueRule() )
+
+        if ( $this->willComplyGenderRule() )
+
+        // check if this an data exist
+        
 
         $admission = $this->api->getAdmission($an);
         $patient =  $this->api->getPatient($admission['hn']);
 
+        
         return $patient;
 
         $admission['note_type_id'] = $noteTypeId;
@@ -54,5 +66,14 @@ class NoteCreator
         $note = Note::insert($admission);
 
         return $note;
+    }
+
+    protected function willComplyUniqueRule($an, $noteTypeId)
+    {
+        if ( $noteTypeId > 2 ) {
+            return true;
+        }
+
+        
     }
 }

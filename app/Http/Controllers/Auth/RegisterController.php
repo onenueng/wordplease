@@ -2,33 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
+use App\Contracts\UserAPI;
 
 class RegisterController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Register Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users as well as their
-    | validation and creation. By default this controller uses a trait to
-    | provide this functionality without requiring any additional code.
-    |
-    */
-
-    use RegistersUsers;
-
-    /**
-     * Where to redirect users after registration.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/home';
-
     /**
      * Create a new controller instance.
      *
@@ -39,33 +18,42 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(array $data)
+    public function showRegisterForm()
     {
-        return Validator::make($data, [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
-        ]);
+        return view('user.register');
     }
 
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\User
-     */
-    protected function create(array $data)
+    public function getUser(Request $request, UserAPI $api)
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-        ]);
+        // check users table first
+        $data = $api->getUser($request->input('org_id'));
+        switch ($data['reply_code']) {
+            case 0:
+                $data['state'] = 'success';
+                $data['icon'] = 'ok';
+                break;
+            case 1:
+            case 2:
+            case 3:
+                $data['state'] = 'warning';
+                $data['icon'] = 'warning-sign';
+                break;
+            default :
+                $data['state'] = 'error';
+                $data['icon'] = 'remove';
+        }
+        return $data;
+    }
+
+    public function isDataAvailable(Request $request)
+    {
+
+        $user = User::where($request->input('field'), $request->input('value'))->first();
+
+        if ( $user == null ) {
+            return ['reply_text' => 'OK', 'state' => 'success'];
+        }
+
+        return ['reply_text' => 'Sorry this ' . $request->input('field') . ' is already taken.', 'state' => 'warning'];
     }
 }

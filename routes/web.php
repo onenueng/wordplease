@@ -120,4 +120,13 @@ Route::get('/test-psp', function (App\Contracts\PatientDataAPI $api) {
     return $api->getPatient(53344980);
 });
 
+Route::get('/test-pse', function (App\Contracts\UserAPI $api) {
+    return $api->getUser(10001006);
+});
+
+Route::get('/test-waja', function () {
+    $t = new Tests\TestWaja;
+    return $t->checkRegistryData([]);
+});
+
 

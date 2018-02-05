@@ -23,10 +23,13 @@ class RegisterController extends Controller
         return view('user.register');
     }
 
-    public function getUser(Request $request, UserAPI $api)
+    public function getUser($orgId, UserAPI $api)
     {
         // check users table first
-        $data = $api->getUser($request->input('org_id'));
+        // return $request->all() + ['reply_code' => 100, 'reply_text' => 'test'];
+        // $api = new App\APIs\Siriraj\UserProvider;
+        // $data = $api->getUser($request->input('org_id'));
+        return $api->getUser($orgId);
         switch ($data['reply_code']) {
             case 0:
                 $data['state'] = 'success';

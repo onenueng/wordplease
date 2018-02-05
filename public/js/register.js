@@ -574,6 +574,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             axios.post('/register/check-id', {
                 org_id: this.userInput
             }).then(function (response) {
+                console.log(response.data);
                 _this.divIdInputClass = 'form-group-sm has-feedback has-' + response.data.state;
                 _this.idInputStateIconClass = 'glyphicon form-control-feedback glyphicon-' + response.data.icon;
                 if (response.data.reply_code > 0) {

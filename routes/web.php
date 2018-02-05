@@ -18,7 +18,8 @@ Route::get('/is-session-active', function(Illuminate\Http\Request $request) {
 });
 
 Route::get('/register', 'Auth\RegisterController@showRegisterForm');
-Route::post('/register/check-id', 'Auth\RegisterController@getUser');
+Route::get('/register/check-id/{orgId}', 'Auth\RegisterController@getUser');
+// Route::post('/register/check-id', 'Auth\RegisterController@getUser');
 Route::post('/register/is-data-available', 'Auth\RegisterController@isDataAvailable');
 
 // dev route start here
@@ -117,11 +118,11 @@ Route::get('/get-creatable-notes/{an}', function ($an) {
 });
 
 Route::get('/test-psp', function (App\Contracts\PatientDataAPI $api) {
-    return $api->getPatient(53344980);
+    return $api->getPatient(53071658);
 });
 
 Route::get('/test-pse', function (App\Contracts\UserAPI $api) {
-    return $api->getUser(10001006);
+    return $api->getUser(10022569);
 });
 
 Route::get('/test-waja', function () {

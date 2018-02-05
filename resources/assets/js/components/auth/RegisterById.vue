@@ -113,6 +113,7 @@
                     org_id: this.userInput
                 })
                 .then( (response) => {
+                    console.log(response.data)
                     this.divIdInputClass = 'form-group-sm has-feedback has-' + response.data.state
                     this.idInputStateIconClass = 'glyphicon form-control-feedback glyphicon-' + response.data.icon
                     if (response.data.reply_code > 0) {

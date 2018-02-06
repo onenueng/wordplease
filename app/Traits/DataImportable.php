@@ -5,7 +5,7 @@ namespace App\Traits;
 trait DataImportable
 {
     /**
-     * Read file in storage/csv then return collection of assosiative array.
+     * Read file in storage/app/lists then return collection of assosiative array.
      *
      * @param string
      * @return array

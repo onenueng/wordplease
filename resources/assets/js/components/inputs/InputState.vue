@@ -1,7 +1,7 @@
 <template>
     <div :class="divState">
         <label for="" class="control-label">{{ label }}</label>
-        <input type="text" class="form-control" @blur="checkState()" v-model="userInput">
+        <input type="text" class="form-control" @blur="checkState()" @focus="focus()" v-model="userInput">
         <span :class="iconStateClass"></span>
         <span class="help-block"><i>{{ helpText }}</i></span>
     </div>
@@ -88,7 +88,10 @@
                                     this.helpText = 'Whoops, someting went wrong. Plase try again.'
                                     break
                             }
-                            EventBus.$emit( this.label + '-state', valid )
+                            EventBus.$emit( this.field + '-state', valid )
+                            if (valid) {
+                                EventBus.$emit( this.field + '-value', this.userInput )
+                            }
                         })
                         .catch((error) => {
                             console.log(error)
@@ -100,6 +103,13 @@
                     }
                 }
             },
+            focus() {
+                this.divState = 'form-group-sm has-feedback'
+                this.iconStateClass = 'form-control-feedback'
+                if ( this.initHelpText !== null ) {
+                    this.helpText = this.initHelpText
+                }
+            }
         }
     }
 </script>

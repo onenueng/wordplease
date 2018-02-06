@@ -18,8 +18,8 @@ Route::get('/is-session-active', function(Illuminate\Http\Request $request) {
 });
 
 Route::get('/register', 'Auth\RegisterController@showRegisterForm');
-Route::get('/register/check-id/{orgId}', 'Auth\RegisterController@getUser');
-// Route::post('/register/check-id', 'Auth\RegisterController@getUser');
+// Route::get('/register/check-id/{orgId}', 'Auth\RegisterController@getUserTest');
+Route::post('/register/check-id', 'Auth\RegisterController@getUser');
 Route::post('/register/is-data-available', 'Auth\RegisterController@isDataAvailable');
 
 // dev route start here
@@ -86,28 +86,28 @@ Route::get('/get-ajax', function () {
 
 Route::get('/get-creatable-notes/{an}', function ($an) {
     return [
-        [ 
+        [
             'style' => 'cursor: pointer',
             'base' => 1,
             'as' => 1,
             'label' => 'Admission note' ,
             'title' => ''
         ],
-        [ 
+        [
             'style' => 'cursor: pointer',
             'base' => 1,
             'as' => 4,
             'label' => 'Admission note as On service note',
             'title' => ''
         ],
-        [ 
+        [
             'style' => 'cursor: not-allowed',
             'base' => 0,
             'as' => 0,
             'label' => '<s>Admission note as Off service note</s>',
             'title' => 'not allowed'
         ],
-        [ 
+        [
             'style' => 'cursor: pointer',
             'base' => 2,
             'as' => 2,
@@ -129,5 +129,3 @@ Route::get('/test-waja', function () {
     $t = new Tests\TestWaja;
     return $t->checkRegistryData([]);
 });
-
-

@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Contracts\UserAPI;
+use Illuminate\Http\Request;
+use App\Traits\DataImportable;
+use App\Http\Controllers\Controller;
 
 class RegisterController extends Controller
 {
+    use DataImportable;
+
     /**
      * Create a new controller instance.
      *
@@ -23,13 +26,15 @@ class RegisterController extends Controller
         return view('user.register');
     }
 
-    public function getUser($orgId, UserAPI $api)
+    // public function getUserTest($orgId, UserAPI $api)
+    // {
+    //     return $api->getUser($orgId);
+    // }
+    public function getUser(Request $request, UserAPI $api)
     {
-        // check users table first
-        // return $request->all() + ['reply_code' => 100, 'reply_text' => 'test'];
-        // $api = new App\APIs\Siriraj\UserProvider;
-        // $data = $api->getUser($request->input('org_id'));
-        return $api->getUser($orgId);
+        // check user in list
+        // check user on table
+        $data = $api->getUser($request->input('org_id'));
         switch ($data['reply_code']) {
             case 0:
                 $data['state'] = 'success';
@@ -51,6 +56,7 @@ class RegisterController extends Controller
     public function isDataAvailable(Request $request)
     {
 
+        return ['reply_text' => 'OK', 'state' => 'success'];
         $user = User::where($request->input('field'), $request->input('value'))->first();
 
         if ( $user == null ) {

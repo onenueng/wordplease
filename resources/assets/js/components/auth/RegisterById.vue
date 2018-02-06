@@ -2,7 +2,7 @@
 <div>
     <div :class="divIdInputClass">
         <label for="orgId" class="control-label">
-            {{ idName }} : 
+            {{ idName }} :
         </label>
         <input
             id="orgId"
@@ -49,6 +49,20 @@
                 pattern="^\w+$"
                 init-help-text="This nickname will display in the app.">
             </input-state>
+            <div class="form-group-sm">
+                <label class="control-label">Name in English :</label>
+                <input type="text" class="form-control" v-model="userData.name_en" />
+            </div>
+            <hr/>
+            <div class="form-group-sm">
+                <button-app
+                    size="lg"
+                    label="Register"
+                    action="register"
+                    status="info"
+                    >
+                </button-app>
+            </div>
         </div>
     </transition>
 </div>
@@ -75,7 +89,9 @@
                 idInputStateIconClass: '',
                 idStateText: null,
                 userData: '',
-                showUserData: false
+                showUserData: false,
+                validEmail: false,
+                validUsername: false
             }
         },
         computed: {
@@ -85,6 +101,31 @@
                 }
                 return null
             }
+        },
+        mounted() {
+            EventBus.$on('email-state', (valid) => {
+                if (valid) {
+                    console.log('email is valid')
+                } else {
+                    console.log('email is invalid')
+                }
+            })
+
+            EventBus.$on('email-value', (value) => {
+                this.userData.email = value
+            })
+
+            EventBus.$on('username-state', (valid) => {
+                if (valid) {
+                    console.log('username is valid')
+                } else {
+                    console.log('username is invalid')
+                }
+            })
+
+            EventBus.$on('username-value', (value) => {
+                this.userData.username = value
+            })
         },
         methods: {
             idUpdate() {
@@ -113,7 +154,6 @@
                     org_id: this.userInput
                 })
                 .then( (response) => {
-                    console.log(response.data)
                     this.divIdInputClass = 'form-group-sm has-feedback has-' + response.data.state
                     this.idInputStateIconClass = 'glyphicon form-control-feedback glyphicon-' + response.data.icon
                     if (response.data.reply_code > 0) {

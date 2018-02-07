@@ -2,8 +2,8 @@
     <button
         :class="style + status + (size == undefined ? '' : (' btn-' + size))"
         :id="id"
-        @click="click">
-        {{ label }}
+        @click="click"
+        v-html="label">
     </button>
 </template>
 
@@ -24,7 +24,7 @@
             },
             size: {
                 type: String,
-                required: false  
+                required: false
             }
         },
         data() {
@@ -237,4 +237,3 @@
         color: #000;
     }
 </style>
-

@@ -41,8 +41,9 @@
                 service-url="/register/is-data-available"
                 label="Email :"
                 pattern="email"
-                :input-value.sync="email"
-                :is-valid.sync="isEmailValid">
+                :input-value.sync="userData.email"
+                :is-valid.sync="isEmailValid"
+                :input-disable="idInputDisable">
             </input-state>
             <input-state
                 field="username"
@@ -51,22 +52,28 @@
                 pattern="^\w+$"
                 init-help-text="This nickname will display in the app."
                 :input-value.sync="username"
-                :is-valid.sync="isUsernameValid">
+                :is-valid.sync="isUsernameValid"
+                :input-disable="idInputDisable">
             </input-state>
-            <div class="form-group-sm">
-                <label class="control-label">Name in English :</label>
-                <input type="text" class="form-control" v-model="userData.name_en" />
-            </div>
+            <input-state
+                field="name_en"
+                label="Name in English :"
+                :input-value.sync="userData.name_en"
+                :is-valid.sync="isNameEnValid"
+                :input-disable="idInputDisable">
+            </input-state>
             <hr class="line">
-            <div class="form-group-sm">
-                <button-app
-                    size="lg"
-                    label="Register"
-                    action="id-register-click"
-                    status="info"
-                    >
-                </button-app>
-            </div>
+        </div>
+    </transition>
+    <transition name="slide-fade">
+        <div class="form-group-sm" v-if="isEmailValid && isUsernameValid && isNameEnValid">
+            <button-app
+                size="lg"
+                :label="labelRegisterButton"
+                action="id-register-click"
+                status="info"
+                >
+            </button-app>
         </div>
     </transition>
 </div>
@@ -95,10 +102,11 @@
                 idStateText: null,
                 userData: '',
                 showUserData: false,
-                email: '',
                 isEmailValid: false,
                 username: '',
-                isUsernameValid: false
+                isUsernameValid: false,
+                isNameEnValid: false,
+                labelRegisterButton: "Register"
             }
         },
         computed: {
@@ -111,6 +119,22 @@
         },
         mounted() {
             EventBus.$on('id-register-click', () => {
+                this.idInputDisable = ''
+                this.labelRegisterButton = 'Registering <i class="fa fa-circle-o-notch fa-spin"></i>'
+                axios.post('/register', {
+                    mode: "id",
+                    data: this.userData
+                })
+                .then( (response) => {
+                    console.log(response.data)
+                    this.idInputDisable = null
+                    this.labelRegisterButton = 'Register'
+                })
+                .catch( (error) => {
+                    console.log(error)
+                    this.idInputDisable = null
+                    this.labelRegisterButton = 'Register'
+                })
                 console.log('register clicked')
             })
         },
@@ -120,8 +144,8 @@
                 if ( this.isIdValid() ) {
                     this.idStateText = null
                     this.idInputDisable = ''
-                    this.idInputStateIconClass = 'fa fa-circle-o-notch fa-spin form-control-feedback'
                     this.showIdInputStateIcon = true
+                    this.idInputStateIconClass = 'fa fa-circle-o-notch fa-spin form-control-feedback'
                     this.checkId()
                 } else {
                     this.showUserData = false

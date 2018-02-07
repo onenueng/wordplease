@@ -517,16 +517,16 @@ function toComment(sourceMap) {
 
 /***/ }),
 
-/***/ 32:
+/***/ 37:
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(33);
-module.exports = __webpack_require__(58);
+__webpack_require__(38);
+module.exports = __webpack_require__(63);
 
 
 /***/ }),
 
-/***/ 33:
+/***/ 38:
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -546,7 +546,7 @@ __webpack_require__(5);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example', __webpack_require__(55));
+Vue.component('example', __webpack_require__(60));
 
 Vue.component('input-text', __webpack_require__(17));
 
@@ -630,15 +630,47 @@ __webpack_require__(16);
 
 /***/ }),
 
-/***/ 55:
+/***/ 6:
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(7);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(8)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../css-loader/index.js!./dark.css", function() {
+			var newContent = require("!!../../../css-loader/index.js!./dark.css");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+
+/***/ 60:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(56)
+var __vue_script__ = __webpack_require__(61)
 /* template */
-var __vue_template__ = __webpack_require__(57)
+var __vue_template__ = __webpack_require__(62)
 /* template functional */
   var __vue_template_functional__ = false
 /* styles */
@@ -679,7 +711,7 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 56:
+/***/ 61:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -709,7 +741,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 57:
+/***/ 62:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -753,42 +785,10 @@ if (false) {
 
 /***/ }),
 
-/***/ 58:
+/***/ 63:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 6:
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(7);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// Prepare cssTransformation
-var transform;
-
-var options = {}
-options.transform = transform
-// add the styles to the DOM
-var update = __webpack_require__(8)(content, options);
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../../css-loader/index.js!./dark.css", function() {
-			var newContent = require("!!../../../css-loader/index.js!./dark.css");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
 
 /***/ }),
 
@@ -1263,4 +1263,4 @@ module.exports = function (css) {
 
 /***/ })
 
-},[32]);
+},[37]);

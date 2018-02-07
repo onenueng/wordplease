@@ -65,4 +65,9 @@ class RegisterController extends Controller
 
         return ['reply_text' => 'Sorry this ' . $request->input('field') . ' is already taken.', 'state' => 'warning'];
     }
+
+    public function register(Request $request)
+    {
+        return $request->all();
+    }
 }

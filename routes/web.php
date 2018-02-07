@@ -22,6 +22,8 @@ Route::get('/register', 'Auth\RegisterController@showRegisterForm');
 Route::post('/register/check-id', 'Auth\RegisterController@getUser');
 Route::post('/register/is-data-available', 'Auth\RegisterController@isDataAvailable');
 
+Route::post('/register', 'Auth\RegisterController@register');
+
 // dev route start here
 Route::get('draft/{group}/{page}', function ($group, $page) {
     return view('draft.' . $group . '.' . $page);

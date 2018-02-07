@@ -29,6 +29,14 @@
             pattern: {
                 type: String,
                 required: false
+            },
+            inputValue: {
+                type: String,
+                required: true
+            },
+            isValid: {
+                type: Boolean,
+                required: true
             }
         },
         data() {
@@ -58,14 +66,13 @@
         methods: {
             checkState() {
                 if ( this.userInput != '' && this.regex != null ) {
+                    this.$emit('update:inputValue', this.userInput)
                     if ( this.userInput.match(this.regex) !== null ) {
-                        console.log('valid ' + this.field)
                         axios.post(this.serviceUrl, {
                             field: this.field,
                             value: this.userInput
                         })
                         .then((response) => {
-                            console.log(response.data)
                             let valid = false;
                             this.divState = 'form-group-sm has-feedback has-' + response.data.state
                             this.iconStateClass = 'glyphicon form-control-feedback '
@@ -88,10 +95,8 @@
                                     this.helpText = 'Whoops, someting went wrong. Plase try again.'
                                     break
                             }
-                            EventBus.$emit( this.field + '-state', valid )
-                            if (valid) {
-                                EventBus.$emit( this.field + '-value', this.userInput )
-                            }
+
+                            this.$emit('update:isValid', valid)
                         })
                         .catch((error) => {
                             console.log(error)
@@ -100,6 +105,7 @@
                         this.divState = 'form-group-sm has-feedback has-error'
                         this.iconStateClass = 'glyphicon form-control-feedback glyphicon-remove'
                         this.helpText = 'invalid input format'
+                        this.$emit('update:isValid', false)
                     }
                 }
             },

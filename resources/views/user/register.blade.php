@@ -6,7 +6,8 @@
 
 <register-page
     id-name="SAP ID"
-    pattern="^\d{8}$">
+    pattern="^100([0-9]{5})$"
+    >
 </register-page>
 
 @endsection

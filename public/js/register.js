@@ -528,6 +528,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: {
@@ -547,11 +551,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             idInputDisable: null,
             showIdInputStateIcon: false,
             idInputStateIconClass: '',
+            initIdStateText: "please fill in a valid ID",
             idStateText: null,
             userData: '',
             showUserData: false,
-            validEmail: false,
-            validUsername: false
+            email: '',
+            isEmailValid: false,
+            username: '',
+            isUsernameValid: false
         };
     },
 
@@ -564,36 +571,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
     mounted: function mounted() {
-        var _this = this;
-
-        EventBus.$on('email-state', function (valid) {
-            if (valid) {
-                console.log('email is valid');
-            } else {
-                console.log('email is invalid');
-            }
-        });
-
-        EventBus.$on('email-value', function (value) {
-            _this.userData.email = value;
-        });
-
-        EventBus.$on('username-state', function (valid) {
-            if (valid) {
-                console.log('username is valid');
-            } else {
-                console.log('username is invalid');
-            }
-        });
-
-        EventBus.$on('username-value', function (value) {
-            _this.userData.username = value;
+        EventBus.$on('id-register-click', function () {
+            console.log('register clicked');
         });
     },
 
     methods: {
         idUpdate: function idUpdate() {
+            // console.log(this.userInput)
             if (this.isIdValid()) {
+                this.idStateText = null;
                 this.idInputDisable = '';
                 this.idInputStateIconClass = 'fa fa-circle-o-notch fa-spin form-control-feedback';
                 this.showIdInputStateIcon = true;
@@ -610,30 +597,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         idFocus: function idFocus() {
             this.showIdInputStateIcon = false;
-            this.idStateText = '';
+            this.idStateText = this.initIdStateText;
             this.divIdInputClass = 'form-group-sm has-feedback';
         },
         checkId: function checkId() {
-            var _this2 = this;
+            var _this = this;
 
             axios.post('/register/check-id', {
                 org_id: this.userInput
             }).then(function (response) {
-                _this2.divIdInputClass = 'form-group-sm has-feedback has-' + response.data.state;
-                _this2.idInputStateIconClass = 'glyphicon form-control-feedback glyphicon-' + response.data.icon;
+                _this.divIdInputClass = 'form-group-sm has-feedback has-' + response.data.state;
+                _this.idInputStateIconClass = 'glyphicon form-control-feedback glyphicon-' + response.data.icon;
                 if (response.data.reply_code > 0) {
-                    _this2.idStateText = response.data.reply_text;
+                    _this.idStateText = response.data.reply_text;
                 } else {
-                    _this2.idStateText = '';
-                    _this2.userData = response.data;
-                    _this2.showUserData = true;
+                    _this.idStateText = null;
+                    _this.userData = response.data;
+                    _this.showUserData = true;
                 }
-                _this2.idInputDisable = null;
+                _this.idInputDisable = null;
             }).catch(function (error) {
-                _this2.divIdInputClass = 'form-group-sm has-feedback has-error';
-                _this2.idInputStateIconClass = 'glyphicon glyphicon-remove form-control-feedback';
-                _this2.idStateText = 'Whoops, someting went wrong. Please try again.';
-                _this2.idInputDisable = null;
+                _this.divIdInputClass = 'form-group-sm has-feedback has-error';
+                _this.idInputStateIconClass = 'glyphicon glyphicon-remove form-control-feedback';
+                _this.idStateText = 'Whoops, someting went wrong. Please try again.';
+                _this.idInputDisable = null;
                 console.log(error);
             });
         }
@@ -822,7 +809,17 @@ var render = function() {
                     field: "email",
                     "service-url": "/register/is-data-available",
                     label: "Email :",
-                    pattern: "email"
+                    pattern: "email",
+                    "input-value": _vm.email,
+                    "is-valid": _vm.isEmailValid
+                  },
+                  on: {
+                    "update:inputValue": function($event) {
+                      _vm.email = $event
+                    },
+                    "update:isValid": function($event) {
+                      _vm.isEmailValid = $event
+                    }
                   }
                 }),
                 _vm._v(" "),
@@ -832,7 +829,17 @@ var render = function() {
                     "service-url": "/register/is-data-available",
                     label: "Username :",
                     pattern: "^\\w+$",
-                    "init-help-text": "This nickname will display in the app."
+                    "init-help-text": "This nickname will display in the app.",
+                    "input-value": _vm.username,
+                    "is-valid": _vm.isUsernameValid
+                  },
+                  on: {
+                    "update:inputValue": function($event) {
+                      _vm.username = $event
+                    },
+                    "update:isValid": function($event) {
+                      _vm.isUsernameValid = $event
+                    }
                   }
                 }),
                 _vm._v(" "),
@@ -864,7 +871,7 @@ var render = function() {
                   })
                 ]),
                 _vm._v(" "),
-                _c("hr"),
+                _c("hr", { staticClass: "line" }),
                 _vm._v(" "),
                 _c(
                   "div",
@@ -874,7 +881,7 @@ var render = function() {
                       attrs: {
                         size: "lg",
                         label: "Register",
-                        action: "register",
+                        action: "id-register-click",
                         status: "info"
                       }
                     })
@@ -987,6 +994,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         pattern: {
             type: String,
             required: false
+        },
+        inputValue: {
+            type: String,
+            required: true
+        },
+        isValid: {
+            type: Boolean,
+            required: true
         }
     },
     data: function data() {
@@ -1020,13 +1035,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this = this;
 
             if (this.userInput != '' && this.regex != null) {
+                this.$emit('update:inputValue', this.userInput);
                 if (this.userInput.match(this.regex) !== null) {
-                    console.log('valid ' + this.field);
                     axios.post(this.serviceUrl, {
                         field: this.field,
                         value: this.userInput
                     }).then(function (response) {
-                        console.log(response.data);
                         var valid = false;
                         _this.divState = 'form-group-sm has-feedback has-' + response.data.state;
                         _this.iconStateClass = 'glyphicon form-control-feedback ';
@@ -1049,10 +1063,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                                 _this.helpText = 'Whoops, someting went wrong. Plase try again.';
                                 break;
                         }
-                        EventBus.$emit(_this.field + '-state', valid);
-                        if (valid) {
-                            EventBus.$emit(_this.field + '-value', _this.userInput);
-                        }
+
+                        _this.$emit('update:isValid', valid);
                     }).catch(function (error) {
                         console.log(error);
                     });
@@ -1060,6 +1072,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     this.divState = 'form-group-sm has-feedback has-error';
                     this.iconStateClass = 'glyphicon form-control-feedback glyphicon-remove';
                     this.helpText = 'invalid input format';
+                    this.$emit('update:isValid', false);
                 }
             }
         },

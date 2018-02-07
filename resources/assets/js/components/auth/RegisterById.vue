@@ -40,25 +40,29 @@
                 field="email"
                 service-url="/register/is-data-available"
                 label="Email :"
-                pattern="email">
+                pattern="email"
+                :input-value.sync="email"
+                :is-valid.sync="isEmailValid">
             </input-state>
             <input-state
                 field="username"
                 service-url="/register/is-data-available"
                 label="Username :"
                 pattern="^\w+$"
-                init-help-text="This nickname will display in the app.">
+                init-help-text="This nickname will display in the app."
+                :input-value.sync="username"
+                :is-valid.sync="isUsernameValid">
             </input-state>
             <div class="form-group-sm">
                 <label class="control-label">Name in English :</label>
                 <input type="text" class="form-control" v-model="userData.name_en" />
             </div>
-            <hr/>
+            <hr class="line">
             <div class="form-group-sm">
                 <button-app
                     size="lg"
                     label="Register"
-                    action="register"
+                    action="id-register-click"
                     status="info"
                     >
                 </button-app>
@@ -87,11 +91,14 @@
                 idInputDisable: null,
                 showIdInputStateIcon: false,
                 idInputStateIconClass: '',
+                initIdStateText: "please fill in a valid ID",
                 idStateText: null,
                 userData: '',
                 showUserData: false,
-                validEmail: false,
-                validUsername: false
+                email: '',
+                isEmailValid: false,
+                username: '',
+                isUsernameValid: false
             }
         },
         computed: {
@@ -103,33 +110,15 @@
             }
         },
         mounted() {
-            EventBus.$on('email-state', (valid) => {
-                if (valid) {
-                    console.log('email is valid')
-                } else {
-                    console.log('email is invalid')
-                }
-            })
-
-            EventBus.$on('email-value', (value) => {
-                this.userData.email = value
-            })
-
-            EventBus.$on('username-state', (valid) => {
-                if (valid) {
-                    console.log('username is valid')
-                } else {
-                    console.log('username is invalid')
-                }
-            })
-
-            EventBus.$on('username-value', (value) => {
-                this.userData.username = value
+            EventBus.$on('id-register-click', () => {
+                console.log('register clicked')
             })
         },
         methods: {
             idUpdate() {
+                // console.log(this.userInput)
                 if ( this.isIdValid() ) {
+                    this.idStateText = null
                     this.idInputDisable = ''
                     this.idInputStateIconClass = 'fa fa-circle-o-notch fa-spin form-control-feedback'
                     this.showIdInputStateIcon = true
@@ -146,7 +135,7 @@
             },
             idFocus() {
                 this.showIdInputStateIcon = false
-                this.idStateText = ''
+                this.idStateText = this.initIdStateText
                 this.divIdInputClass = 'form-group-sm has-feedback'
             },
             checkId() {
@@ -159,7 +148,7 @@
                     if (response.data.reply_code > 0) {
                         this.idStateText = response.data.reply_text
                     } else {
-                        this.idStateText = ''
+                        this.idStateText = null
                         this.userData = response.data
                         this.showUserData = true
                     }

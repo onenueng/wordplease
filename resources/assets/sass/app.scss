@@ -137,12 +137,22 @@ div.form-group-sm label.checkbox-inline input {
     box-shadow: 0 3px 9px rgba(0,0,0,0.25), 0 3px 6px rgba(0,0,0,0.22);
 }
 
-.slide-fade-enter-active {
+.material-box-topic {
+    margin: 10px 0px 10px 0px;
+    padding: 20px;
+    border-radius: 15px;
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+.material-box-topic:hover {
+    box-shadow: 0 3px 9px rgba(0,0,0,0.25), 0 3px 6px rgba(0,0,0,0.22);
+}
+.slide-f5de-enter-active {
   /*transition: all .3s ease;*/
   transition: all .8s ease;
 }
 .slide-fade-leave-active {
-  /*transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);*/
+  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
   transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
 }
 .slide-fade-enter, .slide-fade-leave-to

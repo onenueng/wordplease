@@ -11,6 +11,8 @@ class RegisterController extends Controller
 {
     use DataImportable;
 
+    protected $request;
+
     /**
      * Create a new controller instance.
      *
@@ -19,6 +21,8 @@ class RegisterController extends Controller
     public function __construct()
     {
         $this->middleware('guest');
+
+        $this->request = app('request');
     }
 
     public function showRegisterForm()
@@ -26,10 +30,6 @@ class RegisterController extends Controller
         return view('user.register');
     }
 
-    // public function getUserTest($orgId, UserAPI $api)
-    // {
-    //     return $api->getUser($orgId);
-    // }
     public function getUser(Request $request, UserAPI $api)
     {
         // check user in list
@@ -55,7 +55,6 @@ class RegisterController extends Controller
 
     public function isDataAvailable(Request $request)
     {
-
         return ['reply_text' => 'OK', 'state' => 'success'];
         $user = User::where($request->input('field'), $request->input('value'))->first();
 
@@ -66,8 +65,16 @@ class RegisterController extends Controller
         return ['reply_text' => 'Sorry this ' . $request->input('field') . ' is already taken.', 'state' => 'warning'];
     }
 
-    public function register(Request $request)
+    public function register()
     {
-        return $request->all();
+        // $user = User::insert($this->request->input('data'))
+
+        return $this->request->all();
+
+        // if ( $this->request->input('mode') == 'id' ) {
+        //     $user = $this->loadCSV('id_users');
+        // } else {
+        //     $user = [];
+        // }
     }
 }

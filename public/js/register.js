@@ -166,7 +166,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\components\\auth\\RegisterById.vue"
+Component.options.__file = "resources/assets/js/components/auth/RegisterById.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */
@@ -321,19 +321,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         EventBus.$on('id-register-click', function () {
             _this.idInputDisable = '';
             _this.labelRegisterButton = 'Registering <i class="fa fa-circle-o-notch fa-spin"></i>';
-            axios.post('/register', {
-                mode: "id",
-                data: _this.userData
-            }).then(function (response) {
-                console.log(response.data);
-                _this.idInputDisable = null;
-                _this.labelRegisterButton = 'Register';
-            }).catch(function (error) {
-                console.log(error);
-                _this.idInputDisable = null;
-                _this.labelRegisterButton = 'Register';
-            });
-            console.log('register clicked');
+            if (_this.isEmailValid && _this.isUsernameValid && _this.isNameEnValid) {
+                axios.post('/register', {
+                    mode: "id",
+                    user: {
+                        name: _this.username,
+                        email: _this.userData.email,
+                        org_id: _this.userData.org_id,
+                        full_name: _this.userData.name,
+                        full_name_eng: _this.userData.name_en
+                    }
+                }).then(function (response) {
+                    console.log(response.data);
+                    _this.idInputDisable = null;
+                    _this.labelRegisterButton = 'Register';
+                }).catch(function (error) {
+                    console.log(error);
+                    _this.idInputDisable = null;
+                    _this.labelRegisterButton = 'Register';
+                });
+            }
         });
     },
 
@@ -399,10 +406,11 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
+    { staticClass: "material-box-topic" },
     [
       _c("div", { class: _vm.divIdInputClass }, [
         _c("label", { staticClass: "control-label", attrs: { for: "orgId" } }, [
-          _vm._v("\r\n            " + _vm._s(_vm.idName) + " :\r\n        ")
+          _vm._v("\n            " + _vm._s(_vm.idName) + " :\n        ")
         ]),
         _vm._v(" "),
         _c("input", {
@@ -691,7 +699,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\components\\auth\\RegisterPage.vue"
+Component.options.__file = "resources/assets/js/components/auth/RegisterPage.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */
@@ -814,7 +822,7 @@ var render = function() {
         "div",
         {
           staticClass:
-            "col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-sm-offset-3"
+            "col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3"
         },
         [
           _vm._m(1),
@@ -954,7 +962,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\components\\inputs\\InputState.vue"
+Component.options.__file = "resources/assets/js/components/inputs/InputState.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */
@@ -1358,7 +1366,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\components\\ButtonApp.vue"
+Component.options.__file = "resources/assets/js/components/ButtonApp.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */

@@ -17,14 +17,17 @@ Route::get('/is-session-active', function(Illuminate\Http\Request $request) {
     return ['active' => ($request->header('X-CSRF-TOKEN') == csrf_token())];
 });
 
+// register
 Route::get('/register', 'Auth\RegisterController@showRegisterForm');
-// Route::get('/register/check-id/{orgId}', 'Auth\RegisterController@getUserTest');
 Route::post('/register/check-id', 'Auth\RegisterController@getUser');
 Route::post('/register/is-data-available', 'Auth\RegisterController@isDataAvailable');
-
 Route::post('/register', 'Auth\RegisterController@register');
 
-// dev route start here
+// login
+Route::get('/login', ['as' => 'login', 'uses' => 'Auth\LoginController@showLoginForm']);
+Route::post('/login', 'Auth\LoginController@authenticate');
+
+//\\ *** dev route start here *** //\\
 Route::get('draft/{group}/{page}', function ($group, $page) {
     return view('draft.' . $group . '.' . $page);
 });

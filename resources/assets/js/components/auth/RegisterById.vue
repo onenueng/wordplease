@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="material-box-topic">
     <div :class="divIdInputClass">
         <label for="orgId" class="control-label">
             {{ idName }} :
@@ -121,21 +121,28 @@
             EventBus.$on('id-register-click', () => {
                 this.idInputDisable = ''
                 this.labelRegisterButton = 'Registering <i class="fa fa-circle-o-notch fa-spin"></i>'
-                axios.post('/register', {
-                    mode: "id",
-                    data: this.userData
-                })
-                .then( (response) => {
-                    console.log(response.data)
-                    this.idInputDisable = null
-                    this.labelRegisterButton = 'Register'
-                })
-                .catch( (error) => {
-                    console.log(error)
-                    this.idInputDisable = null
-                    this.labelRegisterButton = 'Register'
-                })
-                console.log('register clicked')
+                if ( this.isEmailValid && this.isUsernameValid && this.isNameEnValid ) {
+                    axios.post('/register', {
+                        mode: "id",
+                        user: {
+                            name: this.username,
+                            email: this.userData.email,
+                            org_id: this.userData.org_id,
+                            full_name: this.userData.name,
+                            full_name_eng: this.userData.name_en
+                        }
+                    })
+                    .then( (response) => {
+                        console.log(response.data)
+                        this.idInputDisable = null
+                        this.labelRegisterButton = 'Register'
+                    })
+                    .catch( (error) => {
+                        console.log(error)
+                        this.idInputDisable = null
+                        this.labelRegisterButton = 'Register'
+                    })
+                }
             })
         },
         methods: {

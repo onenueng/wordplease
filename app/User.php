@@ -22,11 +22,11 @@ class User extends Authenticatable implements AutoId
         'name',
         'email',
         'org_id',
-        'gender',
-        'role_id',
+        // 'gender',
+        // 'role_id',
         'password',
         'full_name',
-        'division_id',
+        // 'division_id',
         'full_name_eng',
     ];
 
@@ -38,4 +38,9 @@ class User extends Authenticatable implements AutoId
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function roles()
+    {
+        return $this->belongsToMany('\App\Models\Lists\Role');
+    }
 }

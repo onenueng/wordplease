@@ -21,6 +21,8 @@ class CreateDivisionsTable extends Migration
             $table->string('name_eng_short', 60);
             $table->timestamps();
         });
+
+        \App\Models\Lists\Division::loadData('divisions', 'create');
     }
 
     /**

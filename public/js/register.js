@@ -362,6 +362,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 this.checkId();
             } else {
                 this.showUserData = false;
+                this.isUsernameValid = false;
+                this.isEmailValid = false;
+                this.isNameEnValid = false;
             }
         },
         isIdValid: function isIdValid() {
@@ -372,10 +375,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         idFocus: function idFocus() {
             this.showIdInputStateIcon = false;
-            this.showUserData = false;
-            this.isUsernameValid = false;
-            this.isEmailValid = false;
-            this.isNameEnValid = false;
             this.idStateText = this.initIdStateText;
             this.divIdInputClass = 'form-group-sm has-feedback';
         },
@@ -1330,6 +1329,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             alertState: 'alert alert-' + this.state
         };
+    },
+    mounted: function mounted() {
+        this.alertState = this.alertState + ' animated lightSpeedIn';
+        console.log('alert mounted');
     }
 });
 
@@ -1342,18 +1345,22 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { class: _vm.alertState, attrs: { role: "alert" } }, [
-    _c("div", { staticClass: "row vertical-centered" }, [
-      _c("div", { staticClass: "col-xs-2 text-center" }, [
-        _c("i", { class: _vm.icon })
-      ]),
-      _vm._v(" "),
-      _c("div", {
-        staticClass: "col-xs-10",
-        domProps: { innerHTML: _vm._s(_vm.content) }
-      })
-    ])
-  ])
+  return _c(
+    "div",
+    { class: _vm.alertState, attrs: { role: "alert", id: "xxx" } },
+    [
+      _c("div", { staticClass: "row vertical-centered" }, [
+        _c("div", { staticClass: "col-xs-2 text-center" }, [
+          _c("i", { class: _vm.icon })
+        ]),
+        _vm._v(" "),
+        _c("div", {
+          staticClass: "col-xs-10",
+          domProps: { innerHTML: _vm._s(_vm.content) }
+        })
+      ])
+    ]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -1402,7 +1409,7 @@ exports = module.exports = __webpack_require__(2)(undefined);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 

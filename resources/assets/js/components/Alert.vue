@@ -1,5 +1,5 @@
 <template>
-    <div :class="alertState" role="alert">
+    <div :class="alertState" role="alert" id="xxx">
         <div class="row vertical-centered">
             <div class="col-xs-2 text-center">
                 <i :class="icon"></i> 
@@ -30,6 +30,10 @@
             return {
                 alertState: 'alert alert-' + this.state
             }
+        },
+        mounted() {
+            this.alertState = this.alertState + ' animated lightSpeedIn'
+            console.log('alert mounted')
         }
     }
 </script>

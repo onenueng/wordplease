@@ -162,6 +162,9 @@
                     this.checkId()
                 } else {
                     this.showUserData = false
+                    this.isUsernameValid = false
+                    this.isEmailValid = false
+                    this.isNameEnValid = false
                 }
             },
             isIdValid() {
@@ -172,10 +175,6 @@
             },
             idFocus() {
                 this.showIdInputStateIcon = false
-                this.showUserData = false
-                this.isUsernameValid = false
-                this.isEmailValid = false
-                this.isNameEnValid = false
                 this.idStateText = this.initIdStateText
                 this.divIdInputClass = 'form-group-sm has-feedback'
             },

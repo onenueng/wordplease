@@ -169,6 +169,11 @@ div.form-group-sm label.checkbox-inline input {
     transform: translate(-50%, -50%);
 }
 
+.vertical-centered {
+    display: flex;
+    align-items: center;
+}
+
 
 /* Hover effect Bounce To Bottom */
 .hvr-bounce-to-bottom {

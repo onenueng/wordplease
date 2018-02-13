@@ -36,11 +36,11 @@ class User extends Authenticatable implements AutoId
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
     ];
 
-    public function roles()
+    public function authorizes()
     {
-        return $this->belongsToMany('\App\Models\Lists\Role');
+        return $this->belongsToMany('\App\Authorize');
     }
 }

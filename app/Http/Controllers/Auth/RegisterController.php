@@ -67,14 +67,37 @@ class RegisterController extends Controller
 
     public function register()
     {
-        // $user = User::insert($this->request->input('data'))
+        $newUser = \App\User::insert($this->request->input('user'));
+        
+        if ( $this->request->input('mode') == 'id' ) {
+            $users = $this->loadCSV('id_users');
+        } else {
+            $users = [];
+        }
 
-        return $this->request->all();
+        
 
-        // if ( $this->request->input('mode') == 'id' ) {
-        //     $user = $this->loadCSV('id_users');
-        // } else {
-        //     $user = [];
-        // }
+        foreach ( $users as $user ) {
+            if ( $user['org_id'] == $newUser->org_id ) {
+                if ( $user['pln'] != null ) {
+                    $newUser->pln = $user['pln'];
+                    $newUser->save();
+                }
+
+                if ( $user['division_id'] != null && $user['role_id'] != null ) {
+                    $auth = \App\Authorize::insert([
+                        'role_id' => $user['role_id'],
+                        'division_id' => $user['division_id'],
+                    ]);
+                    $newUser->authorizes()->attach($auth);
+                }
+
+                if ( $this->request->input('mode') == 'email' ) {
+                    auth()->login($newUser);
+                    return ['href' => '/authenticated'];                    
+                }
+            }
+        }
+        return ['href' => 'login'];
     }
 }

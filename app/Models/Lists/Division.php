@@ -34,5 +34,4 @@ class Division extends Model implements AutoId, ListItem
     {
         return ['name', 'name_eng'];
     }
-    
 }

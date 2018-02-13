@@ -23,9 +23,4 @@ class Role extends Model implements AutoId, ListItem
         'name',
         'name_short',
     ];
-
-    public function users()
-    {
-        return $this->belongsToMany('\App\User');
-    }
 }

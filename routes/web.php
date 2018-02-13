@@ -25,7 +25,15 @@ Route::post('/register', 'Auth\RegisterController@register');
 
 // login
 Route::get('/login', ['as' => 'login', 'uses' => 'Auth\LoginController@showLoginForm']);
-Route::post('/login', 'Auth\LoginController@authenticate');
+Route::post('/login', 'Auth\LoginController@login');
+Route::get('/logout', ['as' => 'logout', 'uses' => 'Auth\LoginController@logout']);
+
+//
+Route::get('/authenticated', 'UserController@authenticated');
+
+Route::get('/auth', function () {
+    return auth()->user() === null ? 'no user' : auth()->user();
+});
 
 //\\ *** dev route start here *** //\\
 Route::get('draft/{group}/{page}', function ($group, $page) {

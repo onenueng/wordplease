@@ -6,6 +6,7 @@ window.EventBus = new Vue()
 Vue.component('register-by-id', require('../components/auth/RegisterById.vue'))
 Vue.component('register-page', require('../components/auth/RegisterPage.vue'))
 Vue.component('input-state', require('../components/inputs/InputState.vue'))
+Vue.component('alert', require('../components/Alert.vue'))
 Vue.component('button-app', require('../components/ButtonApp.vue'))
 
 window.app = new Vue({

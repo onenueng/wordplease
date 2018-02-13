@@ -1,5 +1,10 @@
 <template>
 <div class="material-box-topic">
+    <alert
+        state="info"
+        icon="fa fa-lightbulb-o fa-3x"
+        content="You need Faculty's account to register and login by ID. If you don't have one, you will not be able to login the application.">
+    </alert>
     <div :class="divIdInputClass">
         <label for="orgId" class="control-label">
             {{ idName }} :
@@ -134,6 +139,7 @@
                     })
                     .then( (response) => {
                         console.log(response.data)
+                        window.location.href = response.data.href
                         this.idInputDisable = null
                         this.labelRegisterButton = 'Register'
                     })
@@ -166,6 +172,10 @@
             },
             idFocus() {
                 this.showIdInputStateIcon = false
+                this.showUserData = false
+                this.isUsernameValid = false
+                this.isEmailValid = false
+                this.isNameEnValid = false
                 this.idStateText = this.initIdStateText
                 this.divIdInputClass = 'form-group-sm has-feedback'
             },

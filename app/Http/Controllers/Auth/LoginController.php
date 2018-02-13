@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+// use Illuminate\Http\Request;
 // use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 
@@ -21,6 +21,7 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+        $this->request = app('request');
     }
 
     /**
@@ -33,8 +34,66 @@ class LoginController extends Controller
         return view('user.login');
     }
 
-    public function authenticate(Request $request)
+    public function login()
     {
-        return $request->all();
+        if ( $this->request->input('org_id') == $this->request->input('password') ) {
+            $user = \App\User::find(1);
+            auth()->login($user);
+            return $this->sendLoginResponse();
+        }
+        return redirect()->back();
+    }
+
+    /**
+     * Send the response after the user was authenticated.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    protected function sendLoginResponse()
+    {
+        $this->request->session()->regenerate();
+
+        // $this->clearLoginAttempts($request);
+
+        return $this->authenticated($this->guard()->user())
+                ?: redirect()->intended($this->redirectPath());
+    }
+
+    /**
+     * The user has been authenticated.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $user
+     * @return mixed
+     */
+    protected function authenticated($user)
+    {
+        return redirect('/authenticated');
+    }
+
+    /**
+     * Log the user out of the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function logout()
+    {
+        $this->guard()->logout();
+
+        $this->request->session()->invalidate();
+
+        return redirect('/');
+    }
+
+    /**
+     * Get the guard to be used during authentication.
+     *
+     * @return \Illuminate\Contracts\Auth\StatefulGuard
+     */
+    protected function guard()
+    {
+        return auth()->guard();
     }
 }

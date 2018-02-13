@@ -11624,6 +11624,15 @@ div.form-group-sm label.checkbox-inline input {
           transform: translate(-50%, -50%);
 }
 
+.vertical-centered {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
 /* Hover effect Bounce To Bottom */
 
 .hvr-bounce-to-bottom {

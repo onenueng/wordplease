@@ -31,6 +31,14 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
+
+        // Schema::create('user_division_role', function (Blueprint $table) {
+        //     $table->increments('id');
+        //     $table->integer('user_id')->usigned();
+        //     $table->smallInteger('role_id')->unsigned();
+        //     $table->smallInteger('division_id')->unsigned();
+        //     $table->primary(['user_id', 'division_id','role_id']);
+        // });
     }
 
     /**
@@ -41,5 +49,6 @@ class CreateUsersTable extends Migration
     public function down()
     {
         Schema::dropIfExists('users');
+        // Schema::dropIfExists('user_division_role');
     }
 }

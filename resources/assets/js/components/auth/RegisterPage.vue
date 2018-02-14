@@ -25,18 +25,16 @@
                     </div>
                 </div>
                 <hr class="line">
-                <transition name="slide-fade">
-                    <div v-if="showRegisterById">
-                        <register-by-id
-                            :id-name="idName"
-                            :pattern="pattern">
-                        </register-by-id>
-                    </div>
-                </transition>
-                
-                <transition name="slide-fade">
-                    <div v-if="showRegisterByEmail"><h1>Hello Id</h1></div>
-                </transition>
+                <div v-if="showRegisterById">
+                    <register-by-id
+                        :id-name="idName"
+                        :pattern="pattern">
+                    </register-by-id>
+                </div>
+
+                <div v-if="showRegisterByEmail">
+                    <register-by-email></register-by-email>
+                </div>
             </div>
         </div>
     </div>
@@ -67,8 +65,8 @@
                     this.showRegisterById = true
                     this.showRegisterByEmail = false
                 } else {
-                    this.showRegisterByEmail = true
                     this.showRegisterById = false
+                    this.showRegisterByEmail = true
                 }
             },
         }

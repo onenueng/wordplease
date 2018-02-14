@@ -68,14 +68,14 @@ class RegisterController extends Controller
     public function register()
     {
         $newUser = \App\User::insert($this->request->input('user'));
-        
+
         if ( $this->request->input('mode') == 'id' ) {
             $users = $this->loadCSV('id_users');
+        } elseif ($this->request->input('mode') == 'email' ) {
+            $users = $this->loadCSV('email_users');;
         } else {
             $users = [];
         }
-
-        
 
         foreach ( $users as $user ) {
             if ( $user['org_id'] == $newUser->org_id ) {
@@ -92,12 +92,19 @@ class RegisterController extends Controller
                     $newUser->authorizes()->attach($auth);
                 }
 
-                if ( $this->request->input('mode') == 'email' ) {
-                    auth()->login($newUser);
-                    return ['href' => '/authenticated'];                    
-                }
+                break;
+
             }
         }
+
+        if ( $this->request->input('mode') == 'email' ) {
+            $newUser->expiry_date = \Carbon\Carbon::now()->addDays(config('constant.EMAIL_ACCOUNT_DEFAULT_LIFETIME'));
+            $newUser->last_seen = \Carbon\Carbon::now();
+            $newUser->save();
+            auth()->login($newUser, false);
+            return ['href' => 'authenticated'];
+        }
+
         return ['href' => 'login'];
     }
 }

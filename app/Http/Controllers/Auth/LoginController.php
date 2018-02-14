@@ -36,12 +36,25 @@ class LoginController extends Controller
 
     public function login()
     {
-        if ( $this->request->input('org_id') == $this->request->input('password') ) {
-            $user = \App\User::find(1);
+        if ( filter_var($this->request->input('org_id'), FILTER_VALIDATE_EMAIL) ) {
+            // mannual auth
+            return $this->attempLogin();
+            // $user = $this->attempLogin();
+        } else {
+            // api auth
+            $user = null;
+        }
+
+        if ( $user ) {
             auth()->login($user);
             return $this->sendLoginResponse();
         }
-        return redirect()->back();
+        return redirect()->back()->with('error', 'error');
+    }
+
+    public function attempLogin()
+    {
+        return \App\User::findByUniqueField('org_id', $this->request->input('org_id'));
     }
 
     /**
@@ -69,7 +82,7 @@ class LoginController extends Controller
      */
     protected function authenticated($user)
     {
-        return redirect('/authenticated');
+        return redirect('authenticated');
     }
 
     /**

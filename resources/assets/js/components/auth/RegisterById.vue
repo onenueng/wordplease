@@ -15,6 +15,7 @@
             class="form-control"
             @input="idUpdate()"
             @focus="idFocus()"
+            @blur="idUpdate()"
             v-model="userInput"
             :disabled="idInputDisable"
             autocomplete="off" />
@@ -28,7 +29,7 @@
     <transition name="slide-fade">
         <div v-if="showUserData">
             <div class="form-group-sm">
-                <label class="control-label">Name :</label>
+                <label class="control-label">Full Name :</label>
                 <input type="text" class="form-control" v-model="userData.name" readonly />
             </div>
             <div class="form-group-sm">
@@ -62,7 +63,8 @@
             </input-state>
             <input-state
                 field="name_en"
-                label="Name in English :"
+                label="Full Name in English :"
+                pattern="[a-zA-Z]"
                 :input-value.sync="userData.name_en"
                 :is-valid.sync="isNameEnValid"
                 :input-disable="idInputDisable">
@@ -134,7 +136,7 @@
                             email: this.userData.email,
                             org_id: this.userData.org_id,
                             full_name: this.userData.name,
-                            full_name_eng: this.userData.name_en
+                            full_name_en: this.userData.name_en
                         }
                     })
                     .then( (response) => {

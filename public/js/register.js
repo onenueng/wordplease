@@ -1,4 +1,4 @@
-webpackJsonp([3],{
+webpackJsonp([2],{
 
 /***/ 0:
 /***/ (function(module, exports) {
@@ -126,11 +126,12 @@ module.exports = __webpack_require__(133);
 // in case of need to use global event bus
 window.EventBus = new Vue();
 
+Vue.component('register-by-email', __webpack_require__(161));
 Vue.component('register-by-id', __webpack_require__(134));
 Vue.component('register-page', __webpack_require__(137));
 Vue.component('input-state', __webpack_require__(140));
-Vue.component('alert', __webpack_require__(156));
 Vue.component('button-app', __webpack_require__(26));
+Vue.component('alert', __webpack_require__(143));
 
 window.app = new Vue({
     el: '#app',
@@ -167,7 +168,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/auth/RegisterById.vue"
+Component.options.__file = "resources\\assets\\js\\components\\auth\\RegisterById.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */
@@ -196,6 +197,8 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
 //
 //
 //
@@ -335,7 +338,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         email: _this.userData.email,
                         org_id: _this.userData.org_id,
                         full_name: _this.userData.name,
-                        full_name_eng: _this.userData.name_en
+                        full_name_en: _this.userData.name_en
                     }
                 }).then(function (response) {
                     console.log(response.data);
@@ -429,7 +432,7 @@ var render = function() {
       _vm._v(" "),
       _c("div", { class: _vm.divIdInputClass }, [
         _c("label", { staticClass: "control-label", attrs: { for: "orgId" } }, [
-          _vm._v("\n            " + _vm._s(_vm.idName) + " :\n        ")
+          _vm._v("\r\n            " + _vm._s(_vm.idName) + " :\r\n        ")
         ]),
         _vm._v(" "),
         _c("input", {
@@ -463,6 +466,9 @@ var render = function() {
             ],
             focus: function($event) {
               _vm.idFocus()
+            },
+            blur: function($event) {
+              _vm.idUpdate()
             }
           }
         }),
@@ -492,7 +498,7 @@ var render = function() {
               [
                 _c("div", { staticClass: "form-group-sm" }, [
                   _c("label", { staticClass: "control-label" }, [
-                    _vm._v("Name :")
+                    _vm._v("Full Name :")
                   ]),
                   _vm._v(" "),
                   _c("input", {
@@ -636,7 +642,8 @@ var render = function() {
                 _c("input-state", {
                   attrs: {
                     field: "name_en",
-                    label: "Name in English :",
+                    label: "Full Name in English :",
+                    pattern: "[a-zA-Z]",
                     "input-value": _vm.userData.name_en,
                     "is-valid": _vm.isNameEnValid,
                     "input-disable": _vm.idInputDisable
@@ -718,7 +725,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/auth/RegisterPage.vue"
+Component.options.__file = "resources\\assets\\js\\components\\auth\\RegisterPage.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */
@@ -789,8 +796,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: {
@@ -817,8 +822,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 this.showRegisterById = true;
                 this.showRegisterByEmail = false;
             } else {
-                this.showRegisterByEmail = true;
                 this.showRegisterById = false;
+                this.showRegisterByEmail = true;
             }
         }
     }
@@ -882,27 +887,22 @@ var render = function() {
           _vm._v(" "),
           _c("hr", { staticClass: "line" }),
           _vm._v(" "),
-          _c("transition", { attrs: { name: "slide-fade" } }, [
-            _vm.showRegisterById
-              ? _c(
-                  "div",
-                  [
-                    _c("register-by-id", {
-                      attrs: { "id-name": _vm.idName, pattern: _vm.pattern }
-                    })
-                  ],
-                  1
-                )
-              : _vm._e()
-          ]),
+          _vm.showRegisterById
+            ? _c(
+                "div",
+                [
+                  _c("register-by-id", {
+                    attrs: { "id-name": _vm.idName, pattern: _vm.pattern }
+                  })
+                ],
+                1
+              )
+            : _vm._e(),
           _vm._v(" "),
-          _c("transition", { attrs: { name: "slide-fade" } }, [
-            _vm.showRegisterByEmail
-              ? _c("div", [_c("h1", [_vm._v("Hello Id")])])
-              : _vm._e()
-          ])
-        ],
-        1
+          _vm.showRegisterByEmail
+            ? _c("div", [_c("register-by-email")], 1)
+            : _vm._e()
+        ]
       )
     ])
   ])
@@ -981,7 +981,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/inputs/InputState.vue"
+Component.options.__file = "resources\\assets\\js\\components\\inputs\\InputState.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */
@@ -1239,19 +1239,19 @@ if (false) {
 
 /***/ }),
 
-/***/ 156:
+/***/ 143:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(159)
+  __webpack_require__(144)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(157)
+var __vue_script__ = __webpack_require__(146)
 /* template */
-var __vue_template__ = __webpack_require__(158)
+var __vue_template__ = __webpack_require__(147)
 /* template functional */
   var __vue_template_functional__ = false
 /* styles */
@@ -1268,7 +1268,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/Alert.vue"
+Component.options.__file = "resources\\assets\\js\\components\\Alert.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */
@@ -1292,7 +1292,49 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 157:
+/***/ 144:
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(145);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(3)("18f5c9f4", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-28247e44\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./Alert.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-28247e44\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./Alert.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+
+/***/ 145:
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ 146:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1332,13 +1374,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     mounted: function mounted() {
         this.alertState = this.alertState + ' animated lightSpeedIn';
-        console.log('alert mounted');
     }
 });
 
 /***/ }),
 
-/***/ 158:
+/***/ 147:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -1374,45 +1415,416 @@ if (false) {
 
 /***/ }),
 
-/***/ 159:
+/***/ 161:
 /***/ (function(module, exports, __webpack_require__) {
 
-// style-loader: Adds some css to the DOM by adding a <style> tag
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(162)
+/* template */
+var __vue_template__ = __webpack_require__(163)
+/* template functional */
+  var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\auth\\RegisterByEmail.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
-// load the styles
-var content = __webpack_require__(160);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(3)("18f5c9f4", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-28247e44\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./Alert.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-28247e44\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./Alert.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-4be54cfa", Component.options)
+  } else {
+    hotAPI.reload("data-v-4be54cfa", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
 
 /***/ }),
 
-/***/ 160:
+/***/ 162:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            email: "",
+            isEmailValid: false,
+            username: "",
+            isUsernameValid: false,
+            full_name: "",
+            isFullNameValid: false,
+            full_name_en: "",
+            isFullNameEnValid: false,
+            password: "",
+            re_password: "",
+            passwordHelpText: null,
+            passwordDivClass: 'form-group-sm has-feedback',
+            passwordIconClass: 'form-control-feedback',
+            labelRegisterButton: "Register",
+            idInputDisable: null
+        };
+    },
+    mounted: function mounted() {
+        var _this = this;
+
+        EventBus.$on('email-register-click', function () {
+            _this.idInputDisable = '';
+            _this.labelRegisterButton = 'Registering <i class="fa fa-circle-o-notch fa-spin"></i>';
+            if (_this.allDataValid) {
+                axios.post('/register', {
+                    mode: "email",
+                    user: {
+                        name: _this.username,
+                        email: _this.email,
+                        org_id: _this.email,
+                        password: _this.password,
+                        full_name: _this.full_name,
+                        full_name_en: _this.full_name_en
+                    }
+                }).then(function (response) {
+                    console.log(response.data);
+                    window.location.href = response.data.href;
+                    _this.idInputDisable = null;
+                    _this.labelRegisterButton = 'Register';
+                }).catch(function (error) {
+                    console.log(error);
+                    _this.idInputDisable = null;
+                    _this.labelRegisterButton = 'Register';
+                });
+            }
+        });
+
+        this.repasswordUpdated = _.debounce(function () {
+            _this.checkPasswordMatched();
+        }, 800);
+    },
+
+    methods: {
+        checkPasswordMatched: function checkPasswordMatched() {
+            this.passwordHelpText = null;
+            if (this.password == '' || this.re_password == '') {
+                this.passwordDivClass = 'form-group-sm has-feedback';
+                this.passwordIconClass = 'form-control-feedback';
+            } else if (this.password == this.re_password) {
+                this.passwordDivClass = 'form-group-sm has-success has-feedback';
+                this.passwordIconClass = 'fa fa-check form-control-feedback';
+            } else {
+                this.passwordDivClass = 'form-group-sm has-error has-feedback';
+                this.passwordIconClass = 'fa fa-remove form-control-feedback';
+                this.passwordHelpText = 'password and password again not matched';
+            }
+        }
+    },
+    computed: {
+        allDataValid: function allDataValid() {
+            return this.isEmailValid && this.isUsernameValid && this.isFullNameValid && this.isFullNameEnValid && this.re_password != '' && this.password == this.re_password;
+        }
+    }
+});
+
+/***/ }),
+
+/***/ 163:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(2)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
-
-// exports
-
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "material-box-topic" },
+    [
+      _c("alert", {
+        attrs: {
+          state: "info",
+          icon: "fa fa-lightbulb-o fa-3x",
+          content:
+            "The email register account is valid for a short period only, you will need Faculty's account to continue using this application."
+        }
+      }),
+      _vm._v(" "),
+      _c("input-state", {
+        attrs: {
+          field: "email",
+          "service-url": "/register/is-data-available",
+          label: "Email :",
+          pattern: "email",
+          "input-value": _vm.email,
+          "is-valid": _vm.isEmailValid,
+          "input-disable": _vm.idInputDisable
+        },
+        on: {
+          "update:inputValue": function($event) {
+            _vm.email = $event
+          },
+          "update:isValid": function($event) {
+            _vm.isEmailValid = $event
+          }
+        }
+      }),
+      _vm._v(" "),
+      _c("input-state", {
+        attrs: {
+          field: "username",
+          "service-url": "/register/is-data-available",
+          label: "Username :",
+          pattern: "^\\w+$",
+          "init-help-text": "This nickname will display in the app.",
+          "input-value": _vm.username,
+          "is-valid": _vm.isUsernameValid,
+          "input-disable": _vm.idInputDisable
+        },
+        on: {
+          "update:inputValue": function($event) {
+            _vm.username = $event
+          },
+          "update:isValid": function($event) {
+            _vm.isUsernameValid = $event
+          }
+        }
+      }),
+      _vm._v(" "),
+      _c("div", { class: _vm.passwordDivClass }, [
+        _c("label", { staticClass: "control-label" }, [_vm._v("Password :")]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.password,
+              expression: "password"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: { type: "password" },
+          domProps: { value: _vm.password },
+          on: {
+            input: [
+              function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.password = $event.target.value
+              },
+              function($event) {
+                _vm.repasswordUpdated()
+              }
+            ]
+          }
+        }),
+        _vm._v(" "),
+        _c("span", { class: _vm.passwordIconClass }),
+        _vm._v(" "),
+        _c("span", { staticClass: "help-block" }, [
+          _c("i", [_vm._v(_vm._s(_vm.passwordHelpText))])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { class: _vm.passwordDivClass }, [
+        _c("label", { staticClass: "control-label" }, [
+          _vm._v("Password again :")
+        ]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.re_password,
+              expression: "re_password"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: { type: "password" },
+          domProps: { value: _vm.re_password },
+          on: {
+            input: [
+              function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.re_password = $event.target.value
+              },
+              function($event) {
+                _vm.repasswordUpdated()
+              }
+            ]
+          }
+        }),
+        _vm._v(" "),
+        _c("span", { class: _vm.passwordIconClass }),
+        _vm._v(" "),
+        _c("span", { staticClass: "help-block" }, [
+          _c("i", [_vm._v(_vm._s(_vm.passwordHelpText))])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("input-state", {
+        attrs: {
+          field: "full_name",
+          label: "Full Name in Thai :",
+          pattern: "[\\u0e00-\\u0e7e]",
+          "input-value": _vm.full_name,
+          "is-valid": _vm.isFullNameValid,
+          "input-disable": _vm.idInputDisable
+        },
+        on: {
+          "update:inputValue": function($event) {
+            _vm.full_name = $event
+          },
+          "update:isValid": function($event) {
+            _vm.isFullNameValid = $event
+          }
+        }
+      }),
+      _vm._v(" "),
+      _c("input-state", {
+        attrs: {
+          field: "full_name_en",
+          label: "Full Name in English :",
+          pattern: "[a-zA-Z]",
+          "input-value": _vm.full_name_en,
+          "is-valid": _vm.isFullNameEnValid,
+          "input-disable": _vm.idInputDisable
+        },
+        on: {
+          "update:inputValue": function($event) {
+            _vm.full_name_en = $event
+          },
+          "update:isValid": function($event) {
+            _vm.isFullNameEnValid = $event
+          }
+        }
+      }),
+      _vm._v(" "),
+      _c("transition", { attrs: { name: "slide-fade" } }, [
+        _vm.allDataValid
+          ? _c(
+              "div",
+              { staticClass: "form-group-sm" },
+              [
+                _c("button-app", {
+                  attrs: {
+                    size: "lg",
+                    label: _vm.labelRegisterButton,
+                    action: "email-register-click",
+                    status: "info"
+                  }
+                })
+              ],
+              1
+            )
+          : _vm._e()
+      ])
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-4be54cfa", module.exports)
+  }
+}
 
 /***/ }),
 
@@ -1562,7 +1974,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/ButtonApp.vue"
+Component.options.__file = "resources\\assets\\js\\components\\ButtonApp.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */

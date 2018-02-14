@@ -34,6 +34,6 @@ trait DataCryptable
      */
     public function miniHash($value)
     {
-        return substr(hash_hmac("sha256", $value, config('app.key')), 13, 7);
+        return substr(hash_hmac("sha256", $value, config('app.key')), config('constant.MINI_HASH_START_AT'), config('constant.MINI_HASH_LENGTH'));
     }
 }

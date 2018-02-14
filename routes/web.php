@@ -29,7 +29,8 @@ Route::post('/login', 'Auth\LoginController@login');
 Route::get('/logout', ['as' => 'logout', 'uses' => 'Auth\LoginController@logout']);
 
 //
-Route::get('/authenticated', 'UserController@authenticated');
+// Route::get('/authenticated', 'UserController@authenticated');
+Route::get('/authenticated', ['as' => 'authenticated', 'uses' => 'UserController@authenticated']);
 
 Route::get('/auth', function () {
     return auth()->user() === null ? 'no user' : auth()->user();

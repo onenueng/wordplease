@@ -2,7 +2,7 @@
     <div :class="alertState" role="alert" id="xxx">
         <div class="row vertical-centered">
             <div class="col-xs-2 text-center">
-                <i :class="icon"></i> 
+                <i :class="icon"></i>
             </div>
             <div class="col-xs-10" v-html="content">
             </div>
@@ -33,11 +33,10 @@
         },
         mounted() {
             this.alertState = this.alertState + ' animated lightSpeedIn'
-            console.log('alert mounted')
         }
     }
 </script>
 
 <style>
-    
+
 </style>

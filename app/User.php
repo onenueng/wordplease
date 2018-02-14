@@ -6,10 +6,11 @@ use App\Contracts\AutoId;
 use App\Traits\AutoIdInsertable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Traits\DataCryptable;
 
 class User extends Authenticatable implements AutoId
 {
-    use Notifiable, AutoIdInsertable;
+    use Notifiable, AutoIdInsertable, DataCryptable;
 
     /**
      * The attributes that are mass assignable.
@@ -22,12 +23,9 @@ class User extends Authenticatable implements AutoId
         'name',
         'email',
         'org_id',
-        // 'gender',
-        // 'role_id',
         'password',
         'full_name',
-        // 'division_id',
-        'full_name_eng',
+        'full_name_en',
     ];
 
     /**
@@ -39,8 +37,147 @@ class User extends Authenticatable implements AutoId
         'password',
     ];
 
+    /**
+     * Set field 'name'.
+     *
+     * @param string $value
+     */
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = $this->encryptField($value);
+    }
+    /**
+     * Get field 'name'.
+     *
+     * @return string
+     */
+    public function getNameAttribute()
+    {
+        return $this->decryptField($this->attributes['name']);
+    }
+
+    /**
+     * Set field 'org_id'.
+     *
+     * @param string $value
+     */
+    public function setOrgIdAttribute($value)
+    {
+        $this->attributes['org_id'] = $this->encryptField($value);
+        $this->attributes['mini_hash'] = $this->miniHash($value);
+    }
+    /**
+     * Get field 'org_id'.
+     *
+     * @return string
+     */
+    public function getOrgIdAttribute()
+    {
+        return $this->decryptField($this->attributes['org_id']);
+    }
+
+    /**
+     * Set field 'password'.
+     *
+     * @param string $value
+     */
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = $value == null ? null : bcrypt($value);
+    }
+
+    /**
+     * Set field 'email'.
+     *
+     * @param string $value
+     */
+    public function setEmailAttribute($value)
+    {
+        $this->attributes['email'] = $this->encryptField($value);
+        $this->genVerifyCode();
+    }
+    /**
+     * Get field 'email'.
+     *
+     * @return string
+     */
+    public function getEmailAttribute()
+    {
+        return $this->decryptField($this->attributes['email']);
+    }
+
+    /**
+     * Set field 'full_name'.
+     *
+     * @param string $value
+     */
+    public function setFullNameAttribute($value)
+    {
+        $this->attributes['full_name'] = $this->encryptField($value);
+    }
+    /**
+     * Get field 'full_name'.
+     *
+     * @return string
+     */
+    public function getFullNameAttribute()
+    {
+        return $this->decryptField($this->attributes['full_name']);
+    }
+
+    /**
+     * Set field 'full_name_en'.
+     *
+     * @param string $value
+     */
+    public function setFullNameEnAttribute($value)
+    {
+        $this->attributes['full_name_en'] = $this->encryptField($value);
+    }
+    /**
+     * Get field 'full_name_en'.
+     *
+     * @return string
+     */
+    public function getFullNameEnAttribute()
+    {
+        return $this->decryptField($this->attributes['full_name_en']);
+    }
+
+    /**
+     * Generate multi digits code for verification.
+     *
+     * @return String
+     */
+    public function genVerifyCode()
+    {
+        $max = str_pad('', config('constant.VERIFY_CODE_LENGTH'), '9');
+        // return str_pad(mt_rand(1, $max), config('constant.VERIFY_CODE_LENGTH'), '0', STR_PAD_LEFT);
+        $this->attributes['verify_code'] = str_pad(mt_rand(1, $max), config('constant.VERIFY_CODE_LENGTH'), '0', STR_PAD_LEFT);
+    }
+
     public function authorizes()
     {
         return $this->belongsToMany('\App\Authorize');
+    }
+
+    public static function findByUniqueField($field, $value)
+    {
+        if ( $field == 'org_id' ) {
+            $users = static::where('mini_hash', (new static)->miniHash($value))->get();
+            if ( count($users) == 1 ) {
+                return $users[0];
+            }
+        } else {
+            $users = static::all();
+        }
+
+        foreach ($users as $user ) {
+            if ( $user->$field == $value ) {
+                return $user;
+            }
+        }
+
+        return null;
     }
 }

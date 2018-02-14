@@ -161,6 +161,12 @@ class User extends Authenticatable implements AutoId
         return $this->belongsToMany('\App\Authorize');
     }
 
+    // public function attempLogin($password)
+    // {
+    //     $hash = app('db')->table('users')->select('password')->where('id', $this->id)->first()->password;
+    //     return password_verify( $password, $hash );
+    // }
+
     public static function findByUniqueField($field, $value)
     {
         if ( $field == 'org_id' ) {

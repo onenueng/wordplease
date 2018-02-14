@@ -38,8 +38,8 @@ class LoginController extends Controller
     {
         if ( filter_var($this->request->input('org_id'), FILTER_VALIDATE_EMAIL) ) {
             // mannual auth
-            return $this->attempLogin();
-            // $user = $this->attempLogin();
+            // return $this->attempLogin();
+            $user = $this->attempLogin();
         } else {
             // api auth
             $user = null;
@@ -54,7 +54,13 @@ class LoginController extends Controller
 
     public function attempLogin()
     {
-        return \App\User::findByUniqueField('org_id', $this->request->input('org_id'));
+        $user = \App\User::findByUniqueField('org_id', $this->request->input('org_id'));
+
+        // $db = new \Illuminate\Database\DatabaseManager;
+        
+        $hash = app('db')->table('users')->select('password')->where('id', $user->id)->first()->password;
+
+        return password_verify( $this->request->input('password'), $hash ) ? $user : null;
     }
 
     /**

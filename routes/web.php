@@ -131,8 +131,8 @@ Route::get('/get-creatable-notes/{an}', function ($an) {
     ];
 });
 
-Route::get('/test-psp', function (App\Contracts\PatientDataAPI $api) {
-    return $api->getPatient(53071658);
+Route::get('/admit/{an}', function (App\Contracts\PatientDataAPI $api, $an) {
+    return $api->getAdmission($an);
 });
 
 Route::get('/test-pse', function (App\Contracts\UserAPI $api) {

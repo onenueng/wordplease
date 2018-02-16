@@ -3,13 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-// use Illuminate\Http\Request;
-// use Illuminate\Foundation\Auth\AuthenticatesUsers;
-
 
 class LoginController extends Controller
 {
-    // use AuthenticatesUsers;
 
     protected $request;
 
@@ -34,30 +30,37 @@ class LoginController extends Controller
         return view('user.login');
     }
 
-    public function login(\App\Contracts\UserAPI $api)
+    public function login()
     {
-        if ( filter_var($this->request->input('org_id'), FILTER_VALIDATE_EMAIL) ) {
-            // mannual auth
-            $user = $this->attempLogin();
-        } else {
-            // api auth not implement yet
-            return $api->authenticate($this->request->only(['org_id', 'password']));
-        }
-
+        $user = $this->attemptLogin();
         if ( $user ) {
             auth()->login($user);
             return $this->sendLoginResponse();
         }
-        return redirect()->back()->with('error', 'error');
+
+        // *** IMPLEMENT ThrottlesLogins ***
+        return redirect()->back()->with('error', 'credential not matched');
     }
 
-    public function attempLogin()
+    protected function attemptLogin()
     {
-        $user = \App\User::findByUniqueField('org_id', $this->request->input('org_id'));
+        $user = \App\User::findByUniqueField('org_id', $this->request->org_id);
+        if ( $user == null ) {
+            return null;
+        }
 
-        $hash = app('db')->table('users')->select('password')->where('id', $user->id)->first()->password;
-
-        return password_verify( $this->request->input('password'), $hash ) ? $user : null;
+        if (filter_var($this->request->org_id, FILTER_VALIDATE_EMAIL)) {
+            // auth via app
+            $hash = app('db')->table('users')->select('password')->where('id', $user->id)->first()->password;
+            return password_verify($this->request->password, $hash) ? $user : null;
+        } else {
+            // auth via api
+            $response = app('App\Contracts\UserAPI')->authenticate($this->request->only(['org_id', 'password']));
+            if ( $response['reply_code'] != 0 ) {
+                return null;
+            }
+            return $user;
+        }
     }
 
     /**
@@ -85,7 +88,21 @@ class LoginController extends Controller
      */
     protected function authenticated($user)
     {
-        return redirect('authenticated');
+        // return redirect('authenticated');
+    }
+
+    /**
+     * Get the post register / login redirect path.
+     *
+     * @return string
+     */
+    public function redirectPath()
+    {
+        if (method_exists($this, 'redirectTo')) {
+            return $this->redirectTo();
+        }
+
+        return property_exists($this, 'redirectTo') ? $this->redirectTo : '/home';
     }
 
     /**

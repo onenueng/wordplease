@@ -37,6 +37,11 @@ class User extends Authenticatable implements AutoId
         'password',
     ];
 
+    protected $dates = [
+        'expiry_date',
+        'last_seen'
+    ];
+
     /**
      * Set field 'name'.
      *
@@ -161,11 +166,10 @@ class User extends Authenticatable implements AutoId
         return $this->belongsToMany('\App\Authorize');
     }
 
-    // public function attempLogin($password)
-    // {
-    //     $hash = app('db')->table('users')->select('password')->where('id', $this->id)->first()->password;
-    //     return password_verify( $password, $hash );
-    // }
+    public function seen()
+    {
+        $this->last_seen = \Carbon\Carbon::now();
+    }
 
     public static function findByUniqueField($field, $value)
     {

@@ -2,24 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+// use Illuminate\Http\Request;
 // use Illuminate\Support\Facades\Auth;
 
-class UserController extends Controller
+class NoteController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Return input select choices by field_name.
      *
      * @param  String  $fieldName
      * @return \Illuminate\Http\Response
      */
-    public function authenticated()
+    public function index()
     {
-        return auth()->user();
+        return 'notes';
     }
 
-    public function profile()
+    public function audit()
     {
-        return 'profile';
+        return 'audit';
     }
 }

@@ -3,15 +3,14 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Contracts\UserAPI;
-use Illuminate\Http\Request;
-use App\Traits\DataImportable;
 use App\Http\Controllers\Controller;
+use App\Traits\Authorizable;
+use App\Traits\DataImportable;
+use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
-    use DataImportable;
-
-    protected $request;
+    use DataImportable, Authorizable;
 
     /**
      * Create a new controller instance.
@@ -21,8 +20,6 @@ class RegisterController extends Controller
     public function __construct()
     {
         $this->middleware('guest');
-
-        $this->request = app('request');
     }
 
     public function showRegisterForm()
@@ -30,11 +27,11 @@ class RegisterController extends Controller
         return view('user.register');
     }
 
-    public function getUser(Request $request, UserAPI $api)
+    public function getUser(UserAPI $api)
     {
-        // check user in list
         // check user on table
-        $data = $api->getUser($request->input('org_id'));
+        // *** IMPLEMENT ThrottlesLogins ***
+        $data = $api->getUser(app('request')->org_id);
         switch ($data['reply_code']) {
             case 0:
                 $data['state'] = 'success';
@@ -53,58 +50,66 @@ class RegisterController extends Controller
         return $data;
     }
 
-    public function isDataAvailable(Request $request)
+    public function isDataAvailable()
     {
-        return ['reply_text' => 'OK', 'state' => 'success'];
-        $user = User::where($request->input('field'), $request->input('value'))->first();
+        $request = app('request');
+
+        if ( $request->field == 'username' ) {
+            $request->field = 'name';
+        }
+
+        $user = \App\User::findByUniqueField($request->field, $request->value);
 
         if ( $user == null ) {
             return ['reply_text' => 'OK', 'state' => 'success'];
         }
 
-        return ['reply_text' => 'Sorry this ' . $request->input('field') . ' is already taken.', 'state' => 'warning'];
+        return ['reply_text' => 'Sorry this ' . $request->field . ' is already taken.', 'state' => 'warning'];
     }
 
+    /*
+     * For email registering, they can set the password but can use in a short period.
+     * For id registering, they need organization's account for login to the app.
+     * All account need an authorization before they can actually use the app.
+     * Authorization can perform by pre-made .csv file and by the Admin.
+     */
     public function register()
     {
-        $newUser = \App\User::insert($this->request->input('user'));
+        $request = app('request');
 
-        if ( $this->request->input('mode') == 'id' ) {
+        $newUser = \App\User::insert($request->user); // register all request
+
+        // try to load pre-made authorization form .csv file
+        if ( $request->mode == 'id' ) {
             $users = $this->loadCSV('id_users');
-        } elseif ($this->request->input('mode') == 'email' ) {
+        } elseif ($request->mode == 'email' ) {
             $users = $this->loadCSV('email_users');;
         } else {
             $users = [];
         }
 
+        // try to authorize new user
         foreach ( $users as $user ) {
             if ( $user['org_id'] == $newUser->org_id ) {
                 if ( $user['pln'] != null ) {
                     $newUser->pln = $user['pln'];
                     $newUser->save();
                 }
-
-                if ( $user['division_id'] != null && $user['role_id'] != null ) {
-                    $auth = \App\Authorize::insert([
-                        'role_id' => $user['role_id'],
-                        'division_id' => $user['division_id'],
-                    ]);
-                    $newUser->authorizes()->attach($auth);
-                }
-
+                $user['user_id'] = $newUser->id;
+                $this->grantRoleDefaultPermissions($user);
                 break;
-
             }
         }
 
-        if ( $this->request->input('mode') == 'email' ) {
+        // email register has a password so, log them to the app.
+        if ( $request->mode == 'email' ) {
             $newUser->expiry_date = \Carbon\Carbon::now()->addDays(config('constant.EMAIL_ACCOUNT_DEFAULT_LIFETIME'));
-            $newUser->last_seen = \Carbon\Carbon::now();
-            $newUser->save();
+            $newUser->seen(); // also saved
             auth()->login($newUser, false);
             return ['href' => 'authenticated'];
         }
 
+        // id register need to authentication with organization's records
         return ['href' => 'login'];
     }
 }

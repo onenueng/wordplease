@@ -1,0 +1,9 @@
+id,name,name_short
+0,not assigned,no
+1,staff,staff
+2,fellow,fellow
+3,resident,resident
+4,MD,md
+51,coder,coder
+99,department admin,admin
+255,super admin,sa

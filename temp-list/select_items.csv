@@ -1,0 +1,134 @@
+field_name,value,label,order
+admit_reason,1,Curative,1
+admit_reason,2,Curative+Palliative,2
+admit_reason,3,Palliative only,3
+admit_reason,4,Investigation,4
+admit_reason,5,Rehabilitation,5
+comorbid_stroke_ischemic,0,no,1
+comorbid_stroke_ischemic,1,left hemiparesis,2
+comorbid_stroke_ischemic,2,right hemiparesis,3
+comorbid_stroke_ischemic,3,left hemiplegia,4
+comorbid_stroke_ischemic,4,right hemiplegia,5
+comorbid_stroke_hemorrhagic,0,no,1
+comorbid_stroke_hemorrhagic,1,left hemiparesis,2
+comorbid_stroke_hemorrhagic,2,right hemiparesis,3
+comorbid_stroke_hemorrhagic,3,left hemiplegia,4
+comorbid_stroke_hemorrhagic,4,right hemiplegia,5
+comorbid_stroke_Iembolic,0,no,1
+comorbid_stroke_Iembolic,1,left hemiparesis,2
+comorbid_stroke_Iembolic,2,right hemiparesis,3
+comorbid_stroke_Iembolic,3,left hemiplegia,4
+comorbid_stroke_Iembolic,4,right hemiplegia,5
+comorbid_CAD_specific,1,Old MI,1
+comorbid_CAD_specific,2,Unstable angina,2
+comorbid_CAD_specific,3,Stable angina,3
+comorbid_CKD_stage,1,I,1
+comorbid_CKD_stage,2,II,2
+comorbid_CKD_stage,3,III,3
+comorbid_CKD_stage,4,IV,4
+comorbid_CKD_stage,5,V,5
+comorbid_CKD_stage,6,"V, no dialysis",6
+comorbid_CKD_stage,7,"V, on HD",7
+comorbid_CKD_stage,8,"V, on PD",8
+comorbid_hyperlipidemia_specific,1,Hypercholesterolemia,1
+comorbid_hyperlipidemia_specific,2,Hypertriglyceridemia,2
+comorbid_hyperlipidemia_specific,3,Mixed-hyperlipidemia,3
+comorbid_epilepsy_specific,1,GTC,1
+comorbid_epilepsy_specific,2,Focal,2
+comorbid_epilepsy_specific,3,Complex partial seizure,3
+comorbid_epilepsy_specific,4,Unknown,4
+comorbid_lymphoma_specific,1,Hodgkin,1
+comorbid_lymphoma_specific,2,Non-Hodgkin - Diffuse large B cell,2
+comorbid_lymphoma_specific,3,Non-Hodgkin - Diffuse large T cell,3
+comorbid_lymphoma_specific,4,Non-Hodgkin - Follicular B cell,4
+comorbid_lymphoma_specific,5,Non-Hodgkin - Follicular T cell,5
+comorbid_lymphoma_specific,6,Non-Hodgkin - Burkitt High grade,6
+comorbid_lymphoma_specific,7,Non-Hodgkin - Burkitt Low grade,7
+comorbid_lymphoma_specific,8,Non-Hodgkin - Other High grade,8
+comorbid_lymphoma_specific,9,Non-Hodgkin - Other Low grade,9
+comorbid_lymphoma_specific,10,Intravascular,10
+CPG_special_group,1,None,1
+CPG_special_group,2,Sepsis,2
+CPG_special_group,3,Acute GI hemorrhage,3
+CPG_special_group,4,Acute MI,4
+CPG_special_group,5,AKI,5
+CPG_special_group,6,Stroke,6
+GCS_E,1,[1] No eye opening - ไม่ลืมตา,1
+GCS_E,2,[2] Eye open to pressure/pain,2
+GCS_E,3,[3] Eye open to sound,3
+GCS_E,4,[4] Spontaneous eye opening,4
+GCS_V,1,[1] Not response to pain - ไม่ส่งเสียง,1
+GCS_V,2,[2] Incomprehensible sounds ส่งเสียงไม่เป็นคำ,2
+GCS_V,3,[3] Inappropriate words พูดคำไม่มีความหมาย,3
+GCS_V,4,[4] Disoriented / confused สับสน,4
+GCS_V,5,[5] Oriented พูดรู้เรื่อง,5
+GCS_M,1,[1] Not response to pain - ไม่เคลื่อนไหว,1
+GCS_M,2,[2] Decerebrates,2
+GCS_M,3,[3] Decorticates,3
+GCS_M,4,[4] Semi-purposeful ตอบสนองต่อ pain ระบุตำแหน่งไม่ได้,4
+GCS_M,5,[5] Localizes pain ตอบสนองต่อ pain ระบุตำแหน่งได้,5
+GCS_M,6,[6] Obey ทำตามสั่งได้,6
+discharge_status,1,COMPLETE RECOVERY,1
+discharge_status,2,IMPROVED,2
+discharge_status,3,NOT IMPROVED,3
+discharge_status,4,DEAD AUTOPSY,4
+discharge_status,5,DEAD NO AUTOPSY,5
+discharge_type,1,WITH APPROVAL,1
+discharge_type,2,AGAINST ADVICE,2
+discharge_type,3,BY ESCAPE,3
+discharge_type,4,BY TRANSFER,4
+discharge_type,5,OTHER SPECIFY,5
+cataract,1,No,1
+cataract,2,senile,2
+cataract,3,mature,3
+cataract,4,pseudophakia,4
+cataract,5,complicated,5
+cataract,6,traumatic,6
+DC_status,1,COMPLETE RECOVERY,1
+DC_status,2,IMPROVED,2
+DC_status,3,NOT IMPROVED,3
+DC_status,4,DEAD AUTOPSY,4
+DC_status,5,DEAD NO AUTOPSY,5
+DC_type,1,WITH APPROVAL,1
+DC_type,2,AGAINST ADVICE,2
+DC_type,3,BY ESCAPE,3
+DC_type,4,BY TRANSFER,4
+DC_type,5,OTHER SPECIFY,5
+conjunctival_injection,1,No,1
+conjunctival_injection,2,1+,2
+conjunctival_injection,3,2+,3
+conjunctival_injection,4,3+,4
+cornea_cell,1,Clear,1
+cornea_cell,2,No DMF,2
+cornea_cell,3,DMF 1+,3
+cornea_cell,4,DMF 2+,4
+cornea_cell,5,DMF 3+,5
+cornea_edema,1,No,1
+cornea_edema,2,1+,2
+cornea_edema,3,2+,3
+cornea_edema,4,3+,4
+AC,1,Formed,1
+AC,2,deep,2
+AC,3,shallow,3
+AC,4,flat,4
+AC_cell,1,No,1
+AC_cell,2,Trace,1
+AC_cell,3,1+,3
+AC_cell,4,2+,4
+AC_cell,5,3+,5
+AC_cell,6,4+,6
+pupil_shape,1,round,1
+pupil_react,1,RTL,1
+lens,1,clear,1
+lens,2,IOL in place,2
+lens,3,NS (Nuclear Sclerosis),3
+lens,4,PSC (Posterior Subcapsular Cataract),4
+lens,5,ACC (Anterior cortical change),5
+lens,6,cortical cataract,6
+disc_notching,1,No,1
+disc_notching,2,Yes,2
+disc_polar,1,hyperemia,1
+disc_polar,2,pink,2
+disc_polar,3,mildly pale,3
+disc_polar,4,moderately pale,4
+disc_polar,5,markedly pale,5

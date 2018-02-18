@@ -16,7 +16,7 @@ class CreateAuthorizesTable extends Migration
         Schema::create('authorizes', function (Blueprint $table) {
             $table->integer('id')->usigned();
             $table->primary('id');
-            $table->smallInteger('role_id')->usigned();
+            $table->smallInteger('permission_id')->usigned();
             $table->smallInteger('division_id')->unsigned();
             $table->timestamps();
         });

@@ -3,10 +3,10 @@
 namespace App;
 
 use App\Contracts\AutoId;
+use App\Traits\DataCryptable;
 use App\Traits\AutoIdInsertable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use App\Traits\DataCryptable;
 
 class User extends Authenticatable implements AutoId
 {
@@ -35,6 +35,11 @@ class User extends Authenticatable implements AutoId
      */
     protected $hidden = [
         'password',
+    ];
+
+    protected $dates = [
+        'expiry_date',
+        'last_seen'
     ];
 
     /**
@@ -145,6 +150,25 @@ class User extends Authenticatable implements AutoId
     }
 
     /**
+     * Set field 'pln'.
+     *
+     * @param string $value
+     */
+    public function setPlnAttribute($value)
+    {
+        $this->attributes['pln'] = $this->encryptField($value);
+    }
+    /**
+     * Get field 'pln'.
+     *
+     * @return string
+     */
+    public function getPlnAttribute()
+    {
+        return $this->decryptField($this->attributes['pln']);
+    }
+
+    /**
      * Generate multi digits code for verification.
      *
      * @return String
@@ -163,6 +187,12 @@ class User extends Authenticatable implements AutoId
     public function authorizes()
     {
         return $this->belongsToMany('\App\Authorize');
+    }
+
+    public function seen()
+    {
+        $this->last_seen = \Carbon\Carbon::now();
+        $this->save();
     }
 
     public static function findByUniqueField($field, $value)

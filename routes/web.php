@@ -1,20 +1,14 @@
 <?php
-
 /*
 |--------------------------------------------------------------------------
-| Web Routes
+| production routes start here
 |--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
 */
 
-// production route start here
 Route::get('/lists/{type}/{listName}', 'ListController@getList');
-Route::get('/is-session-active', function(Illuminate\Http\Request $request) {
-    return ['active' => ($request->header('X-CSRF-TOKEN') == csrf_token())];
+
+Route::get('/is-session-active', function() {
+    return ['active' => ( app('request')->header('X-CSRF-TOKEN') == csrf_token() )];
 });
 
 // register
@@ -28,15 +22,24 @@ Route::get('/login', ['as' => 'login', 'uses' => 'Auth\LoginController@showLogin
 Route::post('/login', 'Auth\LoginController@login');
 Route::get('/logout', ['as' => 'logout', 'uses' => 'Auth\LoginController@logout']);
 
+// user
+Route::get('/profile', ['as' => 'profile', 'uses' => 'UserController@profile']);
+Route::get('/authenticated', 'UserController@authenticated');
+
+// dashboard
+Route::get('/notes', ['as' => 'notes', 'uses' => 'NoteController@index']);
+Route::get('/audit', ['as' => 'audit', 'uses' => 'NoteController@audit']); // TEMP USES
+
 //
 // Route::get('/authenticated', 'UserController@authenticated');
-Route::get('/authenticated', ['as' => 'authenticated', 'uses' => 'UserController@authenticated']);
+// Route::get('/authenticated', ['as' => 'authenticated', 'uses' => 'UserController@authenticated']);
 
-Route::get('/auth', function () {
-    return auth()->user() === null ? 'no user' : auth()->user();
-});
 
-//\\ *** dev route start here *** //\\
+/*
+|--------------------------------------------------------------------------
+| development routes start here
+|--------------------------------------------------------------------------
+ */
 Route::get('draft/{group}/{page}', function ($group, $page) {
     return view('draft.' . $group . '.' . $page);
 });
@@ -44,9 +47,9 @@ Route::get('draft/{group}/{page}', function ($group, $page) {
 Route::get('select-refresh', function () {
     App\Models\Lists\SelectItem::whereNotNull('field_name')->delete();
     App\Models\Lists\SelectItem::loadData('select_items');
-
     return "done";
 });
+
 Route::get('lists-refresh-all', function () {
     App\Models\Lists\Drug::whereNotNull('id')->delete();
     App\Models\Lists\Drug::loadData('drugs');

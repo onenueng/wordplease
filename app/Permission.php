@@ -3,12 +3,15 @@
 namespace App;
 
 use App\Contracts\AutoId;
+use App\Contracts\ListItem;
+use App\Traits\ListQueryable;
+use App\Traits\DataImportable;
 use App\Traits\AutoIdInsertable;
 use Illuminate\Database\Eloquent\Model;
 
-class Authorize extends Model implements AutoId
+class Permission extends Model implements AutoId, ListItem
 {
-    use AutoIdInsertable;
+    use AutoIdInsertable, DataImportable, ListQueryable;
 
     /**
      * The attributes that are mass assignable.
@@ -17,12 +20,6 @@ class Authorize extends Model implements AutoId
      */
     protected $fillable = [
         'id',
-        'division_id',
-        'permission_id',
+        'name',
     ];
-
-    public function users()
-    {
-        return $this->belongsToMany('\App\User');
-    }
 }

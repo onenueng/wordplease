@@ -22,12 +22,6 @@ class CreateRolesTable extends Migration
         });
 
         \App\Models\Lists\Role::loadData('roles', 'create');
-
-        // Schema::create('role_user', function (Blueprint $table) {
-        //     $table->integer('user_id')->usigned();
-        //     $table->smallInteger('role_id')->unsigned();
-        //     $table->primary(['user_id', 'role_id']);
-        // });
     }
 
     /**
@@ -38,6 +32,5 @@ class CreateRolesTable extends Migration
     public function down()
     {
         Schema::dropIfExists('roles');
-        // Schema::dropIfExists('role_user');
     }
 }

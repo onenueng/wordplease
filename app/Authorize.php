@@ -3,10 +3,7 @@
 namespace App;
 
 use App\Contracts\AutoId;
-// use App\Contracts\ListItem;
 use App\Traits\AutoIdInsertable;
-// use App\Traits\DataImportable;
-// use App\Traits\ListQueryable;
 use Illuminate\Database\Eloquent\Model;
 
 class Authorize extends Model implements AutoId
@@ -28,5 +25,4 @@ class Authorize extends Model implements AutoId
     {
         return $this->belongsToMany('\App\User');
     }
-    
 }

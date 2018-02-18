@@ -151,21 +151,19 @@ class User extends Authenticatable implements AutoId
      */
     public function genVerifyCode()
     {
-        $max = str_pad('', config('constant.VERIFY_CODE_LENGTH'), '9');
-        // return str_pad(mt_rand(1, $max), config('constant.VERIFY_CODE_LENGTH'), '0', STR_PAD_LEFT);
-        $this->attributes['verify_code'] = str_pad(mt_rand(1, $max), config('constant.VERIFY_CODE_LENGTH'), '0', STR_PAD_LEFT);
+        // $max = str_pad('', config('constant.VERIFY_CODE_LENGTH'), '9');
+        $this->attributes['verify_code'] = str_pad(
+            mt_rand(1, str_pad('', config('constant.VERIFY_CODE_LENGTH'), '9')),
+            config('constant.VERIFY_CODE_LENGTH'),
+            '0',
+            STR_PAD_LEFT
+        );
     }
 
     public function authorizes()
     {
         return $this->belongsToMany('\App\Authorize');
     }
-
-    // public function attempLogin($password)
-    // {
-    //     $hash = app('db')->table('users')->select('password')->where('id', $this->id)->first()->password;
-    //     return password_verify( $password, $hash );
-    // }
 
     public static function findByUniqueField($field, $value)
     {

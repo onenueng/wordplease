@@ -19,6 +19,8 @@ class Authorize extends Model implements AutoId
         'id',
         'division_id',
         'permission_id',
+        'valid_until',
+        'granted_by',
     ];
 
     public function users()

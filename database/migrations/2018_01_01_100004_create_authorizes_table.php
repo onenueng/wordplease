@@ -18,6 +18,8 @@ class CreateAuthorizesTable extends Migration
             $table->primary('id');
             $table->smallInteger('permission_id')->usigned();
             $table->smallInteger('division_id')->unsigned();
+            $table->date('valid_until')->nullable();
+            $table->integer('granted_by')->usigned();
             $table->timestamps();
         });
 

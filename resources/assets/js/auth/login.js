@@ -3,10 +3,11 @@ require('../bootstrap')
 // use global event bus
 window.EventBus = new Vue()
 
-Vue.component('register-by-email', require('../components/auth/RegisterByEmail.vue'))
-Vue.component('register-by-id', require('../components/auth/RegisterById.vue'))
-Vue.component('register-page', require('../components/auth/RegisterPage.vue'))
-Vue.component('input-state', require('../components/inputs/InputState.vue'))
+// Vue.component('register-by-email', require('../components/auth/RegisterByEmail.vue'))
+// Vue.component('register-by-id', require('../components/auth/RegisterById.vue'))
+// Vue.component('register-page', require('../components/auth/RegisterPage.vue'))
+// Vue.component('input-state', require('../components/inputs/InputState.vue'))
+Vue.component('login-page', require('../components/auth/LoginPage.vue'))
 Vue.component('modal-dialog', require('../components/ModalDialog.vue'))
 Vue.component('button-app', require('../components/ButtonApp.vue'))
 Vue.component('alert', require('../components/Alert.vue'))
@@ -14,9 +15,9 @@ Vue.component('alert', require('../components/Alert.vue'))
 window.app = new Vue({
     el: '#app',
     data: {
-        dialogHeading: 'Wordplease Say',
-        dialogMessage: 'Hello world!!',
-        dialogButtonLabel: 'OK',
+        dialogHeading: '',
+        dialogMessage: '',
+        dialogButtonLabel: '',
 
         lastActiveSessionCheck: 0
     },

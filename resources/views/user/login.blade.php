@@ -3,7 +3,11 @@
 @section('title', 'Login')
 
 @section('content')
+<login-page>
+    
+</login-page>
 
+{{-- 
 <h1>login page</h1>
 <form action="/login" method="POST">
     {{ csrf_field() }}
@@ -14,9 +18,9 @@
         <b>{{ session('error') }}</b>
     @endif
 </form>
-
+ --}}
 @endsection
 
 @section('app-js')
-<script src="{{ mix('/js/register.js') }}"></script>
+<script src="{{ mix('/js/login.js') }}"></script>
 @endsection

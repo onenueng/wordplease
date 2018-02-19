@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Contracts\UserAPI;
-use App\Http\Controllers\Controller;
 use App\Traits\Authorizable;
 use App\Traits\DataImportable;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class RegisterController extends Controller
 {
@@ -22,14 +21,35 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
+    /**
+     * Show register form
+     *
+     * @return Illuminate\View\View
+     */
     public function showRegisterForm()
     {
         return view('user.register');
     }
 
+    /**
+     * Get user data form organization's records
+     *
+     * @param  App\Contracts\UserAPI $api
+     * @param  Illuminate\Http\Request via DI container
+     * @return Illuminate\Http\Response
+     */
     public function getUser(UserAPI $api)
     {
-        // check user on table
+        $org_id = app('request')->org_id;
+
+        // check if the ID already exist
+        if ( \App\User::findByUniqueField('org_id', $org_id) != null ) {
+            return [
+                'reply_code' => 99, 'reply_text' => 'this ID already taken.',
+                'state' => 'error', 'icon' => 'remove',
+            ];
+        }
+
         // *** IMPLEMENT ThrottlesLogins ***
         $data = $api->getUser(app('request')->org_id);
         switch ($data['reply_code']) {
@@ -50,15 +70,22 @@ class RegisterController extends Controller
         return $data;
     }
 
+    /**
+     * Check availability of users table unique fields
+     *
+     * @param  Illuminate\Http\Request via DI container
+     * @return Illuminate\Http\Response
+     */
     public function isDataAvailable()
     {
         $request = app('request');
 
+        // handle field named 'username' exception
         if ( $request->field == 'username' ) {
-            $request->field = 'name';
+            $user = \App\User::findByUniqueField('name', $request->value);
+        } else {
+            $user = \App\User::findByUniqueField($request->field, $request->value);
         }
-
-        $user = \App\User::findByUniqueField($request->field, $request->value);
 
         if ( $user == null ) {
             return ['reply_text' => 'OK', 'state' => 'success'];
@@ -67,17 +94,21 @@ class RegisterController extends Controller
         return ['reply_text' => 'Sorry this ' . $request->field . ' is already taken.', 'state' => 'warning'];
     }
 
-    /*
+    /**
      * For email registering, they can set the password but can use in a short period.
      * For id registering, they need organization's account for login to the app.
      * All account need an authorization before they can actually use the app.
      * Authorization can perform by pre-made .csv file and by the Admin.
+     *
+     * @param  Illuminate\Http\Request via DI container
+     * @return Illuminate\Http\Response
      */
     public function register()
     {
         $request = app('request');
 
-        $newUser = \App\User::insert($request->user); // register all request
+        // register every requests
+        $newUser = \App\User::insert($request->user);
 
         // try to load pre-made authorization form .csv file
         if ( $request->mode == 'id' ) {

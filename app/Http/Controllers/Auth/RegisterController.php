@@ -18,13 +18,13 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        $this->middleware('guest'); // allow guest only
     }
 
     /**
-     * Show register form
+     * Show the application's register form.
      *
-     * @return Illuminate\View\View
+     * @return \Illuminate\Http\Response
      */
     public function showRegisterForm()
     {

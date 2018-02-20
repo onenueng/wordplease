@@ -1,13 +1,10 @@
 <template>
     <div>
-        <nav class="navbar navbar-default navbar-fixed-top">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <a class="navbar-brand hvr-shutter-out-vertical" href="/home">Wordplease</a>
-                    <a class="navbar-brand active">Login<span class="sr-only">(current)</span></a>
-                </div>
-            </div>
-        </nav>
+        <navbar link="/home"
+                brand="Wordplease"
+                title="Login">
+        </navbar>
+
         <div class="container-fluid">
             <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
                 <div class="page-header">
@@ -37,12 +34,14 @@
                         <input type="hidden" name="_token" id="token" />
                         <input type="submit" id="submitLogin" style="display: none;" />
                     </form>
+                    
                     <button-app
                         size="lg"
-                        label="Login"
+                        :label="loginButtonLabel"
                         action="login-click"
                         status="info">
                     </button-app>
+                    
                     <transition
                         name="custom-classes-transition"
                         enter-active-class="animated fadeInDown"
@@ -69,6 +68,7 @@
                 userInputPassword: '',
                 orgIdHelpText: '',
                 passwordHelpText: '',
+                loginButtonLabel: 'Login',
                 alertContent: 'hello',
                 alertAnimated: '',
                 alert: false
@@ -77,6 +77,7 @@
         mounted() {
             EventBus.$on('login-click', () => {
                 if ( this.hasId() && this.hasPassword() ) {
+                    this.loginButtonLabel = 'Logging in <i class="fa fa-circle-o-notch fa-spin"></i>'
                     axios.post('/js-login', {
                         org_id: this.userInputOrgId,
                         password: this.userInputPassword
@@ -91,10 +92,12 @@
                             setTimeout( () => {
                                 this.alert = false
                             }, 5000);
+                            this.loginButtonLabel = 'Login'
                         }
                     })
                     .catch( (error) => {
                         console.log(error)
+                        this.loginButtonLabel = 'Login'
                     })
                 }
             })

@@ -5,6 +5,7 @@ window.EventBus = new Vue()
 
 Vue.component('login-page', require('../components/auth/LoginPage.vue'))
 Vue.component('modal-dialog', require('../components/ModalDialog.vue'))
+Vue.component('navbar', require('../components/navbars/Navbar.vue'))
 Vue.component('button-app', require('../components/ButtonApp.vue'))
 Vue.component('alert', require('../components/Alert.vue'))
 

@@ -162,6 +162,7 @@ window.EventBus = new Vue();
 
 Vue.component('login-page', __webpack_require__(153));
 Vue.component('modal-dialog', __webpack_require__(26));
+Vue.component('navbar', __webpack_require__(173));
 Vue.component('button-app', __webpack_require__(21));
 Vue.component('alert', __webpack_require__(36));
 
@@ -320,7 +321,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -329,6 +329,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             userInputPassword: '',
             orgIdHelpText: '',
             passwordHelpText: '',
+            loginButtonLabel: 'Login',
             alertContent: 'hello',
             alertAnimated: '',
             alert: false
@@ -339,6 +340,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         EventBus.$on('login-click', function () {
             if (_this.hasId() && _this.hasPassword()) {
+                _this.loginButtonLabel = 'Logging in <i class="fa fa-circle-o-notch fa-spin"></i>';
                 axios.post('/js-login', {
                     org_id: _this.userInputOrgId,
                     password: _this.userInputPassword
@@ -352,9 +354,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         setTimeout(function () {
                             _this.alert = false;
                         }, 5000);
+                        _this.loginButtonLabel = 'Login';
                     }
                 }).catch(function (error) {
                     console.log(error);
+                    _this.loginButtonLabel = 'Login';
                 });
             }
         });
@@ -390,177 +394,155 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _vm._m(0),
-    _vm._v(" "),
-    _c("div", { staticClass: "container-fluid" }, [
-      _c(
-        "div",
-        {
-          staticClass:
-            "col-xs-12 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4"
-        },
-        [
-          _vm._m(1),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "material-box-topic" },
-            [
-              _c("form", { attrs: { action: "login", method: "POST" } }, [
-                _c("div", { staticClass: "form-group" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.userInputOrgId,
-                        expression: "userInputOrgId"
-                      }
-                    ],
-                    staticClass: "form-control",
-                    attrs: {
-                      type: "text",
-                      name: "org_id",
-                      placeholder: "ID",
-                      autocomplete: "off"
-                    },
-                    domProps: { value: _vm.userInputOrgId },
-                    on: {
-                      blur: function($event) {
-                        _vm.hasId()
-                      },
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
+  return _c(
+    "div",
+    [
+      _c("navbar", {
+        attrs: { link: "/home", brand: "Wordplease", title: "Login" }
+      }),
+      _vm._v(" "),
+      _c("div", { staticClass: "container-fluid" }, [
+        _c(
+          "div",
+          {
+            staticClass:
+              "col-xs-12 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4"
+          },
+          [
+            _vm._m(0),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "material-box-topic" },
+              [
+                _c("form", { attrs: { action: "login", method: "POST" } }, [
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.userInputOrgId,
+                          expression: "userInputOrgId"
                         }
-                        _vm.userInputOrgId = $event.target.value
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        type: "text",
+                        name: "org_id",
+                        placeholder: "ID",
+                        autocomplete: "off"
+                      },
+                      domProps: { value: _vm.userInputOrgId },
+                      on: {
+                        blur: function($event) {
+                          _vm.hasId()
+                        },
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.userInputOrgId = $event.target.value
+                        }
                       }
-                    }
+                    }),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "help-block" }, [
+                      _c("i", { staticClass: "text-danger" }, [
+                        _vm._v(_vm._s(_vm.orgIdHelpText))
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.userInputPassword,
+                          expression: "userInputPassword"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        type: "password",
+                        name: "password",
+                        placeholder: "Password"
+                      },
+                      domProps: { value: _vm.userInputPassword },
+                      on: {
+                        blur: function($event) {
+                          _vm.hasPassword()
+                        },
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.userInputPassword = $event.target.value
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "help-block" }, [
+                      _c("i", { staticClass: "text-danger" }, [
+                        _vm._v(_vm._s(_vm.passwordHelpText))
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    attrs: { type: "hidden", name: "_token", id: "token" }
                   }),
                   _vm._v(" "),
-                  _c("span", { staticClass: "help-block" }, [
-                    _c("i", { staticClass: "text-danger" }, [
-                      _vm._v(_vm._s(_vm.orgIdHelpText))
-                    ])
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "form-group" }, [
                   _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.userInputPassword,
-                        expression: "userInputPassword"
-                      }
-                    ],
-                    staticClass: "form-control",
-                    attrs: {
-                      type: "password",
-                      name: "password",
-                      placeholder: "Password"
-                    },
-                    domProps: { value: _vm.userInputPassword },
-                    on: {
-                      blur: function($event) {
-                        _vm.hasPassword()
-                      },
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.userInputPassword = $event.target.value
-                      }
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "help-block" }, [
-                    _c("i", { staticClass: "text-danger" }, [
-                      _vm._v(_vm._s(_vm.passwordHelpText))
-                    ])
-                  ])
+                    staticStyle: { display: "none" },
+                    attrs: { type: "submit", id: "submitLogin" }
+                  })
                 ]),
                 _vm._v(" "),
-                _c("input", {
-                  attrs: { type: "hidden", name: "_token", id: "token" }
+                _c("button-app", {
+                  attrs: {
+                    size: "lg",
+                    label: _vm.loginButtonLabel,
+                    action: "login-click",
+                    status: "info"
+                  }
                 }),
                 _vm._v(" "),
-                _c("input", {
-                  staticStyle: { display: "none" },
-                  attrs: { type: "submit", id: "submitLogin" }
-                })
-              ]),
-              _vm._v(" "),
-              _c("button-app", {
-                attrs: {
-                  size: "lg",
-                  label: "Login",
-                  action: "login-click",
-                  status: "info"
-                }
-              }),
-              _vm._v(" "),
-              _c(
-                "transition",
-                {
-                  attrs: {
-                    name: "custom-classes-transition",
-                    "enter-active-class": "animated fadeInDown",
-                    "leave-active-class": "animated fadeOutUp"
-                  }
-                },
-                [
-                  _vm.alert
-                    ? _c("alert", {
-                        attrs: {
-                          state: "danger",
-                          icon: "fa fa-remove fa-3x",
-                          content: _vm.alertContent
-                        }
-                      })
-                    : _vm._e()
-                ],
-                1
-              )
-            ],
-            1
-          )
-        ]
-      )
-    ])
-  ])
+                _c(
+                  "transition",
+                  {
+                    attrs: {
+                      name: "custom-classes-transition",
+                      "enter-active-class": "animated fadeInDown",
+                      "leave-active-class": "animated fadeOutUp"
+                    }
+                  },
+                  [
+                    _vm.alert
+                      ? _c("alert", {
+                          attrs: {
+                            state: "danger",
+                            icon: "fa fa-remove fa-3x",
+                            content: _vm.alertContent
+                          }
+                        })
+                      : _vm._e()
+                  ],
+                  1
+                )
+              ],
+              1
+            )
+          ]
+        )
+      ])
+    ],
+    1
+  )
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "nav",
-      { staticClass: "navbar navbar-default navbar-fixed-top" },
-      [
-        _c("div", { staticClass: "container-fluid" }, [
-          _c("div", { staticClass: "navbar-header" }, [
-            _c(
-              "a",
-              {
-                staticClass: "navbar-brand hvr-shutter-out-vertical",
-                attrs: { href: "/home" }
-              },
-              [_vm._v("Wordplease")]
-            ),
-            _vm._v(" "),
-            _c("a", { staticClass: "navbar-brand active" }, [
-              _vm._v("Login"),
-              _c("span", { staticClass: "sr-only" }, [_vm._v("(current)")])
-            ])
-          ])
-        ])
-      ]
-    )
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -576,6 +558,128 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-4f8719b0", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ 173:
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(174)
+/* template */
+var __vue_template__ = __webpack_require__(175)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/navbars/Navbar.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-e911cd9a", Component.options)
+  } else {
+    hotAPI.reload("data-v-e911cd9a", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ 174:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: {
+        link: {
+            type: String,
+            required: true
+        },
+        brand: {
+            type: String,
+            required: true
+        },
+        title: {
+            type: String,
+            required: true
+        }
+    }
+});
+
+/***/ }),
+
+/***/ 175:
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("nav", { staticClass: "navbar navbar-default navbar-fixed-top" }, [
+    _c("div", { staticClass: "container-fluid" }, [
+      _c("div", { staticClass: "navbar-header" }, [
+        _c(
+          "a",
+          {
+            staticClass: "navbar-brand hvr-shutter-out-vertical",
+            attrs: { href: _vm.link }
+          },
+          [_vm._v(_vm._s(_vm.brand))]
+        ),
+        _vm._v(" "),
+        _c("a", { staticClass: "navbar-brand active" }, [
+          _vm._v(_vm._s(_vm.title))
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-e911cd9a", module.exports)
   }
 }
 

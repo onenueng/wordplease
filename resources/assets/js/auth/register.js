@@ -8,6 +8,7 @@ Vue.component('register-by-id', require('../components/auth/RegisterById.vue'))
 Vue.component('register-page', require('../components/auth/RegisterPage.vue'))
 Vue.component('input-state', require('../components/inputs/InputState.vue'))
 Vue.component('modal-dialog', require('../components/ModalDialog.vue'))
+Vue.component('navbar', require('../components/navbars/Navbar.vue'))
 Vue.component('button-app', require('../components/ButtonApp.vue'))
 Vue.component('alert', require('../components/Alert.vue'))
 

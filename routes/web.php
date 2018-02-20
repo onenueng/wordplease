@@ -5,6 +5,14 @@
 |--------------------------------------------------------------------------
 */
 
+Route::get('/', function() {
+    return view('welcome')->with('quote', App\Inspiration::inspireMe());
+});
+
+Route::get('/home', function() {
+    return view('home');
+});
+
 Route::get('/lists/{type}/{listName}', 'ListController@getList');
 
 Route::get('/is-session-active', function() {

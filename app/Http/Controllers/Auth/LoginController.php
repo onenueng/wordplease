@@ -46,20 +46,40 @@ class LoginController extends Controller
         return redirect()->back()->with('error', 'credential not matched');
     }
 
+    public function jsLogin()
+    {
+        $user = $this->attemptLogin();
+        
+        if ( $user ) {
+            return [
+                'reply_code' => 0,
+            ];
+        }
+
+        // *** IMPLEMENT ThrottlesLogins ***
+        return [
+            'reply_code' => 1,
+            'reply_text' => 'Your credential not matched our records.'
+        ];
+        // return redirect()->back()->with('error', 'credential not matched');
+    }
+
     protected function attemptLogin()
     {
-        $user = \App\User::findByUniqueField('org_id', app('request')->org_id);
+        $request = app('request');
+
+        $user = \App\User::findByUniqueField('org_id', $request->org_id);
         if ( $user == null ) {
             return null;
         }
 
-        if (filter_var(app('request')->org_id, FILTER_VALIDATE_EMAIL)) {
+        if (filter_var($request->org_id, FILTER_VALIDATE_EMAIL)) {
             // auth via app
             $hash = app('db')->table('users')->select('password')->where('id', $user->id)->first()->password;
-            return password_verify(app('request')->password, $hash) ? $user : null;
+            return password_verify($request->password, $hash) ? $user : null;
         } else {
             // auth via api
-            $response = app('App\Contracts\UserAPI')->authenticate(app('request')->only(['org_id', 'password']));
+            $response = app('App\Contracts\UserAPI')->authenticate($request->only(['org_id', 'password']));
             if ( $response['reply_code'] != 0 ) {
                 return null;
             }

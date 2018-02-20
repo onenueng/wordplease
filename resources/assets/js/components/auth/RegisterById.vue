@@ -3,6 +3,7 @@
     <alert
         state="info"
         icon="fa fa-lightbulb-o fa-3x"
+        animated="lightSpeedIn"
         content="You need Faculty's account to register and login by ID. If you don't have one, you will not be able to login the application.">
     </alert>
     <div :class="divIdInputClass">

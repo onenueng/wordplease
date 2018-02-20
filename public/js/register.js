@@ -1494,7 +1494,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -1505,6 +1505,8 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
 //
 //
 //
@@ -1531,6 +1533,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         content: {
             type: String,
             required: true
+        },
+        animated: {
+            type: String,
+            required: false
         }
     },
     data: function data() {
@@ -1539,7 +1545,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
     mounted: function mounted() {
-        this.alertState = this.alertState + ' animated lightSpeedIn';
+        if (this.animated !== undefined) {
+            this.alertState = this.alertState + ' animated ' + this.animated;
+        }
+    },
+
+    computed: {
+        animatedClass: function animatedClass() {
+            if (this.animated !== undefined) {
+                return 'animated ' + this.animated;
+            }
+            return '';
+        }
     }
 });
 
@@ -1551,10 +1568,8 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { class: _vm.alertState, attrs: { role: "alert", id: "xxx" } },
-    [
+  return _c("div", { class: _vm.animatedClass }, [
+    _c("div", { class: _vm.alertState, attrs: { role: "alert", id: "xxx" } }, [
       _c("div", { staticClass: "row vertical-centered" }, [
         _c("div", { staticClass: "col-xs-2 text-center" }, [
           _c("i", { class: _vm.icon })
@@ -1565,8 +1580,8 @@ var render = function() {
           domProps: { innerHTML: _vm._s(_vm.content) }
         })
       ])
-    ]
-  )
+    ])
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -1857,6 +1872,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -1952,6 +1968,7 @@ var render = function() {
         attrs: {
           state: "info",
           icon: "fa fa-lightbulb-o fa-3x",
+          animated: "lightSpeedIn",
           content:
             "The email register account is valid for a short period only, you will need Faculty's account to continue using this application."
         }
@@ -2286,6 +2303,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: {
@@ -2425,6 +2443,7 @@ var render = function() {
         attrs: {
           state: "info",
           icon: "fa fa-lightbulb-o fa-3x",
+          animated: "lightSpeedIn",
           content:
             "You need Faculty's account to register and login by ID. If you don't have one, you will not be able to login the application."
         }

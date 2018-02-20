@@ -3,6 +3,7 @@
     <alert
         state="info"
         icon="fa fa-lightbulb-o fa-3x"
+        animated="lightSpeedIn"
         content="The email register account is valid for a short period only, you will need Faculty's account to continue using this application.">
     </alert>
     <input-state

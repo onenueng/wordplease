@@ -1,4 +1,4 @@
-webpackJsonp([4],{
+webpackJsonp([3],{
 
 /***/ 0:
 /***/ (function(module, exports) {
@@ -160,11 +160,7 @@ module.exports = __webpack_require__(152);
 // use global event bus
 window.EventBus = new Vue();
 
-// Vue.component('register-by-email', require('../components/auth/RegisterByEmail.vue'))
-// Vue.component('register-by-id', require('../components/auth/RegisterById.vue'))
-// Vue.component('register-page', require('../components/auth/RegisterPage.vue'))
-// Vue.component('input-state', require('../components/inputs/InputState.vue'))
-Vue.component('login-page', __webpack_require__(167));
+Vue.component('login-page', __webpack_require__(153));
 Vue.component('modal-dialog', __webpack_require__(26));
 Vue.component('button-app', __webpack_require__(21));
 Vue.component('alert', __webpack_require__(36));
@@ -209,15 +205,15 @@ window.app = new Vue({
 
 /***/ }),
 
-/***/ 167:
+/***/ 153:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(168)
+var __vue_script__ = __webpack_require__(154)
 /* template */
-var __vue_template__ = __webpack_require__(169)
+var __vue_template__ = __webpack_require__(155)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -257,11 +253,50 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 168:
+/***/ 154:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* WEBPACK VAR INJECTION */(function($) {//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -287,26 +322,225 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
-/* harmony default export */ __webpack_exports__["default"] = ({});
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            userInputOrgId: '',
+            userInputPassword: '',
+            orgIdHelpText: '',
+            passwordHelpText: '',
+            alertContent: 'hello',
+            alertAnimated: '',
+            alert: false
+        };
+    },
+    mounted: function mounted() {
+        var _this = this;
+
+        EventBus.$on('login-click', function () {
+            if (_this.hasId() && _this.hasPassword()) {
+                axios.post('/js-login', {
+                    org_id: _this.userInputOrgId,
+                    password: _this.userInputPassword
+                }).then(function (response) {
+                    if (response.data.reply_code == 0) {
+                        $('#token').val(document.head.querySelector("[name=csrf-token]").content);
+                        $('#submitLogin').click();
+                    } else {
+                        _this.alertContent = response.data.reply_text;
+                        _this.alert = true;
+                        setTimeout(function () {
+                            _this.alert = false;
+                        }, 5000);
+                    }
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            }
+        });
+    },
+
+    methods: {
+        hasId: function hasId() {
+            if (this.userInputOrgId != '') {
+                this.orgIdHelpText = '';
+                return true;
+            }
+            this.orgIdHelpText = 'ID is required.';
+            return false;
+        },
+        hasPassword: function hasPassword() {
+            if (this.userInputPassword != '') {
+                this.passwordHelpText = '';
+                return true;
+            }
+            this.passwordHelpText = 'Password is required.';
+            return false;
+        }
+    }
+});
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(1)))
 
 /***/ }),
 
-/***/ 169:
+/***/ 155:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", [
+    _vm._m(0),
+    _vm._v(" "),
+    _c("div", { staticClass: "container-fluid" }, [
+      _c(
+        "div",
+        {
+          staticClass:
+            "col-xs-12 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4"
+        },
+        [
+          _vm._m(1),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "material-box-topic" },
+            [
+              _c("form", { attrs: { action: "login", method: "POST" } }, [
+                _c("div", { staticClass: "form-group" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.userInputOrgId,
+                        expression: "userInputOrgId"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: {
+                      type: "text",
+                      name: "org_id",
+                      placeholder: "ID",
+                      autocomplete: "off"
+                    },
+                    domProps: { value: _vm.userInputOrgId },
+                    on: {
+                      blur: function($event) {
+                        _vm.hasId()
+                      },
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.userInputOrgId = $event.target.value
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "help-block" }, [
+                    _c("i", { staticClass: "text-danger" }, [
+                      _vm._v(_vm._s(_vm.orgIdHelpText))
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.userInputPassword,
+                        expression: "userInputPassword"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: {
+                      type: "password",
+                      name: "password",
+                      placeholder: "Password"
+                    },
+                    domProps: { value: _vm.userInputPassword },
+                    on: {
+                      blur: function($event) {
+                        _vm.hasPassword()
+                      },
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.userInputPassword = $event.target.value
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "help-block" }, [
+                    _c("i", { staticClass: "text-danger" }, [
+                      _vm._v(_vm._s(_vm.passwordHelpText))
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  attrs: { type: "hidden", name: "_token", id: "token" }
+                }),
+                _vm._v(" "),
+                _c("input", {
+                  staticStyle: { display: "none" },
+                  attrs: { type: "submit", id: "submitLogin" }
+                })
+              ]),
+              _vm._v(" "),
+              _c("button-app", {
+                attrs: {
+                  size: "lg",
+                  label: "Login",
+                  action: "login-click",
+                  status: "info"
+                }
+              }),
+              _vm._v(" "),
+              _c(
+                "transition",
+                {
+                  attrs: {
+                    name: "custom-classes-transition",
+                    "enter-active-class": "animated fadeInDown",
+                    "leave-active-class": "animated fadeOutUp"
+                  }
+                },
+                [
+                  _vm.alert
+                    ? _c("alert", {
+                        attrs: {
+                          state: "danger",
+                          icon: "fa fa-remove fa-3x",
+                          content: _vm.alertContent
+                        }
+                      })
+                    : _vm._e()
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ]
+      )
+    ])
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", [
-      _c("nav", { staticClass: "navbar navbar-default navbar-fixed-top" }, [
+    return _c(
+      "nav",
+      { staticClass: "navbar navbar-default navbar-fixed-top" },
+      [
         _c("div", { staticClass: "container-fluid" }, [
           _c("div", { staticClass: "navbar-header" }, [
             _c(
@@ -324,28 +558,15 @@ var staticRenderFns = [
             ])
           ])
         ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "container-fluid" }, [
-        _c(
-          "div",
-          {
-            staticClass:
-              "col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3"
-          },
-          [
-            _c("div", { staticClass: "page-header" }, [
-              _c("h1", [_vm._v("Log Me In : ")])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "material-box-topic" }, [
-              _c("input", { attrs: { type: "text" } }),
-              _vm._v(" "),
-              _c("input", { attrs: { type: "text" } })
-            ])
-          ]
-        )
-      ])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "page-header" }, [
+      _c("h1", [_vm._v("Login : ")])
     ])
   }
 ]
@@ -1144,7 +1365,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -1156,6 +1377,8 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
 //
 //
 //
@@ -1182,6 +1405,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         content: {
             type: String,
             required: true
+        },
+        animated: {
+            type: String,
+            required: false
         }
     },
     data: function data() {
@@ -1190,7 +1417,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
     mounted: function mounted() {
-        this.alertState = this.alertState + ' animated lightSpeedIn';
+        if (this.animated !== undefined) {
+            this.alertState = this.alertState + ' animated ' + this.animated;
+        }
+    },
+
+    computed: {
+        animatedClass: function animatedClass() {
+            if (this.animated !== undefined) {
+                return 'animated ' + this.animated;
+            }
+            return '';
+        }
     }
 });
 
@@ -1203,10 +1441,8 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { class: _vm.alertState, attrs: { role: "alert", id: "xxx" } },
-    [
+  return _c("div", { class: _vm.animatedClass }, [
+    _c("div", { class: _vm.alertState, attrs: { role: "alert", id: "xxx" } }, [
       _c("div", { staticClass: "row vertical-centered" }, [
         _c("div", { staticClass: "col-xs-2 text-center" }, [
           _c("i", { class: _vm.icon })
@@ -1217,8 +1453,8 @@ var render = function() {
           domProps: { innerHTML: _vm._s(_vm.content) }
         })
       ])
-    ]
-  )
+    ])
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true

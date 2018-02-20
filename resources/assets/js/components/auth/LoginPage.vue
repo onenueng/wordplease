@@ -69,7 +69,7 @@
                 orgIdHelpText: '',
                 passwordHelpText: '',
                 loginButtonLabel: 'Login',
-                alertContent: 'hello',
+                alertContent: '',
                 alertAnimated: '',
                 alert: false
             }

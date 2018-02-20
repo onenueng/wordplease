@@ -330,7 +330,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             orgIdHelpText: '',
             passwordHelpText: '',
             loginButtonLabel: 'Login',
-            alertContent: 'hello',
+            alertContent: '',
             alertAnimated: '',
             alert: false
         };

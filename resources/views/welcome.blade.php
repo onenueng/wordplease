@@ -16,17 +16,15 @@
 
     <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
 </head>
-<body>
+<body style="background: url('/images/pattern-bg.svg');">
     <div class="col-xs-12 col-md-10 col-md-offset-1">
-        <div class="centered">
-            <div class="material-box-topic"
-                 style="margin: 20px; cursor: pointer; background: #EEEEEE;"
-                 onclick="window.location.href = '/home';">
-                <blockquote class="blockquote-reverse">
-                    <h1>{{ $quote['text'] }}</h1>
-                    <footer><cite title="Source Title">{{ $quote['cite'] }}</cite></footer>
-                </blockquote>
-            </div>
+        <div class="centered material-box-topic"
+             style="margin: 20px; cursor: pointer; background: rgba(237, 237, 237, 0.8);"
+             onclick="window.location.href = '/home';">
+            <blockquote class="blockquote-reverse">
+                <h1>{{ $quote['text'] }}</h1>
+                <footer><cite title="Source Title">{{ $quote['cite'] }}</cite></footer>
+            </blockquote>
         </div>
     </div>
 </body>

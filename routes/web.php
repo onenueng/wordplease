@@ -20,7 +20,7 @@ Route::get('/is-session-active', function() {
 });
 
 // register
-Route::get('/register', 'Auth\RegisterController@showRegisterForm');
+Route::get('/register', ['as' => 'register', 'uses' => 'Auth\RegisterController@showRegisterForm']);
 Route::post('/register/check-id', 'Auth\RegisterController@getUser');
 Route::post('/register/is-data-available', 'Auth\RegisterController@isDataAvailable');
 Route::post('/register', 'Auth\RegisterController@register');
@@ -33,7 +33,7 @@ Route::get('/logout', ['as' => 'logout', 'uses' => 'Auth\LoginController@logout'
 
 // user
 Route::get('/profile', ['as' => 'profile', 'uses' => 'UserController@profile']);
-Route::get('/authenticated', 'UserController@authenticated');
+Route::get('/authenticated', ['as' => 'authenticated', 'uses' => 'UserController@authenticated']);
 
 // dashboard
 Route::get('/notes', ['as' => 'notes', 'uses' => 'NoteController@index']);

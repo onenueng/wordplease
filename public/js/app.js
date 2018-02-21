@@ -135,7 +135,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/InputText.vue"
+Component.options.__file = "resources\\assets\\js\\components\\InputText.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -144,9 +144,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-2bcdf870", Component.options)
+    hotAPI.createRecord("data-v-f5c019a0", Component.options)
   } else {
-    hotAPI.reload("data-v-2bcdf870", Component.options)
+    hotAPI.reload("data-v-f5c019a0", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -510,54 +510,9 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-2bcdf870", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-f5c019a0", module.exports)
   }
 }
-
-/***/ }),
-
-/***/ 47:
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(48);
-module.exports = __webpack_require__(73);
-
-
-/***/ }),
-
-/***/ 48:
-/***/ (function(module, exports, __webpack_require__) {
-
-
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
-
-__webpack_require__(5);
-
-// window.Vue = require('vue');
-
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
-
-Vue.component('example', __webpack_require__(70));
-
-Vue.component('input-text', __webpack_require__(18));
-
-var app = new Vue({
-  el: '#app'
-});
-
-/*  yarn add flatpickr -- flatpickr no need to import css if use default */
-// require("flatpickr/dist/themes/dark.css");
-// window.flatpickr = require("flatpickr"); // const flatpickr = require("flatpickr");
-flatpickr('#tryme');
-autosize(document.querySelectorAll('textarea'));
 
 /***/ }),
 
@@ -629,6 +584,51 @@ __webpack_require__(17); // need change to min
 
 /***/ }),
 
+/***/ 50:
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(51);
+module.exports = __webpack_require__(76);
+
+
+/***/ }),
+
+/***/ 51:
+/***/ (function(module, exports, __webpack_require__) {
+
+
+/**
+ * First we will load all of this project's JavaScript dependencies which
+ * includes Vue and other libraries. It is a great starting point when
+ * building robust, powerful web applications using Vue and Laravel.
+ */
+
+__webpack_require__(5);
+
+// window.Vue = require('vue');
+
+/**
+ * Next, we will create a fresh Vue application instance and attach it to
+ * the page. Then, you may begin adding components to this application
+ * or customize the JavaScript scaffolding to fit your unique needs.
+ */
+
+Vue.component('example', __webpack_require__(73));
+
+Vue.component('input-text', __webpack_require__(18));
+
+var app = new Vue({
+  el: '#app'
+});
+
+/*  yarn add flatpickr -- flatpickr no need to import css if use default */
+// require("flatpickr/dist/themes/dark.css");
+// window.flatpickr = require("flatpickr"); // const flatpickr = require("flatpickr");
+flatpickr('#tryme');
+autosize(document.querySelectorAll('textarea'));
+
+/***/ }),
+
 /***/ 6:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -676,15 +676,15 @@ exports.push([module.i, ".flatpickr-calendar {\n  background: transparent;\n  ov
 
 /***/ }),
 
-/***/ 70:
+/***/ 73:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(71)
+var __vue_script__ = __webpack_require__(74)
 /* template */
-var __vue_template__ = __webpack_require__(72)
+var __vue_template__ = __webpack_require__(75)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -701,7 +701,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/Example.vue"
+Component.options.__file = "resources\\assets\\js\\components\\Example.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -710,9 +710,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-650f2efa", Component.options)
+    hotAPI.createRecord("data-v-b6ebd97a", Component.options)
   } else {
-    hotAPI.reload("data-v-650f2efa", Component.options)
+    hotAPI.reload("data-v-b6ebd97a", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -724,7 +724,7 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 71:
+/***/ 74:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -754,7 +754,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 72:
+/***/ 75:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -792,13 +792,13 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-650f2efa", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-b6ebd97a", module.exports)
   }
 }
 
 /***/ }),
 
-/***/ 73:
+/***/ 76:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
@@ -1261,4 +1261,4 @@ module.exports = function (css) {
 
 /***/ })
 
-},[47]);
+},[50]);

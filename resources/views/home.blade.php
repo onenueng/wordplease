@@ -18,8 +18,13 @@
 </head>
 <body>
     <div class="centered text-center" style="width: 80%">
-        <a href="/login">Login</a>
-        <a href="/logout">Logout</a>
+        @auth
+            <a href="{{ route('autenticated')}} ">Dashboard</a>
+            <a href="{{ route('logout') }}">Logout</a>
+        @else
+            <a href="{{ route('login') }}">Login</a>
+            <a href="{{ route('register') }}">Register</a>
+        @endauth
     </div>
 </body>
 </html>

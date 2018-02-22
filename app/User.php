@@ -35,6 +35,7 @@ class User extends Authenticatable implements AutoId
      */
     protected $hidden = [
         'password',
+        'remember_token'
     ];
 
     protected $dates = [
@@ -175,7 +176,6 @@ class User extends Authenticatable implements AutoId
      */
     public function genVerifyCode()
     {
-        // $max = str_pad('', config('constant.VERIFY_CODE_LENGTH'), '9');
         $this->attributes['verify_code'] = str_pad(
             mt_rand(1, str_pad('', config('constant.VERIFY_CODE_LENGTH'), '9')),
             config('constant.VERIFY_CODE_LENGTH'),

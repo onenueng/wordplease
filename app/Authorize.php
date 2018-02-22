@@ -27,4 +27,9 @@ class Authorize extends Model implements AutoId
     {
         return $this->belongsToMany('\App\User');
     }
+
+    public function permission()
+    {
+        return $this->hasOne('\App\Permission');
+    }
 }

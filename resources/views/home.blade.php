@@ -19,7 +19,7 @@
 <body>
     <div class="centered text-center" style="width: 80%">
         @auth
-            <a href="{{ route('autenticated')}} ">Dashboard</a>
+            <a href="{{ route('authenticated')}} ">Dashboard</a>
             <a href="{{ route('logout') }}">Logout</a>
         @else
             <a href="{{ route('login') }}">Login</a>

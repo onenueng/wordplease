@@ -42,7 +42,9 @@
                         action="login-click"
                         status="info">
                     </button-app>
+
                     <a href="/register">Or register a new one</a>
+
                     <transition
                         name="custom-classes-transition"
                         enter-active-class="animated fadeInDown"

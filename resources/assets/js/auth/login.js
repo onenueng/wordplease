@@ -29,12 +29,10 @@ window.app = new Vue({
         this.lastActiveSessionCheck = Date.now()
         $(window).on("focus", (e) => {
             let timeDiff = Date.now() - this.lastActiveSessionCheck
-            if ((timeDiff) > (1000 * 60 * 60)) {
+            if ( (timeDiff) > (window.SESSION_LIFETIME) ) {
                 axios.get('/is-session-active')
                      .then((response) => {
-                        if (response.data.active) {
-                            this.lastActiveSessionCheck = Date.now()
-                        } else {
+                        if ( !response.data.active ) {
                             EventBus.$emit('error-419')
                         }
                      })

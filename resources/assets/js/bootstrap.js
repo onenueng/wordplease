@@ -45,6 +45,8 @@ window.flatpickr = require("flatpickr"); // const flatpickr = require("flatpickr
 window.autosize = require("autosize");
 
 require("devbridge-autocomplete/dist/jquery.autocomplete.js"); // need change to min
+
+window.SESSION_LIFETIME = 1000 * 60 * 60; // an hour
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting
@@ -59,5 +61,3 @@ require("devbridge-autocomplete/dist/jquery.autocomplete.js"); // need change to
 //     broadcaster: 'pusher',
 //     key: 'your-pusher-key'
 // });
-
-

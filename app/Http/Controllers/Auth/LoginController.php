@@ -49,7 +49,7 @@ class LoginController extends Controller
     public function jsLogin()
     {
         $user = $this->attemptLogin();
-        
+
         if ( $user ) {
             return [
                 'reply_code' => 0,
@@ -112,7 +112,7 @@ class LoginController extends Controller
      */
     protected function authenticated($user)
     {
-        // return redirect('authenticated');
+        $user->seen();
     }
 
     /**

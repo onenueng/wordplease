@@ -470,6 +470,8 @@ window.flatpickr = __webpack_require__(15); // const flatpickr = require("flatpi
 window.autosize = __webpack_require__(16);
 
 __webpack_require__(17); // need change to min
+
+window.SESSION_LIFETIME = 1000 * 60 * 60; // an hour
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting

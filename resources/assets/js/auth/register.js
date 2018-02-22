@@ -15,14 +15,13 @@ Vue.component('alert', require('../components/Alert.vue'))
 window.app = new Vue({
     el: '#app',
     data: {
-        dialogHeading: 'Wordplease Say',
-        dialogMessage: 'Hello world!!',
-        dialogButtonLabel: 'OK',
+        dialogHeading: '',
+        dialogMessage: '',
+        dialogButtonLabel: '',
 
         lastActiveSessionCheck: 0
     },
     mounted() {
-
         /* *** Handle session timeout *** */
         EventBus.$on('error-419', () => {
             this.dialogHeading = 'Attention please !!'
@@ -33,15 +32,13 @@ window.app = new Vue({
         this.lastActiveSessionCheck = Date.now()
         $(window).on("focus", (e) => {
             let timeDiff = Date.now() - this.lastActiveSessionCheck
-            if ((timeDiff) > (1000 * 60 * 60)) {
+            if ((timeDiff) > (window.SESSION_LIFETIME)) {
                 axios.get('/is-session-active')
-                     .then((response) => {
-                        if (response.data.active) {
-                            this.lastActiveSessionCheck = Date.now()
-                        } else {
+                    .then((response) => {
+                        if (!response.data.active) {
                             EventBus.$emit('error-419')
                         }
-                     })
+                    })
             }
         })
 

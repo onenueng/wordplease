@@ -470,6 +470,8 @@ window.flatpickr = __webpack_require__(15); // const flatpickr = require("flatpi
 window.autosize = __webpack_require__(16);
 
 __webpack_require__(17); // need change to min
+
+window.SESSION_LIFETIME = 1000 * 60 * 60; // an hour
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting
@@ -1836,9 +1838,9 @@ Vue.component('alert', __webpack_require__(39));
 window.app = new Vue({
     el: '#app',
     data: {
-        dialogHeading: 'Wordplease Say',
-        dialogMessage: 'Hello world!!',
-        dialogButtonLabel: 'OK',
+        dialogHeading: '',
+        dialogMessage: '',
+        dialogButtonLabel: '',
 
         lastActiveSessionCheck: 0
     },
@@ -1855,11 +1857,9 @@ window.app = new Vue({
         this.lastActiveSessionCheck = Date.now();
         $(window).on("focus", function (e) {
             var timeDiff = Date.now() - _this.lastActiveSessionCheck;
-            if (timeDiff > 1000 * 60 * 60) {
+            if (timeDiff > window.SESSION_LIFETIME) {
                 axios.get('/is-session-active').then(function (response) {
-                    if (response.data.active) {
-                        _this.lastActiveSessionCheck = Date.now();
-                    } else {
+                    if (!response.data.active) {
                         EventBus.$emit('error-419');
                     }
                 });

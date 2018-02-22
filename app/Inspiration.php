@@ -124,12 +124,84 @@ class Inspiration
                 'cite' => 'เจ้าหน้าที่นิรนาม'
             ],
             [
+                'text' => "“Tell me and I forget. Teach me and I remember. Involve me and I learn.”",
+                'cite' => 'Benjamin Franklin'
+            ],
+            [
+                'text' => "“The secret of getting ahead is getting started.”",
+                'cite' => 'Mark Twain'
+            ],
+            [
+                'text' => "“If opportunity doesn't knock, build a door.”",
+                'cite' => 'Milton Berle'
+            ],
+            [
+                'text' => "“Always remember that you are absolutely unique. Just like everyone else.”",
+                'cite' => 'Margaret Mead'
+            ],
+            [
+                'text' => "“Wise men speak because they have something to say; Fools because they have to say something.”",
+                'cite' => 'Plato'
+            ],
+            [
+                'text' => "“Problems are not stop signs, they are guidelines.”",
+                'cite' => 'Robert H. Schuller'
+            ],
+            [
+                'text' => "“The only true wisdom is in knowing you know nothing.”",
+                'cite' => 'Socrates'
+            ],
+            [
+                'text' => "“Everything has beauty, but not everyone sees it.”",
+                'cite' => 'Confucius'
+            ],
+            [
+                'text' => "“Believe you can and you're halfway there.”",
+                'cite' => 'Theodore Roosevelt'
+            ],
+            [
+                'text' => "“Do not dwell in the past, do not dream of the future, concentrate the mind on the present moment.”",
+                'cite' => 'Buddha'
+            ],
+            [
+                'text' => "“Don't judge each day by the harvest you reap but by the seeds that you plant.”",
+                'cite' => 'Robert Louis Stevenson'
+            ],
+            [
+                'text' => "“Nothing is impossible, the word itself says 'I'm possible'!”",
+                'cite' => 'Audrey Hepburn'
+            ],
+            [
+                'text' => "“Sometimes your joy is the source of your smile, but sometimes your smile can be the source of your joy.”",
+                'cite' => 'Thich Nhat Hanh'
+            ],
+            [
+                'text' => "“If you love someone but rarely make yourself available to him or her, that is not true love.”",
+                'cite' => 'Thich Nhat Hanh'
+            ],
+            [
+                'text' => "“ชีวิตทีด่ ีทีส่ ุด คือสงบ เย็นและเป็นประโยชน”",
+                'cite' => 'พุทธทาสภิกขุ'
+            ],
+            [
+                'text' => "“ความทุกข์สอนอะไรๆ ให้เราได้ดีกว่าความสุข”",
+                'cite' => 'พุทธทาสภิกขุ'
+            ],
+            [
+                'text' => "“Everyone thinks of changing the world, but no one thinks of changing himself.”",
+                'cite' => 'Leo Tolstoy'
+            ],
+            [
+                'text' => "“The two most powerful warriors are patience and time.”",
+                'cite' => 'Leo Tolstoy'
+            ],
+            [
                 'text' => "“”",
                 'cite' => ''
             ],
         ];
 
-        
+
         return $quotes[random_int(0, count($quotes) - 2)];
     }
 }

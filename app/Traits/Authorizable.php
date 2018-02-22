@@ -29,6 +29,7 @@ trait Authorizable
                 $this->grant($user, $permission, $division, 1);
                 $permission = \App\Permission::where('name', 'view-all-note')->first();
                 $this->grant($user, $permission, $division, 1);
+                $user->dashboard = 'notes';
                 break;
             case 'coder':
             case 'admin':
@@ -37,7 +38,7 @@ trait Authorizable
                 break;
         }
 
-        return true;
+        return $user->save();
     }
 
     public function grant($user, $permission, $division, $grantorId, $validUntil = null)

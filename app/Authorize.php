@@ -30,6 +30,6 @@ class Authorize extends Model implements AutoId
 
     public function permission()
     {
-        return $this->hasOne('\App\Permission');
+        return $this->belongsTo('\App\Permission');
     }
 }

@@ -3,19 +3,22 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-// use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
-     * Return input select choices by field_name.
+     * 
      *
-     * @param  String  $fieldName
+     * @param
      * @return \Illuminate\Http\Response
      */
     public function authenticated()
     {
-        return auth()->user();
+        return redirect(auth()->user()->dashboard);
     }
 
     public function profile()

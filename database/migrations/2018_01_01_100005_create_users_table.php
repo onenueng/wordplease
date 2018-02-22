@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('full_name', 512); // encrypt
             $table->string('full_name_en', 512); // encrypt
             $table->string('pln')->nullable(); // encrypt professional license number
+            $table->string('dashboard')->default('profile');
             $table->string('verify_code', config('constant.VERIFY_CODE_LENGTH'));
             $table->boolean('email_verified')->default(false);
             $table->boolean('line_verified')->default(false);

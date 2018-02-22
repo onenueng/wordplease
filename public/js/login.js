@@ -178,13 +178,13 @@ window.app = new Vue({
     mounted: function mounted() {
         var _this = this;
 
+        /* *** Handle session timeout *** */
         EventBus.$on('error-419', function () {
             _this.dialogHeading = 'Attention please !!';
             _this.dialogMessage = 'Session timeout, Please reload this page to continue using.';
             _this.dialogButtonLabel = 'Got it';
             $('#modal-dialog').modal('show');
         });
-
         this.lastActiveSessionCheck = Date.now();
         $(window).on("focus", function (e) {
             var timeDiff = Date.now() - _this.lastActiveSessionCheck;
@@ -260,6 +260,7 @@ module.exports = Component.exports
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */(function($) {//
+//
 //
 //
 //
@@ -509,6 +510,10 @@ var render = function() {
                     status: "info"
                   }
                 }),
+                _vm._v(" "),
+                _c("a", { attrs: { href: "/register" } }, [
+                  _vm._v("Or register a new one")
+                ]),
                 _vm._v(" "),
                 _c(
                   "transition",

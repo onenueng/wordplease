@@ -1845,13 +1845,13 @@ window.app = new Vue({
     mounted: function mounted() {
         var _this = this;
 
+        /* *** Handle session timeout *** */
         EventBus.$on('error-419', function () {
             _this.dialogHeading = 'Attention please !!';
             _this.dialogMessage = 'Session timeout, Please reload this page to continue using.';
             _this.dialogButtonLabel = 'Got it';
             $('#modal-dialog').modal('show');
         });
-
         this.lastActiveSessionCheck = Date.now();
         $(window).on("focus", function (e) {
             var timeDiff = Date.now() - _this.lastActiveSessionCheck;

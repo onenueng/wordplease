@@ -31,17 +31,18 @@
                                    @blur="hasPassword()"/>
                             <span class="help-block"><i class="text-danger">{{ passwordHelpText }}</i></span>
                         </div>
+
                         <input type="hidden" name="_token" id="token" />
                         <input type="submit" id="submitLogin" style="display: none;" />
                     </form>
-                    
+
                     <button-app
                         size="lg"
                         :label="loginButtonLabel"
                         action="login-click"
                         status="info">
                     </button-app>
-                    
+                    <a href="/register">Or register a new one</a>
                     <transition
                         name="custom-classes-transition"
                         enter-active-class="animated fadeInDown"

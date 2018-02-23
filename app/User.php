@@ -186,7 +186,7 @@ class User extends Authenticatable implements AutoId
 
     public function authorizes()
     {
-        return $this->belongsToMany('\App\Authorize');
+        return $this->hasMany('\App\Authorize');
     }
 
     public function seen()

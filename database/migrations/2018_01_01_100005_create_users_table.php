@@ -38,7 +38,7 @@ class CreateUsersTable extends Migration
                       'id' => 1,
                      'pln' => null,
                     'name' => 'wordplease',
-                   'email' => 'wordplease@wordplease.wordplease',
+                   'email' => 'wordplease',
                   'org_id' => 'wordplease',
                 'password' => str_random(12),
                'full_name' => 'เวิร์ดพลีส',

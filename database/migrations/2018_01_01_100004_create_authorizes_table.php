@@ -16,17 +16,12 @@ class CreateAuthorizesTable extends Migration
         Schema::create('authorizes', function (Blueprint $table) {
             $table->integer('id')->usigned();
             $table->primary('id');
-            $table->smallInteger('permission_id')->usigned();
-            $table->smallInteger('division_id')->unsigned();
+            $table->integer('user_id')->usigned()->index();
+            $table->smallInteger('permission_id')->usigned()->index();
+            $table->smallInteger('division_id')->unsigned()->index();
             $table->date('valid_until')->nullable();
-            $table->integer('granted_by')->usigned();
+            $table->integer('granted_by')->usigned()->index();
             $table->timestamps();
-        });
-
-        Schema::create('authorize_user', function (Blueprint $table) {
-            $table->integer('authorize_id')->usigned();
-            $table->integer('user_id')->usigned();
-            $table->primary(['user_id', 'authorize_id']);
         });
     }
 
@@ -38,6 +33,5 @@ class CreateAuthorizesTable extends Migration
     public function down()
     {
         Schema::dropIfExists('authorizes');
-        Schema::dropIfExists('authorize_user');
     }
 }

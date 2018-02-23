@@ -26,9 +26,9 @@ trait Authorizable
             case 'fellow':
             case 'staff':
                 $permission = \App\Permission::where('name', 'create-note')->first();
-                $this->grant($user, $permission, $division, 1);
+                $this->grant($user->id, $permission->id, $division->id, 1);
                 $permission = \App\Permission::where('name', 'view-all-note')->first();
-                $this->grant($user, $permission, $division, 1);
+                $this->grant($user->id, $permission->id, $division->id, 1);
                 $user->dashboard = 'notes';
                 break;
             case 'coder':
@@ -41,15 +41,14 @@ trait Authorizable
         return $user->save();
     }
 
-    public function grant($user, $permission, $division, $grantorId, $validUntil = null)
+    public function grant($userId, $permissionId, $divisionId, $grantorId, $validUntil = null)
     {
         $auth = \App\Authorize::insert([
-            'granted_by'    => $grantorId,
-            'valid_until'   => $validUntil,
-            'division_id'   => $division->id,
-            'permission_id' => $permission->id,
+                  'user_id' => $userId,
+               'granted_by' => $grantorId,
+              'valid_until' => $validUntil,
+              'division_id' => $divisionId,
+            'permission_id' => $permissionId,
         ]);
-        
-        $user->authorizes()->attach($auth);
     }
 }

@@ -195,6 +195,11 @@ class User extends Authenticatable implements AutoId
         $this->save();
     }
 
+    public function expired()
+    {
+        return \Carbon\Carbon::now() > $this->expiry_date;
+    }
+
     public static function findByUniqueField($field, $value)
     {
         if ( $field == 'org_id' ) {

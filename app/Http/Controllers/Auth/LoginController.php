@@ -59,7 +59,7 @@ class LoginController extends Controller
         // *** IMPLEMENT ThrottlesLogins ***
         return [
             'reply_code' => 1,
-            'reply_text' => 'Your credential not matched our records.'
+            'reply_text' => 'Your credential not matched our records or expired.'
         ];
         // return redirect()->back()->with('error', 'credential not matched');
     }
@@ -75,6 +75,9 @@ class LoginController extends Controller
 
         if (filter_var($request->org_id, FILTER_VALIDATE_EMAIL)) {
             // auth via app
+            if ( $user->expired() ) {
+                return null;
+            }
             $hash = app('db')->table('users')->select('password')->where('id', $user->id)->first()->password;
             return password_verify($request->password, $hash) ? $user : null;
         } else {

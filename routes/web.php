@@ -13,6 +13,10 @@ Route::get('/home', function() {
     return view('home');
 });
 
+Route::get('/not-allowed', function() {
+    return view('not-allowed');
+});
+
 Route::get('/lists/{type}/{listName}', 'ListController@getList');
 
 Route::get('/is-session-active', function() {

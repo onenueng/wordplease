@@ -23,7 +23,7 @@ class NoteController extends Controller
         if ( $gate->allows('create-note') ) {
             return 'notes';
         }
-        return 'not allowed';
+        return redirect('not-allowed');
     }
 
     public function audit()

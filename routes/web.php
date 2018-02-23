@@ -28,7 +28,7 @@ Route::post('/register', 'Auth\RegisterController@register');
 // login
 Route::get('/login', ['as' => 'login', 'uses' => 'Auth\LoginController@showLoginForm']);
 Route::post('/login', 'Auth\LoginController@login');
-Route::post('/js-login', 'Auth\LoginController@jsLogin');
+Route::post('/front-end-login', 'Auth\LoginController@frontEndLogin');
 Route::get('/logout', ['as' => 'logout', 'uses' => 'Auth\LoginController@logout']);
 
 // user

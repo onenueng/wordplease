@@ -81,7 +81,7 @@
             EventBus.$on('login-click', () => {
                 if ( this.hasId() && this.hasPassword() ) {
                     this.loginButtonLabel = 'Logging in <i class="fa fa-circle-o-notch fa-spin"></i>'
-                    axios.post('/js-login', {
+                    axios.post('/front-end-login', {
                         org_id: this.userInputOrgId,
                         password: this.userInputPassword
                     })

@@ -342,7 +342,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         EventBus.$on('login-click', function () {
             if (_this.hasId() && _this.hasPassword()) {
                 _this.loginButtonLabel = 'Logging in <i class="fa fa-circle-o-notch fa-spin"></i>';
-                axios.post('/js-login', {
+                axios.post('/front-end-login', {
                     org_id: _this.userInputOrgId,
                     password: _this.userInputPassword
                 }).then(function (response) {

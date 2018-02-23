@@ -46,7 +46,7 @@ class LoginController extends Controller
         return redirect()->back()->with('error', 'credential not matched');
     }
 
-    public function jsLogin()
+    public function frontEndLogin()
     {
         $user = $this->attemptLogin();
 

@@ -200,6 +200,16 @@ class User extends Authenticatable implements AutoId
         return \Carbon\Carbon::now() > $this->expiry_date;
     }
 
+    public function allowed($permissionName)
+    {
+        foreach ( $this->authorizes as $authorize ) {
+            if ( $authorize->permission->name == $permissionName ) {
+                return $authorize;
+            }
+        }
+        return null;
+    }
+
     public static function findByUniqueField($field, $value)
     {
         if ( $field == 'org_id' ) {

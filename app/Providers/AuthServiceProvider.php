@@ -25,6 +25,8 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        Gate::define('create-note', function ($user) {
+            return $user->allowed('create-note') != null;
+        });
     }
 }

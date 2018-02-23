@@ -18,9 +18,12 @@ class NoteController extends Controller
      * @param  String  $fieldName
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(\Illuminate\Contracts\Auth\Access\Gate $gate)
     {
-        return 'notes';
+        if ( $gate->allows('create-note') ) {
+            return 'notes';
+        }
+        return 'not allowed';
     }
 
     public function audit()

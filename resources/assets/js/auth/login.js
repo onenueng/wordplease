@@ -3,6 +3,8 @@ require('../bootstrap')
 // use global event bus
 window.EventBus = new Vue()
 
+Vue.component('navbar-right', require('../components/navbars/NavbarRight.vue'))
+Vue.component('navbar-left', require('../components/navbars/NavbarLeft.vue'))
 Vue.component('login-page', require('../components/auth/LoginPage.vue'))
 Vue.component('modal-dialog', require('../components/ModalDialog.vue'))
 Vue.component('navbar', require('../components/navbars/Navbar.vue'))

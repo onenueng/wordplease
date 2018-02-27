@@ -3,16 +3,17 @@ require('../bootstrap')
 // use global event bus
 window.EventBus = new Vue()
 
-Vue.component('register-by-email', require('../components/auth/RegisterByEmail.vue'))
-Vue.component('register-by-id', require('../components/auth/RegisterById.vue'))
-Vue.component('navbar-right', require('../components/navbars/NavbarRight.vue'))
-Vue.component('register-page', require('../components/auth/RegisterPage.vue'))
-Vue.component('navbar-left', require('../components/navbars/NavbarLeft.vue'))
-Vue.component('input-state', require('../components/inputs/InputState.vue'))
+// Vue.component('login-page', require('../components/auth/LoginPage.vue'))
 Vue.component('modal-dialog', require('../components/ModalDialog.vue'))
-Vue.component('navbar', require('../components/navbars/Navbar.vue'))
-Vue.component('button-app', require('../components/ButtonApp.vue'))
-Vue.component('alert', require('../components/Alert.vue'))
+// Vue.component('navbar', require('../components/navbars/Navbar.vue'))
+// Vue.component('button-app', require('../components/ButtonApp.vue'))
+// Vue.component('alert', require('../components/Alert.vue'))
+
+Vue.component('create-note-form', require('../components/CreateNoteForm.vue'));
+Vue.component('creatable-notes', require('../components/CreatableNotes.vue'));
+Vue.component('appbar-right', require('../components/AppbarRight.vue'));
+Vue.component('navbar', require('../components/CreateNoteNavbar.vue'));
+// Vue.component('input-text', require('../components/InputText.vue'));
 
 window.app = new Vue({
     el: '#app',
@@ -34,13 +35,13 @@ window.app = new Vue({
         this.lastActiveSessionCheck = Date.now()
         $(window).on("focus", (e) => {
             let timeDiff = Date.now() - this.lastActiveSessionCheck
-            if ((timeDiff) > (window.SESSION_LIFETIME)) {
+            if ( (timeDiff) > (window.SESSION_LIFETIME) ) {
                 axios.get('/is-session-active')
-                    .then((response) => {
-                        if (!response.data.active) {
+                     .then((response) => {
+                        if ( !response.data.active ) {
                             EventBus.$emit('error-419')
                         }
-                    })
+                     })
             }
         })
 

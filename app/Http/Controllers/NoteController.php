@@ -21,7 +21,7 @@ class NoteController extends Controller
     public function index(\Illuminate\Contracts\Auth\Access\Gate $gate)
     {
         if ( $gate->allows('create-note') ) {
-            return 'notes';
+            return view('notes.index');
         }
         return redirect('not-allowed');
     }

@@ -3,6 +3,8 @@
         <navbar link="/home"
                 brand="Wordplease"
                 title="Login">
+                <navbar-left slot="navbar-left"></navbar-left>
+                <navbar-right slot="navbar-right"></navbar-right>
         </navbar>
 
         <div class="container-fluid">

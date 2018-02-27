@@ -23,7 +23,7 @@ mix.js('resources/assets/js/app.js', 'public/js')
         'autosize',
         'devbridge-autocomplete'
     ])
-   .js('resources/assets/js/create-note.js', 'public/js')
+   .js('resources/assets/js/notes/create-note.js', 'public/js')
    .js('resources/assets/js/edit-note.js', 'public/js')
    .js('resources/assets/js/auth/register.js', 'public/js')
    .js('resources/assets/js/auth/login.js', 'public/js')

@@ -196,6 +196,34 @@ class Inspiration
                 'cite' => 'Leo Tolstoy'
             ],
             [
+                'text' => "“Theory is when you know something, but it doesn't work. Practice is when something works, but you don't know why. Programmers combine theory and practice: Nothing works and they don't know why.”",
+                'cite' => 'Unknown'
+            ],
+            [
+                'text' => "“In programming, the hard part isn't solving problems, but deciding what problems to solve.”",
+                'cite' => 'Paul Graham'
+            ],
+            [
+                'text' => "“If you think it's simple, then you have misunderstood the problem.”",
+                'cite' => 'Bjarne Stroustrup'
+            ],
+            [
+                'text' => "“Every great developer you know got there by solving problems they were unqualified to solve until they actually did it.”",
+                'cite' => 'Patrick McKenzie'
+            ],
+            [
+                'text' => "“Complexity is such a bright candle for us hacker-moths.”",
+                'cite' => 'Rusty Russell'
+            ],
+            [
+                'text' => "“People don't care how much you know until they know how much you care.”",
+                'cite' => 'Mark Twain'
+            ],
+            [
+                'text' => "“The greatest danger for most of us is not that we aim too high and we miss it, but we aim too low and reach it.”",
+                'cite' => 'Michelangelo'
+            ],
+            [
                 'text' => "“”",
                 'cite' => ''
             ],

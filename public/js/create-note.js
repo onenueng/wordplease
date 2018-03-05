@@ -1222,131 +1222,9 @@ if (false) {
 /* 30 */,
 /* 31 */,
 /* 32 */,
-/* 33 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(0)
-/* script */
-var __vue_script__ = __webpack_require__(34)
-/* template */
-var __vue_template__ = __webpack_require__(35)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/AppbarRight.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-024aa183", Component.options)
-  } else {
-    hotAPI.reload("data-v-024aa183", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 34 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['username'],
-    data: function data() {
-        return {
-            actions: []
-        };
-    },
-    mounted: function mounted() {
-        var _this = this;
-
-        axios.get('/get-actions').then(function (response) {
-            _this.actions = response.data;
-        }).catch(function (error) {
-            console.log(error);
-        });
-    }
-});
-
-/***/ }),
-/* 35 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "ul",
-    { staticClass: "nav navbar-nav navbar-right" },
-    [
-      _vm._t("default"),
-      _vm._v(" "),
-      _c("li", { staticClass: "active" }, [
-        _c("a", { attrs: { role: "button" } }, [_vm._v(_vm._s(_vm.username))])
-      ]),
-      _vm._v(" "),
-      _vm._m(0)
-    ],
-    2
-  )
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("li", { staticClass: "hvr-bounce-to-top" }, [
-      _c("a", { attrs: { href: "/logout" } }, [
-        _c("span", { staticClass: "fa fa-sign-out" })
-      ])
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-024aa183", module.exports)
-  }
-}
-
-/***/ }),
+/* 33 */,
+/* 34 */,
+/* 35 */,
 /* 36 */,
 /* 37 */,
 /* 38 */,
@@ -1388,14 +1266,15 @@ if (false) {
 /* 74 */,
 /* 75 */,
 /* 76 */,
-/* 77 */
+/* 77 */,
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(78);
+module.exports = __webpack_require__(79);
 
 
 /***/ }),
-/* 78 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function($) {__webpack_require__(5);
@@ -1409,10 +1288,12 @@ Vue.component('modal-dialog', __webpack_require__(10));
 // Vue.component('button-app', require('../components/ButtonApp.vue'))
 // Vue.component('alert', require('../components/Alert.vue'))
 
-Vue.component('create-note-form', __webpack_require__(79));
-Vue.component('creatable-notes', __webpack_require__(82));
-Vue.component('appbar-right', __webpack_require__(33));
-Vue.component('navbar', __webpack_require__(87));
+Vue.component('create-note-form', __webpack_require__(80));
+Vue.component('creatable-notes', __webpack_require__(83));
+Vue.component('navbar-left', __webpack_require__(88));
+Vue.component('navbar-right', __webpack_require__(91));
+Vue.component('navbar', __webpack_require__(94));
+// Vue.component('navbar', require('../components/CreateNoteNavbar.vue'));
 // Vue.component('input-text', require('../components/InputText.vue'));
 
 window.app = new Vue({
@@ -1452,15 +1333,15 @@ window.app = new Vue({
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 79 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(80)
+var __vue_script__ = __webpack_require__(81)
 /* template */
-var __vue_template__ = __webpack_require__(81)
+var __vue_template__ = __webpack_require__(82)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -1499,7 +1380,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 80 */
+/* 81 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1528,9 +1409,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['pattern', 'isValidAn'],
+    props: {
+        pattern: {
+            type: String,
+            required: true
+        }
+    },
     data: function data() {
         return {
             an: '',
@@ -1542,7 +1429,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     methods: {
-        debouncer: function debouncer() {},
+        checkAn: function checkAn() {},
         assignTooltip: function assignTooltip(message) {
             $('#an').attr('data-original-title', message);
             if (message != '') {
@@ -1561,9 +1448,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     mounted: function mounted() {
         var _this = this;
 
-        this.debouncer = _.debounce(function () {
+        this.checkAn = _.debounce(function () {
             if (!_this.validator.test(_this.an)) {
-                _this.$emit('invalidAn');
+                _this.$emit('invalid-an');
                 if (_this.an == '') {
                     _this.statusClass = 'form-group has-feedback';
                     _this.iconStatusClass = 'form-control-feedback';
@@ -1574,12 +1461,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     _this.assignTooltip('an ที่ใส่มาไม่ถูกต้องตามรูปแบบนะจ๊ะ');
                 }
             } else {
-                _this.$emit('validAn');
+                _this.$emit('valid-an');
                 _this.statusClass = 'form-group has-feedback has-success';
                 _this.iconStatusClass = 'form-control-feedback fa fa-check';
                 _this.assignTooltip('');
             }
-        }, 500);
+        }, 800);
         $('#an').tooltip({
             placement: "bottom",
             trigger: "hover",
@@ -1590,58 +1477,46 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(1)))
 
 /***/ }),
-/* 81 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "form",
-    {
-      staticClass: "navbar-form navbar-left",
-      attrs: { method: "POST", action: "/notes", id: "form-create-note" }
-    },
-    [
-      _c("div", { class: _vm.statusClass }, [
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.an,
-              expression: "an"
-            }
-          ],
-          staticClass: "form-control",
-          attrs: {
-            id: "an",
-            type: "text",
-            autocomplete: "off",
-            placeholder: "AN to create note",
-            "data-toggle": "tooltip"
-          },
-          domProps: { value: _vm.an },
-          on: {
-            input: [
-              function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.an = $event.target.value
-              },
-              function($event) {
-                _vm.debouncer()
+  return _c("form", { staticClass: "navbar-form navbar-left" }, [
+    _c("div", { class: _vm.statusClass }, [
+      _c("input", {
+        directives: [
+          { name: "model", rawName: "v-model", value: _vm.an, expression: "an" }
+        ],
+        staticClass: "form-control",
+        attrs: {
+          placeholder: "AN to create note",
+          "data-toggle": "tooltip",
+          autocomplete: "off",
+          type: "text",
+          id: "an"
+        },
+        domProps: { value: _vm.an },
+        on: {
+          input: [
+            function($event) {
+              if ($event.target.composing) {
+                return
               }
-            ]
-          }
-        }),
-        _vm._v(" "),
-        _c("span", { class: _vm.iconStatusClass })
-      ])
-    ]
-  )
+              _vm.an = $event.target.value
+            },
+            function($event) {
+              _vm.checkAn()
+            }
+          ]
+        }
+      }),
+      _vm._v(" "),
+      _c("span", { class: _vm.iconStatusClass })
+    ])
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -1654,19 +1529,19 @@ if (false) {
 }
 
 /***/ }),
-/* 82 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(83)
+  __webpack_require__(84)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(85)
+var __vue_script__ = __webpack_require__(86)
 /* template */
-var __vue_template__ = __webpack_require__(86)
+var __vue_template__ = __webpack_require__(87)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -1705,13 +1580,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 83 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(84);
+var content = __webpack_require__(85);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -1731,7 +1606,7 @@ if(false) {
 }
 
 /***/ }),
-/* 84 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)(false);
@@ -1739,13 +1614,13 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* Enter and leave animations can use different */\n/* durations and timing functions.              */\n.slide-fade-enter-active {\n  /*transition: all .3s ease;*/\n  -webkit-transition: all .8s ease;\n  transition: all .8s ease;\n}\n.slide-fade-leave-active {\n  /*transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);*/\n  -webkit-transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);\n  transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);\n}\n.slide-fade-enter, .slide-fade-leave-to\n/* .slide-fade-leave-active below version 2.1.8 */ {\n  -webkit-transform: translateX(10px);\n          transform: translateX(10px);\n  opacity: 0;\n}\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* Enter and leave animations can use different */\n/* durations and timing functions.              */\n.slide-fade-enter-active {\n  /*transition: all .3s ease;*/\n  -webkit-transition: all .8s ease;\n  transition: all .8s ease;\n}\n.slide-fade-leave-active {\n  /*transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);*/\n  -webkit-transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);\n  transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);\n}\n.slide-fade-enter, .slide-fade-leave-to\n/* .slide-fade-leave-active below version 2.1.8 */ {\n  -webkit-transform: translateX(10px);\n          transform: translateX(10px);\n  opacity: 0;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 85 */
+/* 86 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1771,7 +1646,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         return {
             isShow: true,
-            notes: axios.get('/get-creatable-notes/' + document.getElementById('an').value).then(function (response) {
+            // notes: axios.get('/get-creatable-notes/' + document.getElementById('an').value)
+            notes: axios.get('/get-creatable-notes/12345678').then(function (response) {
                 _this.notes = response.data;
             }).catch(function (error) {
                 console.log(error);
@@ -1801,7 +1677,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(1)))
 
 /***/ }),
-/* 86 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -1864,15 +1740,15 @@ if (false) {
 }
 
 /***/ }),
-/* 87 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(88)
+var __vue_script__ = __webpack_require__(89)
 /* template */
-var __vue_template__ = __webpack_require__(89)
+var __vue_template__ = __webpack_require__(90)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -1889,7 +1765,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/CreateNoteNavbar.vue"
+Component.options.__file = "resources/assets/js/components/navbars/CreateNoteLeft.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -1898,9 +1774,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-5b36c7f5", Component.options)
+    hotAPI.createRecord("data-v-1bd12850", Component.options)
   } else {
-    hotAPI.reload("data-v-5b36c7f5", Component.options)
+    hotAPI.reload("data-v-1bd12850", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -1911,7 +1787,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 88 */
+/* 89 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1938,6 +1814,243 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+
+/* harmony default export */ __webpack_exports__["default"] = ({});
+
+/***/ }),
+/* 90 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm._m(0)
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("ul", { staticClass: "nav navbar-nav" }, [
+      _c("form", { staticClass: "navbar-form navbar-left" }, [
+        _c("div", { staticClass: "form-group" }, [
+          _c("input", { staticClass: "form-control", attrs: { type: "text" } })
+        ])
+      ]),
+      _vm._v(" "),
+      _c("li", { staticClass: "dropdown" }, [
+        _c(
+          "a",
+          {
+            staticClass: "dropdown-toggle",
+            attrs: {
+              "data-toggle": "dropdown",
+              role: "button",
+              "aria-haspopup": "true",
+              "aria-expanded": "false",
+              disabled: ""
+            }
+          },
+          [
+            _c("u", [_vm._v("HN 12345678 John Doe")]),
+            _vm._v(" | Create "),
+            _c("span", { staticClass: "fa fa-file-text" })
+          ]
+        ),
+        _vm._v(" "),
+        _c("ul", { staticClass: "dropdown-menu" }, [
+          _c("li", [
+            _c("a", { attrs: { href: "" } }, [_vm._v("a")]),
+            _vm._v(" "),
+            _c("a", { attrs: { href: "" } }, [_vm._v("b")]),
+            _vm._v(" "),
+            _c("a", { attrs: { href: "" } }, [_vm._v("c")])
+          ])
+        ])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-1bd12850", module.exports)
+  }
+}
+
+/***/ }),
+/* 91 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(92)
+/* template */
+var __vue_template__ = __webpack_require__(93)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/navbars/AuthenticatedNavbarRight.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-7e117bc0", Component.options)
+  } else {
+    hotAPI.reload("data-v-7e117bc0", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 92 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: {
+        username: {
+            type: String,
+            required: true
+        }
+    }
+});
+
+/***/ }),
+/* 93 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("ul", { staticClass: "nav navbar-nav navbar-right" }, [
+    _c("li", { staticClass: "active" }, [
+      _c("a", { attrs: { role: "button" } }, [_vm._v(_vm._s(_vm.username))])
+    ]),
+    _vm._v(" "),
+    _vm._m(0)
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", { staticClass: "hvr-bounce-to-top" }, [
+      _c("a", { attrs: { href: "/logout" } }, [
+        _c("span", { staticClass: "fa fa-sign-out" })
+      ])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-7e117bc0", module.exports)
+  }
+}
+
+/***/ }),
+/* 94 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(95)
+/* template */
+var __vue_template__ = __webpack_require__(96)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/navbars/CreateNote.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-f07c109e", Component.options)
+  } else {
+    hotAPI.reload("data-v-f07c109e", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 95 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -1952,16 +2065,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['homeLink', 'departmentName', 'appName', 'username', 'pattern'],
-    data: function data() {
-        return {
-            isValidAn: false
-        };
+    props: {
+        link: {
+            type: String,
+            required: true
+        },
+        brand: {
+            type: String,
+            required: true
+        },
+        title: {
+            type: String,
+            required: true
+        }
     }
 });
 
 /***/ }),
-/* 89 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -1973,18 +2094,12 @@ var render = function() {
       _c("div", { staticClass: "navbar-header" }, [
         _vm._m(0),
         _vm._v(" "),
-        _c(
-          "a",
-          {
-            staticClass: "navbar-brand hvr-shutter-out-vertical",
-            attrs: { href: _vm.homeLink }
-          },
-          [_vm._v(_vm._s(_vm.departmentName))]
-        ),
+        _c("a", { staticClass: "navbar-brand", attrs: { href: _vm.link } }, [
+          _vm._v(_vm._s(_vm.brand))
+        ]),
         _vm._v(" "),
         _c("a", { staticClass: "navbar-brand active" }, [
-          _vm._v(_vm._s(_vm.appName) + " "),
-          _c("span", { staticClass: "sr-only" }, [_vm._v("(current)")])
+          _vm._v(_vm._s(_vm.title))
         ])
       ]),
       _vm._v(" "),
@@ -1992,33 +2107,10 @@ var render = function() {
         "div",
         {
           staticClass: "collapse navbar-collapse",
-          attrs: { id: "bs-example-navbar-collapse-1" }
+          attrs: { id: "app-navbar" }
         },
-        [
-          _c(
-            "ul",
-            { staticClass: "nav navbar-nav" },
-            [
-              _c("create-note-form", {
-                attrs: { pattern: _vm.pattern },
-                on: {
-                  validAn: function($event) {
-                    _vm.isValidAn = true
-                  },
-                  invalidAn: function($event) {
-                    _vm.isValidAn = false
-                  }
-                }
-              }),
-              _vm._v(" "),
-              _vm.isValidAn ? _c("creatable-notes") : _vm._e()
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c("appbar-right", { attrs: { username: _vm.username } })
-        ],
-        1
+        [_vm._t("navbar-left"), _vm._v(" "), _vm._t("navbar-right")],
+        2
       )
     ])
   ])
@@ -2035,7 +2127,7 @@ var staticRenderFns = [
         attrs: {
           type: "button",
           "data-toggle": "collapse",
-          "data-target": "#bs-example-navbar-collapse-1",
+          "data-target": "#app-navbar",
           "aria-expanded": "false"
         }
       },
@@ -2056,9 +2148,9 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-5b36c7f5", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-f07c109e", module.exports)
   }
 }
 
 /***/ })
-],[77]);
+],[78]);

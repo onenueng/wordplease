@@ -124,8 +124,8 @@ class Inspiration
                 'cite' => 'เจ้าหน้าที่นิรนาม'
             ],
             [
-                'text' => "“Tell me and I forget. Teach me and I remember. Involve me and I learn.”",
-                'cite' => 'Benjamin Franklin'
+                'text' => "“Tell me, and I will forget. Show me, and I may remember. Involve me, and I will understand.”",
+                'cite' => 'Confucius'
             ],
             [
                 'text' => "“The secret of getting ahead is getting started.”",
@@ -222,6 +222,30 @@ class Inspiration
             [
                 'text' => "“The greatest danger for most of us is not that we aim too high and we miss it, but we aim too low and reach it.”",
                 'cite' => 'Michelangelo'
+            ],
+            [
+                'text' => "“It does not matter how slowly you go as long as you do not stop.”",
+                'cite' => 'Confucius'
+            ],
+            [
+                'text' => "“The tragedy of life is not that it ends so soon, but that we wait so long to begin it.”",
+                'cite' => 'W.M. Lewis'
+            ],
+            [
+                'text' => "“Happiness is not a station you arrive at, but a manner of travelling.”",
+                'cite' => 'Margaret B. Runbeck'
+            ],
+            [
+                'text' => "“If you are afraid of failure you don't deserve to be succeddful!”",
+                'cite' => 'Charles Barkley'
+            ],
+            [
+                'text' => "“How lucky I am to have something that makes saying goodbye so hard.”",
+                'cite' => 'Winnie the Pooh'
+            ],
+            [
+                'text' => "“It's not possible. No, it's necessary.”",
+                'cite' => 'Interstellar'
             ],
             [
                 'text' => "“”",

@@ -17,13 +17,14 @@
         data () {
             return {
                 isShow: true,
-                notes: axios.get('/get-creatable-notes/' + document.getElementById('an').value)
+                // notes: axios.get('/get-creatable-notes/' + document.getElementById('an').value)
+                notes: axios.get('/get-creatable-notes/12345678')
                             .then( (response) => {
-                                this.notes = response.data;
+                                this.notes = response.data
                             }).catch( (error) => {
-                                console.log(error);
+                                console.log(error)
                             })
-            }
+            }   
         },
         methods: {
             action (base, as) {

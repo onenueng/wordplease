@@ -1,5 +1,6 @@
 <template>
-    <form method="POST" class="navbar-form navbar-left" action="/notes" id="form-create-note">
+    <!-- <form method="POST" class="navbar-form" action="/notes" id="form-create-note"> -->
+    <form class="navbar-form navbar-left">
         <!-- 
         <input type="hidden" id="note_content_id" name="note_content_id" />
         <input type="hidden" id="note_type_id" name="note_type_id" />
@@ -9,14 +10,14 @@
         -->
         <div :class="statusClass">
             <input
-                id="an"
-                type="text"
-                class="form-control"
-                autocomplete="off"
                 placeholder="AN to create note"
                 data-toggle="tooltip"
+                class="form-control"
+                @input="checkAn()"
+                autocomplete="off"
                 v-model="an"
-                @input="debouncer()" />
+                type="text"
+                id="an"/>
             <span :class="iconStatusClass"></span>
         </div>
     </form>
@@ -24,7 +25,12 @@
 
 <script>
     export default {
-        props: ['pattern', 'isValidAn'],
+        props: {
+            pattern: {
+                type: String,
+                required: true
+            }
+        },
         data () {
             return {
                 an : '',
@@ -35,18 +41,18 @@
             }
         },
         methods : {
-            debouncer () {
+            checkAn () {
 
             },
             assignTooltip (message) {
                 $('#an').attr('data-original-title', message)
                 if (message != '') {
-                    if (!this.isTooltip) {
+                    if ( !this.isTooltip ) {
                         $('#an').tooltip('show')
                         this.isTooltip = true
                     }
                 } else {
-                    if (this.isTooltip) {
+                    if ( this.isTooltip ) {
                         $('#an').tooltip('hide')
                         this.isTooltip = false
                     }
@@ -54,9 +60,9 @@
             }
         },
         mounted () {
-            this.debouncer = _.debounce( () => {
+            this.checkAn = _.debounce( () => {
                 if (!this.validator.test(this.an)) {
-                    this.$emit('invalidAn')
+                    this.$emit('invalid-an')
                     if (this.an == '') {
                         this.statusClass = 'form-group has-feedback'
                         this.iconStatusClass = 'form-control-feedback'
@@ -68,12 +74,12 @@
                         this.assignTooltip('an ที่ใส่มาไม่ถูกต้องตามรูปแบบนะจ๊ะ')
                     }
                 } else {
-                    this.$emit('validAn')
+                    this.$emit('valid-an')
                     this.statusClass = 'form-group has-feedback has-success'
                     this.iconStatusClass = 'form-control-feedback fa fa-check'
                     this.assignTooltip('')
                 }
-            }, 500)
+            }, 800)
             $('#an').tooltip({
                 placement: "bottom",
                 trigger: "hover",

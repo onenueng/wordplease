@@ -3,19 +3,8 @@ require('../bootstrap')
 // use global event bus
 window.EventBus = new Vue()
 
-// Vue.component('login-page', require('../components/auth/LoginPage.vue'))
+Vue.component('page-navbar', require('../components/navbars/CreateNote.vue'));
 Vue.component('modal-dialog', require('../components/ModalDialog.vue'))
-// Vue.component('navbar', require('../components/navbars/Navbar.vue'))
-// Vue.component('button-app', require('../components/ButtonApp.vue'))
-// Vue.component('alert', require('../components/Alert.vue'))
-
-Vue.component('create-note-form', require('../components/CreateNoteForm.vue'));
-Vue.component('creatable-notes', require('../components/CreatableNotes.vue'));
-Vue.component('navbar-left', require('../components/navbars/CreateNoteLeft.vue'));
-Vue.component('navbar-right', require('../components/navbars/AuthenticatedNavbarRight.vue'));
-Vue.component('navbar', require('../components/navbars/CreateNote.vue'));
-// Vue.component('navbar', require('../components/CreateNoteNavbar.vue'));
-// Vue.component('input-text', require('../components/InputText.vue'));
 
 window.app = new Vue({
     el: '#app',

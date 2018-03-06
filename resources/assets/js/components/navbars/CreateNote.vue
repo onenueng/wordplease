@@ -1,40 +1,77 @@
 <template>
-    <nav class="navbar navbar-default navbar-fixed-top">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar" aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" :href="link">{{ brand }}</a>
-                <a class="navbar-brand active">{{ title }}</a>
-            </div>
-
-            <div class="collapse navbar-collapse" id="app-navbar">
-                <slot name="navbar-left"></slot>
-                <slot name="navbar-right"></slot>
-            </div>
-        </div>
-    </nav>
+    <!-- Main Navbar -->
+    <navbar
+        :link=link
+        :brand=brand
+        :title=title>
+        <!-- Navbar Left Actions -->
+        <ul
+            class="nav navbar-nav"
+            slot="navbar-left">
+            <an-form
+                :pattern=anPattern>
+            </an-form>
+            <creatable-notes
+                v-if="showCreatableNotes"
+                :an="an">
+            </creatable-notes>
+        </ul>
+        <!-- Navbar Right Actions -->
+        <navbar-right
+            slot="navbar-right"
+            :username=username>
+        </navbar-right>
+    </navbar>
 </template>
 
 <script>
+    import CreatableNotes from './components/CreatableNotes.vue'
+    import NavbarRight from './AuthenticatedNavbarRight.vue'
+    import AnForm from './components/AnForm.vue'
+    import Navbar from './Navbar.vue'
+    
     export default {
+        components: {
+            'creatable-notes': CreatableNotes,
+            'navbar-right': NavbarRight,
+            'an-form': AnForm,
+            'navbar': Navbar
+        },
         props: {
             link: {
                 type: String,
-                required: true
+                reqiured: true
             },
             brand: {
                 type: String,
-                required: true
+                reqiured: true
             },
             title: {
                 type: String,
-                required: true
+                reqiured: true
+            },
+            anPattern: {
+                type: String,
+                reqiured: true
+            },
+            username: {
+                type: String,
+                reqiured: true
             }
+        },
+        data () {
+            return {
+                showCreatableNotes: false,
+                an: ''
+            }
+        },
+        mounted() {
+            EventBus.$on('an-checked', (valid, value) => {
+                this.showCreatableNotes = valid
+                if ( valid ) {
+                    this.an = value
+                }
+            })
         }
     }
 </script>

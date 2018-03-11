@@ -248,6 +248,10 @@ class Inspiration
                 'cite' => 'Interstellar'
             ],
             [
+                'text' => "“Nothing you wear is more important than your smile.”",
+                'cite' => 'Connie Stevens'
+            ],
+            [
                 'text' => "“”",
                 'cite' => ''
             ],

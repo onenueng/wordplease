@@ -8,6 +8,7 @@
                 @input="checkAn()"
                 id="an-input"
                 v-model="an"
+                :disabled="disabled"
                 type="text"/>
             <span :class="iconStatusClass"></span>
         </div>
@@ -25,6 +26,7 @@
         data () {
             return {
                 an : '',
+                disabled: null,
                 isTooltip: false,
                 statusClass: 'form-group has-feedback',
                 iconStatusClass: 'form-control-feedback',
@@ -70,8 +72,11 @@
                     }
                 } else {
                     EventBus.$emit('an-checked', true, this.an)
-                    this.statusClass = 'form-group has-feedback has-success'
-                    this.iconStatusClass = 'form-control-feedback fa fa-check'
+                    // this.statusClass = 'form-group has-feedback has-success'
+                    // this.iconStatusClass = 'form-control-feedback fa fa-check'
+                    this.disabled = ''
+                    this.statusClass = 'form-group has-feedback'
+                    this.iconStatusClass = 'form-control-feedback fa fa-circle-o-notch fa-spin'
                     this.assignTooltip('')
                 }
             }, 800)

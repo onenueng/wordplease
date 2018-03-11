@@ -1,7 +1,7 @@
 <template>
     <transition name="slide-fade">
-        <li v-if="true"><a href=""><span class="fa fa-circle-o-notch fa-spin"></span></a></li>
-        <li class="dropdown hvr-bounce-to-bottom" v-if="false">
+        <li v-if="typeof this.patientName == 'object'"><a href=""><span class="fa fa-circle-o-notch fa-spin"></span></a></li>
+        <li class="dropdown hvr-bounce-to-bottom" v-else="typeof this.patientName == 'object'">
             <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" disabled><u>{{ patientName }}</u> | Create <span class="fa fa-file-text"></span></a>
             <ul class="dropdown-menu">
                 <li v-for="note in notes">
@@ -54,7 +54,7 @@
                 placement: "bottom",
                 trigger: "hover",
                 delay: { "show": 100, "hide": 500 }
-            });
+            })
         }
     }
 </script>

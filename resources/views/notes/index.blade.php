@@ -10,6 +10,10 @@
     an-pattern="^[0-9]{8}$"
     username="{{ auth()->user()->name }}">
 </page-navbar>
+
+<pagination
+    pages-count="22">
+</pagination>
 @endsection
 
 @section('app-js')

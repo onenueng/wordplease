@@ -4,11 +4,11 @@
             <input
                 placeholder="AN to create note"
                 data-toggle="tooltip"
+                :disabled="disabled"
                 class="form-control"
                 @input="checkAn()"
                 id="an-input"
                 v-model="an"
-                :disabled="disabled"
                 type="text"/>
             <span :class="iconStatusClass"></span>
         </div>
@@ -64,7 +64,7 @@
                         this.statusClass = 'form-group has-feedback'
                         this.iconStatusClass = 'form-control-feedback'
                         this.assignTooltip('')
-                        
+
                     } else {
                         this.statusClass = 'form-group has-feedback has-warning'
                         this.iconStatusClass = 'form-control-feedback fa fa-warning'
@@ -72,8 +72,6 @@
                     }
                 } else {
                     EventBus.$emit('an-checked', true, this.an)
-                    // this.statusClass = 'form-group has-feedback has-success'
-                    // this.iconStatusClass = 'form-control-feedback fa fa-check'
                     this.disabled = ''
                     this.statusClass = 'form-group has-feedback'
                     this.iconStatusClass = 'form-control-feedback fa fa-circle-o-notch fa-spin'
@@ -85,6 +83,17 @@
                 placement: "bottom",
                 trigger: "hover",
                 delay: { "show": 100, "hide": 500 }
+            })
+
+            EventBus.$on('anSearched', (canCreate) => {
+                this.disabled = null
+                if ( canCreate ) {
+                    this.statusClass = 'form-group has-feedback has-success'
+                    this.iconStatusClass = 'form-control-feedback fa fa-check'
+                } else {
+                    this.statusClass = 'form-group has-feedback has-warning'
+                    this.iconStatusClass = 'form-control-feedback fa fa-warning'
+                }
             })
         }
     }

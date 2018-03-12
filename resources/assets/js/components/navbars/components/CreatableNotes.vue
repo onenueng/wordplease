@@ -1,11 +1,13 @@
 <template>
     <transition name="slide-fade">
-        <li v-if="typeof this.patientName == 'object'"><a href=""><span class="fa fa-circle-o-notch fa-spin"></span></a></li>
-        <li class="dropdown hvr-bounce-to-bottom" v-else="typeof this.patientName == 'object'">
-            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" disabled><u>{{ patientName }}</u> | Create <span class="fa fa-file-text"></span></a>
-            <ul class="dropdown-menu">
-                <li v-for="note in notes">
-                    <a  :title="note.title" data-toggle="tooltip" :class="getClass(note.title)"  
+        <!-- <li v-if="typeof this.patientName == 'object'"><a href=""><span class="fa fa-circle-o-notch fa-spin"></span></a></li> -->
+        <li class="dropdown hvr-bounce-to-bottom" v-if="typeof this.patientName == 'string'">
+            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" disabled>
+                <u>{{ patientName }}</u><span v-if="showCreatableNotes"> | Create <i class="fa fa-file-text"></i></span>
+            </a>
+            <ul class="dropdown-menu" v-if="showCreatableNotes">
+                <li v-for="note in notes" :key="note.base + '' + note.as">
+                    <a  :title="note.title" data-toggle="tooltip" :class="getClass(note.title)"
                     :style="note.style" @click="action(note.base, note.as)" v-html="note.label"></a>
                 </li>
             </ul>
@@ -30,13 +32,23 @@
                                 console.log(error)
                             }),
 
-                patientName: axios.get('/admit/' + this.an)
+                patientName: axios.post('/admit/' + this.an)
                                   .then( (response) => {
-                                      this.patientName = 'HN ' + response.data.hn + ' ' + response.data.patient_name
+                                      if ( response.data.hn == undefined ) {
+                                          this.patientName = 'an data not found, please try again.'
+                                          EventBus.$emit('anSearched', false)
+                                      } else {
+                                          this.patientName = 'HN ' + response.data.hn + ' ' + response.data.patient_name
+                                          EventBus.$emit('anSearched', true)
+                                          this.showCreatableNotes = true
+                                      }
+
                                   }).catch( (error) => {
                                       console.log(error)
                                   }),
-            }   
+
+                showCreatableNotes: false
+            }
         },
         methods: {
             action (base, as) {

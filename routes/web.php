@@ -43,6 +43,11 @@ Route::get('/authenticated', ['as' => 'authenticated', 'uses' => 'UserController
 Route::get('/notes', ['as' => 'notes', 'uses' => 'NoteController@index']);
 Route::get('/audit', ['as' => 'audit', 'uses' => 'NoteController@audit']); // TEMP USES
 
+// *** NEED PROTECTION ***
+Route::post('/admit/{an}', function (App\Contracts\PatientDataAPI $api, $an) {
+    return $api->getAdmission($an);
+});
+
 //
 // Route::get('/authenticated', 'UserController@authenticated');
 // Route::get('/authenticated', ['as' => 'authenticated', 'uses' => 'UserController@authenticated']);
@@ -147,9 +152,7 @@ Route::get('/get-creatable-notes/{an}', function ($an) {
     ];
 });
 
-Route::get('/admit/{an}', function (App\Contracts\PatientDataAPI $api, $an) {
-    return $api->getAdmission($an);
-});
+
 
 Route::get('/test-pse', function (App\Contracts\UserAPI $api) {
     return $api->getUser(10022569);

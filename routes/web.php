@@ -162,3 +162,7 @@ Route::get('/test-waja', function () {
     $t = new Tests\TestWaja;
     return $t->checkRegistryData([]);
 });
+
+Route::get('pagy', function () {
+    return App\Models\Lists\Division::paginate()->toArray()['data'];
+});

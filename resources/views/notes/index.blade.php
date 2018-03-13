@@ -12,7 +12,7 @@
 </page-navbar>
 
 <pagination
-    pages-count="11">
+    pages-count="13">
 </pagination>
 @endsection
 
@@ -25,7 +25,7 @@
             rangeWithDots = [],
             l;
 
-        range.push(1);  
+        range.push(1);
 
         if (nrOfPages <= 1){
         return range;
@@ -35,7 +35,7 @@
             if (i < nrOfPages && i > 1) {
                 range.push(i);
             }
-        }  
+        }
         range.push(nrOfPages);
 
         for (let i of range) {

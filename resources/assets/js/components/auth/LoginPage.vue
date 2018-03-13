@@ -45,13 +45,12 @@
                         status="info">
                     </button-app>
 
-                    <a href="/register">Or register a new one</a>
+                    <a href="/register" v-if="!whileLogginIn">Or register a new one</a>
 
                     <transition
                         name="custom-classes-transition"
                         enter-active-class="animated fadeInDown"
-                        leave-active-class="animated fadeOutUp"
-                      >
+                        leave-active-class="animated fadeOutUp">
                         <alert
                             state="danger"
                             icon="fa fa-remove fa-3x"
@@ -76,12 +75,14 @@
                 loginButtonLabel: 'Login',
                 alertContent: '',
                 alertAnimated: '',
-                alert: false
+                alert: false,
+                whileLogginIn: false
             }
         },
         mounted() {
             EventBus.$on('login-click', () => {
                 if ( this.hasId() && this.hasPassword() ) {
+                    this.whileLogginIn = true
                     this.loginButtonLabel = 'Logging in <i class="fa fa-circle-o-notch fa-spin"></i>'
                     axios.post('/front-end-login', {
                         org_id: this.userInputOrgId,
@@ -98,11 +99,13 @@
                                 this.alert = false
                             }, 5000);
                             this.loginButtonLabel = 'Login'
+                            this.whileLogginIn = false
                         }
                     })
                     .catch( (error) => {
                         console.log(error)
                         this.loginButtonLabel = 'Login'
+                        this.whileLogginIn = false
                     })
                 }
             })

@@ -3,9 +3,11 @@ require('../bootstrap')
 // use global event bus
 window.EventBus = new Vue()
 
+Vue.component('data-sheet', require('../components/datasheets/NotesIndex.vue'))
 Vue.component('page-navbar', require('../components/navbars/CreateNote.vue'))
 Vue.component('modal-dialog', require('../components/ModalDialog.vue'))
-Vue.component('pagination', require('../components/Pagination.vue'))
+// Vue.component('pagination', require('../components/Pagination.vue'))
+
 
 window.app = new Vue({
     el: '#app',

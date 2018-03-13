@@ -11,9 +11,12 @@
     username="{{ auth()->user()->name }}">
 </page-navbar>
 
-<pagination
+<!-- <pagination
     pages-count="13">
-</pagination>
+</pagination> -->
+<data-sheet
+    pages-count=20>
+</data-sheet>
 @endsection
 
 @section('app-js')

@@ -407,6 +407,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             type: String,
             required: true
         }
+    },
+    mounted: function mounted() {
+        EventBus.$on('pageClicked', function (page) {
+            axios.get('/pagy?page=' + page).then(function (response) {
+                console.log(response.data);
+            }).catch(function (error) {
+                console.log(error);
+            });
+            console.log('page ' + page + ' clicked');
+        });
     }
 });
 

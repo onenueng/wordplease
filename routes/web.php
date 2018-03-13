@@ -164,5 +164,6 @@ Route::get('/test-waja', function () {
 });
 
 Route::get('pagy', function () {
-    return App\Models\Lists\Division::paginate()->toArray()['data'];
+    // $pages = App\Models\Lists\Division::paginate(5,['*'],'page',3)->toArray()
+    return App\Models\Lists\Division::paginate(5)->toArray()['data'];
 });

@@ -22,6 +22,8 @@ class CreateUsersTable extends Migration
             $table->string('email'); // encrypt
             $table->string('full_name', 512); // encrypt
             $table->string('full_name_en', 512); // encrypt
+            $table->smallInteger('division_id')->unsigned()->index()->default(100); // default Faculty
+            $table->foreign('division_id')->references('id')->on('divisions');
             $table->string('pln')->nullable(); // encrypt professional license number
             $table->string('dashboard')->default('profile');
             $table->string('verify_code', config('constant.VERIFY_CODE_LENGTH'));

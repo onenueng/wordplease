@@ -2,11 +2,14 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use App\Contracts\AutoId;
 use App\Traits\DataCryptable;
+use App\Models\Lists\Division;
 use App\Traits\AutoIdInsertable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+
 
 class User extends Authenticatable implements AutoId
 {
@@ -25,7 +28,7 @@ class User extends Authenticatable implements AutoId
         'org_id',
         'password',
         'full_name',
-        'full_name_en',
+        'full_name_en'
     ];
 
     /**
@@ -170,7 +173,7 @@ class User extends Authenticatable implements AutoId
     }
 
     /**
-     * Generate multi digits code for verification.
+     * Generate digits code for verification.
      *
      * @return String
      */
@@ -184,20 +187,25 @@ class User extends Authenticatable implements AutoId
         );
     }
 
+    public function division()
+    {
+        return $this->belongsTo(Division::class);
+    }
+
     public function authorizes()
     {
-        return $this->hasMany('\App\Authorize');
+        return $this->hasMany(Authorize::class);
     }
 
     public function seen()
     {
-        $this->last_seen = \Carbon\Carbon::now();
+        $this->last_seen = Carbon::now();
         $this->save();
     }
 
     public function expired()
     {
-        return \Carbon\Carbon::now() > $this->expiry_date;
+        return Carbon::now() > $this->expiry_date;
     }
 
     public function allowed($permissionName)

@@ -5,8 +5,8 @@
 @section('content')
 <page-navbar
     link="/"
-    brand="Medicine"
-    title="IPD Note"
+    brand="IPD Note"
+    title="{{ auth()->user()->division->name_eng_short }}"
     an-pattern="^[0-9]{8}$"
     username="{{ auth()->user()->name }}">
 </page-navbar>

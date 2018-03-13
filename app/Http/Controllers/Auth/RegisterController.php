@@ -122,10 +122,15 @@ class RegisterController extends Controller
         // try to authorize new user
         foreach ( $users as $user ) {
             if ( $user['org_id'] == $newUser->org_id ) {
+                $newUser->division()
+                        ->associate(\App\Models\Lists\Division::where('name_eng_short', $user['division'])->first())
+                        ->save();
+
                 if ( $user['pln'] != null ) {
                     $newUser->pln = $user['pln'];
                     $newUser->save();
                 }
+
                 $user['user_id'] = $newUser->id;
                 $this->grantRoleDefaultPermissions($user);
                 break;

@@ -2,11 +2,12 @@
 
 namespace App\Models\Lists;
 
+use App\User;
 use App\Contracts\AutoId;
 use App\Contracts\ListItem;
-use App\Traits\AutoIdInsertable;
-use App\Traits\DataImportable;
 use App\Traits\ListQueryable;
+use App\Traits\DataImportable;
+use App\Traits\AutoIdInsertable;
 use Illuminate\Database\Eloquent\Model;
 
 class Division extends Model implements AutoId, ListItem
@@ -33,5 +34,10 @@ class Division extends Model implements AutoId, ListItem
     public static function whereFields()
     {
         return ['name', 'name_eng'];
+    }
+
+    public function users()
+    {
+        return $this->hasMany(User::class);
     }
 }

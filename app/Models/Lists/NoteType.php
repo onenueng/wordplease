@@ -3,8 +3,8 @@
 namespace App\Models\Lists;
 
 use App\Contracts\AutoId;
-use App\Traits\AutoIdInsertable;
 use App\Traits\DataImportable;
+use App\Traits\AutoIdInsertable;
 use Illuminate\Database\Eloquent\Model;
 
 class NoteType extends Model implements AutoId
@@ -18,12 +18,12 @@ class NoteType extends Model implements AutoId
      */
     protected $fillable = [
         'id',
-        'division_id',
         'name',
         'class', // admission/discharge/service.
-        'resource_name',
-        'view_path',
         'gender', // 0 => female only/ 1 => male only/ 2 => all gender.
+        'view_path',
         'table_name',
+        'division_id',
+        'resource_name',
     ];
 }

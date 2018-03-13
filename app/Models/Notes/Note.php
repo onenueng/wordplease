@@ -2,10 +2,10 @@
 
 namespace App\Models\Notes;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Contracts\AutoId;
-use App\Traits\AutoIdInsertable;
 use App\Traits\DataCryptable;
+use App\Traits\AutoIdInsertable;
+use Illuminate\Database\Eloquent\Model;
 
 class Note extends Model implements AutoId
 {
@@ -19,13 +19,13 @@ class Note extends Model implements AutoId
     protected $fillable = [
         'id',
         'an',
-        'note_type_id',
-        'note_content_id',
-        'datetime_admit',
-        'datetime_discharge',
         'ward_id',
-        'attending_staff_id',
         'division_id'
+        'note_type_id',
+        'datetime_admit',
+        'note_content_id',
+        'datetime_discharge',
+        'attending_staff_id',
     ];
 
     public static function willComplyUniqueRule($an, $noteTypeId)

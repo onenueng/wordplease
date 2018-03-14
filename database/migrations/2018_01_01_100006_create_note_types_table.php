@@ -18,6 +18,7 @@ class CreateNoteTypesTable extends Migration
             $table->primary('id');
             $table->tinyInteger('class')->unsigned(); // admission/discharge/service.
             $table->smallInteger('division_id')->unsigned(); // relation on division.
+            $table->foreign('division_id')->references('id')->on('divisions');
             $table->string('name');
             $table->string('resource_name');
             $table->string('view_path');
@@ -46,6 +47,5 @@ class CreateNoteTypesTable extends Migration
     {
         Schema::dropIfExists('note_type_user');
         Schema::dropIfExists('note_types');
-
     }
 }

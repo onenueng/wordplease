@@ -12,7 +12,7 @@
                         :title="note.title"
                         :class="getClass(note.creatable)"
                         :style="note.style"
-                        @click="createNote(note.base, note.as, note.creatable)"
+                        @click="createNote(note)"
                         v-html="note.label">
                     </a>
                 </li>
@@ -29,7 +29,7 @@
                 required: true
             }
         },
-        data () {
+        data() {
             return {
                 notes: axios.get('/get-creatable-notes/' + this.an)
                             .then( (response) => {
@@ -57,16 +57,16 @@
             }
         },
         methods: {
-            createNote (base, as, creatable) {
-                if (creatable) {
-                    alert("create " + base + " as " + as)
+            createNote(note) {
+                if ( note.creatable ) {
+                    EventBus.$emit('create-note-confirmation', 'Please confirm', 'body', 'create-confirmed', 'Create')
                 }
             },
-            getClass (creatable) {
+            getClass(creatable) {
                 return creatable ? 'hvr-underline-from-left creatable-tooltip' : 'unable-to-create creatable-tooltip disabled'
             }
         },
-        updated () {
+        updated() {
             $('.creatable-tooltip').tooltip({
                 container: "body",
                 placement: "bottom",

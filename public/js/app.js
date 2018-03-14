@@ -218,7 +218,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\components\\InputText.vue"
+Component.options.__file = "resources/assets/js/components/InputText.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -227,9 +227,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-f5c019a0", Component.options)
+    hotAPI.createRecord("data-v-2bcdf870", Component.options)
   } else {
-    hotAPI.reload("data-v-f5c019a0", Component.options)
+    hotAPI.reload("data-v-2bcdf870", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -510,7 +510,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-f5c019a0", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-2bcdf870", module.exports)
   }
 }
 
@@ -519,7 +519,7 @@ if (false) {
 /***/ 5:
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(__webpack_provided_window_dot_jQuery) {window._ = __webpack_require__(16);
+/* WEBPACK VAR INJECTION */(function(__webpack_provided_window_dot_jQuery) {window._ = __webpack_require__(21);
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -533,14 +533,14 @@ if (false) {
 //     require('bootstrap-sass');
 // } catch (e) {}
 window.$ = __webpack_provided_window_dot_jQuery = __webpack_require__(1);
-__webpack_require__(17);
+__webpack_require__(22);
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
  * to our Laravel back-end. This library automatically handles sending the
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-window.axios = __webpack_require__(18);
+window.axios = __webpack_require__(23);
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
@@ -558,14 +558,14 @@ if (token) {
   console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
 
-window.Vue = __webpack_require__(19);
+window.Vue = __webpack_require__(24);
 
 __webpack_require__(6);
-window.flatpickr = __webpack_require__(20); // const flatpickr = require("flatpickr");
+window.flatpickr = __webpack_require__(25); // const flatpickr = require("flatpickr");
 
-window.autosize = __webpack_require__(21);
+window.autosize = __webpack_require__(26);
 
-__webpack_require__(22); // need change to min
+__webpack_require__(27); // need change to min
 
 window.SESSION_LIFETIME = 1000 * 60 * 60; // an hour
 /**
@@ -703,7 +703,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\components\\Example.vue"
+Component.options.__file = "resources/assets/js/components/Example.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -712,9 +712,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-b6ebd97a", Component.options)
+    hotAPI.createRecord("data-v-650f2efa", Component.options)
   } else {
-    hotAPI.reload("data-v-b6ebd97a", Component.options)
+    hotAPI.reload("data-v-650f2efa", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -794,7 +794,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-b6ebd97a", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-650f2efa", module.exports)
   }
 }
 

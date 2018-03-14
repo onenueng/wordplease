@@ -29,7 +29,8 @@
         methods: {
             action (base, as) {
                 if (base != 0) {
-                    alert("create " + base + " as " + as)
+                    // alert("create " + base + " as " + as)
+                    EventBus.$emit('create-note-confirmation', 'title', 'action-xxx', 'label')
                 }
             },
             getClass (title) {

@@ -1,9 +1,8 @@
 <template>
-    <button
-        :class="style + status + (size == undefined ? '' : (' btn-' + size))"
-        :id="id"
-        @click="click"
-        v-html="label">
+    <button :id="id"
+            @click="click"
+            v-html="label"
+            :class="style + status + (size == undefined ? '' : (' btn-' + size))">
     </button>
 </template>
 

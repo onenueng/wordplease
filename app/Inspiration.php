@@ -252,6 +252,10 @@ class Inspiration
                 'cite' => 'Connie Stevens'
             ],
             [
+                'text' => "“Give a man a plane ticket and he'll fly for a day. Push him out of a plane and he'll fly for the rest of his life.”",
+                'cite' => 'Altcoin Thoreau'
+            ],
+            [
                 'text' => "“”",
                 'cite' => ''
             ],

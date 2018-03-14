@@ -120,36 +120,59 @@ Route::get('/get-ajax', function () {
 });
 
 Route::get('/get-creatable-notes/{an}', function ($an) {
-    return [
-        [
+    $creatableNotes = [];
+    foreach ( auth()->user()->canCreateNotes as $note ) {
+        $creatableNotes[] = [
             'style' => 'cursor: pointer',
-            'base' => 1,
-            'as' => 1,
-            'label' => 'Admission note' ,
-            'title' => ''
-        ],
-        [
-            'style' => 'cursor: pointer',
-            'base' => 1,
-            'as' => 4,
-            'label' => 'Admission note as On service note',
-            'title' => ''
-        ],
-        [
-            'style' => 'cursor: not-allowed',
-            'base' => 0,
-            'as' => 0,
-            'label' => '<s>Admission note as Off service note</s>',
-            'title' => 'not allowed'
-        ],
-        [
-            'style' => 'cursor: pointer',
-            'base' => 2,
-            'as' => 2,
-            'label' => 'Discharge summary' ,
-            'title' => ''
-        ],
-    ];
+            'base' => $note->id,
+            'as' => 99,
+            'label' => $note->name,
+            'title' => 'Create ' . $note->name,
+            'creatable' => true
+        ];
+        foreach( $note->canRetitledTo() as $title ) {
+            $creatableNotes[] = [
+                'style' => 'cursor: pointer',
+                'base' => $note->id,
+                'as' => 99,
+                'label' => $note->name . ' as ' . $title,
+                'title' => 'Create ' . $note->name . ' as ' . $title,
+                'creatable' => false
+            ];
+        }
+    }
+
+    return $creatableNotes;
+    // return [
+    //     [
+    //         'style' => 'cursor: pointer',
+    //         'base' => 1,
+    //         'as' => 1,
+    //         'label' => 'Admission note' ,
+    //         'title' => ''
+    //     ],
+    //     [
+    //         'style' => 'cursor: pointer',
+    //         'base' => 1,
+    //         'as' => 4,
+    //         'label' => 'Admission note as On service note',
+    //         'title' => ''
+    //     ],
+    //     [
+    //         'style' => 'cursor: not-allowed',
+    //         'base' => 0,
+    //         'as' => 0,
+    //         'label' => '<s>Admission note as Off service note</s>',
+    //         'title' => 'not allowed'
+    //     ],
+    //     [
+    //         'style' => 'cursor: pointer',
+    //         'base' => 2,
+    //         'as' => 2,
+    //         'label' => 'Discharge summary' ,
+    //         'title' => ''
+    //     ],
+    // ];
 });
 
 

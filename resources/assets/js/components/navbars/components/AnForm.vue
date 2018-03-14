@@ -7,6 +7,8 @@
                 :disabled="disabled"
                 class="form-control"
                 @input="checkAn()"
+                @focus="onfocus()"
+                @blur="onblur()"
                 id="an-input"
                 v-model="an"
                 type="text"/>
@@ -26,6 +28,7 @@
         data () {
             return {
                 an : '',
+                lastAn: '',
                 disabled: null,
                 isTooltip: false,
                 statusClass: 'form-group has-feedback',
@@ -40,6 +43,15 @@
         methods : {
             checkAn () {
                 // defind on mounted
+            },
+            onfocus () {
+                EventBus.$emit('an-checked', false, '')
+                this.lastAn = this.an
+            },
+            onblur () {
+                if ( this.lastAn == this.an ) {
+                    this.checkAn()
+                }
             },
             assignTooltip (message) {
                 $('#an-input').attr('data-original-title', message)

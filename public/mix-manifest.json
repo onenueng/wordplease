@@ -1,8 +1,8 @@
 {
     "/js/edit-note.js": "/js/edit-note.js",
     "/js/register.js": "/js/register.js",
-    "/js/vendor.js": "/js/vendor.js",
     "/js/create-note.js": "/js/create-note.js",
+    "/js/vendor.js": "/js/vendor.js",
     "/js/login.js": "/js/login.js",
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",

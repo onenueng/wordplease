@@ -6,9 +6,15 @@
                 <u>{{ patientName }}</u><span v-if="showCreatableNotes"> | Create <i class="fa fa-file-text"></i></span>
             </a>
             <ul class="dropdown-menu" v-if="showCreatableNotes">
-                <li v-for="note in notes" :key="note.base + '' + note.as">
-                    <a  :title="note.title" data-toggle="tooltip" :class="getClass(note.title)"
-                    :style="note.style" @click="action(note.base, note.as)" v-html="note.label"></a>
+                <li v-for="note in notes" :key="note.label">
+                    <a
+                        data-toggle="tooltip"
+                        :title="note.title"
+                        :class="getClass(note.creatable)"
+                        :style="note.style"
+                        @click="createNote(note.base, note.as, note.creatable)"
+                        v-html="note.label">
+                    </a>
                 </li>
             </ul>
         </li>
@@ -51,21 +57,21 @@
             }
         },
         methods: {
-            action (base, as) {
-                if (base != 0) {
+            createNote (base, as, creatable) {
+                if (creatable) {
                     alert("create " + base + " as " + as)
                 }
             },
-            getClass (title) {
-                return (title == '') ? 'hvr-underline-from-left' : 'creatable-note-title'
+            getClass (creatable) {
+                return creatable ? 'hvr-underline-from-left creatable-tooltip' : 'unable-to-create creatable-tooltip disabled'
             }
         },
         updated () {
-            $('.creatable-note-title').tooltip({
+            $('.creatable-tooltip').tooltip({
                 container: "body",
                 placement: "bottom",
                 trigger: "hover",
-                delay: { "show": 100, "hide": 500 }
+                delay: { "show": 100 }
             })
         }
     }
@@ -86,5 +92,10 @@
     /* .slide-fade-leave-active below version 2.1.8 */ {
       transform: translateX(10px);
       opacity: 0;
+    }
+
+    .unable-to-create {
+        text-decoration: line-through;
+        cursor: not-allowed!important;
     }
 </style>

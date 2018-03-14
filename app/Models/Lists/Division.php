@@ -3,6 +3,7 @@
 namespace App\Models\Lists;
 
 use App\User;
+use App\Models\Lists\NoteType;
 use App\Contracts\AutoId;
 use App\Contracts\ListItem;
 use App\Traits\ListQueryable;
@@ -39,5 +40,10 @@ class Division extends Model implements AutoId, ListItem
     public function users()
     {
         return $this->hasMany(User::class);
+    }
+
+    public function noteTypes()
+    {
+        return $this->hasMany(NoteType::class);
     }
 }

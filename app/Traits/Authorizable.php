@@ -8,17 +8,21 @@ trait Authorizable
 {
     public function grantRoleDefaultPermissions(Array $data)
     {
-        if ( $data['user_id'] == null || $data['division'] == null || $data['role'] == null ) {
-            return false;
-        }
+        // if ( $data['user_id'] == null || $data['division'] == null || $data['role'] == null ) {
+        //     return false;
+        // }
 
-        $division = \App\Models\Lists\Division::where('name_eng_short', $data['division'])->first();
+        // $division = \App\Models\Lists\Division::where('name_eng_short', $data['division'])->first();
 
-        if ( $division == null ) {
-            return false;
-        }
+        // if ( $division == null ) {
+        //     return false;
+        // }
 
         $user = \App\User::find($data['user_id']);
+
+        if ( $user == null || $user->division == null ) {
+            return false;
+        }
 
         switch ($data['role']) {
             case 'MD':
@@ -26,9 +30,9 @@ trait Authorizable
             case 'fellow':
             case 'staff':
                 $permission = \App\Permission::where('name', 'create-note')->first();
-                $this->grant($user->id, $permission->id, $division->id, 1);
+                $this->grant($user->id, $permission->id, $user->division->id, 1);
                 $permission = \App\Permission::where('name', 'view-all-note')->first();
-                $this->grant($user->id, $permission->id, $division->id, 1);
+                $this->grant($user->id, $permission->id, $user->division->id, 1);
                 $user->dashboard = 'notes';
                 break;
             case 'coder':
@@ -51,4 +55,48 @@ trait Authorizable
             'permission_id' => $permissionId,
         ]);
     }
+
+    public function grantRoleDefaultCanCreateNotes(array $data) {
+        // if ($data['user_id'] == null || $data['division'] == null || $data['role'] == null) {
+        //     return false;
+        // }
+
+        // $division = \App\Models\Lists\Division::where('name_eng_short', $data['division'])->first();
+
+        // if ($division == null) {
+        //     return false;
+        // }
+
+        $user = \App\User::find($data['user_id']);
+
+        if ($user == null || $user->division == null) {
+            return false;
+        }
+
+        switch ($data['role']) {
+            case 'MD':
+            case 'resident':
+            case 'fellow':
+            case 'staff':
+                $user->canCreateNotes()->attach($user->division->noteTypes->pluck('id')->toArray());
+                break;
+            default:
+                break;
+        }
+
+        // return $user->save();
+    }
+
+    // protected function validateData()
+    // {
+    //     if ($data['user_id'] == null || $data['division'] == null || $data['role'] == null) {
+    //         return false;
+    //     }
+
+    //     $division = \App\Models\Lists\Division::where('name_eng_short', $data['division'])->first();
+
+    //     if ($division == null) {
+    //         return false;
+    //     }
+    // }
 }

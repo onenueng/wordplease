@@ -2,6 +2,7 @@
 
 namespace App\Models\Lists;
 
+use App\User;
 use App\Contracts\AutoId;
 use App\Traits\DataImportable;
 use App\Traits\AutoIdInsertable;
@@ -26,4 +27,10 @@ class NoteType extends Model implements AutoId
         'division_id',
         'resource_name',
     ];
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
+
 }

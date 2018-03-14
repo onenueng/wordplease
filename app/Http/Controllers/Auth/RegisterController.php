@@ -119,20 +119,26 @@ class RegisterController extends Controller
             $users = [];
         }
 
-        // try to authorize new user
+        // init new user attributes from csv file
         foreach ( $users as $user ) {
             if ( $user['org_id'] == $newUser->org_id ) {
+                // division
                 $newUser->division()
                         ->associate(\App\Models\Lists\Division::where('name_eng_short', $user['division'])->first())
                         ->save();
 
+                // pln
                 if ( $user['pln'] != null ) {
                     $newUser->pln = $user['pln'];
                     $newUser->save();
                 }
 
+                // authorize
                 $user['user_id'] = $newUser->id;
                 $this->grantRoleDefaultPermissions($user);
+
+                // can creat notes
+                $this->grantRoleDefaultCanCreateNotes($user);
                 break;
             }
         }

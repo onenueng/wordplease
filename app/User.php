@@ -5,6 +5,7 @@ namespace App;
 use Carbon\Carbon;
 use App\Contracts\AutoId;
 use App\Traits\DataCryptable;
+use App\Models\Lists\NoteType;
 use App\Models\Lists\Division;
 use App\Traits\AutoIdInsertable;
 use Illuminate\Notifications\Notifiable;
@@ -195,6 +196,11 @@ class User extends Authenticatable implements AutoId
     public function authorizes()
     {
         return $this->hasMany(Authorize::class);
+    }
+
+    public function canCreateNotes()
+    {
+        return $this->belongsToMany(NoteType::class);
     }
 
     public function seen()

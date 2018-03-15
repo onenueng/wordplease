@@ -45,7 +45,37 @@ Route::get('/audit', ['as' => 'audit', 'uses' => 'NoteController@audit']); // TE
 
 // *** NEED PROTECTION ***
 Route::post('/admit/{an}', function (App\Contracts\PatientDataAPI $api, $an) {
+    // need cache
     return $api->getAdmission($an);
+});
+
+Route::get('/get-creatable-notes/{an}', function ($an) {
+    // get an from cache
+    $creatableNotes = [];
+    foreach (auth()->user()->canCreateNotes as $note) {
+        // check gender then
+        // check class unique
+        $creatableNotes[] = [
+            'style' => 'cursor: pointer',
+            'base' => $note->id,
+            'as' => 99,
+            'label' => $note->name,
+            'title' => 'Create ' . $note->name,
+            'creatable' => true
+        ];
+        foreach ($note->canRetitledTo() as $title) {
+            $creatableNotes[] = [
+                'style' => 'cursor: pointer',
+                'base' => $note->id,
+                'as' => 99,
+                'label' => $note->name . ' as ' . $title,
+                'title' => 'Create ' . $note->name . ' as ' . $title,
+                'creatable' => false
+            ];
+        }
+    }
+
+    return $creatableNotes;
 });
 
 //
@@ -118,64 +148,6 @@ Route::get('/get-ajax', function () {
 
     return response()->json($items);
 });
-
-Route::get('/get-creatable-notes/{an}', function ($an) {
-    $creatableNotes = [];
-    foreach ( auth()->user()->canCreateNotes as $note ) {
-        $creatableNotes[] = [
-            'style' => 'cursor: pointer',
-            'base' => $note->id,
-            'as' => 99,
-            'label' => $note->name,
-            'title' => 'Create ' . $note->name,
-            'creatable' => true
-        ];
-        foreach( $note->canRetitledTo() as $title ) {
-            $creatableNotes[] = [
-                'style' => 'cursor: pointer',
-                'base' => $note->id,
-                'as' => 99,
-                'label' => $note->name . ' as ' . $title,
-                'title' => 'Create ' . $note->name . ' as ' . $title,
-                'creatable' => false
-            ];
-        }
-    }
-
-    return $creatableNotes;
-    // return [
-    //     [
-    //         'style' => 'cursor: pointer',
-    //         'base' => 1,
-    //         'as' => 1,
-    //         'label' => 'Admission note' ,
-    //         'title' => ''
-    //     ],
-    //     [
-    //         'style' => 'cursor: pointer',
-    //         'base' => 1,
-    //         'as' => 4,
-    //         'label' => 'Admission note as On service note',
-    //         'title' => ''
-    //     ],
-    //     [
-    //         'style' => 'cursor: not-allowed',
-    //         'base' => 0,
-    //         'as' => 0,
-    //         'label' => '<s>Admission note as Off service note</s>',
-    //         'title' => 'not allowed'
-    //     ],
-    //     [
-    //         'style' => 'cursor: pointer',
-    //         'base' => 2,
-    //         'as' => 2,
-    //         'label' => 'Discharge summary' ,
-    //         'title' => ''
-    //     ],
-    // ];
-});
-
-
 
 Route::get('/test-pse', function (App\Contracts\UserAPI $api) {
     return $api->getUser(10022569);

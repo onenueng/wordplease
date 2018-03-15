@@ -1,9 +1,9 @@
 <template>
     <transition name="slide-fade">
-        <!-- <li v-if="typeof this.patientName == 'object'"><a href=""><span class="fa fa-circle-o-notch fa-spin"></span></a></li> -->
         <li class="dropdown hvr-bounce-to-bottom" v-if="typeof this.patientName == 'string'">
-            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" disabled>
-                <u>{{ patientName }}</u><span v-if="showCreatableNotes"> | Create <i class="fa fa-file-text"></i></span>
+            <a class="dropdown-toggle bigger-font-25" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" disabled>
+                <u>{{ patientName }}</u>
+                <span v-if="showCreatableNotes"> | Create <i class="fa fa-file-text"></i></span>
             </a>
             <ul class="dropdown-menu" v-if="showCreatableNotes">
                 <li v-for="note in notes" :key="note.label">
@@ -43,23 +43,58 @@
                                       if ( response.data.hn == undefined ) {
                                           this.patientName = 'an data not found, please try again.'
                                           EventBus.$emit('anSearched', false)
+                                          this.admission = null
                                       } else {
                                           this.patientName = 'HN ' + response.data.hn + ' ' + response.data.patient_name
                                           EventBus.$emit('anSearched', true)
                                           this.showCreatableNotes = true
+                                          this.admission = response.data
                                       }
 
                                   }).catch( (error) => {
                                       console.log(error)
+                                      this.admission = null
                                   }),
 
-                showCreatableNotes: false
+                showCreatableNotes: false,
+
+                admission: null
             }
         },
         methods: {
             createNote(note) {
                 if ( note.creatable ) {
-                    EventBus.$emit('create-note-confirmation', 'Please confirm', 'body', 'create-confirmed', 'Create')
+                    let body  = 'Create : <b>' + note.title + '</b><br/>'
+                        body += 'Hn : <b>' + this.admission.hn + '</b><br/>'
+                        body += 'Name : <b>' + this.admission.patient_name + '</b><br/>'
+                        body += 'Gender : <b>' + (this.admission.gender == 1 ? 'Male':'Female') + '</b><br/>'
+
+                    let data = {
+                        body: body,
+                        an: this.admission.an
+                    }
+// an:"57305678"
+// attending_name:"ผศ.นพ. ปัญญา ลักษณะพฤกษา"
+// datetime_admit:"2017-08-31 13:20:00"
+// datetime_dc:"2017-09-20 13:00:00"
+// discharge_status:"2"
+// discharge_status_name:"IMPROVED"
+// discharge_type:"1"
+// discharge_type_name:"WITH APPROVAL"
+// dob:"1971-11-27"
+// gender:1
+// hn:"53701921"
+// patient_dept:""
+// patient_dept_name:""
+// patient_name:"นาย หน่อย จันทร์รอด"
+// patient_sub_dept:""
+// patient_sub_dept_name:""
+// reply_code:"0"
+// reply_text:"success."
+// ward_name:"เฉลิมพระเกียรติ์ 10 ใต้"
+// ward_name_short:"ฉก.10 ใต้"
+
+                    EventBus.$emit('show-create-note-confirmation', data)
                 }
             },
             getClass(creatable) {

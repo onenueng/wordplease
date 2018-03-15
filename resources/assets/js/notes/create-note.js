@@ -16,7 +16,12 @@ window.app = new Vue({
         dialogMessage: '',
         dialogButtonLabel: '',
 
-        lastActiveSessionCheck: 0
+        lastActiveSessionCheck: 0,
+
+        actionModalHeading: '',
+        actionModalEvent: '',
+        actionModalButtonLabel: '',
+        actionModalContent: ''
     },
     mounted() {
         /* *** Handle session timeout *** */
@@ -37,6 +42,21 @@ window.app = new Vue({
                         }
                      })
             }
+        })
+
+        EventBus.$on('show-create-note-confirmation', (data) => {
+            this.actionModalHeading = 'Please confirm'
+            this.actionModalButtonLabel = 'Confirm'
+            this.actionModalContent = data.body
+            this.actionModalEvent = 'action-xyz'
+            EventBus.$emit('toggle-modal-action', 'show')
+        })
+
+        EventBus.$on('action-xyz', () => {
+            EventBus.$emit('modal-action-processing', true)
+            // create note if success redirect or feedback user
+            EventBus.$emit('toggle-modal-action', 'hide')
+            EventBus.$emit('modal-action-processing', false)
         })
 
         $('#page-loader').remove()

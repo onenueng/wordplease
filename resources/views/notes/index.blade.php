@@ -5,7 +5,12 @@
 @section('content')
 
 <!-- create note confirmation -->
-<modal-action></modal-action>
+<modal-action
+    :label="actionModalButtonLabel"
+    :action="actionModalEvent"
+    :heading="actionModalHeading"
+    :content="actionModalContent">
+</modal-action>
 
 <page-navbar
     link="/"

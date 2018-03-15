@@ -6,6 +6,7 @@
                 data-toggle="tooltip"
                 :disabled="disabled"
                 class="form-control"
+                autocomplete="off"
                 @input="checkAn()"
                 @focus="onfocus()"
                 @blur="onblur()"

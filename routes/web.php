@@ -44,44 +44,8 @@ Route::get('/notes', ['as' => 'notes', 'uses' => 'NoteController@index']);
 Route::get('/audit', ['as' => 'audit', 'uses' => 'NoteController@audit']); // TEMP USES
 
 // *** NEED PROTECTION ***
-Route::post('/admit/{an}', function (App\Contracts\PatientDataAPI $api, $an) {
-    // need cache
-    return $api->getAdmission($an);
-});
-
-Route::get('/get-creatable-notes/{an}', function ($an) {
-    // get an from cache
-    $creatableNotes = [];
-    foreach (auth()->user()->canCreateNotes as $note) {
-        // check gender then
-        // check class unique
-        $creatableNotes[] = [
-            'style' => 'cursor: pointer',
-            'base' => $note->id,
-            'as' => 99,
-            'label' => $note->name,
-            'title' => 'Create ' . $note->name,
-            'creatable' => true
-        ];
-        foreach ($note->canRetitledTo() as $title) {
-            $creatableNotes[] = [
-                'style' => 'cursor: pointer',
-                'base' => $note->id,
-                'as' => 99,
-                'label' => $note->name . ' as ' . $title,
-                'title' => 'Create ' . $note->name . ' as ' . $title,
-                'creatable' => false
-            ];
-        }
-    }
-
-    return $creatableNotes;
-});
-
-//
-// Route::get('/authenticated', 'UserController@authenticated');
-// Route::get('/authenticated', ['as' => 'authenticated', 'uses' => 'UserController@authenticated']);
-
+Route::post('/get-admission/{an}', 'NoteController@getAdmission');
+Route::post('/get-creatable-notes/{an}', 'NoteController@getCreatableNotes');
 
 /*
 |--------------------------------------------------------------------------

@@ -31,14 +31,14 @@
         },
         data() {
             return {
-                notes: axios.get('/get-creatable-notes/' + this.an)
+                notes: axios.post('/get-creatable-notes/' + this.an)
                             .then( (response) => {
                                 this.notes = response.data
                             }).catch( (error) => {
                                 console.log(error)
                             }),
 
-                patientName: axios.post('/admit/' + this.an)
+                patientName: axios.post('/get-admission/' + this.an)
                                   .then( (response) => {
                                       if ( response.data.hn == undefined ) {
                                           this.patientName = 'an data not found, please try again.'

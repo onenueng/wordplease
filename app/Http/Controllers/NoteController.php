@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 // use Illuminate\Http\Request;
 // use Illuminate\Support\Facades\Auth;
-use \App\Contracts\PatientDataAPI;
+// use \App\Contracts\PatientDataAPI;
+use Illuminate\Support\Facades\Cache;
 use \Illuminate\Contracts\Auth\Access\Gate;
 
 class NoteController extends Controller
@@ -33,15 +34,27 @@ class NoteController extends Controller
         return 'audit';
     }
 
-    public function getAdmission($an, PatientDataAPI $api)
+    public function getAdmission($an)
     {
-        // implement cache
-        return $api->getAdmission($an);
+        $minutes = 10;
+
+        if ( !Cache::has('an@' . $an) ) {
+            $admission = resolve('App\Contracts\PatientDataAPI')->getAdmission($an);
+            
+            if ( $admission['reply_code'] == 0 ) { // cache only 'an' with data available
+                Cache::put('an@' . $an, $admission, $minutes);
+            }
+
+            return $admission;
+        }
+        
+        return Cache::get('an@' . $an);
     }
 
     public function getCreatableNotes($an)
     {
         // get an from cache
+        // $admission = Cache::get('an@' . $an);
         $creatableNotes = [];
         foreach (auth()->user()->canCreateNotes as $note) {
             // check gender then

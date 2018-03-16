@@ -43,7 +43,7 @@ Route::get('/authenticated', ['as' => 'authenticated', 'uses' => 'UserController
 Route::get('/notes', ['as' => 'notes', 'uses' => 'NoteController@index']);
 Route::get('/audit', ['as' => 'audit', 'uses' => 'NoteController@audit']); // TEMP USES
 
-// *** NEED PROTECTION ***
+// APIs
 Route::post('/get-admission/{an}', 'NoteController@getAdmission');
 Route::post('/get-creatable-notes/{an}', 'NoteController@getCreatableNotes');
 

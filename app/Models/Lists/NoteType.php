@@ -63,4 +63,15 @@ class NoteType extends Model implements AutoId
         return $noteTitles;
     }
 
+    public function creatable($an, $gender, $class)
+    {
+        // check gender
+        if ( !($this->gender == 2 or $this->gender == $gender) ) {
+            return ['creatable' => false, 'title' => "Patient's gender not match the selected note"];
+        }
+        // $uniqueCecked = $an+$class
+
+        return ['creatable' => true, 'title' => ''];
+    }
+
 }

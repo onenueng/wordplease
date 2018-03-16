@@ -29,7 +29,7 @@
     import NavbarRight from './AuthenticatedNavbarRight.vue'
     import AnForm from './components/AnForm.vue'
     import Navbar from './Navbar.vue'
-    
+
     export default {
         components: {
             'creatable-notes': CreatableNotes,

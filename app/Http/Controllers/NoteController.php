@@ -40,38 +40,40 @@ class NoteController extends Controller
 
         if ( !Cache::has('an@' . $an) ) {
             $admission = resolve('App\Contracts\PatientDataAPI')->getAdmission($an);
-            
+
             if ( $admission['reply_code'] == 0 ) { // cache only 'an' with data available
                 Cache::put('an@' . $an, $admission, $minutes);
             }
 
             return $admission;
         }
-        
+
         return Cache::get('an@' . $an);
     }
 
     public function getCreatableNotes($an)
     {
-        // get an from cache
+        $admission = $this->getAdmission($an); //produce error
+        // if ( !Cache::has('an@' . $an) ) {
+        //     return [];
+        // }
         // $admission = Cache::get('an@' . $an);
         $creatableNotes = [];
         foreach (auth()->user()->canCreateNotes as $note) {
             // check gender then
             // check class unique
-            $creatableNotes[] = [
-                'style' => 'cursor: pointer',
-                'base' => $note->id,
-                'as' => 99,
+            $noteParams = [
+                'note_type_id' => $note->id,
+                'retitle' => '',
                 'label' => $note->name,
                 'title' => 'Create ' . $note->name,
                 'creatable' => true
             ];
+            $creatableNotes[] = $noteParams;
             foreach ($note->canRetitledTo() as $title) {
                 $creatableNotes[] = [
-                    'style' => 'cursor: pointer',
-                    'base' => $note->id,
-                    'as' => 99,
+                    'note_type_id' => $note->id,
+                    'retitle' => 'rename',
                     'label' => $note->name . ' as ' . $title,
                     'title' => 'Create ' . $note->name . ' as ' . $title,
                     'creatable' => false

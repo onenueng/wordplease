@@ -11,7 +11,7 @@
                         data-toggle="tooltip"
                         :title="note.title"
                         :class="getClass(note.creatable)"
-                        :style="note.style"
+                        :style="getCursorStyle(note.creatable)"
                         @click="createNote(note)"
                         v-html="note.label">
                     </a>
@@ -31,35 +31,36 @@
         },
         data() {
             return {
-                notes: axios.post('/get-creatable-notes/' + this.an)
+                notes: null,
+                admission: null,
+                patientName: null,
+                showCreatableNotes: false
+            }
+        },
+        mounted() {
+            axios.post('/get-admission/' + this.an)
+                .then( (response) => {
+                    if ( response.data.hn == undefined ) {
+                        this.patientName = 'an data not found, please try again.'
+                        EventBus.$emit('anSearched', false)
+                        this.admission = null
+                    } else {
+                        this.patientName = 'HN ' + response.data.hn + ' ' + response.data.patient_name
+                        EventBus.$emit('anSearched', true)
+                        this.admission = response.data
+                        axios.post('/get-creatable-notes/' + this.an)
                             .then( (response) => {
                                 this.notes = response.data
+                                this.showCreatableNotes = true
                             }).catch( (error) => {
                                 console.log(error)
-                            }),
-
-                patientName: axios.post('/get-admission/' + this.an)
-                                  .then( (response) => {
-                                      if ( response.data.hn == undefined ) {
-                                          this.patientName = 'an data not found, please try again.'
-                                          EventBus.$emit('anSearched', false)
-                                          this.admission = null
-                                      } else {
-                                          this.patientName = 'HN ' + response.data.hn + ' ' + response.data.patient_name
-                                          EventBus.$emit('anSearched', true)
-                                          this.showCreatableNotes = true
-                                          this.admission = response.data
-                                      }
-
-                                  }).catch( (error) => {
-                                      console.log(error)
-                                      this.admission = null
-                                  }),
-
-                showCreatableNotes: false,
-
-                admission: null
-            }
+                                EventBus.$emit('anSearched', false)
+                            })
+                    }
+                }).catch( (error) => {
+                    console.log(error)
+                    this.admission = null
+                })
         },
         methods: {
             createNote(note) {
@@ -98,7 +99,12 @@
                 }
             },
             getClass(creatable) {
-                return creatable ? 'hvr-underline-from-left creatable-tooltip' : 'unable-to-create creatable-tooltip disabled'
+                return creatable ? 'hvr-underline-from-left creatable-tooltip' : 'creatable-tooltip disabled'
+            },
+            getCursorStyle(creatable) {
+                return creatable ?
+                       'cursor: pointer;' :
+                       'text-decoration: line-through; cursor: not-allowed!important;'
             }
         },
         updated() {
@@ -127,10 +133,5 @@
     /* .slide-fade-leave-active below version 2.1.8 */ {
       transform: translateX(10px);
       opacity: 0;
-    }
-
-    .unable-to-create {
-        text-decoration: line-through;
-        cursor: not-allowed!important;
     }
 </style>

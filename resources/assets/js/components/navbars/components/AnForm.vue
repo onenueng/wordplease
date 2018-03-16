@@ -46,6 +46,10 @@
                 // defind on mounted
             },
             onfocus () {
+                this.an = ''
+                this.statusClass = 'form-group has-feedback'
+                this.iconStatusClass = 'form-control-feedback'
+                this.assignTooltip('')
                 EventBus.$emit('an-checked', false, '')
             },
             assignTooltip (message) {
@@ -82,7 +86,6 @@
                     this.disabled = ''
                     this.statusClass = 'form-group has-feedback'
                     this.iconStatusClass = 'form-control-feedback fa fa-circle-o-notch fa-spin'
-                    // this.blurByUser = false
                     this.assignTooltip('')
                 }
             }, 800)

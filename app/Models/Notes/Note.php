@@ -20,13 +20,31 @@ class Note extends Model implements AutoId
         'id',
         'an',
         'ward_id',
-        'division_id'
+        'division_id',
         'note_type_id',
         'datetime_admit',
         'note_content_id',
         'datetime_discharge',
         'attending_staff_id',
     ];
+
+    public static function uniqueRuleChecked($an, $noteTypeId, $class)
+    {
+        return true;
+
+        $notes = static::where('note_type_id', $noteTypeId)
+                         ->where('mini_hash', (new static)->miniHash($an))
+                         ->get();
+
+        foreach ($notes as $note) {
+            if ($note->an == $an) {
+                return false;
+            }
+        }
+
+        return true;
+
+    }
 
     public static function willComplyUniqueRule($an, $noteTypeId)
     {

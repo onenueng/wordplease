@@ -99,7 +99,7 @@
                 }
             },
             getClass(creatable) {
-                return creatable ? 'hvr-underline-from-left creatable-tooltip' : 'creatable-tooltip disabled'
+                return creatable ? 'hvr-underline-from-left' : 'unable-to-create-title disabled'
             },
             getCursorStyle(creatable) {
                 return creatable ?
@@ -108,7 +108,7 @@
             }
         },
         updated() {
-            $('.creatable-tooltip').tooltip({
+            $('.unable-to-create-title').tooltip({
                 container: "body",
                 placement: "bottom",
                 trigger: "hover",

@@ -2590,14 +2590,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
         },
         getClass: function getClass(creatable) {
-            return creatable ? 'hvr-underline-from-left creatable-tooltip' : 'creatable-tooltip disabled';
+            return creatable ? 'hvr-underline-from-left' : 'unable-to-create-title disabled';
         },
         getCursorStyle: function getCursorStyle(creatable) {
             return creatable ? 'cursor: pointer;' : 'text-decoration: line-through; cursor: not-allowed!important;';
         }
     },
     updated: function updated() {
-        $('.creatable-tooltip').tooltip({
+        $('.unable-to-create-title').tooltip({
             container: "body",
             placement: "bottom",
             trigger: "hover",
@@ -2906,6 +2906,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             // defind on mounted
         },
         onfocus: function onfocus() {
+            this.an = '';
+            this.statusClass = 'form-group has-feedback';
+            this.iconStatusClass = 'form-control-feedback';
+            this.assignTooltip('');
             EventBus.$emit('an-checked', false, '');
         },
         assignTooltip: function assignTooltip(message) {
@@ -2943,7 +2947,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this.disabled = '';
                 _this.statusClass = 'form-group has-feedback';
                 _this.iconStatusClass = 'form-control-feedback fa fa-circle-o-notch fa-spin';
-                // this.blurByUser = false
                 _this.assignTooltip('');
             }
         }, 800);

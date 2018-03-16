@@ -36,13 +36,13 @@ class NoteController extends Controller
 
     public function getAdmission($an)
     {
-        $minutes = 10;
+        $cacheLifeTime = 10; // minutes
 
         if ( !Cache::has('an@' . $an) ) {
             $admission = resolve('App\Contracts\PatientDataAPI')->getAdmission($an);
 
             if ( $admission['reply_code'] == 0 ) { // cache only 'an' with data available
-                Cache::put('an@' . $an, $admission, $minutes);
+                Cache::put('an@' . $an, $admission, $cacheLifeTime);
             }
 
             return $admission;
@@ -53,31 +53,13 @@ class NoteController extends Controller
 
     public function getCreatableNotes($an)
     {
-        $admission = $this->getAdmission($an); //produce error
-        // if ( !Cache::has('an@' . $an) ) {
-        //     return [];
-        // }
-        // $admission = Cache::get('an@' . $an);
+        $admission = $this->getAdmission($an);
+
         $creatableNotes = [];
         foreach (auth()->user()->canCreateNotes as $note) {
-            // check gender then
-            // check class unique
-            $noteParams = [
-                'note_type_id' => $note->id,
-                'retitle' => '',
-                'label' => $note->name,
-                'title' => 'Create ' . $note->name,
-                'creatable' => true
-            ];
-            $creatableNotes[] = $noteParams;
+            $creatableNotes[] = $note->getCreateDescription($an, $admission['gender']);
             foreach ($note->canRetitledTo() as $title) {
-                $creatableNotes[] = [
-                    'note_type_id' => $note->id,
-                    'retitle' => 'rename',
-                    'label' => $note->name . ' as ' . $title,
-                    'title' => 'Create ' . $note->name . ' as ' . $title,
-                    'creatable' => false
-                ];
+                $creatableNotes[] = $note->getCreateDescription($an, $admission['gender'], $title);
             }
         }
 

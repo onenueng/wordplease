@@ -3,6 +3,7 @@
 namespace App\Models\Lists;
 
 use App\User;
+use App\Models\Notes\Note;
 use App\Contracts\AutoId;
 use App\Models\Lists\Division;
 use App\Traits\DataImportable;
@@ -63,15 +64,26 @@ class NoteType extends Model implements AutoId
         return $noteTitles;
     }
 
-    public function creatable($an, $gender, $class)
+    public function getCreateDescription($an, $gender, $retitle = false)
     {
-        // check gender
-        if ( !($this->gender == 2 or $this->gender == $gender) ) {
-            return ['creatable' => false, 'title' => "Patient's gender not match the selected note"];
-        }
-        // $uniqueCecked = $an+$class
+        $creatable = true;
+        $title = '';
 
-        return ['creatable' => true, 'title' => ''];
+        if ( !($this->gender == 2 or $this->gender == $gender) ) { // check match gender
+            $creatable = false;
+            $title = "Patient's gender not match the selected note";
+        } elseif ( $this->class < 3 && !Note::uniqueRuleChecked($an, $this->id, $this->class) ) {
+            $creatable = false;
+            $title = "The " . ($this->class == 1 ? 'admission':'discharge') . " note of this AN already exists";
+        }
+
+        return [
+            'note_type_id' => $this->id,
+            'retitle' => $retitle ? $retitle:'',
+            'label' => $this->name . ( $retitle ? (' retitle to ' . $retitle) : '' ),
+            'title' => $title,
+            'creatable' => $creatable
+        ];
     }
 
 }

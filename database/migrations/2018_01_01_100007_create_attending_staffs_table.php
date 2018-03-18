@@ -18,10 +18,13 @@ class CreateAttendingStaffsTable extends Migration
             $table->primary('id');
             $table->string('name', 120)->unique();
             $table->smallInteger('division_id')->unsigned()->default(100); // set default to Hospital.
+            $table->foreign('division_id')->references('id')->on('divisions');
             $table->string('licence_no', 10)->unique();
             $table->boolean('active')->default(1);
             $table->timestamps();
         });
+
+        \App\Models\Lists\AttendingStaff::loadData('attending_staffs', 'create');
     }
 
     /**

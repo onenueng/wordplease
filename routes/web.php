@@ -5,6 +5,7 @@
 |--------------------------------------------------------------------------
 */
 
+// pages
 Route::get('/', function() {
     return view('welcome')->with('quote', App\Inspiration::inspireMe());
 });
@@ -46,6 +47,7 @@ Route::get('/audit', ['as' => 'audit', 'uses' => 'NoteController@audit']); // TE
 // APIs
 Route::post('/get-admission/{an}', 'NoteController@getAdmission');
 Route::post('/get-creatable-notes/{an}', 'NoteController@getCreatableNotes');
+Route::get('/try-create-note', 'NoteController@tryCreateNote');
 
 /*
 |--------------------------------------------------------------------------
@@ -126,3 +128,9 @@ Route::get('pagy', function () {
     // $pages = App\Models\Lists\Division::paginate(5,['*'],'page',3)->toArray()
     return App\Models\Lists\Division::paginate(5)->toArray()['data'];
 });
+
+
+Route::get('runtest/{an}', function ($an) {
+    return \App\RunTest::creatept();
+});
+

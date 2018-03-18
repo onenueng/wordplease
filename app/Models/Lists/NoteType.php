@@ -30,12 +30,17 @@ class NoteType extends Model implements AutoId
         'resource_name',
     ];
 
-    protected $retitledNotes = [
-        ['title' => 'Admission Note', 'class' => 1],
-        ['title' => 'Discharge Summary', 'class' => 2],
-        ['title' => 'On service note', 'class' => 3],
-        ['title' => 'Off service note', 'class' => 3],
-        ['title' => 'Transfer note', 'class' => 3]
+    /**
+     * Set of note name and class that can be retitle.
+     *
+     * @var array
+     */
+    protected $retitledNotes = [ // Title => Class
+        'Admission Note' => 1,
+        'Discharge Summary' => 2,
+        'On service note' => 3,
+        'Off service note' => 3,
+        'Transfer note' => 3,
     ];
 
     public function division()
@@ -48,41 +53,66 @@ class NoteType extends Model implements AutoId
         return $this->belongsToMany(User::class);
     }
 
+    public function notes()
+    {
+        return $this->hasMany(Note::class);
+    }
+
     public function canRetitledTo()
     {
-        $noteTitles = [];
-        if ( $this->class > 2 ) {
-            return $noteTitles;
+        
+        if ( $this->class > 2 ) { // class > 2 = service note. Not allow to retitle
+            return [];
         }
 
-        foreach( $this->retitledNotes as $note ) {
-            if ( $this->class != $note['class'] ) {
-                $noteTitles[] = $note['title'];
+        $noteTitles = [];
+        foreach( $this->retitledNotes as $title => $class ) {
+            if ( $this->class != $class ) {
+                $noteTitles[] = $title;
             }
         }
 
         return $noteTitles;
     }
 
-    public function getCreateDescription($an, $gender, $retitle = false)
+    public function creatable($an, $gender, $class)
     {
-        $creatable = true;
-        $title = '';
-
         if ( !($this->gender == 2 or $this->gender == $gender) ) { // check match gender
-            $creatable = false;
-            $title = "Patient's gender not match the selected note";
-        } elseif ( $this->class < 3 && !Note::uniqueRuleChecked($an, $this->id, $this->class) ) {
-            $creatable = false;
-            $title = "The " . ($this->class == 1 ? 'admission':'discharge') . " note of this AN already exists";
+            return "Patient's gender not match the selected note";
+        } elseif ( $class < 3 && !(Note::uniqueRuleChecked($an, $class)) ) { // check unique rule
+            return "The " . ($class == 1 ? 'admission':'discharge') . " note of this AN already exists";
         }
 
+        return '';        
+    }
+
+    public function getCreateDescription($an, $gender, $retitle = false)
+    {
+        $title = '';
+        $creatable = true;
+        $class = $retitle ? $this->retitledNotes[$retitle] : $this->class;
+
+        $result = $this->creatable($an, $gender, $class);
+        if ( $result != '' ) {
+            $creatable = false;
+            $title = $result;
+        }
+
+        // if ( !($this->gender == 2 or $this->gender == $gender) ) { // check match gender
+        //     $creatable = false;
+        //     $title = "Patient's gender not match the selected note";
+        // } elseif ( $class < 3 && !(Note::uniqueRuleChecked($an, $class)) ) { // check unique rule
+        //     $creatable = false;
+        //     $title = "The " . ($class == 1 ? 'admission':'discharge') . " note of this AN already exists";
+        // }
+
         return [
-            'note_type_id' => $this->id,
-            'retitle' => $retitle ? $retitle:'',
             'label' => $this->name . ( $retitle ? (' retitle to ' . $retitle) : '' ),
             'title' => $title,
-            'creatable' => $creatable
+            'retitle' => $retitle ? $retitle:'',
+            'creatable' => $creatable,
+            'noteTypeId' => $this->id,
+            'retitleClass' => $class,
         ];
     }
 

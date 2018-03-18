@@ -105,7 +105,6 @@ export default {
                     }
                 })
                 .then( (response) => {
-                    console.log(response.data)
                     window.location.href = response.data.href
                     this.idInputDisable = null
                     this.labelRegisterButton = 'Register'

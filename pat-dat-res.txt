@@ -1,0 +1,63 @@
+[
+     "hn" => "53053622",
+     "an" => "57350011",
+     "ward_name" => "พระศรีฯ 13/2",
+     "reply_code" => "0",
+     "reply_text" => "success.",
+     "datetime_dc" => "2018-03-13 11:00:00",
+     "patient_dept" => "",
+     "datetime_admit" => "2018-03-12 14:10:00",
+     "attending_pln" => "18479",
+     "attending_name" => "รศ.นพ. ประสงค์ ตันมหาสมุทร",
+     "discharge_type" => "1",
+     "ward_name_short" => "พระศรี13/2",
+     "discharge_status" => "2",
+     "patient_sub_dept" => "",
+     "patient_dept_name" => "",
+     "discharge_type_name" => "WITH APPROVAL",
+     "discharge_status_name" => "IMPROVED",
+     "patient_sub_dept_name" => "",
+     "dob" => "1967-08-30",
+     "gender" => 0,
+     "patient_name" => "นาง รัตนา ธนาชัยแสง",
+   ]
+>>> $api->getPatient(53053622);
+=> [
+     "reply_code" => "0",
+     "reply_text" => "success.",
+     "hn" => "53053622",
+     "dob" => "1967-08-30",
+     "race" => "ไทย",
+     "title" => "นาง",
+     "tel_no" => "089-1255732",
+     "gender" => 0,
+     "nation" => "อื่น ๆ",
+     "spouse" => "",
+     "address" => "บ้านเลขที่ 560   ถนน ถนนบางแวก",
+     "location" => "10160 บางแวก",
+     "province" => "กรุงเทพมหานคร",
+     "last_name" => "ธนาชัยแสง",
+     "first_name" => "รัตนา",
+     "middle_name" => "",
+     "document_id" => "3600100168328",
+     "patient_name" => "รัตนา ธนาชัยแสง",
+     "insurance_name" => "บัตรทอง โรงพยาบาลศิริราช",
+     "marital_status_name" => "สมรส",
+     "alternative_contact" => "บิดา นางสาว ณัทนา ธนาชัยแสง 02-4105732",
+   ]
+
+   $n = App\Models\Notes\Note::insert(['an' => 12345678, 'note_type_id' => 8, 'created_by' => 2]);
+
+$users =  App\User::with(['posts' => function ($query) {
+               $query->where('title', 'like', '%first%');
+          }])->get();
+
+App\Models\Notes\Note::with(['noteType:id,class' => function($query) { $query->select('id', 'class')->where('class', 1); }] )->get();
+
+App\Models\Notes\Note::with(['noteType' => function($query) { $query->select('id', 'class')->where('class', 1); }] )->get();
+
+$notes = static::with(['noteType' => function($query) use($class) {
+                    $query->select('id', 'class')->where('class', $class);
+                 }])
+                 ->where('mini_hash', (new static)->miniHash($an))
+                 ->get();

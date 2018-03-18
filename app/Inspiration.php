@@ -256,6 +256,18 @@ class Inspiration
                 'cite' => 'Altcoin Thoreau'
             ],
             [
+                'text' => "“Comparison is the thief of joy.”",
+                'cite' => 'Unknown'
+            ],
+            [
+                'text' => "“Never wrestle with pigs. You both get dirty and the pig likes it.”",
+                'cite' => 'George Bernard Shaw'
+            ],
+            [
+                'text' => "“We generally change ourselves for one of two reasons: inspiration or desperation.”",
+                'cite' => 'Jim Rohn'
+            ],
+            [
                 'text' => "“”",
                 'cite' => ''
             ],

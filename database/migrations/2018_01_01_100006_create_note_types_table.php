@@ -30,7 +30,7 @@ class CreateNoteTypesTable extends Migration
         \App\Models\Lists\NoteType::loadData('note_types');
 
         Schema::create('note_type_user', function (Blueprint $table) {
-            $table->integer('user_id')->unsigned()->index();
+            $table->smallInteger('user_id')->unsigned()->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
             $table->tinyInteger('note_type_id')->unsigned()->index();

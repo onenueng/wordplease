@@ -2,10 +2,11 @@
 
 namespace App\Models\Lists;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Contracts\AutoId;
-use App\Traits\AutoIdInsertable;
 use App\Traits\DataCryptable;
+use App\Models\Lists\Admission;
+use App\Traits\AutoIdInsertable;
+use Illuminate\Database\Eloquent\Model;
 
 class Patient extends Model implements AutoId
 {
@@ -18,17 +19,17 @@ class Patient extends Model implements AutoId
      */
     protected $fillable = [
         'id',
-        'document_id',
         'hn',
-        'first_name',
-        'middle_name',
-        'last_name',
         'dob',
+        'tel_no',
         'gender',
         'spouse',
         'address',
-        'postcode_id',
-        'tel_no',
+        'last_name',
+        'first_name',
+        'middle_name',
+        // 'postcode_id',
+        'document_id',
         'alternative_contact',
     ];
 
@@ -53,6 +54,21 @@ class Patient extends Model implements AutoId
         return $this->decryptField($this->attributes['hn']);
     }
 
+    protected function handleOldName($name, &$newData) {
+        if ( $this->attributes[$name] !== NULL ) { // has previous data
+            $lastData = $this->decryptField($this->attributes[$name]);
+            if ( $lastData != NULL && $lastData != $newData ) { // data has changed
+                if ( isset($this->attributes[$name . '_old']) ) { // has previous oldName
+                    $this->attributes[$name . '_old'] = $this->encryptField($this->decryptField($this->attributes[$name . '_old']). $lastData . ',');
+                } else {
+                    $this->attributes[$name . '_old'] = $this->encryptField($lastData . ',');
+                }
+            }
+        }
+
+        $this->attributes[$name] = $this->encryptField($newData);
+    }
+
     /**
      * Set field 'first_name'.
      *
@@ -61,6 +77,7 @@ class Patient extends Model implements AutoId
     public function setFirstNameAttribute($value)
     {
         $this->attributes['first_name'] = $this->encryptField($value);
+        // $this->handleOldName('first_name', $value);
     }
 
     /**
@@ -100,6 +117,7 @@ class Patient extends Model implements AutoId
      */
     public function setLastNameAttribute($value)
     {
+        // $this->handleOldName('last_name', $value);
         $this->attributes['last_name'] = $this->encryptField($value);
     }
 
@@ -131,5 +149,10 @@ class Patient extends Model implements AutoId
     public function getDocumentIdAttribute()
     {
         return $this->decryptField($this->attributes['document_id']);
+    }
+
+    public function admissions()
+    {
+        return $this->hasMany(Admission::class);
     }
 }

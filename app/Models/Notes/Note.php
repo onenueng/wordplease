@@ -2,8 +2,11 @@
 
 namespace App\Models\Notes;
 
+use App\User;
 use App\Contracts\AutoId;
 use App\Traits\DataCryptable;
+use App\Models\Lists\NoteType;
+use App\Models\Lists\Admission;
 use App\Traits\AutoIdInsertable;
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,52 +21,14 @@ class Note extends Model implements AutoId
      */
     protected $fillable = [
         'id',
-        'an',
+        'class',
         'ward_id',
-        'division_id',
+        'retitle',
+        'created_by',
         'note_type_id',
-        'datetime_admit',
-        'note_content_id',
-        'datetime_discharge',
+        'admission_id',
         'attending_staff_id',
     ];
-
-    public static function uniqueRuleChecked($an, $noteTypeId, $class)
-    {
-        return true;
-
-        $notes = static::where('note_type_id', $noteTypeId)
-                         ->where('mini_hash', (new static)->miniHash($an))
-                         ->get();
-
-        foreach ($notes as $note) {
-            if ($note->an == $an) {
-                return false;
-            }
-        }
-
-        return true;
-
-    }
-
-    public static function willComplyUniqueRule($an, $noteTypeId)
-    {
-        if ( $noteTypeId > 2 ) {
-            return false;
-        }
-
-        $notes = static::where('note_type_id', $noteTypeId)
-                         ->where('mini_hash', (new static)->miniHash($an))
-                         ->get();
-
-        foreach ( $notes as $note ) {
-            if ( $note->an == $an ) {
-                return false;
-            }
-        }
-
-        return true;
-    }
 
     /**
      * Get Id type of the model.
@@ -75,24 +40,47 @@ class Note extends Model implements AutoId
         return 'time_based_uuid';
     }
 
-    /**
-     * Set field 'an'.
-     *
-     * @param string $value
-     */
-    public function setAnAttribute($value)
+    public function noteType()
     {
-        $this->attributes['an'] = $this->encryptField($value);
-        $this->attributes['mini_hash'] = $this->miniHash($value);
+        return $this->belongsTo(NoteType::class);
     }
 
-    /**
-     * Get field 'an'.
-     *
-     * @return string
-     */
-    public function getAnAttribute()
+    public function creator()
     {
-        return $this->decryptField($this->attributes['an']);
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function admission()
+    {
+        return $this->belongsTo(Admission::class);
+    }
+
+    public static function uniqueRuleChecked($an, $class)
+    {
+        $instance = new static;
+
+        // $notes = app('db')->table('notes')
+        //                   ->join('note_types', 'note_types.id', '=', 'notes.note_type_id')
+        //                   ->select('notes.an')
+        //                   ->where('notes.mini_hash', $instance->miniHash($an))
+        //                   ->where('note_types.class', $class)
+        //                   ->get();
+        // $notes = static::select('an', 'class')->where('mini_hash', $instance->miniHash($an))->get();
+
+        $admission = Admission::findByAn($an);
+
+        if ( !$admission ) {
+            return true;
+        }
+
+        $notes = Note::where('admission_id', $admission->id)->where('class', $class)->get();
+        
+        foreach ( $notes as $note ) {
+            if ( ($instance->decryptField($note->an) == $an) ) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

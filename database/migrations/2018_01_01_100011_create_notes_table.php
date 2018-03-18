@@ -16,17 +16,23 @@ class CreateNotesTable extends Migration
         Schema::create('notes', function (Blueprint $table) {
             $table->uuid('id');
             $table->primary('id');
-            $table->string('an');
+            $table->integer('admission_id')->unsigned()->index();
+            $table->foreign('admission_id')->references('id')->on('admissions');
+
             $table->tinyInteger('note_type_id')->unsigned()->index();
-            $table->tinyInteger('note_content_id')->unsigned()->index();
-            $table->dateTime('datetime_admit')->nullable();
-            $table->dateTime('datetime_discharge')->nullable();
+            $table->foreign('note_type_id')->references('id')->on('note_types');
+
+            $table->string('retitle', 60)->nullable();
+            $table->tinyInteger('class')->unsigned();
             $table->smallInteger('ward_id')->unsigned()->nullable()->index();
+            $table->foreign('ward_id')->references('id')->on('wards');
+
             $table->smallInteger('attending_staff_id')->unsigned()->nullable()->index();
-            $table->smallInteger('division_id')->unsigned()->nullable()->index();
-            $table->string('mini_hash', 7)->index();
-            $table->integer('creator')->unsigned()->default(0)->index();
-            $table->integer('updater')->unsigned()->default(0)->index();
+            $table->foreign('attending_staff_id')->references('id')->on('attending_staffs');
+
+            $table->smallInteger('created_by')->unsigned()->default(0)->index();
+            $table->foreign('created_by')->references('id')->on('users');
+            
             $table->timestamps();
         });
     }

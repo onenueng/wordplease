@@ -4,6 +4,7 @@ namespace App;
 
 use Carbon\Carbon;
 use App\Contracts\AutoId;
+use App\Models\Notes\Note;
 use App\Traits\DataCryptable;
 use App\Models\Lists\NoteType;
 use App\Models\Lists\Division;
@@ -196,6 +197,11 @@ class User extends Authenticatable implements AutoId
     public function authorizes()
     {
         return $this->hasMany(Authorize::class);
+    }
+
+    public function notes()
+    {
+        return $this->hasMany(Note::class);
     }
 
     public function canCreateNotes()

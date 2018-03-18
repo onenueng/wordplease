@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Notes\Note;
+use App\Models\Lists\NoteType;
 
 class NoteCreator
 {
@@ -11,16 +12,16 @@ class NoteCreator
      *
      * @var array
      */
-    private $api;
+    // private $api;
     
     /**
      * Resolve Patient data api app bootstrap
      * then assign to $api
      */
-    public function __construct()
-    {
-        $this->api = resolve('App\Contracts\PatientDataAPI');
-    }
+    // public function __construct()
+    // {
+    //     $this->api = resolve('App\Contracts\PatientDataAPI');
+    // }
 
     /**
      * Get Id type of the model.
@@ -38,7 +39,7 @@ class NoteCreator
      * @var $an, $noteTypeId, $noteContentId
      * @return stirng
      */
-    public function tryCreate($an, $noteTypeId, $noteContentId)
+    public function tryCreateOld($an, $noteTypeId, $noteContentId)
     {
         // check if we can continue with given $an
         $admission = $this->api->getAdmission($an);
@@ -73,7 +74,26 @@ class NoteCreator
         if ( $noteTypeId > 2 ) {
             return true;
         }
+    }
+
+    public static function tryCreate(Array $admission, Array $patient, $noteTypeId, $class, $retitle)
+    {
+        // test that note can create
+        $result = NoteType::find($noteTypeId)->creatable($admission['an'], $patient['gender'], $class);
+        if ( $result != '' ) {
+            return $result;
+        }
+
+        // maintain
+        // admission maintain list => insurance
+        // note maintain list => ward, attending
+        // patient maintain list =>  just call update()
 
         
+        // create note
+
+        return 'hello';
     }
+
+
 }

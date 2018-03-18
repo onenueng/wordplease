@@ -141,7 +141,6 @@
                         }
                     })
                     .then( (response) => {
-                        console.log(response.data)
                         window.location.href = response.data.href
                         this.idInputDisable = null
                         this.labelRegisterButton = 'Register'
@@ -156,7 +155,6 @@
         },
         methods: {
             idUpdate() {
-                // console.log(this.userInput)
                 if ( this.isIdValid() ) {
                     this.idStateText = null
                     this.idInputDisable = ''

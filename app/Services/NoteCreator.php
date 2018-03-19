@@ -36,12 +36,12 @@ class NoteCreator
 
         // prepare admission data
         $admission['patient_id'] = $patientOnDB->id;
-        $admission['datetime_admit'] = ($admission['datetime_admit'])
-                                        ? $admission['datetime_admit'] . '.000'
-                                        : $admission['datetime_admit'];
-        $admission['datetime_discharge'] = ($admission['datetime_discharge'])
-                                            ? $admission['datetime_discharge'] . '.000'
-                                            : $admission['datetime_discharge'];
+        // $admission['datetime_admit'] = ($admission['datetime_admit'])
+        //                                 ? $admission['datetime_admit'] . '.000'
+        //                                 : $admission['datetime_admit'];
+        // $admission['datetime_discharge'] = ($admission['datetime_discharge'])
+        //                                     ? $admission['datetime_discharge'] . '.000'
+        //                                     : $admission['datetime_discharge'];
 
         // maintain admissions table
         $admission['insurance_id'] = !($patient['insurance_name'])

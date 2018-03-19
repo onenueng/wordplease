@@ -7,11 +7,12 @@ use App\Traits\DataCryptable;
 use App\Models\Lists\Patient;
 use App\Models\Lists\Insurance;
 use App\Traits\AutoIdInsertable;
+use App\Traits\DatetimeHandleable;
 use Illuminate\Database\Eloquent\Model;
 
 class Admission extends Model implements AutoId
 {
-    use AutoIdInsertable, DataCryptable;
+    use AutoIdInsertable, DataCryptable, DatetimeHandleable;
 
     /**
      * The attributes that are mass assignable.
@@ -72,6 +73,26 @@ class Admission extends Model implements AutoId
     public function getPatientNameAttribute()
     {
         return $this->decryptField($this->attributes['patient_name']);
+    }
+
+    /**
+     * Set field 'datetime_admit'.
+     *
+     * @param string $value
+     */
+    public function setDatetimeAdmitAttribute($value)
+    {
+        $this->attributes['datetime_admit'] = $this->handleDatetime($value);
+    }
+
+    /**
+     * Set field 'datetime_discharge'.
+     *
+     * @param string $value
+     */
+    public function setDatetimeDischargeAttribute($value)
+    {
+        $this->attributes['datetime_discharge'] = $this->handleDatetime($value);
     }
 
     public function patient()

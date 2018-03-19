@@ -5,6 +5,7 @@ namespace App\Models\Lists;
 use App\Contracts\AutoId;
 use App\Traits\DataCryptable;
 use App\Models\Lists\Patient;
+use App\Models\Lists\Insurance;
 use App\Traits\AutoIdInsertable;
 use Illuminate\Database\Eloquent\Model;
 
@@ -21,6 +22,7 @@ class Admission extends Model implements AutoId
         'id',
         'an',
         'patient_id',
+        'insurance_id',
         'patient_name',
         'datetime_admit',
         'datetime_discharge'
@@ -77,13 +79,18 @@ class Admission extends Model implements AutoId
         return $this->belongsTo(Patient::class);
     }
 
+    public function insurance()
+    {
+        return $this->belongsTo(Insurance::class);
+    }
+
     public static function findByAn($an)
     {
-        $admissions = static::where('mini_hash', (new static)->miniHash($an))->get();
+        $admissions = static::select('id', 'an')->where('mini_hash', (new static)->miniHash($an))->get();
 
         foreach ( $admissions as $admission ) {
             if ( $admission->an == $an ) {
-                return $admission;
+                return static::find($admission->id);
             }
         }
 

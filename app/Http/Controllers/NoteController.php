@@ -81,13 +81,15 @@ class NoteController extends Controller
 
     public function tryCreateNote(\Illuminate\Http\Request $request)
     {
-        // need $an, $noteTypeId, $retitle
-        $patient = $this->getPatient($request->an);
         $admission = $this->getAdmission($request->an);
+        $patient = $this->getPatient($admission['hn']);
 
-        // send $admission, $noteTypeId, $retitle, $retitleClass
-        $note = NoteCreator::tryCreate($admission, $noteTypeId, $retitle, $retitleClass);
+        $note = NoteCreator::tryCreate($admission, $patient, $noteTypeId, $retitleClass, $retitle, auth()->user()->id);
 
-        return $request;
+        if ( gettype($note) === 'string' ) {
+            return ['reply_code' => 1, 'reply_text' => $note];
+        }
+
+        return ['reply_code' => 0, 'reply_text' => '/note/' . $note->id . '/edit'];
     }
 }

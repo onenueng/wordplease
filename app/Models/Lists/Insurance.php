@@ -2,11 +2,12 @@
 
 namespace App\Models\Lists;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Contracts\AutoId;
-use App\Traits\AutoIdInsertable;
 use App\Traits\DataImportable;
+use App\Models\Lists\Admission;
+use App\Traits\AutoIdInsertable;
 use App\Traits\RuntimeMaintainable;
+use Illuminate\Database\Eloquent\Model;
 
 class Insurance extends Model implements AutoId
 {
@@ -21,4 +22,9 @@ class Insurance extends Model implements AutoId
         'id',
         'name'
     ];
+
+    public function admissions()
+    {
+        return $this->hasMany(Admission::class);
+    }
 }

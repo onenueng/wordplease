@@ -32,8 +32,8 @@ class RunTest
         $api = resolve('App\Contracts\PatientDataAPI');
         $admission = $api->getadmission($an);
         $patient = $api->getPatient($admission['hn']);
-
-        $result = NoteCreator::tryCreate($admission, $patient, 8, 1,'');
+        // return $admission;
+        $result = NoteCreator::tryCreate($admission, $patient, 8, 1,'', 1);
 
         return $result;
     }

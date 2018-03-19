@@ -15,6 +15,13 @@ class Note extends Model implements AutoId
     use AutoIdInsertable, DataCryptable;
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = ['id' => 'UUID'];
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -57,30 +64,12 @@ class Note extends Model implements AutoId
 
     public static function uniqueRuleChecked($an, $class)
     {
-        $instance = new static;
-
-        // $notes = app('db')->table('notes')
-        //                   ->join('note_types', 'note_types.id', '=', 'notes.note_type_id')
-        //                   ->select('notes.an')
-        //                   ->where('notes.mini_hash', $instance->miniHash($an))
-        //                   ->where('note_types.class', $class)
-        //                   ->get();
-        // $notes = static::select('an', 'class')->where('mini_hash', $instance->miniHash($an))->get();
-
         $admission = Admission::findByAn($an);
 
         if ( !$admission ) {
             return true;
         }
 
-        $notes = Note::where('admission_id', $admission->id)->where('class', $class)->get();
-        
-        foreach ( $notes as $note ) {
-            if ( ($instance->decryptField($note->an) == $an) ) {
-                return false;
-            }
-        }
-
-        return true;
+        return !Note::where('admission_id', $admission->id)->where('class', $class)->count();
     }
 }

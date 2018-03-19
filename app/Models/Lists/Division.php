@@ -3,12 +3,13 @@
 namespace App\Models\Lists;
 
 use App\User;
-use App\Models\Lists\NoteType;
 use App\Contracts\AutoId;
 use App\Contracts\ListItem;
 use App\Traits\ListQueryable;
+use App\Models\Lists\NoteType;
 use App\Traits\DataImportable;
 use App\Traits\AutoIdInsertable;
+use App\Models\Lists\AttendingStaff;
 use Illuminate\Database\Eloquent\Model;
 
 class Division extends Model implements AutoId, ListItem
@@ -45,5 +46,10 @@ class Division extends Model implements AutoId, ListItem
     public function noteTypes()
     {
         return $this->hasMany(NoteType::class);
+    }
+
+    public function staffs()
+    {
+        return $this->hasMany(AttendingStaff::class);
     }
 }

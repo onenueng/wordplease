@@ -131,6 +131,5 @@ Route::get('pagy', function () {
 
 
 Route::get('runtest/{an}', function ($an) {
-    return \App\RunTest::creatept();
+    return \App\RunTest::createNote($an);
 });
-

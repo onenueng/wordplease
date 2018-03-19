@@ -20,7 +20,9 @@ class CreateAdmissionsTable extends Migration
             $table->string('mini_hash', 7)->index();
             $table->integer('patient_id')->unsigned()->index();
             $table->foreign('patient_id')->references('id')->on('patients');
-            $table->string('patient_name');
+            $table->smallInteger('insurance_id')->unsigned()->index();
+            $table->foreign('insurance_id')->references('id')->on('insurances');
+            $table->string('patient_name', 512);
             $table->dateTime('datetime_admit')->nullable();
             $table->dateTime('datetime_discharge')->nullable();
             $table->timestamps();

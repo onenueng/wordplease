@@ -26,8 +26,8 @@ class CreatePatientsTable extends Migration
             $table->date('dob')->nullable();
             $table->tinyInteger('gender')->unsigned()->nullable();
             $table->string('spouse', 512)->nullable();
-            $table->string('address',100)->nullable();
-            $table->mediumInteger('postcode_id')->unsigned()->nullable();
+            // $table->string('address',512)->nullable();
+            // $table->mediumInteger('postcode_id')->unsigned()->nullable();
             $table->string('tel_no', 512)->nullable();
             $table->string('alternative_contact', 512)->nullable();
             $table->string('mini_hash', 7)->index();

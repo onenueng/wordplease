@@ -9,7 +9,12 @@
                     {{ message }}
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-default" data-dismiss="modal">{{ buttonLabel }}</button>
+                    <button-app
+                        size="lg"
+                        :label="buttonLabel"
+                        action="toggle-modal-dialog"
+                        status="draft">
+                    </button-app>
                 </div>
             </div>
         </div>
@@ -34,7 +39,7 @@
         },
         mounted() {
             EventBus.$on('toggle-modal-dialog', (toggle) => {
-                $('#modal-dialog').modal(toggle)
+                $('#modal-dialog').modal(toggle === undefined ? 'toggle' : toggle)
             })
         }
     }

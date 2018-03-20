@@ -4,6 +4,7 @@
     "/js/register.js": "/js/register.js",
     "/js/vendor.js": "/js/vendor.js",
     "/js/login.js": "/js/login.js",
+    "/js/medicine-admission-note.js": "/js/medicine-admission-note.js",
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
     "/js/manifest.js": "/js/manifest.js"

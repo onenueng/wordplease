@@ -48,6 +48,6 @@ class NoteController extends Controller
 
     public function edit($id)
     {
-        return \App\Models\Notes\Note::find($id);
+        $note = \App\Models\Notes\Note::find($id);
     }
 }

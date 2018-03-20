@@ -6,8 +6,8 @@ id,class,division_id,name,resource_name,view_path,gender,table_name
 5,2,400,Undelivery Summary,obgynnotes,obgyn.notes.undelivery.form,0,obgyn_undelivery_notes
 6,2,400,Pregnancy with Abortive Outcome Summary,obgynnotes,obgyn.notes.abortion.form,0,obgyn_abortion_notes
 7,2,300,Discharge Summary,ophthalmologynotes,ophthalmology.notes.discharge.form,2,ophthalmology_discharge_notes
-8,1,200,Admission Note,medicinenotes,medicine.notes.admission.form,2,medicine_admission_notes
-9,2,200,Discharge Summary,medicinenotes,medicine.notes.discharge.form,2,medicine_discharge_notes
+8,1,200,Admission Note,\App\Models\Notes\MedicineAdmissionNote,notes.medicine.forms.admission,2,medicine_admission_notes
+9,2,200,Discharge Summary,\App\Models\Notes\MedicineDischargeNote,notes.medicine.forms.discharge,2,medicine_discharge_notes
 10,3,200,On service note,medicinenotes,medicine.notes.admission.form,2,medicine_admission_notes
 11,3,200,Off service note,medicinenotes,medicine.notes.admission.form,2,medicine_admission_notes
 12,3,200,Consultation note,medicinenotes,medicine.notes.admission.form,2,medicine_admission_notes

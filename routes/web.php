@@ -144,3 +144,5 @@ Route::get('runtest/{an}', function ($an) {
         return $query->select('id')->where('id', 2);
     }])->where('users.id', 2)->get();
 });
+
+Route::get('/setupnote', function () { return view('notes.medicine.forms.admission'); });

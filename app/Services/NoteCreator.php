@@ -115,6 +115,13 @@ class NoteCreator
             'attending_staff_id' => $attendingId,
         ]);
 
+        static::createCompanion($note);
+
         return $note;
+    }
+
+    private static function createCompanion(&$note)
+    {
+        
     }
 }

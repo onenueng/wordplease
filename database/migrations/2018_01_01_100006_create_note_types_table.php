@@ -19,11 +19,11 @@ class CreateNoteTypesTable extends Migration
             $table->tinyInteger('class')->unsigned(); // admission/discharge/service.
             $table->smallInteger('division_id')->unsigned(); // relation on division.
             $table->foreign('division_id')->references('id')->on('divisions');
-            $table->string('name');
-            $table->string('resource_name');
-            $table->string('view_path');
+            $table->string('name', 80);
+            $table->string('resource_name', 80);
+            $table->string('view_path', 80);
             $table->tinyInteger('gender')->unsigned(); // 0 female/ 1 male/ 2 both
-            $table->string('table_name');
+            $table->string('table_name', 80);
             $table->timestamps();
         });
 

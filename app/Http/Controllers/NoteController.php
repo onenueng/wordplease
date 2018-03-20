@@ -48,6 +48,7 @@ class NoteController extends Controller
 
     public function edit($id)
     {
-        $note = \App\Models\Notes\Note::find($id);
+        $note = \App\Models\Notes\Note::with(['noteType', 'admission.patient'])->find($id);
+        return view('notes.form', ['note' => $note]);
     }
 }

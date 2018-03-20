@@ -9,7 +9,7 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" :href="link">{{ brand }}</a>
-                <a class="navbar-brand active">{{ title }}</a>
+                <a class="navbar-brand active" v-html="title"></a>
             </div>
 
             <div class="collapse navbar-collapse" id="app-navbar">

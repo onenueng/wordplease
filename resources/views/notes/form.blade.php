@@ -15,5 +15,5 @@
 @endsection
 
 @section('app-js')
-<script src="{{ mix('/js/medicine-admission-note.js') }}"></script>
+<script src="{{ mix($note->jsPath()) }}"></script>
 @endsection

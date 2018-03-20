@@ -9,7 +9,7 @@ Vue.component('navbar-right', require('../components/navbars/NavbarRight.vue'))
 Vue.component('register-page', require('../components/auth/RegisterPage.vue'))
 Vue.component('navbar-left', require('../components/navbars/NavbarLeft.vue'))
 Vue.component('input-state', require('../components/inputs/InputState.vue'))
-Vue.component('modal-dialog', require('../components/ModalDialog.vue'))
+Vue.component('modal-dialog', require('../components/modals/Dialog.vue'))
 Vue.component('navbar', require('../components/navbars/Navbar.vue'))
 Vue.component('button-app', require('../components/ButtonApp.vue'))
 Vue.component('alert', require('../components/Alert.vue'))
@@ -25,12 +25,6 @@ window.app = new Vue({
     },
     mounted() {
         /* *** Handle session timeout *** */
-        EventBus.$on('error-419', () => {
-            this.dialogHeading = 'Attention please !!'
-            this.dialogMessage = 'Session timeout, Please reload this page to continue using.'
-            this.dialogButtonLabel = 'Got it'
-            $('#modal-dialog').modal('show')
-        })
         this.lastActiveSessionCheck = Date.now()
         $(window).on("focus", (e) => {
             let timeDiff = Date.now() - this.lastActiveSessionCheck
@@ -38,7 +32,10 @@ window.app = new Vue({
                 axios.get('/is-session-active')
                     .then((response) => {
                         if (!response.data.active) {
-                            EventBus.$emit('error-419')
+                            this.dialogHeading = 'Attention please !!'
+                            this.dialogMessage = 'Session timeout, Please reload this page to continue using.'
+                            this.dialogButtonLabel = 'Got it'
+                            EventBus.$emit('toggle-modal-dialog', 'show')
                         }
                     })
             }

@@ -2,10 +2,6 @@
 
 namespace App\Http\Controllers;
 
-// use Illuminate\Http\Request;
-// use Illuminate\Support\Facades\Auth;
-// use \App\Contracts\PatientDataAPI;
-use Illuminate\Support\Facades\Cache;
 use \Illuminate\Contracts\Auth\Access\Gate;
 
 class NoteController extends Controller
@@ -34,62 +30,24 @@ class NoteController extends Controller
         return 'audit';
     }
 
-    public function getAdmission($an)
+    public function store(\Illuminate\Http\Request $request)
     {
-        return $this->getPatientData($an, 'an');
-    }
-
-    public function getPatient($hn)
-    {
-        return $this->getPatientData($hn, 'hn');
-    }
-
-    public function getPatientData($key, $mode)
-    {
-        $cacheLifeTime = 10; // minutes
-        $prefix = $mode == 'an' ? 'an@' : 'hn@';
-
-        if ( !Cache::has($prefix . $key) ) {
-            if ( $mode == 'an' ) {
-                $response = resolve('App\Contracts\PatientDataAPI')->getAdmission($key);
-            } else {
-                $response = resolve('App\Contracts\PatientDataAPI')->getPatient($key);
-            }
-
-            if ( $response['reply_code'] == 0 ) { // cache only 'an' with data available
-                Cache::put($prefix . $key, $response, $cacheLifeTime);
-            }
-
-            return $response;
-        }
-
-        return Cache::get($prefix . $key);
-    }
-
-    public function getCreatableNotes($an)
-    {
-        $admission = $this->getAdmission($an);
-        $creatableNotes = [];
-        foreach ( auth()->user()->canCreateNotes as $note ) {
-            $creatableNotes[] = $note->getCreateDescription($an, $admission['gender']);
-            foreach ( $note->canRetitledTo() as $retitle ) {
-                $creatableNotes[] = $note->getCreateDescription($an, $admission['gender'], $retitle);
-            }
-        }
-        return $creatableNotes;
-    }
-
-    public function tryCreateNote(\Illuminate\Http\Request $request)
-    {
-        $admission = $this->getAdmission($request->an);
-        $patient = $this->getPatient($admission['hn']);
-
-        $note = NoteCreator::tryCreate($admission, $patient, $noteTypeId, $retitleClass, $retitle, auth()->user()->id);
+        $note = \App\Services\NoteCreator::tryCreate(
+                                            $request->an,
+                                            $request->noteTypeId,
+                                            $request->class,
+                                            $request->retitle,
+                                            auth()->user()->id);
 
         if ( gettype($note) === 'string' ) {
             return ['reply_code' => 1, 'reply_text' => $note];
         }
 
         return ['reply_code' => 0, 'reply_text' => '/note/' . $note->id . '/edit'];
+    }
+
+    public function edit($id)
+    {
+        return \App\Models\Notes\Note::find($id);
     }
 }

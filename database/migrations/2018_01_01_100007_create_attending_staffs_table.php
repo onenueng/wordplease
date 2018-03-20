@@ -16,7 +16,7 @@ class CreateAttendingStaffsTable extends Migration
         Schema::create('attending_staffs', function (Blueprint $table) {
             $table->smallInteger('id')->unsigned();
             $table->primary('id');
-            $table->string('name', 120)->unique();
+            $table->string('name', 160)->unique();
             $table->smallInteger('division_id')->unsigned()->default(100); // set default to Hospital.
             $table->foreign('division_id')->references('id')->on('divisions');
             $table->string('licence_no', 10)->unique();

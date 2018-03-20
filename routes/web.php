@@ -45,9 +45,16 @@ Route::get('/notes', ['as' => 'notes', 'uses' => 'NoteController@index']);
 Route::get('/audit', ['as' => 'audit', 'uses' => 'NoteController@audit']); // TEMP USES
 
 // APIs
-Route::post('/get-admission/{an}', 'NoteController@getAdmission');
-Route::post('/get-creatable-notes/{an}', 'NoteController@getCreatableNotes');
-Route::get('/try-create-note', 'NoteController@tryCreateNote');
+Route::post('/get-admission/{an}', ['middleware' => 'auth', 'uses' => function ($an) {
+    return \App\Services\NoteCreator::getPatientData($an, 'an');
+}]);
+Route::post('/get-creatable-notes/{an}', ['middleware' => 'auth', 'uses' => function ($an) {
+    return \App\Services\NoteCreator::getCreatableNotes($an, auth()->user()->id);
+}]);
+Route::post('/try-create-note', 'NoteController@store');
+
+// Edit note
+Route::get('/note/{id}/edit', 'NoteController@edit');
 
 /*
 |--------------------------------------------------------------------------
@@ -131,5 +138,9 @@ Route::get('pagy', function () {
 
 
 Route::get('runtest/{an}', function ($an) {
+    return \App\Services\NoteCreator::getCreatableNotes($an, 2);
     return \App\RunTest::createNote($an);
+    return App\Models\Lists\NoteType::with(['users' => function ($query) {
+        return $query->select('id')->where('id', 2);
+    }])->where('users.id', 2)->get();
 });

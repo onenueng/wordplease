@@ -21,7 +21,9 @@ window.app = new Vue({
         actionModalHeading: '',
         actionModalEvent: '',
         actionModalButtonLabel: '',
-        actionModalContent: ''
+        actionModalContent: '',
+
+        createNoteConfig: null
     },
     mounted() {
         /* *** Handle session timeout *** */
@@ -48,15 +50,32 @@ window.app = new Vue({
             this.actionModalHeading = 'Please confirm'
             this.actionModalButtonLabel = 'Confirm'
             this.actionModalContent = data.body
-            this.actionModalEvent = 'action-xyz'
+            this.actionModalEvent = 'note-create-conformed'
             EventBus.$emit('toggle-modal-action', 'show')
+            this.createNoteConfig = data;
         })
 
-        EventBus.$on('action-xyz', () => {
+        EventBus.$on('note-create-conformed', () => {
             EventBus.$emit('modal-action-processing', true)
-            // create note if success redirect or feedback user
-            EventBus.$emit('toggle-modal-action', 'hide')
-            EventBus.$emit('modal-action-processing', false)
+            axios.post('/try-create-note', {
+                    an: this.createNoteConfig.an,
+                    noteTypeId: this.createNoteConfig.noteTypeId,
+                    class: this.createNoteConfig.noteTypeId,
+                    retitle: this.createNoteConfig.retitle
+                 })
+                 .then((response) => {
+                    EventBus.$emit('toggle-modal-action', 'hide')
+                    EventBus.$emit('modal-action-processing', false)
+                    if ( response.data.reply_code == 0 ) {
+                        window.location.href = response.data.reply_text
+                    } else {
+                        this.dialogMessage = response.data.reply_text
+                        $('#modal-dialog').modal('show')
+                    }
+                 })
+                 .catch((error) => {
+                    console.log(error)
+                 })
         })
 
         $('#page-loader').remove()

@@ -33,7 +33,7 @@ class RunTest
         $admission = $api->getadmission($an);
         $patient = $api->getPatient($admission['hn']);
         // return $admission;
-        $result = NoteCreator::tryCreate($admission, $patient, 8, 1,'', 1);
+        $result = NoteCreator::tryCreate($admission, $patient, 3, 1,'', 1);
 
         return $result;
     }

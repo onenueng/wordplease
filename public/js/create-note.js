@@ -1646,7 +1646,9 @@ window.app = new Vue({
         actionModalHeading: '',
         actionModalEvent: '',
         actionModalButtonLabel: '',
-        actionModalContent: ''
+        actionModalContent: '',
+
+        createNoteConfig: null
     },
     mounted: function mounted() {
         var _this = this;
@@ -1674,15 +1676,30 @@ window.app = new Vue({
             _this.actionModalHeading = 'Please confirm';
             _this.actionModalButtonLabel = 'Confirm';
             _this.actionModalContent = data.body;
-            _this.actionModalEvent = 'action-xyz';
+            _this.actionModalEvent = 'note-create-conformed';
             EventBus.$emit('toggle-modal-action', 'show');
+            _this.createNoteConfig = data;
         });
 
-        EventBus.$on('action-xyz', function () {
+        EventBus.$on('note-create-conformed', function () {
             EventBus.$emit('modal-action-processing', true);
-            // create note if success redirect or feedback user
-            EventBus.$emit('toggle-modal-action', 'hide');
-            EventBus.$emit('modal-action-processing', false);
+            axios.post('/try-create-note', {
+                an: _this.createNoteConfig.an,
+                noteTypeId: _this.createNoteConfig.noteTypeId,
+                class: _this.createNoteConfig.noteTypeId,
+                retitle: _this.createNoteConfig.retitle
+            }).then(function (response) {
+                EventBus.$emit('toggle-modal-action', 'hide');
+                EventBus.$emit('modal-action-processing', false);
+                if (response.data.reply_code == 0) {
+                    window.location.href = response.data.reply_text;
+                } else {
+                    _this.dialogMessage = response.data.reply_text;
+                    $('#modal-dialog').modal('show');
+                }
+            }).catch(function (error) {
+                console.log(error);
+            });
         });
 
         $('#page-loader').remove();
@@ -2478,7 +2495,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* Enter and leave animations can use different */\n/* durations and timing functions.              */\n.slide-fade-enter-active {\n  /*transition: all .3s ease;*/\n  -webkit-transition: all .8s ease;\n  transition: all .8s ease;\n}\n.slide-fade-leave-active {\n  /*transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);*/\n  -webkit-transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);\n  transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);\n}\n.slide-fade-enter, .slide-fade-leave-to\n/* .slide-fade-leave-active below version 2.1.8 */ {\n  -webkit-transform: translateX(10px);\n          transform: translateX(10px);\n  opacity: 0;\n}\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* Enter and leave animations can use different */\n/* durations and timing functions.              */\n.slide-fade-enter-active {\n  /*transition: all .3s ease;*/\n  -webkit-transition: all .8s ease;\n  transition: all .8s ease;\n}\n.slide-fade-leave-active {\n  /*transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);*/\n  -webkit-transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);\n  transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);\n}\n.slide-fade-enter, .slide-fade-leave-to\n/* .slide-fade-leave-active below version 2.1.8 */ {\n  -webkit-transform: translateX(10px);\n          transform: translateX(10px);\n  opacity: 0;\n}\n", ""]);
 
 // exports
 
@@ -2557,36 +2574,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     methods: {
         createNote: function createNote(note) {
             if (note.creatable) {
-                var body = 'Create : <b>' + note.title + '</b><br/>';
-                body += 'Hn : <b>' + this.admission.hn + '</b><br/>';
-                body += 'Name : <b>' + this.admission.patient_name + '</b><br/>';
-                body += 'Gender : <b>' + (this.admission.gender == 1 ? 'Male' : 'Female') + '</b><br/>';
+                var body = '<div class="row"><div class="col-xs-4 text-right">Create : </div>';
+                body += '<div class="col-xs-8 text-left"><b>' + note.label + '</b></div></div>';
+                body += '<div class="row"><div class="col-xs-4 text-right">Hn : </div>';
+                body += '<div class="col-xs-8 text-left"><b>' + this.admission.hn + '</b></div></div>';
+                body += '<div class="row"><div class="col-xs-4 text-right">Name : </div>';
+                body += '<div class="col-xs-8 text-left"><b>' + this.admission.patient_name + '</b></div></div>';
+                body += '<div class="row"><div class="col-xs-4 text-right">Gender : </div>';
+                body += '<div class="col-xs-8 text-left"><b>' + (this.admission.gender == 1 ? 'Male' : 'Female') + '</b></div></div>';
+                body += '<div class="row"><div class="col-xs-4 text-right">Attending : </div>';
+                body += '<div class="col-xs-8 text-left"><b>' + this.admission.attending_name + '</b></div></div>';
+                body += '<div class="row"><div class="col-xs-4 text-right">Datetime Admit : </div>';
+                body += '<div class="col-xs-8 text-left"><b>' + this.admission.datetime_admit + '</b></div></div>';
+                body += '<div class="row"><div class="col-xs-4 text-right">Datetime Discharge : </div>';
+                body += '<div class="col-xs-8 text-left"><b>' + this.admission.datetime_discharge + '</b></div></div>';
 
                 var data = {
+                    an: this.admission.an,
                     body: body,
-                    an: this.admission.an
-                    // an:"57305678"
-                    // attending_name:"ผศ.นพ. ปัญญา ลักษณะพฤกษา"
-                    // datetime_admit:"2017-08-31 13:20:00"
-                    // datetime_dc:"2017-09-20 13:00:00"
-                    // discharge_status:"2"
-                    // discharge_status_name:"IMPROVED"
-                    // discharge_type:"1"
-                    // discharge_type_name:"WITH APPROVAL"
-                    // dob:"1971-11-27"
-                    // gender:1
-                    // hn:"53701921"
-                    // patient_dept:""
-                    // patient_dept_name:""
-                    // patient_name:"นาย หน่อย จันทร์รอด"
-                    // patient_sub_dept:""
-                    // patient_sub_dept_name:""
-                    // reply_code:"0"
-                    // reply_text:"success."
-                    // ward_name:"เฉลิมพระเกียรติ์ 10 ใต้"
-                    // ward_name_short:"ฉก.10 ใต้"
+                    class: note.class,
+                    retitle: note.retitle,
+                    noteTypeId: note.noteTypeId
+                };
 
-                };EventBus.$emit('show-create-note-confirmation', data);
+                EventBus.$emit('show-create-note-confirmation', data);
             }
         },
         getClass: function getClass(creatable) {

@@ -61,7 +61,7 @@ class NoteType extends Model implements AutoId
     public function canRetitledTo()
     {
         
-        if ( $this->class > 2 ) { // class > 2 = service note. Not allow to retitle
+        if ( $this->class > 2 ) { // class > 2 = service note. Not allow to retitle.
             return [];
         }
 
@@ -75,9 +75,14 @@ class NoteType extends Model implements AutoId
         return $noteTitles;
     }
 
-    public function creatable($an, $gender, $class)
+    public function creatable($an, $gender, $class, $userId)
     {
-        if ( !($this->gender == 2 or $this->gender == $gender) ) { // check match gender
+        if ( !app('db')->table('note_type_user')
+                       ->where('note_type_id', $this->id)
+                       ->where('user_id', $userId)
+                       ->count() ) {
+            return "Your are not allowed";
+        } else if ( !($this->gender == 2 or $this->gender == $gender) ) { // check match gender
             return "Patient's gender not match the selected note";
         } elseif ( $class < 3 && !(Note::uniqueRuleChecked($an, $class)) ) { // check unique rule
             return "The " . ($class == 1 ? 'admission':'discharge') . " note of this AN already exists";
@@ -86,33 +91,25 @@ class NoteType extends Model implements AutoId
         return '';        
     }
 
-    public function getCreateDescription($an, $gender, $retitle = false)
+    public function getCreateDescription($an, $gender, $userId, $retitle = false)
     {
         $title = '';
         $creatable = true;
         $class = $retitle ? $this->retitledNotes[$retitle] : $this->class;
 
-        $result = $this->creatable($an, $gender, $class);
+        $result = $this->creatable($an, $gender, $class, $userId);
         if ( $result != '' ) {
             $creatable = false;
             $title = $result;
         }
 
-        // if ( !($this->gender == 2 or $this->gender == $gender) ) { // check match gender
-        //     $creatable = false;
-        //     $title = "Patient's gender not match the selected note";
-        // } elseif ( $class < 3 && !(Note::uniqueRuleChecked($an, $class)) ) { // check unique rule
-        //     $creatable = false;
-        //     $title = "The " . ($class == 1 ? 'admission':'discharge') . " note of this AN already exists";
-        // }
-
         return [
             'label' => $this->name . ( $retitle ? (' retitle to ' . $retitle) : '' ),
             'title' => $title,
+            'class' => $class,
             'retitle' => $retitle ? $retitle:'',
             'creatable' => $creatable,
             'noteTypeId' => $this->id,
-            'retitleClass' => $class,
         ];
     }
 

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\NoteManager;
 use \Illuminate\Contracts\Auth\Access\Gate;
-use App\Services\NoteCreator;
 
 class NoteController extends Controller
 {
@@ -33,12 +33,12 @@ class NoteController extends Controller
 
     public function store(\Illuminate\Http\Request $request)
     {
-        $note = \App\Services\NoteCreator::tryCreate(
-                                            $request->an,
-                                            $request->noteTypeId,
-                                            $request->class,
-                                            $request->retitle,
-                                            auth()->user()->id);
+        $note = NoteManager::tryCreate(
+                                $request->an,
+                                $request->noteTypeId,
+                                $request->class,
+                                $request->retitle,
+                                auth()->user()->id);
 
         if ( gettype($note) === 'string' ) {
             return ['reply_code' => 1, 'reply_text' => $note];
@@ -49,11 +49,6 @@ class NoteController extends Controller
 
     public function edit($id)
     {
-        // if ( !\Illuminate\Support\Facades\Cache::has('note@' . $id) ) {
-        //     $note = \App\Models\Notes\Note::with(['noteType', 'admission.patient'])->find($id);
-        //     \Illuminate\Support\Facades\Cache::put('note@' . $id, $note, 200);
-        // }
-
-        return view('notes.form', ['note' => NoteCreator::getCachedNote($id)]);
+        return view('notes.form', ['note' => NoteManager::getCachedNote($id)]);
     }
 }

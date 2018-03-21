@@ -11,7 +11,7 @@ use App\Models\Lists\Insurance;
 use App\Models\Lists\AttendingStaff;
 use Illuminate\Support\Facades\Cache;
 
-class NoteCreator
+class NoteManager
 {
     public static function getCreatableNotes($an, $userId)
     {
@@ -38,7 +38,7 @@ class NoteCreator
                 $response = resolve('App\Contracts\PatientDataAPI')->getPatient($key);
             }
 
-            if ( $response['reply_code'] == 0 ) { // cache only 'an' with data available
+            if ( !$response['reply_code'] ) { // cache only data available
                 Cache::put($cacheKey, $response, $cacheLifeTime);
             }
 

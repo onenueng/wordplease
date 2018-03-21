@@ -46,10 +46,10 @@ Route::get('/audit', ['as' => 'audit', 'uses' => 'NoteController@audit']); // TE
 
 // APIs
 Route::post('/get-admission/{an}', ['middleware' => 'auth', 'uses' => function ($an) {
-    return \App\Services\NoteCreator::getPatientData($an, 'an');
+    return \App\Services\NoteManager::getPatientData($an, 'an');
 }]);
 Route::post('/get-creatable-notes/{an}', ['middleware' => 'auth', 'uses' => function ($an) {
-    return \App\Services\NoteCreator::getCreatableNotes($an, auth()->user()->id);
+    return \App\Services\NoteManager::getCreatableNotes($an, auth()->user()->id);
 }]);
 Route::post('/try-create-note', 'NoteController@store');
 

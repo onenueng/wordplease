@@ -65,7 +65,7 @@ class NoteManager
         }
 
         // maintain patients table
-        $patientOnDB = Patient::findbyHn($patient['hn']);
+        $patientOnDB = Patient::findByCryptedKey($patient['hn'], 'hn');
         if ( $patientOnDB ) {
             $patientOnDB->update($patient);
         } else {
@@ -77,7 +77,7 @@ class NoteManager
         $admission['insurance_id'] = !($patient['insurance_name'])
                                        ? 0
                                        : Insurance::foundOrNew(['name' => $patient['insurance_name']], 'name');
-        $admissionOnDB = Admission::findbyAn($admission['an']);
+        $admissionOnDB = Admission::findByCryptedKey($admission['an'], 'an');
         if ( $admissionOnDB ) {
             $admissionOnDB->update($admission);
         } else {

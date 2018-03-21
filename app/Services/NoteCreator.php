@@ -29,9 +29,9 @@ class NoteCreator
     public static function getPatientData($key, $mode)
     {
         $cacheLifeTime = 100; // minutes
-        $prefix = $mode == 'an' ? 'an@' : 'hn@';
+        $cacheKey = ( $mode == 'an' ? 'an@' : 'hn@' ) . $key;
 
-        if ( !Cache::has($prefix . $key) ) {
+        if ( !Cache::has($cacheKey) ) {
             if ( $mode == 'an' ) {
                 $response = resolve('App\Contracts\PatientDataAPI')->getAdmission($key);
             } else {
@@ -39,13 +39,13 @@ class NoteCreator
             }
 
             if ( $response['reply_code'] == 0 ) { // cache only 'an' with data available
-                Cache::put($prefix . $key, $response, $cacheLifeTime);
+                Cache::put($cacheKey, $response, $cacheLifeTime);
             }
 
             return $response;
         }
 
-        return Cache::get($prefix . $key);
+        return Cache::get($cacheKey);
     }
     /**
      * Try create note from request.
@@ -122,6 +122,19 @@ class NoteCreator
 
     private static function createCompanion(&$note)
     {
-        
+
+    }
+
+    public static function getCachedNote(&$id)
+    {
+        $cacheLifeTime = 100; // minutes
+
+        $key = 'note@' . $id;
+        if (!Cache::has($key)) {
+            $note = Note::with(['noteType', 'admission.patient'])->find($id);
+            Cache::put($key, $note, $cacheLifeTime);
+        }
+
+        return Cache::get($key);
     }
 }

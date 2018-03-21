@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use \Illuminate\Contracts\Auth\Access\Gate;
+use App\Services\NoteCreator;
 
 class NoteController extends Controller
 {
@@ -48,7 +49,11 @@ class NoteController extends Controller
 
     public function edit($id)
     {
-        $note = \App\Models\Notes\Note::with(['noteType', 'admission.patient'])->find($id);
-        return view('notes.form', ['note' => $note]);
+        // if ( !\Illuminate\Support\Facades\Cache::has('note@' . $id) ) {
+        //     $note = \App\Models\Notes\Note::with(['noteType', 'admission.patient'])->find($id);
+        //     \Illuminate\Support\Facades\Cache::put('note@' . $id, $note, 200);
+        // }
+
+        return view('notes.form', ['note' => NoteCreator::getCachedNote($id)]);
     }
 }

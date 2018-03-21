@@ -10,8 +10,8 @@ trait DatetimeHandleable
     {
         if ( !$value ) {
             return null;
-        } 
+        }
 
-        return Carbon::parse($value)->toDatetimeString();
+        return Carbon::parse($value)->toDatetimeString() . ((config('database.default') == "sqlsrv") ? '.000': '');
     }
 }

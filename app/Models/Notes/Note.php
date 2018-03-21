@@ -73,6 +73,11 @@ class Note extends Model implements AutoId
         return !Note::where('admission_id', $admission->id)->where('class', $class)->count();
     }
 
+    public function editUrl()
+    {
+        return '/note/' . $this->id . '/edit';
+    }
+
     public function brandNavbar()
     {
         return $this->noteType->name . ' @ ' . $this->admission->an;

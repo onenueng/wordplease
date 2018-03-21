@@ -19,8 +19,8 @@
         "jquery": "^3.3.1",
         "laravel-mix": "^1.7.2",
         "lodash": "^4.17.5",
-        "vue": "^2.5.15",
-        "vue-template-compiler": "^2.5.15"
+        "vue": "^2.5.16",
+        "vue-template-compiler": "^2.5.16"
     },
     "dependencies": {
         "devbridge-autocomplete": "^1.4.7",

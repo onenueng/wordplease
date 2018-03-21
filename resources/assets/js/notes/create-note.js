@@ -57,7 +57,7 @@ window.app = new Vue({
             axios.post('/try-create-note', {
                     an: this.createNoteConfig.an,
                     noteTypeId: this.createNoteConfig.noteTypeId,
-                    class: this.createNoteConfig.noteTypeId,
+                    class: this.createNoteConfig.class,
                     retitle: this.createNoteConfig.retitle
                  })
                  .then((response) => {

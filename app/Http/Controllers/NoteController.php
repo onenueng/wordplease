@@ -43,7 +43,7 @@ class NoteController extends Controller
             return ['reply_code' => 1, 'reply_text' => $note];
         }
 
-        return ['reply_code' => 0, 'reply_text' => '/note/' . $note->id . '/edit'];
+        return ['reply_code' => 0, 'reply_text' => $note->editUrl()];
     }
 
     public function edit($id)

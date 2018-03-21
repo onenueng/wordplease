@@ -17,10 +17,23 @@ trait AutoIdInsertable
         switch (static::getIdType()) {
             case 'id':
                 $data['id'] = static::count() + 1;
-                break;
+                do {
+                    try {
+                        static::create($data);
+                        return static::find($data['id']);
+                    } catch (\Illuminate\Database\QueryException $e) {
+                        if ( $e->getCode() != 23000 ) { // not duplicate PK exception
+                            return $e;
+                        }
+                        $duplicatePK = true;
+                        $data['id']++;
+                    }
+                } while ($duplicatePK);
+
             case 'time_based_uuid':
                 $data['id'] = Uuid::uuid1()->toString();
                 break;
+
             case 'random_uuid':
                 $data['id'] = Uuid::uuid4()->toString();
                 break;

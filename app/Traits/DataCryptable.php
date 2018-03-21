@@ -37,6 +37,16 @@ trait DataCryptable
         return substr(hash_hmac("sha256", $value, config('app.key')), config('constant.MINI_HASH_START_AT'), config('constant.MINI_HASH_LENGTH'));
     }
 
+    public function tryUpdate(Array $data)
+    {
+        foreach ( $this->fillable as $field) {
+            if ( array_key_exists($field, $data) && $this->$field != $data[$field] ) {
+                return 'dirty';
+            }
+        }
+        return 'clean';
+    }
+
     public static function findByCryptedKey($keyValue, $keyName)
     {
         $records = static::select('id', $keyName)->where('mini_hash', (new static)->miniHash($keyValue))->get();

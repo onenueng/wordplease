@@ -256,16 +256,16 @@ class Patient extends Model implements AutoId
         return $this->hasMany(Admission::class);
     }
 
-    public static function findByHn($hn)
-    {
-        $patients = static::select('id', 'hn')->where('mini_hash', (new static)->miniHash($hn))->get();
+    // public static function findByHn($hn)
+    // {
+    //     $patients = static::select('id', 'hn')->where('mini_hash', (new static)->miniHash($hn))->get();
 
-        foreach ( $patients as $patient ) {
-            if ( $patient->hn == $hn ) {
-                return static::find($patient->id);
-            }
-        }
+    //     foreach ( $patients as $patient ) {
+    //         if ( $patient->hn == $hn ) {
+    //             return static::find($patient->id);
+    //         }
+    //     }
 
-        return null;
-    }
+    //     return null;
+    // }
 }

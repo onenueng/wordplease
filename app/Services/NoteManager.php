@@ -47,6 +47,7 @@ class NoteManager
 
         return Cache::get($cacheKey);
     }
+    
     /**
      * Try create note from request.
      *
@@ -67,7 +68,7 @@ class NoteManager
         // maintain patients table
         $patientOnDB = Patient::findByCryptedKey($patient['hn'], 'hn');
         if ( $patientOnDB ) {
-            $patientOnDB->update($patient);
+            $patientOnDB->tryUpdate($patient);
         } else {
             $patientOnDB = Patient::insert($patient);
         }
@@ -79,7 +80,7 @@ class NoteManager
                                        : Insurance::foundOrNew(['name' => $patient['insurance_name']], 'name');
         $admissionOnDB = Admission::findByCryptedKey($admission['an'], 'an');
         if ( $admissionOnDB ) {
-            $admissionOnDB->update($admission);
+            $admissionOnDB->tryUpdate($admission);
         } else {
             $admissionOnDB = Admission::insert($admission);
         }
@@ -122,7 +123,7 @@ class NoteManager
 
     private static function createCompanion(&$note)
     {
-
+        
     }
 
     public static function getCachedNote(&$id)
@@ -136,5 +137,10 @@ class NoteManager
         }
 
         return Cache::get($key);
+    }
+
+    public static function getData()
+    {
+        
     }
 }

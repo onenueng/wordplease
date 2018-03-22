@@ -55,6 +55,33 @@ Route::post('/try-create-note', 'NoteController@store');
 
 // Edit note
 Route::get('/note/{id}/edit', 'NoteController@edit');
+Route::get('/note-data/{id}/{fieldName}', 'NoteController@getData');
+// Route::get('/note-data/{id}/{fieldName}', ['middleware' => 'auth', 'uses' => function ($id, $fieldName) {
+//     $note = \Illuminate\Support\Facades\Cache::get('note@' . $id);
+//     if ( $note->created_by != auth()->user()->id ) {
+//         return null;
+//     }
+//     switch ($fieldName) {
+//         case 'datetime_admit':
+//         case 'datetime_discharge':
+//             if ( $note->admission->$fieldName ) {
+//                 return $note->admission->$fieldName->format('d M Y H:i');
+//             }
+//             return null;
+        
+//         case 'lenght_of_stay':
+//             return $note->admission->getLenghtOfStay();
+        
+//         case 'ward':
+//             return $note->ward ? $note->ward->name : null;
+        
+//         case 'attending':
+//             return $note->attending ? $note->attending->name : null;
+        
+//         default:
+//             return 'hello';
+//     }
+// }]);
 
 /*
 |--------------------------------------------------------------------------
@@ -146,3 +173,22 @@ Route::get('runtest/{an}', function ($an) {
 });
 
 Route::get('/setupnote', function () { return view('notes.medicine.forms.admission'); });
+
+Route::get('/ward-list', function () {
+    for ( $i = 57300000; $i <= 57301234; $i++) {
+        $admission = \App\Services\NoteManager::getPatientData($i, 'an');
+        $wardId = !($admission['ward_name'])
+                    ? 0
+                    : \App\Models\Lists\Ward::foundOrNew(
+                        [
+                            'name' => $admission['ward_name'],
+                            'name_short' => $admission['ward_name_short']
+                        ],
+                        'name'
+                      );
+        sleep(1);
+    }
+
+    return 'done';
+});
+

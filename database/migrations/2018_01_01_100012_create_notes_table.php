@@ -32,6 +32,8 @@ class CreateNotesTable extends Migration
 
             $table->smallInteger('created_by')->unsigned()->default(0)->index();
             $table->foreign('created_by')->references('id')->on('users');
+
+            $table->boolean('published')->default(false);
             
             $table->timestamps();
         });

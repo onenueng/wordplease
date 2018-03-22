@@ -47,8 +47,43 @@ class NoteController extends Controller
         return ['reply_code' => 0, 'reply_text' => $note->editUrl()];
     }
 
-    public function edit($id)
+    public function edit($id, Gate $gate)
     {
-        return view('notes.form', ['note' => NoteManager::getCachedNote($id)]);
+        $note = NoteManager::getCachedNote($id);
+        
+        if ( $gate->allows('edit-note', $note) ) {
+            return view('notes.form', ['note' => $note]);
+        }
+        
+        return redirect('not-allowed');
+    }
+
+    public function getData($id, $fieldName)
+    {
+        $note = NoteManager::getCachedNote($id);
+        if ( $note->created_by != auth()->user()->id ) {
+            return null;
+        }
+        
+        switch ($fieldName) {
+            case 'datetime_admit':
+            case 'datetime_discharge':
+                if ( $note->admission->$fieldName ) {
+                    return $note->admission->$fieldName->format('d M Y H:i');
+                }
+                return null;
+            
+            case 'lenght_of_stay':
+                return $note->admission->getLenghtOfStay();
+            
+            case 'ward':
+                return $note->ward ? $note->ward->name : null;
+            
+            case 'attending':
+                return $note->attending ? $note->attending->name : null;
+            
+            default:
+                return 'hello';
+        }
     }
 }

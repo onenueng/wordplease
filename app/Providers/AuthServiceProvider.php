@@ -28,5 +28,9 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('create-note', function ($user) {
             return $user->allowed('create-note') != null;
         });
+
+        Gate::define('edit-note', function ($user, &$note) {
+            return ($user->id == $note->created_by) && !$note->published;
+        });
     }
 }

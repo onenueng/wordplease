@@ -39,12 +39,18 @@ trait DataCryptable
 
     public function tryUpdate(Array $data)
     {
+        $dirty = false;
         foreach ( $this->fillable as $field) {
             if ( array_key_exists($field, $data) && $this->$field != $data[$field] ) {
-                return 'dirty';
+                $this->$field = $data[$field];
+                $dirty = true;
             }
         }
-        return 'clean';
+
+        if ( $dirty ) {
+            return $this->save();
+        }
+        return false;
     }
 
     public static function findByCryptedKey($keyValue, $keyName)

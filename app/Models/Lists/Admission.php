@@ -105,16 +105,23 @@ class Admission extends Model implements AutoId
         return $this->belongsTo(Insurance::class);
     }
 
-    public static function findByAn($an)
+    // public static function findByAn($an)
+    // {
+    //     $admissions = static::select('id', 'an')->where('mini_hash', (new static)->miniHash($an))->get();
+
+    //     foreach ( $admissions as $admission ) {
+    //         if ( $admission->an == $an ) {
+    //             return static::find($admission->id);
+    //         }
+    //     }
+
+    //     return null;
+    // }
+
+    public function getLenghtOfStay()
     {
-        $admissions = static::select('id', 'an')->where('mini_hash', (new static)->miniHash($an))->get();
-
-        foreach ( $admissions as $admission ) {
-            if ( $admission->an == $an ) {
-                return static::find($admission->id);
-            }
-        }
-
-        return null;
+        return $this->datetime_admit && $this->datetime_discharge
+               ? $this->datetime_discharge->diffInDays($this->datetime_admit) . ' days'
+               : null;
     }
 }

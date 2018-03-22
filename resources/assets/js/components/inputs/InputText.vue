@@ -108,7 +108,14 @@
             }
 
             if (this.needSync !== undefined) {
-                console.log(this.field + ' need sync')
+                let url = '/note-data/' + window.location.pathname.split("/")[2] + '/' + this.field
+                axios.get(url)
+                     .then( (response) => {
+                        this.userInput = response.data
+                     })
+                     .catch( (error) => {
+                        this.userInput = 'error'
+                     })
             }
 
             if (this.value === undefined)

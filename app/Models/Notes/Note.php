@@ -4,10 +4,12 @@ namespace App\Models\Notes;
 
 use App\User;
 use App\Contracts\AutoId;
+use App\Models\Lists\Ward;
 use App\Traits\DataCryptable;
 use App\Models\Lists\NoteType;
 use App\Models\Lists\Admission;
 use App\Traits\AutoIdInsertable;
+use App\Models\Lists\AttendingStaff;
 use Illuminate\Database\Eloquent\Model;
 
 class Note extends Model implements AutoId
@@ -60,6 +62,16 @@ class Note extends Model implements AutoId
     public function admission()
     {
         return $this->belongsTo(Admission::class);
+    }
+
+    public function ward()
+    {
+        return $this->belongsTo(Ward::class);
+    }
+
+    public function attending()
+    {
+        return $this->belongsTo(AttendingStaff::class, 'attending_staff_id');
     }
 
     public static function uniqueRuleChecked($an, $class)

@@ -49,41 +49,49 @@ class NoteController extends Controller
 
     public function edit($id, Gate $gate)
     {
-        $note = NoteManager::getCachedNote($id);
-        
-        if ( $gate->allows('edit-note', $note) ) {
-            return view('notes.form', ['note' => $note]);
+        $note = \App\Models\Notes\Note::find($id);
+
+        if ( !($note && $gate->allows('edit-note', $note)) ) {
+            return redirect('not-allowed');
         }
         
-        return redirect('not-allowed');
+        $note->load(['ward', 'attending', 'noteType', 'division','admission.patient', 'detail']);
+        $note->genExtraFields(); // got ward_name, attending_name, division_name
+        $note->admission->genExtraFields(); // got formated datetime and LOS
+        $note->detail->genExtraFields(); // got text of coded fields
+        return view('notes.form', ['note' => $note]);
+        
     }
 
-    public function getData($id, $fieldName)
+    public function autosave($id, \Illuminate\Http\Request $request, Gate $gate)
     {
-        $note = NoteManager::getCachedNote($id);
-        if ( $note->created_by != auth()->user()->id ) {
-            return null;
+        $note = \App\Models\Notes\Note::find($id);
+
+        if ( $note && $gate->allows('edit-note', $note) ) {
+            return $request->all();
+            return NoteManager::autosave($note, $request->field, $request->value);
         }
-        
-        switch ($fieldName) {
-            case 'datetime_admit':
-            case 'datetime_discharge':
-                if ( $note->admission->$fieldName ) {
-                    return $note->admission->$fieldName->format('d M Y H:i');
-                }
-                return null;
-            
-            case 'lenght_of_stay':
-                return $note->admission->getLenghtOfStay();
-            
-            case 'ward':
-                return $note->ward ? $note->ward->name : null;
-            
-            case 'attending':
-                return $note->attending ? $note->attending->name : null;
-            
-            default:
-                return 'hello';
-        }
+
+        return ['saved' => false];
     }
+
+    // public function getData($id, $fieldName)
+    // {
+    //     $note = NoteManager::getCachedNote($id);
+    //     if ( $note->created_by != auth()->user()->id ) {
+    //         return null;
+    //     }
+        
+    //     return NoteManager::getData($note, $fieldName);
+    // }
+
+    // public function getNote($id)
+    // {
+    //     $note = NoteManager::getCachedNote($id, 'refresh');
+    //     if ( $note->created_by != auth()->user()->id ) {
+    //         return null;
+    //     }
+
+    //     return $note;
+    // }
 }

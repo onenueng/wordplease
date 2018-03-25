@@ -1,7 +1,7 @@
 <template>
     <div :class="getGrid()">
         <div class="form-group-sm">
-            <label  class="control-label"
+            <label  class="control-label topped"
                     :for="id"
                     v-if="label !== undefined">
                 {{ label }}
@@ -16,7 +16,8 @@
                         :id="id"
                         :placeholder="placeholder"
                         v-model="userInput"
-                        @blur="autosave()" />
+                        @focus="saved = false"
+                        @blur="tryAutosave()" />
             </div>
         </div>
     </div>
@@ -72,12 +73,13 @@
         data () {
             return {
                 userInput: '',
-                lastData: ''
+                lastData: '',
+                saved: false
             }
         },
         mounted () {
             // initial data
-            if (this.value === undefined)
+            if (this.value === undefined || this.value === null)
                 this.lastData = this.userInput = ''
             else
                 this.lastData = this.userInput = this.value
@@ -130,7 +132,8 @@
             })
 
             if (this.needSync !== undefined) {
-                let url = '/note-data/' + window.location.pathname.split("/")[2] + '/' + this.field
+                // let url = '/note-data/' + window.location.pathname.split("/")[2] + '/' + this.field
+                let url = this.needSync + '/' + this.field
                 axios.get(url)
                      .then( (response) => {
                         this.userInput = response.data
@@ -152,7 +155,16 @@
                 if (this.field !== undefined && this.userInput != this.lastData) {
                     EventBus.$emit('autosave', this.field, this.userInput)
                     this.lastData = this.userInput
+                    this.saved = true
                 }
+            },
+            tryAutosave() {
+                setTimeout( () => {
+                    if ( !this.saved ) {
+                        this.autosave()
+                    }
+                    
+                }, 1000)
             }
         },
         computed: {

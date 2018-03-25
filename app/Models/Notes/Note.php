@@ -7,6 +7,7 @@ use App\Contracts\AutoId;
 use App\Models\Lists\Ward;
 use App\Traits\DataCryptable;
 use App\Models\Lists\NoteType;
+use App\Models\Lists\Division;
 use App\Models\Lists\Admission;
 use App\Traits\AutoIdInsertable;
 use App\Models\Lists\AttendingStaff;
@@ -74,15 +75,29 @@ class Note extends Model implements AutoId
         return $this->belongsTo(AttendingStaff::class, 'attending_staff_id');
     }
 
-    public static function uniqueRuleChecked($an, $class)
+    public function division()
     {
-        $admission = Admission::findByAn($an);
+        return $this->belongsTo(Division::class);
+    }
 
-        if ( !$admission ) {
-            return true;
-        }
+    public function detail()
+    {
+        return $this->hasOne($this->noteType->class_path, 'id', 'id');
+    }
 
-        return !Note::where('admission_id', $admission->id)->where('class', $class)->count();
+    public function wardName()
+    {
+        return $this->ward_id ? $this->ward->name : $this->ward_other;
+    }
+
+    public function attendingName()
+    {
+        return $this->attending_staff_id ? $this->attending->name : $this->attending_staff_other;
+    }
+
+    public function divisionName()
+    {
+        return $this->division_id ? $this->division->name : $this->division_other;
     }
 
     public function editUrl()
@@ -105,5 +120,23 @@ class Note extends Model implements AutoId
     public function jsPath()
     {
         return '/js/' . str_replace('notes', 'note', str_replace('_', '-', ($this->noteType->table_name))) . '.js';
+    }
+
+    public function genExtraFields()
+    {
+        $this->ward_name = $this->wardName();
+        $this->attending_name = $this->attendingName();
+        $this->division_name = $this->divisionName();
+    }
+
+    public static function uniqueRuleChecked($an, $class)
+    {
+        $admission = Admission::findByCryptedKey($an, 'an');
+
+        if ( !$admission ) {
+            return true;
+        }
+
+        return !Note::where('admission_id', $admission->id)->where('class', $class)->count();
     }
 }

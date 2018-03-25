@@ -9,7 +9,7 @@
             class="nav navbar-nav"
             slot="navbar-left">
             <li><a href=""><i class="fa fa-globe"></i> Publish</a></li>
-            <li v-show="true"><a> saving <i class="fa fa-circle-o-notch fa-spin fa-fw"></i></a></li>
+            <li v-show="autosaveIcon == 'show'"><a> saving <i class="fa fa-circle-o-notch fa-spin fa-fw"></i></a></li>
         </ul>
         <!-- Navbar Right Actions -->
         <navbar-right
@@ -42,6 +42,10 @@
                 reqiured: true
             },
             username: {
+                type: String,
+                reqiured: true
+            },
+            autosaveIcon: {
                 type: String,
                 reqiured: true
             }

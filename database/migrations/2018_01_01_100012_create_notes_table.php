@@ -24,11 +24,17 @@ class CreateNotesTable extends Migration
 
             $table->string('retitle', 60)->nullable();
             $table->tinyInteger('class')->unsigned();
-            $table->smallInteger('ward_id')->unsigned()->nullable()->index();
+            $table->smallInteger('ward_id')->unsigned()->default(0)->index();
             $table->foreign('ward_id')->references('id')->on('wards');
+            $table->string('ward_other', 90)->nullable();
 
-            $table->smallInteger('attending_staff_id')->unsigned()->nullable()->index();
+            $table->smallInteger('attending_staff_id')->unsigned()->default(0)->index();
             $table->foreign('attending_staff_id')->references('id')->on('attending_staffs');
+            $table->string('attending_staff_other', 160)->nullable();
+
+            $table->smallInteger('division_id')->unsigned()->default(0)->index();
+            $table->foreign('division_id')->references('id')->on('divisions');
+            $table->string('division_other', 120)->nullable();
 
             $table->smallInteger('created_by')->unsigned()->default(0)->index();
             $table->foreign('created_by')->references('id')->on('users');

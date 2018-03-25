@@ -7,10 +7,11 @@
     link="/"
     brand="{{ $note->brandNavbar() }}"
     title="{{ $note->titleNavbar() }}"
-    username="{{ auth()->user()->name }}">
+    username="{{ auth()->user()->name }}"
+    :autosave-icon="autosaveIcon">
 </page-navbar>
 
-<note></note>
+<note serialized-note="{{ $note }}"></note>
 
 @endsection
 

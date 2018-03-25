@@ -36,16 +36,16 @@ class CreateUsersTable extends Migration
             $table->timestamps();
         });
 
-        App\User::create([
-                      'id' => 1,
-                     'pln' => null,
-                    'name' => 'wordplease',
-                   'email' => 'wordplease',
-                  'org_id' => 'wordplease',
-                'password' => str_random(12),
-               'full_name' => 'เวิร์ดพลีส',
-            'full_name_en' => 'wordplease',
-        ]);
+        // App\User::create([
+        //               'id' => 1,
+        //              'pln' => null,
+        //             'name' => 'wordplease',
+        //            'email' => 'wordplease',
+        //           'org_id' => 'wordplease',
+        //         'password' => str_random(12),
+        //        'full_name' => 'เวิร์ดพลีส',
+        //     'full_name_en' => 'wordplease',
+        // ]);
     }
 
     /**

@@ -124,4 +124,11 @@ class Admission extends Model implements AutoId
                ? $this->datetime_discharge->diffInDays($this->datetime_admit) . ' days'
                : null;
     }
+
+    public function genExtraFields()
+    {
+        $this->lenght_of_stay = $this->getLenghtOfStay();
+        $this->datetime_admit_formated = $this->datetime_admit->format('d M Y H:i');
+        $this->datetime_discharge_formated = $this->datetime_discharge->format('d M Y H:i'); 
+    }
 }

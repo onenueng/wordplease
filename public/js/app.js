@@ -586,15 +586,6 @@ window.SESSION_LIFETIME = 1000 * 60 * 60; // an hour
 
 /***/ }),
 
-/***/ 59:
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(60);
-module.exports = __webpack_require__(85);
-
-
-/***/ }),
-
 /***/ 6:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -630,6 +621,15 @@ if(false) {
 /***/ 60:
 /***/ (function(module, exports, __webpack_require__) {
 
+__webpack_require__(61);
+module.exports = __webpack_require__(86);
+
+
+/***/ }),
+
+/***/ 61:
+/***/ (function(module, exports, __webpack_require__) {
+
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -647,7 +647,7 @@ __webpack_require__(5);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example', __webpack_require__(82));
+Vue.component('example', __webpack_require__(83));
 
 Vue.component('input-text', __webpack_require__(33));
 
@@ -1038,15 +1038,15 @@ function updateLink (link, options, obj) {
 
 /***/ }),
 
-/***/ 82:
+/***/ 83:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(83)
+var __vue_script__ = __webpack_require__(84)
 /* template */
-var __vue_template__ = __webpack_require__(84)
+var __vue_template__ = __webpack_require__(85)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -1086,7 +1086,7 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 83:
+/***/ 84:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1116,7 +1116,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 84:
+/***/ 85:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -1160,7 +1160,7 @@ if (false) {
 
 /***/ }),
 
-/***/ 85:
+/***/ 86:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
@@ -1263,4 +1263,4 @@ module.exports = function (css) {
 
 /***/ })
 
-},[59]);
+},[60]);

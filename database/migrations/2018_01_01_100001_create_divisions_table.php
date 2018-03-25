@@ -22,7 +22,7 @@ class CreateDivisionsTable extends Migration
             $table->timestamps();
         });
 
-        \App\Models\Lists\Division::loadData('divisions', 'create');
+        // \App\Models\Lists\Division::loadData('divisions', 'create');
 
         // Schema::create('division_user', function (Blueprint $table) {
         //     $table->integer('user_id')->usigned();

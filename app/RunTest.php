@@ -37,4 +37,38 @@ class RunTest
 
         return $result;
     }
+
+    public static function wardList()
+    {
+        for ( $i = 57300588; $i <= 57301234; $i++) {
+            $admission = \App\Services\NoteManager::getPatientData($i, 'an');
+            if ( $admission['reply_code'] == 0 ) {
+                $wardId = !($admission['ward_name'])
+                            ? 0
+                            : \App\Models\Lists\Ward::foundOrNew(
+                                [
+                                    'name' => $admission['ward_name'],
+                                    'name_short' => $admission['ward_name_short']
+                                ],
+                                'name'
+                              );
+                // $attendingId = !($admission['attending_pln'])
+                //                  ? 0
+                //                  : \App\Models\Lists\AttendingStaff::foundOrNew(
+                //                         [
+                //                             'name' => $admission['attending_name'],
+                //                             'licence_no' => $admission['attending_pln']
+                //                         ],
+                //                         'licence_no'
+                //                    );
+                
+                echo  $i . "\n";
+            } else {
+                echo  $i . " no data\n";
+            }
+            sleep(1);
+        }
+
+        return 'done';
+    }
 }

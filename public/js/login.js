@@ -238,14 +238,6 @@ exports.push([module.i, "\nbutton {\n    overflow: hidden;\n    outline: none;\n
 
 /***/ }),
 
-/***/ 139:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(140);
-
-
-/***/ }),
-
 /***/ 14:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -321,6 +313,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ 140:
 /***/ (function(module, exports, __webpack_require__) {
 
+module.exports = __webpack_require__(141);
+
+
+/***/ }),
+
+/***/ 141:
+/***/ (function(module, exports, __webpack_require__) {
+
 /* WEBPACK VAR INJECTION */(function($) {__webpack_require__(5);
 
 // use global event bus
@@ -328,7 +328,7 @@ window.EventBus = new Vue();
 
 Vue.component('navbar-right', __webpack_require__(41));
 Vue.component('navbar-left', __webpack_require__(43));
-Vue.component('login-page', __webpack_require__(141));
+Vue.component('login-page', __webpack_require__(142));
 Vue.component('modal-dialog', __webpack_require__(23));
 Vue.component('navbar', __webpack_require__(28));
 Vue.component('button-app', __webpack_require__(11));
@@ -369,15 +369,15 @@ window.app = new Vue({
 
 /***/ }),
 
-/***/ 141:
+/***/ 142:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(142)
+var __vue_script__ = __webpack_require__(143)
 /* template */
-var __vue_template__ = __webpack_require__(143)
+var __vue_template__ = __webpack_require__(144)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -417,7 +417,7 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 142:
+/***/ 143:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -558,7 +558,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 143:
+/***/ 144:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -2381,4 +2381,4 @@ module.exports = function (css) {
 
 /***/ })
 
-},[139]);
+},[140]);

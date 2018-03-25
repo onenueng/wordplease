@@ -26,8 +26,8 @@ class NoteType extends Model implements AutoId
         'gender', // 0 => female only/ 1 => male only/ 2 => all gender.
         'view_path',
         'table_name',
+        'class_path',
         'division_id',
-        'resource_name',
     ];
 
     /**

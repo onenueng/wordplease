@@ -268,6 +268,14 @@ class Inspiration
                 'cite' => 'Jim Rohn'
             ],
             [
+                'text' => "“Always code as if the guy who ends up maintaining your code will be a violent psychopath who knows where you live.”",
+                'cite' => 'John Woods'
+            ],
+            [
+                'text' => "“What worries you, masters you.”",
+                'cite' => 'John Locke'
+            ],
+            [
                 'text' => "“”",
                 'cite' => ''
             ],

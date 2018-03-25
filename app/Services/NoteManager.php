@@ -116,31 +116,72 @@ class NoteManager
             'attending_staff_id' => $attendingId,
         ]);
 
-        static::createCompanion($note);
+        $note->division_id = $note->noteType->division->id; // init division
+        $note->save();
+
+        $noteDetail = new $note->noteType->class_path;
+        $noteDetail->id = $note->id;
+        $noteDetail->save();
 
         return $note;
     }
 
-    private static function createCompanion(&$note)
-    {
-        
-    }
-
-    public static function getCachedNote(&$id)
+    public static function getCachedNote(&$id, $mode = 'cache')
     {
         $cacheLifeTime = 100; // minutes
 
         $key = 'note@' . $id;
-        if (!Cache::has($key)) {
-            $note = Note::with(['noteType', 'admission.patient'])->find($id);
-            Cache::put($key, $note, $cacheLifeTime);
+
+        if ( ($mode == 'cache') && Cache::has($key) ) {
+            return Cache::get($key);
         }
 
-        return Cache::get($key);
+        $note = Note::find($id);
+        $note->load(['ward', 'attending', 'noteType', 'division','admission.patient', 'detail']);
+        Cache::put($key, $note, $cacheLifeTime);
+        return $note;
     }
 
-    public static function getData()
+    public static function autosave(Note &$note, $field, $value)
     {
-        
+        switch ($field) {
+            case 'ward':
+                $db = app('db');
+                $id = $db->table('wards')->select('id')->where('name', $value)->first();
+                return $id;
+                // if ( $id ) {
+                //     return [
+                //         'saved' => $db->table('notes')->where('id', $note->id)->update(['ward_id' => $id->id])
+                //     ];
+                // }
+                // return [
+                //     'saved' => $db->table('notes')->where('id', $note->id)->update(['ward_id' => 0, 'ward_other' => $value])
+                // ];
+            case 'division':
+            case 'attending':
+
+                return ['saved' => true];
+            
+            default:
+                return ['saved' => false];
+        }
     }
+
+    // public static function getData(&$note, $fieldName)
+    // {
+    //     switch ($fieldName) {
+    //         case 'datetime_admit':
+    //         case 'datetime_discharge':
+    //             if ( $note->admission->$fieldName ) {
+    //                 return $note->admission->$fieldName->format('d M Y H:i');
+    //             }
+    //             return null;
+            
+    //         case 'lenght_of_stay':
+    //             return $note->admission->getLenghtOfStay();
+            
+    //         default:
+    //             return 'hello';
+    //     }
+    // }
 }

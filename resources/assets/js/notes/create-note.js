@@ -35,7 +35,7 @@ window.app = new Vue({
                      .then((response) => {
                         if ( !response.data.active ) {
                             this.dialogHeading = 'Attention please !!'
-                            this.dialogMessage = 'Session timeout, Please reload this page to continue using.'
+                            this.dialogMessage = 'Your are now logged off, Please reload this page to continue using.'
                             this.dialogButtonLabel = 'Got it'
                             EventBus.$emit('toggle-modal-dialog', 'show')
                         }

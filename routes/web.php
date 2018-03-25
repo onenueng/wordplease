@@ -55,33 +55,9 @@ Route::post('/try-create-note', 'NoteController@store');
 
 // Edit note
 Route::get('/note/{id}/edit', 'NoteController@edit');
-Route::get('/note-data/{id}/{fieldName}', 'NoteController@getData');
-// Route::get('/note-data/{id}/{fieldName}', ['middleware' => 'auth', 'uses' => function ($id, $fieldName) {
-//     $note = \Illuminate\Support\Facades\Cache::get('note@' . $id);
-//     if ( $note->created_by != auth()->user()->id ) {
-//         return null;
-//     }
-//     switch ($fieldName) {
-//         case 'datetime_admit':
-//         case 'datetime_discharge':
-//             if ( $note->admission->$fieldName ) {
-//                 return $note->admission->$fieldName->format('d M Y H:i');
-//             }
-//             return null;
-        
-//         case 'lenght_of_stay':
-//             return $note->admission->getLenghtOfStay();
-        
-//         case 'ward':
-//             return $note->ward ? $note->ward->name : null;
-        
-//         case 'attending':
-//             return $note->attending ? $note->attending->name : null;
-        
-//         default:
-//             return 'hello';
-//     }
-// }]);
+Route::post('/note/{id}/autosave', 'NoteController@autosave');
+// Route::get('/note-data/{id}/{fieldName}', 'NoteController@getData');
+// Route::get('/get-note/{id}', 'NoteController@getNote');
 
 /*
 |--------------------------------------------------------------------------
@@ -95,21 +71,40 @@ Route::get('draft/{group}/{page}', function ($group, $page) {
 Route::get('select-refresh', function () {
     App\Models\Lists\SelectItem::whereNotNull('field_name')->delete();
     App\Models\Lists\SelectItem::loadData('select_items');
+
+    App\Models\Lists\Drug::whereNotNull('id')->delete();
+    App\Models\Lists\Drug::loadData('drugs');
     return "done";
 });
 
-Route::get('lists-refresh-all', function () {
+Route::get('init-data', function () {
     App\Models\Lists\Drug::whereNotNull('id')->delete();
     App\Models\Lists\Drug::loadData('drugs');
 
-    App\Models\Lists\AttendingStaff::whereNotNull('id')->delete();
-    App\Models\Lists\AttendingStaff::loadData('attending_staffs');
-
     App\Models\Lists\Ward::whereNotNull('id')->delete();
     App\Models\Lists\Ward::loadData('wards');
-
+    
+    App\Models\Lists\AttendingStaff::whereNotNull('id')->delete();
+    App\Models\Lists\NoteType::whereNotNull('id')->delete();
     App\Models\Lists\Division::whereNotNull('id')->delete();
-    App\Models\Lists\Division::loadData('divisions');
+
+    App\Models\Lists\Division::loadData('divisions', 'create');
+    App\Models\Lists\NoteType::loadData('note_types');
+    App\Models\Lists\AttendingStaff::loadData('attending_staffs', 'create');
+
+    App\Models\Lists\SelectItem::whereNotNull('field_name')->delete();
+    App\Models\Lists\SelectItem::loadData('select_items');
+
+    App\User::create([
+                  'id' => 1,
+                 'pln' => null,
+                'name' => 'wordplease',
+               'email' => 'wordplease',
+              'org_id' => 'wordplease',
+            'password' => str_random(12),
+           'full_name' => 'เวิร์ดพลีส',
+        'full_name_en' => 'wordplease',
+    ]);
 
     return "done";
 });

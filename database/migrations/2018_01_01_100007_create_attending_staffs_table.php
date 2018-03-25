@@ -24,7 +24,7 @@ class CreateAttendingStaffsTable extends Migration
             $table->timestamps();
         });
 
-        \App\Models\Lists\AttendingStaff::loadData('attending_staffs', 'create');
+        // \App\Models\Lists\AttendingStaff::loadData('attending_staffs', 'create');
     }
 
     /**

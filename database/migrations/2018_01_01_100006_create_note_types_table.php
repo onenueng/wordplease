@@ -20,14 +20,14 @@ class CreateNoteTypesTable extends Migration
             $table->smallInteger('division_id')->unsigned(); // relation on division.
             $table->foreign('division_id')->references('id')->on('divisions');
             $table->string('name', 80);
-            $table->string('resource_name', 80);
+            $table->string('class_path', 80);
             $table->string('view_path', 80);
             $table->tinyInteger('gender')->unsigned(); // 0 female/ 1 male/ 2 both
             $table->string('table_name', 80);
             $table->timestamps();
         });
 
-        \App\Models\Lists\NoteType::loadData('note_types');
+        // \App\Models\Lists\NoteType::loadData('note_types');
 
         Schema::create('note_type_user', function (Blueprint $table) {
             $table->smallInteger('user_id')->unsigned()->index();

@@ -4,6 +4,7 @@ namespace App\Models\Lists;
 
 use App\User;
 use App\Contracts\AutoId;
+use App\Models\Notes\Note;
 use App\Contracts\ListItem;
 use App\Traits\ListQueryable;
 use App\Models\Lists\NoteType;
@@ -51,5 +52,10 @@ class Division extends Model implements AutoId, ListItem
     public function staffs()
     {
         return $this->hasMany(AttendingStaff::class);
+    }
+
+    public function notes()
+    {
+        return $this->hasMany(Note::class);
     }
 }

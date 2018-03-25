@@ -2,7 +2,7 @@
     <div :class="componentGrid">
         <div :class="componentSize" :style="isMaxWidth">
             <label v-if="hasLabel"
-                   class="control-label"
+                   class="control-label topped"
                    :for="field">
                 <span v-html="label"></span>
                 <a  v-if="labelDescription !== undefined"
@@ -108,7 +108,8 @@
             }
 
             if (this.needSync !== undefined) {
-                let url = '/note-data/' + window.location.pathname.split("/")[2] + '/' + this.field
+                // let url = '/note-data/' + window.location.pathname.split("/")[2] + '/' + this.field
+                let url = this.needSync + '/' + this.field
                 axios.get(url)
                      .then( (response) => {
                         this.userInput = response.data

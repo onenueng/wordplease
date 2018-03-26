@@ -158,14 +158,14 @@
         created () {
             this.note = JSON.parse(this.serializedNote)
             this.DMComplicationChecks = [
-                {field: "comorbid_DM_DR", label: "DR", value: this.note.detail.comorbid_DM_DR},
-                {field: "comorbid_DM_nephropathy", label: "Nephropathy", value: this.note.detail.comorbid_DM_nephropathy},
-                {field: "comorbid_DM_neuropathy", label: "Neuropathy", value: this.note.detail.comorbid_DM_neuropathy}
+                {field: "comorbid_DM_DR", label: "DR", checked: this.note.detail.comorbid_DM_DR},
+                {field: "comorbid_DM_nephropathy", label: "Nephropathy", checked: this.note.detail.comorbid_DM_nephropathy},
+                {field: "comorbid_DM_neuropathy", label: "Neuropathy", checked: this.note.detail.comorbid_DM_neuropathy}
             ],
             this.DMTreatmentChecks = [
-                {field: "comorbid_DM_diet", label: "Diet", value: this.note.detail.comorbid_DM_diet},
-                {field: "comorbid_DM_oral_meds", label: "Oral Meds", value: this.note.detail.comorbid_DM_oral_meds},
-                {field: "comorbid_DM_insulin", label: "Insulin", value: this.note.detail.comorbid_DM_insulin}
+                {field: "comorbid_DM_diet", label: "Diet", checked: this.note.detail.comorbid_DM_diet},
+                {field: "comorbid_DM_oral_meds", label: "Oral Meds", checked: this.note.detail.comorbid_DM_oral_meds},
+                {field: "comorbid_DM_insulin", label: "Insulin", checked: this.note.detail.comorbid_DM_insulin}
             ]
         }
 

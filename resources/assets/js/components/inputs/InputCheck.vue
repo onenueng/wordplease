@@ -40,7 +40,7 @@
             },
             // checked state ['checked' or undefined].
             checked: {
-                type: String,
+                type: [String, Number],
                 required: false
             },
             // need to sync value with database on render or not ['needSync' or undefined].
@@ -67,7 +67,7 @@
         },
         mounted() {
             // render checked state or not.
-            this.thisChecked = (this.checked === undefined) ? '' : this.checked
+            this.thisChecked = (this.checked === undefined || !this.checked) ? '' : 'checked'
 
             // init BT tooltip if labelDescription available.
             if (this.labelDescription !== undefined) {

@@ -25,6 +25,9 @@ class CreateMedicineAdmissionNotesTable extends Migration
             $table->tinyInteger('comorbid_DM_type')->unsigned()->nullable();
             $table->boolean('comorbid_DM_DR')->default(false);
             $table->boolean('comorbid_DM_nephropathy')->default(false);
+            $table->boolean('comorbid_DM_neuropathy')->default(false);
+            $table->boolean('comorbid_DM_diet')->default(false);
+            $table->boolean('comorbid_DM_oral_meds')->default(false);
             $table->boolean('comorbid_DM_insulin')->default(false);
 
             $table->tinyInteger('comorbid_valvular_heart_disease')->unsigned()->nullable();

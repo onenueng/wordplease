@@ -10,7 +10,7 @@
                         :readonly="readonly"
                         :name="field"
                         :id="field"
-                        :maxlength="maxChars" 
+                        :maxlength="maxChars"
                         :placeholder="placeholderNew"
                         v-model="userInput"
                         @input="oninput()"
@@ -35,12 +35,12 @@
             },
             label: {
                 type: String,
-                required: false  
+                required: false
             },
             // define Bootstrap grid class in mobile-tablet-desktop order
             grid: {
                 type: String,
-                required: false  
+                required: false
             },
             // initial value.
             value: {
@@ -62,7 +62,7 @@
             },
             setterEvent: {
                 type: String,
-                required: false  
+                required: false
             },
             // need to sync value with database on render or not ['needSync' or undefined].
             needSync: {
@@ -168,12 +168,12 @@
                 if (!this.dirty && (this.userInput.length < this.getMaxChars)) {
                     this.dirty = true
                 }
-                
-                
+
+
                 if (this.showCharsRemaining) {
                     this.charsRemaining = this.getMaxChars - this.userInput.length
                 }
-                
+
                 this.onkeypress()
                 this.onkeypressSave()
             },
@@ -209,7 +209,7 @@
                 }
             },
             onfocus() {
-                if(this.userInput.length == this.getMaxChars) {
+                if(this.userInput !== null && this.userInput.length == this.getMaxChars) {
                     this.toggleStatus('danger')
                 }
             }

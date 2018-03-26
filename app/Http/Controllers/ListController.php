@@ -29,7 +29,7 @@ class ListController extends Controller
 
         if ($type == 'select') {
             $items['suggestions'] = SelectItem::select('label as value', 'value as data')
-                                    ->where('field_name', $listName)
+                                    ->where(['field_name' => $listName, 'active' => true])
                                     ->orderBy('order')
                                     ->get();
             return response()->json($items);

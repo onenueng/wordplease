@@ -100,6 +100,22 @@ class Note extends Model implements AutoId
         return $this->division_id ? $this->division->name : $this->division_other;
     }
 
+    public function autosave($field, $value)
+    {
+        if ( $field == 'attending' ) { $field .= '_staff'; }
+
+        $id = app('db')->table(str_plural($field))->select('id')->where('name', $value)->first();
+        $fieldId = $field . '_id';
+        if ($id) {
+            $this->$fieldId = $id->id;
+            return $this->save();
+        }
+        $fieldOther = $field . '_other';
+        $this->$fieldId = 0;
+        $this->$fieldOther = $value;
+        return $this->save();
+    }
+
     public function editUrl()
     {
         return '/note/' . $this->id . '/edit';

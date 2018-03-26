@@ -54,13 +54,13 @@ class NoteController extends Controller
         if ( !($note && $gate->allows('edit-note', $note)) ) {
             return redirect('not-allowed');
         }
-        
+
         $note->load(['ward', 'attending', 'noteType', 'division','admission.patient', 'detail']);
         $note->genExtraFields(); // got ward_name, attending_name, division_name
         $note->admission->genExtraFields(); // got formated datetime and LOS
         $note->detail->genExtraFields(); // got text of coded fields
         return view('notes.form', ['note' => $note]);
-        
+
     }
 
     public function autosave($id, \Illuminate\Http\Request $request, Gate $gate)
@@ -68,7 +68,7 @@ class NoteController extends Controller
         $note = \App\Models\Notes\Note::find($id);
 
         if ( $note && $gate->allows('edit-note', $note) ) {
-            return $request->all();
+            // return $request->all();
             return NoteManager::autosave($note, $request->field, $request->value);
         }
 
@@ -81,7 +81,7 @@ class NoteController extends Controller
     //     if ( $note->created_by != auth()->user()->id ) {
     //         return null;
     //     }
-        
+
     //     return NoteManager::getData($note, $fieldName);
     // }
 

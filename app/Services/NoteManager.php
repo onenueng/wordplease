@@ -17,9 +17,9 @@ class NoteManager
     {
         $admission = static::getPatientData($an, 'an');
         $creatableNotes = [];
-        foreach ( \App\User::find($userId)->canCreateNotes as $note ) {
+        foreach (\App\User::find($userId)->canCreateNotes as $note) {
             $creatableNotes[] = $note->getCreateDescription($an, $admission['gender'], $userId);
-            foreach ( $note->canRetitledTo() as $retitle ) {
+            foreach ($note->canRetitledTo() as $retitle) {
                 $creatableNotes[] = $note->getCreateDescription($an, $admission['gender'], $userId, $retitle);
             }
         }
@@ -47,7 +47,7 @@ class NoteManager
 
         return Cache::get($cacheKey);
     }
-    
+
     /**
      * Try create note from request.
      *
@@ -126,62 +126,31 @@ class NoteManager
         return $note;
     }
 
-    public static function getCachedNote(&$id, $mode = 'cache')
-    {
-        $cacheLifeTime = 100; // minutes
+    // public static function getCachedNote(&$id, $mode = 'cache')
+    // {
+    //     $cacheLifeTime = 100; // minutes
 
-        $key = 'note@' . $id;
+    //     $key = 'note@' . $id;
 
-        if ( ($mode == 'cache') && Cache::has($key) ) {
-            return Cache::get($key);
-        }
+    //     if ( ($mode == 'cache') && Cache::has($key) ) {
+    //         return Cache::get($key);
+    //     }
 
-        $note = Note::find($id);
-        $note->load(['ward', 'attending', 'noteType', 'division','admission.patient', 'detail']);
-        Cache::put($key, $note, $cacheLifeTime);
-        return $note;
-    }
+    //     $note = Note::find($id);
+    //     $note->load(['ward', 'attending', 'noteType', 'division','admission.patient', 'detail']);
+    //     Cache::put($key, $note, $cacheLifeTime);
+    //     return $note;
+    // }
 
     public static function autosave(Note &$note, $field, $value)
     {
         switch ($field) {
             case 'ward':
-                $db = app('db');
-                $id = $db->table('wards')->select('id')->where('name', $value)->first();
-                return $id;
-                // if ( $id ) {
-                //     return [
-                //         'saved' => $db->table('notes')->where('id', $note->id)->update(['ward_id' => $id->id])
-                //     ];
-                // }
-                // return [
-                //     'saved' => $db->table('notes')->where('id', $note->id)->update(['ward_id' => 0, 'ward_other' => $value])
-                // ];
             case 'division':
             case 'attending':
-
-                return ['saved' => true];
-            
+                return ['saved' => $note->autosave($field, $value)];
             default:
-                return ['saved' => false];
+                return ['saved' => $note->detail->autosave($field, $value)];
         }
     }
-
-    // public static function getData(&$note, $fieldName)
-    // {
-    //     switch ($fieldName) {
-    //         case 'datetime_admit':
-    //         case 'datetime_discharge':
-    //             if ( $note->admission->$fieldName ) {
-    //                 return $note->admission->$fieldName->format('d M Y H:i');
-    //             }
-    //             return null;
-            
-    //         case 'lenght_of_stay':
-    //             return $note->admission->getLenghtOfStay();
-            
-    //         default:
-    //             return 'hello';
-    //     }
-    // }
 }

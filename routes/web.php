@@ -82,8 +82,8 @@ Route::get('init-data', function () {
     App\Models\Lists\Drug::loadData('drugs');
 
     App\Models\Lists\Ward::whereNotNull('id')->delete();
-    App\Models\Lists\Ward::loadData('wards');
-    
+    App\Models\Lists\Ward::loadData('wards', 'create');
+
     App\Models\Lists\AttendingStaff::whereNotNull('id')->delete();
     App\Models\Lists\NoteType::whereNotNull('id')->delete();
     App\Models\Lists\Division::whereNotNull('id')->delete();
@@ -186,4 +186,3 @@ Route::get('/ward-list', function () {
 
     return 'done';
 });
-

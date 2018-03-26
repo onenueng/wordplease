@@ -1,4 +1,4 @@
-id,class,division_id,name,resource_name,view_path,gender,table_name
+id,class,division_id,name,class_path,view_path,gender,table_name
 1,2,100,Discharge Summary,facultynotes,faculty.notes.discharge.form,2,faculty_discharge_notes
 2,1,100,Admission Note,facultynotes,faculty.notes.admission.form,2,faculty_admission_notes
 3,2,400,Labour and Delivery Summary,obgynnotes,obgyn.notes.delivery.form,0,obgyn_delivery_notes

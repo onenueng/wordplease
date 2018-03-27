@@ -117,29 +117,22 @@
                     <input-radio
                         field="comorbid_valvular_heart_disease"
                         label="Valvular heart disease :"
-                        options="{{ $comorbidOptions }}"
-                        trigger-value="1">
-                        <!-- valvular heart disease specify AS, AR, MS, MR, TR  -->
+                        :options="comorbidOptions"
+                        :trigger-value="inputRadioExtrasTriggerValue"
+                        :value="note.detail.comorbid_valvular_heart_disease"
+                        emit-on-update="reset-comorbid_valvular_heart_disease-extras">
+                        
                         <input-check-group
                             label="Specify : "
-                            checks='[
-                                {"field": "comorbid_valvular_heart_disease_AS", "label": "AS"},
-                                {"field": "comorbid_valvular_heart_disease_AR", "label": "AR"},
-                                {"field": "comorbid_valvular_heart_disease_MS", "label": "MS"},
-                                {"field": "comorbid_valvular_heart_disease_MR", "label": "MR"},
-                                {"field": "comorbid_valvular_heart_disease_TR", "label": "TR"}
-                            ]'
-                            need-sync>
-                        </input-check-group>
+                            :checks="ValvularHeartDiseaseChecks">
+                        </input-check-group><!-- valvular heart disease specify AS, AR, MS, MR, TR  -->
 
-                        <!-- valvular heart disease specify other -->
                         <input-text
                             field="comorbid_valvular_heart_disease_other"
-                            value=""
+                            :value="note.detail.comorbid_valvular_heart_disease_other"
                             size="normal"
-                            placeholder="Other specific, type here."
-                            need-sync>
-                        </input-text>
+                            placeholder="Other specific, type here.">
+                        </input-text><!-- valvular heart disease specify other -->
                     </input-radio><!-- comorbid valvular heart disease -->
                 </div><!-- valvular heart disease comorbid and its extra contents -->
                 <div><hr class="line" /></div>
@@ -199,30 +192,67 @@
                 },
                 {
                     field: "comorbid_DM_nephropathy",
-                    label: "Nephropathy", checked: this.note.detail.comorbid_DM_nephropathy,
+                    label: "Nephropathy",
+                    checked: this.note.detail.comorbid_DM_nephropathy,
                     setterEvent: 'set-comorbid_DM_nephropathy'
                 },
                 {
                     field: "comorbid_DM_neuropathy",
-                    label: "Neuropathy", checked: this.note.detail.comorbid_DM_neuropathy,
+                    label: "Neuropathy",
+                    checked: this.note.detail.comorbid_DM_neuropathy,
                     setterEvent: 'set-comorbid_DM_neuropathy'
                 }
             ]
             this.DMTreatmentChecks = [
                 {
                     field: "comorbid_DM_diet",
-                    label: "Diet", checked: this.note.detail.comorbid_DM_diet,
+                    label: "Diet",
+                    checked: this.note.detail.comorbid_DM_diet,
                     setterEvent: 'set-comorbid_DM_diet'
                 },
                 {
                     field: "comorbid_DM_oral_meds",
-                    label: "Oral Meds", checked: this.note.detail.comorbid_DM_oral_meds,
+                    label: "Oral Meds",
+                    checked: this.note.detail.comorbid_DM_oral_meds,
                     setterEvent: 'set-comorbid_DM_oral_meds'
                 },
                 {
                     field: "comorbid_DM_insulin",
-                    label: "Insulin", checked: this.note.detail.comorbid_DM_insulin,
+                    label: "Insulin",
+                    checked: this.note.detail.comorbid_DM_insulin,
                     setterEvent: 'set-comorbid_DM_insulin'
+                }
+            ]
+            this.ValvularHeartDiseaseChecks = [
+                {
+                    field: "comorbid_valvular_heart_disease_AS",
+                    label: "AS",
+                    checked: this.note.detail.comorbid_valvular_heart_disease_AS,
+                    setterEvent: "set-comorbid_valvular_heart_disease_AS"
+                },
+                {
+                    field: "comorbid_valvular_heart_disease_AR",
+                    label: "AR",
+                    checked: this.note.detail.comorbid_valvular_heart_disease_AR,
+                    setterEvent: "set-comorbid_valvular_heart_disease_AR"
+                },
+                {
+                    field: "comorbid_valvular_heart_disease_MS",
+                    label: "MS",
+                    checked: this.note.detail.comorbid_valvular_heart_disease_MS,
+                    setterEvent: "set-comorbid_valvular_heart_disease_MS"
+                },
+                {
+                    field: "comorbid_valvular_heart_disease_MR",
+                    label: "MR",
+                    checked: this.note.detail.comorbid_valvular_heart_disease_MR,
+                    setterEvent: "set-comorbid_valvular_heart_disease_MR"
+                },
+                {
+                    field: "comorbid_valvular_heart_disease_TR",
+                    label: "TR",
+                    checked: this.note.detail.comorbid_valvular_heart_disease_TR,
+                    setterEvent: "set-comorbid_valvular_heart_disease_TR"
                 }
             ]
         },
@@ -231,18 +261,33 @@
                 if ( value != this.inputRadioExtrasTriggerValue ) {
                     EventBus.$emit('set-comorbid_DM_type', null)
                     this.note.detail.comorbid_DM_DR = null
-                    EventBus.$emit('set-comorbid_DM_DR', false)
-                    this.note.detail.comorbid_DM_DR = false
-                    EventBus.$emit('set-comorbid_DM_nephropathy', false)
-                    this.note.detail.comorbid_DM_nephropathy = false
-                    EventBus.$emit('set-comorbid_DM_neuropathy', false)
-                    this.note.detail.comorbid_DM_neuropathy = false
-                    EventBus.$emit('set-comorbid_DM_diet', false)
-                    this.note.detail.comorbid_DM_diet = false
-                    EventBus.$emit('set-comorbid_DM_oral_meds', false)
-                    this.note.detail.comorbid_DM_oral_meds = false
-                    EventBus.$emit('set-comorbid_DM_insulin', false)
-                    this.note.detail.comorbid_DM_insulin = false
+                    EventBus.$emit('set-comorbid_DM_DR', 0)
+                    this.note.detail.comorbid_DM_DR = 0
+                    EventBus.$emit('set-comorbid_DM_nephropathy', 0)
+                    this.note.detail.comorbid_DM_nephropathy = 0
+                    EventBus.$emit('set-comorbid_DM_neuropathy', 0)
+                    this.note.detail.comorbid_DM_neuropathy = 0
+                    EventBus.$emit('set-comorbid_DM_diet', 0)
+                    this.note.detail.comorbid_DM_diet = 0
+                    EventBus.$emit('set-comorbid_DM_oral_meds', 0)
+                    this.note.detail.comorbid_DM_oral_meds = 0
+                    EventBus.$emit('set-comorbid_DM_insulin', 0)
+                    this.note.detail.comorbid_DM_insulin = 0
+                }
+            })
+
+            EventBus.$on('reset-comorbid_valvular_heart_disease-extras', (value) => {
+                if ( value != this.inputRadioExtrasTriggerValue ) {
+                    EventBus.$emit('set-comorbid_valvular_heart_disease_AS', 0)
+                    this.note.detail.comorbid_valvular_heart_disease_AS = 0
+                    EventBus.$emit('set-comorbid_valvular_heart_disease_AR', 0)
+                    this.note.detail.comorbid_valvular_heart_disease_AR = 0
+                    EventBus.$emit('set-comorbid_valvular_heart_disease_MS', 0)
+                    this.note.detail.comorbid_valvular_heart_disease_MS = 0
+                    EventBus.$emit('set-comorbid_valvular_heart_disease_MR', 0)
+                    this.note.detail.comorbid_valvular_heart_disease_MR = 0
+                    EventBus.$emit('set-comorbid_valvular_heart_disease_TR', 0)
+                    this.note.detail.comorbid_valvular_heart_disease_TR = 0
                 }
             })
         }

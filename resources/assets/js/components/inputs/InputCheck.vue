@@ -5,7 +5,7 @@
                     class="material-checkbox"
                     :id="field"
                     :name="field"
-                    :checked="thisChecked"
+                    :checked="testChecked"
                     @click="check()"/>
             <label  class="material-checkbox-group-label"
                     :for="field">
@@ -62,7 +62,8 @@
         data () {
             return {
                 // this element checked state ['checked' or ''].
-                thisChecked: ''
+                thisChecked: '',
+                forTestCheck: ''
             }
         },
         mounted() {
@@ -122,6 +123,9 @@
                     return JSON.parse(this.emitOnUpdate)
                 }
                 return this.emitOnUpdate
+            },
+            testChecked() {
+                return this.forTestCheck
             }
         }
     }

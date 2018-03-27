@@ -114,6 +114,10 @@
                 if (this.field !== undefined) {
                     EventBus.$emit('autosave', this.field, this.currentValue)
                 }
+
+                if ( this.emitOnUpdate !== undefined ) {
+                    EventBus.$emit(this.emitOnUpdate, this.currentValue)
+                }
             },
 
             check(value) {
@@ -140,9 +144,9 @@
                     this.currentValue = value
                     this.autosave()
 
-                    if ( this.emitOnUpdate !== undefined ) {
-                        EventBus.$emit(this.emitOnUpdate, this.currentValue)
-                    }
+                    // if ( this.emitOnUpdate !== undefined ) {
+                    //     EventBus.$emit(this.emitOnUpdate, this.currentValue)
+                    // }
                 }
             },
             // reset to unchecked all options.

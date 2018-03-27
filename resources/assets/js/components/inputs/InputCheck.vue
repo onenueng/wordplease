@@ -31,7 +31,7 @@
             },
             label: {
                 type: String,
-                required: true  
+                required: true
             },
             // tooltip for label.
             labelDescription: {
@@ -50,7 +50,7 @@
             },
             // event emit when checked/unchecked.
             emitOnUpdate: {
-                
+
                 required: false
             },
             // event emit when checked/unchecked.
@@ -67,7 +67,7 @@
         },
         mounted() {
             // render checked state or not.
-            this.thisChecked = (this.checked === undefined || !this.checked) ? '' : 'checked'
+            this.thisChecked = (this.checked === undefined || this.checked == 0) ? '' : 'checked'
 
             // init BT tooltip if labelDescription available.
             if (this.labelDescription !== undefined) {
@@ -81,7 +81,7 @@
                         this.autosave()
                     }
                 })
-            }            
+            }
 
             if (this.needSync !== undefined) {
                 let url = '/note-data/' + window.location.pathname.split("/")[2] + '/' + this.field
@@ -98,7 +98,7 @@
             // handle check event.
             check() {
                 this.thisChecked = (this.thisChecked == '') ? 'checked' : ''
-                
+
                 this.autosave()
 
                 if (this.emitOnUpdate !== undefined) {
@@ -106,7 +106,7 @@
                         // [name][mode 1:checked 2:unchecked][value]
                         if (event[1] == this.thisChecked) {
                             EventBus.$emit(event[0], event[2])
-                        }    
+                        }
                     })
                 }
             },
@@ -133,9 +133,9 @@
     .clear-padding {
         padding-left: 0px!important;
         margin-right: 5px!important;
-        
+
     }
-    
+
     label.underline-animate:hover {
         font-style: italic;
     }

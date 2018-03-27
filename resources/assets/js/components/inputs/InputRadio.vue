@@ -25,7 +25,7 @@
                     <i class="fa fa-remove"></i>
                 </a>
             </transition>
-            <label class="radio-inline" v-for="option in optionsObjects"> 
+            <label class="radio-inline" v-for="option in optionsObjects" :key="option.label">
                 <input  type="radio"
                         :name="field"
                         :value="option.value"
@@ -60,11 +60,11 @@
             },
             label: {
                 type: String,
-                required: true  
+                required: true
             },
             value: {
                 type: [String, Number],
-                required: false  
+                required: false
             },
             // tooltip for label.
             labelDescription: {
@@ -79,11 +79,11 @@
             // string in form fo array of json [{"label": "","value": ""},{...}].
             options: {
                 type: [String, Array],
-                required: true  
+                required: true
             },
             // value to trigger extra content.
             triggerValue: {
-                type: String,
+                type: [String, Number],
                 required: false
             },
             // need to sync value with database on render or not ['needSync' or undefined].
@@ -97,6 +97,7 @@
                 required: false
             },
             emitOnUpdate: {
+                type: String,
                 required: false
             }
         },
@@ -110,10 +111,11 @@
         methods: {
 
             autosave() {
-                if (this.field !== undefined)
+                if (this.field !== undefined) {
                     EventBus.$emit('autosave', this.field, this.currentValue)
+                }
             },
-            
+
             check(value) {
                 // check if has extra contents.
                 if (this.hasDefaultSlot) {
@@ -198,14 +200,14 @@
             if (this.setterEvent !== undefined) {
                 EventBus.$on(this.setterEvent, (value) => {
                     this.check(value)
-                    EventBus.$emit('show-alert', this.label.replace(' :', '') + ' also checked', 'success')
+                    // EventBus.$emit('show-alert', this.label.replace(' :', '') + ' also checked', 'success')
                 })
             }
 
             if (this.value !== undefined && this.value !== null) {
-                
+
                 this.currentValue = this.value
-                
+
                 this.showReset = true
 
                 if (this.value == this.triggerValue) {

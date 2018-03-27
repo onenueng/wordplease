@@ -76,6 +76,7 @@
 
             if (this.setterEvent !== undefined) {
                 EventBus.$on(this.setterEvent, (value) => {
+                    value = value ? 'checked' : ''
                     if (value != this.thisChecked) {
                         this.thisChecked = value
                         this.autosave()

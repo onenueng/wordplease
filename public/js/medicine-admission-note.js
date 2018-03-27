@@ -1050,7 +1050,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/ButtonApp.vue"
+Component.options.__file = "resources\\assets\\js\\components\\ButtonApp.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -1059,9 +1059,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-64a695e8", Component.options)
+    hotAPI.createRecord("data-v-840edeb0", Component.options)
   } else {
-    hotAPI.reload("data-v-64a695e8", Component.options)
+    hotAPI.reload("data-v-840edeb0", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -1082,13 +1082,13 @@ var content = __webpack_require__(13);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(3)("54e54cb9", content, false, {});
+var update = __webpack_require__(3)("43772e17", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-64a695e8\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ButtonApp.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-64a695e8\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ButtonApp.vue");
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-840edeb0\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ButtonApp.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-840edeb0\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ButtonApp.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -1206,7 +1206,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-64a695e8", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-840edeb0", module.exports)
   }
 }
 
@@ -1247,7 +1247,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/modals/Dialog.vue"
+Component.options.__file = "resources\\assets\\js\\components\\modals\\Dialog.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -1256,9 +1256,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-3339672a", Component.options)
+    hotAPI.createRecord("data-v-75c36dd7", Component.options)
   } else {
-    hotAPI.reload("data-v-3339672a", Component.options)
+    hotAPI.reload("data-v-75c36dd7", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -1279,13 +1279,13 @@ var content = __webpack_require__(25);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(3)("05e8ea6e", content, false, {});
+var update = __webpack_require__(3)("ce34e722", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3339672a\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Dialog.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3339672a\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Dialog.vue");
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-75c36dd7\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Dialog.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-75c36dd7\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Dialog.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -1426,7 +1426,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-3339672a", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-75c36dd7", module.exports)
   }
 }
 
@@ -1456,7 +1456,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/navbars/Navbar.vue"
+Component.options.__file = "resources\\assets\\js\\components\\navbars\\Navbar.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -1465,9 +1465,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-e911cd9a", Component.options)
+    hotAPI.createRecord("data-v-6c274260", Component.options)
   } else {
-    hotAPI.reload("data-v-e911cd9a", Component.options)
+    hotAPI.reload("data-v-6c274260", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -1591,7 +1591,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-e911cd9a", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-6c274260", module.exports)
   }
 }
 
@@ -1630,7 +1630,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/Panel.vue"
+Component.options.__file = "resources\\assets\\js\\components\\Panel.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -1639,9 +1639,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-21f01f46", Component.options)
+    hotAPI.createRecord("data-v-10054b1d", Component.options)
   } else {
-    hotAPI.reload("data-v-21f01f46", Component.options)
+    hotAPI.reload("data-v-10054b1d", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -1662,13 +1662,13 @@ var content = __webpack_require__(38);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(3)("6815ca12", content, false, {});
+var update = __webpack_require__(3)("63cf665c", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-21f01f46\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Panel.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-21f01f46\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Panel.vue");
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-10054b1d\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Panel.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-10054b1d\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Panel.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -1736,7 +1736,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-21f01f46", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-10054b1d", module.exports)
   }
 }
 
@@ -1775,7 +1775,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/navbars/AuthenticatedNavbarRight.vue"
+Component.options.__file = "resources\\assets\\js\\components\\navbars\\AuthenticatedNavbarRight.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -1784,9 +1784,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-7e117bc0", Component.options)
+    hotAPI.createRecord("data-v-46425a0d", Component.options)
   } else {
-    hotAPI.reload("data-v-7e117bc0", Component.options)
+    hotAPI.reload("data-v-46425a0d", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -1872,7 +1872,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-7e117bc0", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-46425a0d", module.exports)
   }
 }
 
@@ -1912,7 +1912,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/inputs/InputCheck.vue"
+Component.options.__file = "resources\\assets\\js\\components\\inputs\\InputCheck.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -1921,9 +1921,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-c883af46", Component.options)
+    hotAPI.createRecord("data-v-3149deec", Component.options)
   } else {
-    hotAPI.reload("data-v-c883af46", Component.options)
+    hotAPI.reload("data-v-3149deec", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -2113,6 +2113,7 @@ window.app = new Vue({
             // axios.post('/note/autosave', { field: field, value: value })
             axios.post('/note/' + window.location.pathname.split("/")[2] + '/autosave', { field: field, value: value }).then(function (response) {
                 console.log(response.data);
+
                 // remove timeout later
                 // setTimeout(() => { this.autosaveIcon = 'hide' }, 1000)
                 _this.autosaveIcon = 'hide';
@@ -2174,7 +2175,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/notes/medicine/forms/Admission.vue"
+Component.options.__file = "resources\\assets\\js\\components\\notes\\medicine\\forms\\Admission.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -2183,9 +2184,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-40a3f299", Component.options)
+    hotAPI.createRecord("data-v-820f0ba8", Component.options)
   } else {
-    hotAPI.reload("data-v-40a3f299", Component.options)
+    hotAPI.reload("data-v-820f0ba8", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -2335,6 +2336,39 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2366,14 +2400,78 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             note: {},
             comorbidOptions: [{ label: "No data", value: 255 }, { label: "No", value: 0 }, { label: "Yes", value: 1 }],
-            DMComplicationChecks: {},
+            // DMComplicationChecks: {},
+            inputRadioExtrasTriggerValue: 1,
             getDataUrl: "/note-data/" + window.location.pathname.split("/")[2]
         };
     },
     created: function created() {
         this.note = JSON.parse(this.serializedNote);
-        this.DMComplicationChecks = [{ field: "comorbid_DM_DR", label: "DR", checked: this.note.detail.comorbid_DM_DR }, { field: "comorbid_DM_nephropathy", label: "Nephropathy", checked: this.note.detail.comorbid_DM_nephropathy }, { field: "comorbid_DM_neuropathy", label: "Neuropathy", checked: this.note.detail.comorbid_DM_neuropathy }], this.DMTreatmentChecks = [{ field: "comorbid_DM_diet", label: "Diet", checked: this.note.detail.comorbid_DM_diet }, { field: "comorbid_DM_oral_meds", label: "Oral Meds", checked: this.note.detail.comorbid_DM_oral_meds }, { field: "comorbid_DM_insulin", label: "Insulin", checked: this.note.detail.comorbid_DM_insulin }];
+        this.DMComplicationChecks = [{
+            field: "comorbid_DM_DR", label: "DR",
+            checked: this.note.detail.comorbid_DM_DR,
+            setterEvent: 'set-comorbid_DM_DR'
+        }, {
+            field: "comorbid_DM_nephropathy",
+            label: "Nephropathy", checked: this.note.detail.comorbid_DM_nephropathy,
+            setterEvent: 'set-comorbid_DM_nephropathy'
+        }, {
+            field: "comorbid_DM_neuropathy",
+            label: "Neuropathy", checked: this.note.detail.comorbid_DM_neuropathy,
+            setterEvent: 'set-comorbid_DM_neuropathy'
+        }];
+        this.DMTreatmentChecks = [{
+            field: "comorbid_DM_diet",
+            label: "Diet", checked: this.note.detail.comorbid_DM_diet,
+            setterEvent: 'set-comorbid_DM_diet'
+        }, {
+            field: "comorbid_DM_oral_meds",
+            label: "Oral Meds", checked: this.note.detail.comorbid_DM_oral_meds,
+            setterEvent: 'set-comorbid_DM_oral_meds'
+        }, {
+            field: "comorbid_DM_insulin",
+            label: "Insulin", checked: this.note.detail.comorbid_DM_insulin,
+            setterEvent: 'set-comorbid_DM_insulin'
+        }];
+    },
+    mounted: function mounted() {
+        var _this = this;
+
+        EventBus.$on('reset-comorbid_DM-extras', function (value) {
+            if (value != _this.inputRadioExtrasTriggerValue) {
+                EventBus.$emit('set-comorbid_DM_type', null);
+                _this.note.detail.comorbid_DM_DR = null;
+                EventBus.$emit('set-comorbid_DM_DR', false);
+                _this.note.detail.comorbid_DM_DR = false;
+                EventBus.$emit('set-comorbid_DM_nephropathy', false);
+                _this.note.detail.comorbid_DM_nephropathy = false;
+                EventBus.$emit('set-comorbid_DM_neuropathy', false);
+                _this.note.detail.comorbid_DM_neuropathy = false;
+                EventBus.$emit('set-comorbid_DM_diet', false);
+                _this.note.detail.comorbid_DM_diet = false;
+                EventBus.$emit('set-comorbid_DM_oral_meds', false);
+                _this.note.detail.comorbid_DM_oral_meds = false;
+                EventBus.$emit('set-comorbid_DM_insulin', false);
+                _this.note.detail.comorbid_DM_insulin = false;
+            }
+        });
     }
+    // computed: {
+    //     DMComplicationChecks() {
+    //         return [
+    //             {field: "comorbid_DM_DR", label: "DR", checked: this.note.detail.comorbid_DM_DR},
+    //             {field: "comorbid_DM_nephropathy", label: "Nephropathy", checked: this.note.detail.comorbid_DM_nephropathy},
+    //             {field: "comorbid_DM_neuropathy", label: "Neuropathy", checked: this.note.detail.comorbid_DM_neuropathy}
+    //         ]
+    //     },
+    //     DMTreatmentChecks() {
+    //         return [
+    //             {field: "comorbid_DM_diet", label: "Diet", checked: this.note.detail.comorbid_DM_diet},
+    //             {field: "comorbid_DM_oral_meds", label: "Oral Meds", checked: this.note.detail.comorbid_DM_oral_meds},
+    //             {field: "comorbid_DM_insulin", label: "Insulin", checked: this.note.detail.comorbid_DM_insulin}
+    //         ]
+    //     }
+    // }
 
     // implement input-text sync data
     // window.location.href
@@ -2408,7 +2506,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/inputs/InputText.vue"
+Component.options.__file = "resources\\assets\\js\\components\\inputs\\InputText.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -2417,9 +2515,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-4e398e30", Component.options)
+    hotAPI.createRecord("data-v-1522171b", Component.options)
   } else {
-    hotAPI.reload("data-v-4e398e30", Component.options)
+    hotAPI.reload("data-v-1522171b", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -2714,7 +2812,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-4e398e30", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-1522171b", module.exports)
   }
 }
 
@@ -2729,13 +2827,13 @@ var content = __webpack_require__(191);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(3)("820ab372", content, false, {});
+var update = __webpack_require__(3)("7e709f3f", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-c883af46\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./InputCheck.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-c883af46\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./InputCheck.vue");
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3149deec\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./InputCheck.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3149deec\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./InputCheck.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -2835,7 +2933,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         var _this = this;
 
         // render checked state or not.
-        this.thisChecked = this.checked === undefined || !this.checked ? '' : 'checked';
+        this.thisChecked = this.checked === undefined || this.checked == 0 ? '' : 'checked';
 
         // init BT tooltip if labelDescription available.
         if (this.labelDescription !== undefined) {
@@ -2844,6 +2942,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         if (this.setterEvent !== undefined) {
             EventBus.$on(this.setterEvent, function (value) {
+                value = value ? 'checked' : '';
                 if (value != _this.thisChecked) {
                     _this.thisChecked = value;
                     _this.autosave();
@@ -2951,7 +3050,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-c883af46", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-3149deec", module.exports)
   }
 }
 
@@ -2985,7 +3084,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/inputs/InputRadio.vue"
+Component.options.__file = "resources\\assets\\js\\components\\inputs\\InputRadio.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -2994,9 +3093,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-4a27a5d0", Component.options)
+    hotAPI.createRecord("data-v-d476e406", Component.options)
   } else {
-    hotAPI.reload("data-v-4a27a5d0", Component.options)
+    hotAPI.reload("data-v-d476e406", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -3017,13 +3116,13 @@ var content = __webpack_require__(196);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(3)("1ec8ed82", content, false, {});
+var update = __webpack_require__(3)("e51967fe", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4a27a5d0\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./InputRadio.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4a27a5d0\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./InputRadio.vue");
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-d476e406\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./InputRadio.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-d476e406\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./InputRadio.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -3139,7 +3238,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         // value to trigger extra content.
         triggerValue: {
-            type: String,
+            type: [String, Number],
             required: false
         },
         // need to sync value with database on render or not ['needSync' or undefined].
@@ -3153,6 +3252,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             required: false
         },
         emitOnUpdate: {
+            type: String,
             required: false
         }
     },
@@ -3166,7 +3266,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         autosave: function autosave() {
-            if (this.field !== undefined) EventBus.$emit('autosave', this.field, this.currentValue);
+            if (this.field !== undefined) {
+                EventBus.$emit('autosave', this.field, this.currentValue);
+            }
         },
         check: function check(value) {
             // check if has extra contents.
@@ -3257,7 +3359,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         if (this.setterEvent !== undefined) {
             EventBus.$on(this.setterEvent, function (value) {
                 _this.check(value);
-                EventBus.$emit('show-alert', _this.label.replace(' :', '') + ' also checked', 'success');
+                // EventBus.$emit('show-alert', this.label.replace(' :', '') + ' also checked', 'success')
             });
         }
 
@@ -3409,36 +3511,40 @@ var render = function() {
           ]),
           _vm._v(" "),
           _vm._l(_vm.optionsObjects, function(option) {
-            return _c("label", { staticClass: "radio-inline" }, [
-              _c("input", {
-                attrs: { type: "radio", name: _vm.field },
-                domProps: {
-                  value: option.value,
-                  checked: option.value == _vm.currentValue
-                },
-                on: {
-                  click: function($event) {
-                    _vm.check(option.value)
+            return _c(
+              "label",
+              { key: option.label, staticClass: "radio-inline" },
+              [
+                _c("input", {
+                  attrs: { type: "radio", name: _vm.field },
+                  domProps: {
+                    value: option.value,
+                    checked: option.value == _vm.currentValue
+                  },
+                  on: {
+                    click: function($event) {
+                      _vm.check(option.value)
+                    }
                   }
-                }
-              }),
-              _vm._v(" "),
-              _c("span", { domProps: { innerHTML: _vm._s(option.label) } }),
-              _vm._v(" "),
-              option.labelDescription !== undefined
-                ? _c(
-                    "a",
-                    {
-                      attrs: {
-                        role: "button",
-                        "data-toggle": "tooltip",
-                        title: option.labelDescription
-                      }
-                    },
-                    [_c("i", { staticClass: "fa fa-info-circle" })]
-                  )
-                : _vm._e()
-            ])
+                }),
+                _vm._v(" "),
+                _c("span", { domProps: { innerHTML: _vm._s(option.label) } }),
+                _vm._v(" "),
+                option.labelDescription !== undefined
+                  ? _c(
+                      "a",
+                      {
+                        attrs: {
+                          role: "button",
+                          "data-toggle": "tooltip",
+                          title: option.labelDescription
+                        }
+                      },
+                      [_c("i", { staticClass: "fa fa-info-circle" })]
+                    )
+                  : _vm._e()
+              ]
+            )
           })
         ],
         2
@@ -3464,7 +3570,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-4a27a5d0", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-d476e406", module.exports)
   }
 }
 
@@ -3498,7 +3604,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/inputs/InputSelect.vue"
+Component.options.__file = "resources\\assets\\js\\components\\inputs\\InputSelect.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -3507,9 +3613,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-ca4f6712", Component.options)
+    hotAPI.createRecord("data-v-7a4f2c2c", Component.options)
   } else {
-    hotAPI.reload("data-v-ca4f6712", Component.options)
+    hotAPI.reload("data-v-7a4f2c2c", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -3530,13 +3636,13 @@ var content = __webpack_require__(201);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(3)("4cc8e798", content, false, {});
+var update = __webpack_require__(3)("003a2e52", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-ca4f6712\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./InputSelect.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-ca4f6712\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./InputSelect.vue");
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7a4f2c2c\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./InputSelect.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7a4f2c2c\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./InputSelect.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -3898,7 +4004,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-ca4f6712", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-7a4f2c2c", module.exports)
   }
 }
 
@@ -3932,7 +4038,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/inputs/InputTextarea.vue"
+Component.options.__file = "resources\\assets\\js\\components\\inputs\\InputTextarea.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -3941,9 +4047,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-d7bf5a16", Component.options)
+    hotAPI.createRecord("data-v-86e240b0", Component.options)
   } else {
-    hotAPI.reload("data-v-d7bf5a16", Component.options)
+    hotAPI.reload("data-v-86e240b0", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -3964,13 +4070,13 @@ var content = __webpack_require__(206);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(3)("33d84e2c", content, false, {});
+var update = __webpack_require__(3)("e07017ac", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-d7bf5a16\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./InputTextarea.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-d7bf5a16\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./InputTextarea.vue");
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-86e240b0\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./InputTextarea.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-86e240b0\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./InputTextarea.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -4323,7 +4429,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-d7bf5a16", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-86e240b0", module.exports)
   }
 }
 
@@ -4353,7 +4459,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/inputs/InputSuggestion.vue"
+Component.options.__file = "resources\\assets\\js\\components\\inputs\\InputSuggestion.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -4362,9 +4468,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-db2e1802", Component.options)
+    hotAPI.createRecord("data-v-59671ff2", Component.options)
   } else {
-    hotAPI.reload("data-v-db2e1802", Component.options)
+    hotAPI.reload("data-v-59671ff2", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -4638,7 +4744,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-db2e1802", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-59671ff2", module.exports)
   }
 }
 
@@ -4668,7 +4774,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/inputs/InputCheckGroup.vue"
+Component.options.__file = "resources\\assets\\js\\components\\inputs\\InputCheckGroup.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -4677,9 +4783,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-aa3e625c", Component.options)
+    hotAPI.createRecord("data-v-71defac5", Component.options)
   } else {
-    hotAPI.reload("data-v-aa3e625c", Component.options)
+    hotAPI.reload("data-v-71defac5", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -4782,7 +4888,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-aa3e625c", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-71defac5", module.exports)
   }
 }
 
@@ -4790,201 +4896,11 @@ if (false) {
 /* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "container-fluid" },
-    [
-      _c("panel", { attrs: { heading: "Admission data" } }, [
-        _c(
-          "div",
-          { staticClass: "row" },
-          [
-            _c("input-text", {
-              attrs: {
-                label: "Admit :",
-                field: "datetime_admit",
-                grid: "12-6-3",
-                value: _vm.note.admission.datetime_admit_formated,
-                readonly: ""
-              }
-            }),
-            _vm._v(" "),
-            _c("input-text", {
-              attrs: {
-                label: "Discharge :",
-                field: "datetime_discharge",
-                grid: "12-6-3",
-                value: _vm.note.admission.datetime_discharge_formated,
-                readonly: ""
-              }
-            }),
-            _vm._v(" "),
-            _c("input-text", {
-              attrs: {
-                label: "Length of stay :",
-                field: "lenght_of_stay",
-                grid: "12-6-3",
-                value: _vm.note.admission.lenght_of_stay,
-                readonly: ""
-              }
-            }),
-            _vm._v(" "),
-            _c("input-suggestion", {
-              attrs: {
-                field: "ward",
-                label: "Ward :",
-                grid: "12-6-3",
-                "min-chars": "2",
-                value: _vm.note.ward_name
-              }
-            }),
-            _vm._v(" "),
-            _c("input-suggestion", {
-              attrs: {
-                field: "attending",
-                label: "Attending :",
-                grid: "12-6-3",
-                "min-chars": "3",
-                value: _vm.note.attending_name
-              }
-            }),
-            _vm._v(" "),
-            _c("input-suggestion", {
-              attrs: {
-                field: "division",
-                label: "Specialty :",
-                grid: "12-6-3",
-                "min-chars": "3",
-                value: _vm.note.division_name
-              }
-            }),
-            _vm._v(" "),
-            _c("input-select", {
-              attrs: {
-                field: "admit_reason",
-                label: "Reason to admit :",
-                placeholder: "if other choice, type here",
-                grid: "12-6-3",
-                value: _vm.note.detail.admit_reason_text
-              }
-            })
-          ],
-          1
-        )
-      ]),
-      _vm._v(" "),
-      _c("panel", { attrs: { heading: "History" } }, [
-        _c(
-          "div",
-          { staticClass: "row" },
-          [
-            _c("input-textarea", {
-              attrs: {
-                field: "chief_complaint",
-                label: "Chief complaint :",
-                grid: "12-12-12",
-                "max-chars": "50",
-                value: _vm.note.detail.chief_complaint
-              }
-            }),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-xs-12" }, [
-              _c("hr", { staticClass: "line" })
-            ]),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "col-xs-12 form-inline" },
-              [
-                _c("button-app", {
-                  attrs: {
-                    action: "comorbid-no-data-all",
-                    status: "draft",
-                    label: "No Data",
-                    size: "sm"
-                  }
-                }),
-                _vm._v(" "),
-                _c("button-app", {
-                  attrs: {
-                    action: "comorbid-no-at-all",
-                    status: "draft",
-                    label: "No comorbids",
-                    size: "sm"
-                  }
-                })
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-xs-12 col-sm-6 col-md-4" }, [
-              _c(
-                "div",
-                { staticClass: "material-box" },
-                [
-                  _c(
-                    "input-radio",
-                    {
-                      attrs: {
-                        field: "comorbid_DM",
-                        label: "DM :",
-                        options: _vm.comorbidOptions,
-                        "trigger-value": "1",
-                        value: _vm.note.detail.comorbid_DM
-                      }
-                    },
-                    [
-                      _c("input-radio", {
-                        attrs: {
-                          field: "comorbid_DM_type",
-                          label: "Type : ",
-                          options:
-                            '[\n                                {"label": "I", "value": 1},\n                                {"label": "II", "value": 2}\n                            ]',
-                          value: _vm.note.detail.comorbid_DM_type
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("input-check-group", {
-                        attrs: {
-                          label: "Complication : ",
-                          checks: _vm.DMComplicationChecks
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("input-check-group", {
-                        attrs: {
-                          label: "Treatment : ",
-                          checks: _vm.DMTreatmentChecks
-                        }
-                      })
-                    ],
-                    1
-                  )
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c("div", [_c("hr", { staticClass: "line" })])
-            ])
-          ],
-          1
-        )
-      ])
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
+module.exports={render:function(){},staticRenderFns:[]}
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-40a3f299", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-820f0ba8", module.exports)
   }
 }
 
@@ -5014,7 +4930,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/navbars/EditNote.vue"
+Component.options.__file = "resources\\assets\\js\\components\\navbars\\EditNote.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -5023,9 +4939,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-2a949d7f", Component.options)
+    hotAPI.createRecord("data-v-c041a128", Component.options)
   } else {
-    hotAPI.reload("data-v-2a949d7f", Component.options)
+    hotAPI.reload("data-v-c041a128", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -5162,7 +5078,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-2a949d7f", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-c041a128", module.exports)
   }
 }
 

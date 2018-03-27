@@ -81,34 +81,67 @@
             </div><!--  format content to fit left margin -->
             <div class="col-xs-12 col-sm-6 col-md-4">
                 <div class="material-box">
-                    <input-radio 
+                    <input-radio
                         field="comorbid_DM"
                         label="DM :"
                         :options="comorbidOptions"
-                        trigger-value="1"
-                        :value="note.detail.comorbid_DM">
-                        
-                        <input-radio 
+                        :trigger-value="inputRadioExtrasTriggerValue"
+                        :value="note.detail.comorbid_DM"
+                        emit-on-update="reset-comorbid_DM-extras">
+
+                        <input-radio
                             field="comorbid_DM_type"
                             label="Type : "
                             options='[
                                 {"label": "I", "value": 1},
                                 {"label": "II", "value": 2}
                             ]'
-                            :value="note.detail.comorbid_DM_type">
+                            :value="note.detail.comorbid_DM_type"
+                            setter-event="set-comorbid_DM_type">
                         </input-radio><!-- DM type -->
 
-                        <input-check-group 
+                        <input-check-group
                             label="Complication : "
                             :checks="DMComplicationChecks">
                         </input-check-group><!-- DM complications DR, Nephropathy, Neuropathy -->
 
-                        <input-check-group 
+                        <input-check-group
                             label="Treatment : "
                             :checks="DMTreatmentChecks">
                         </input-check-group><!-- DM treatments Diet, Oral Meds, Insulin -->
                     </input-radio><!-- DM comorbid and its extra contents -->
                 </div><!-- DM comorbid and its extra contents -->
+                <div><hr class="line" /></div>
+
+                <div class="material-box">
+                    <input-radio
+                        field="comorbid_valvular_heart_disease"
+                        label="Valvular heart disease :"
+                        options="{{ $comorbidOptions }}"
+                        trigger-value="1">
+                        <!-- valvular heart disease specify AS, AR, MS, MR, TR  -->
+                        <input-check-group
+                            label="Specify : "
+                            checks='[
+                                {"field": "comorbid_valvular_heart_disease_AS", "label": "AS"},
+                                {"field": "comorbid_valvular_heart_disease_AR", "label": "AR"},
+                                {"field": "comorbid_valvular_heart_disease_MS", "label": "MS"},
+                                {"field": "comorbid_valvular_heart_disease_MR", "label": "MR"},
+                                {"field": "comorbid_valvular_heart_disease_TR", "label": "TR"}
+                            ]'
+                            need-sync>
+                        </input-check-group>
+
+                        <!-- valvular heart disease specify other -->
+                        <input-text
+                            field="comorbid_valvular_heart_disease_other"
+                            value=""
+                            size="normal"
+                            placeholder="Other specific, type here."
+                            need-sync>
+                        </input-text>
+                    </input-radio><!-- comorbid valvular heart disease -->
+                </div><!-- valvular heart disease comorbid and its extra contents -->
                 <div><hr class="line" /></div>
             </div><!-- comorbid DM, VHD, Asthma, Cirrhosis, HCV -->
         </div><!-- wrap content with row class -->
@@ -144,30 +177,91 @@
             }
         },
         data () {
-            return { 
+            return {
                 note: {},
                 comorbidOptions: [
                     { label: "No data", value: 255 },
                     { label: "No", value: 0 },
                     { label: "Yes", value: 1 }
                 ],
-                DMComplicationChecks: {},
+                // DMComplicationChecks: {},
+                inputRadioExtrasTriggerValue: 1,
                 getDataUrl: "/note-data/" + window.location.pathname.split("/")[2]
             }
         },
         created () {
             this.note = JSON.parse(this.serializedNote)
             this.DMComplicationChecks = [
-                {field: "comorbid_DM_DR", label: "DR", checked: this.note.detail.comorbid_DM_DR},
-                {field: "comorbid_DM_nephropathy", label: "Nephropathy", checked: this.note.detail.comorbid_DM_nephropathy},
-                {field: "comorbid_DM_neuropathy", label: "Neuropathy", checked: this.note.detail.comorbid_DM_neuropathy}
-            ],
-            this.DMTreatmentChecks = [
-                {field: "comorbid_DM_diet", label: "Diet", checked: this.note.detail.comorbid_DM_diet},
-                {field: "comorbid_DM_oral_meds", label: "Oral Meds", checked: this.note.detail.comorbid_DM_oral_meds},
-                {field: "comorbid_DM_insulin", label: "Insulin", checked: this.note.detail.comorbid_DM_insulin}
+                {
+                    field: "comorbid_DM_DR", label: "DR",
+                    checked: this.note.detail.comorbid_DM_DR,
+                    setterEvent: 'set-comorbid_DM_DR'
+                },
+                {
+                    field: "comorbid_DM_nephropathy",
+                    label: "Nephropathy", checked: this.note.detail.comorbid_DM_nephropathy,
+                    setterEvent: 'set-comorbid_DM_nephropathy'
+                },
+                {
+                    field: "comorbid_DM_neuropathy",
+                    label: "Neuropathy", checked: this.note.detail.comorbid_DM_neuropathy,
+                    setterEvent: 'set-comorbid_DM_neuropathy'
+                }
             ]
+            this.DMTreatmentChecks = [
+                {
+                    field: "comorbid_DM_diet",
+                    label: "Diet", checked: this.note.detail.comorbid_DM_diet,
+                    setterEvent: 'set-comorbid_DM_diet'
+                },
+                {
+                    field: "comorbid_DM_oral_meds",
+                    label: "Oral Meds", checked: this.note.detail.comorbid_DM_oral_meds,
+                    setterEvent: 'set-comorbid_DM_oral_meds'
+                },
+                {
+                    field: "comorbid_DM_insulin",
+                    label: "Insulin", checked: this.note.detail.comorbid_DM_insulin,
+                    setterEvent: 'set-comorbid_DM_insulin'
+                }
+            ]
+        },
+        mounted () {
+            EventBus.$on('reset-comorbid_DM-extras', (value) => {
+                if ( value != this.inputRadioExtrasTriggerValue ) {
+                    EventBus.$emit('set-comorbid_DM_type', null)
+                    this.note.detail.comorbid_DM_DR = null
+                    EventBus.$emit('set-comorbid_DM_DR', false)
+                    this.note.detail.comorbid_DM_DR = false
+                    EventBus.$emit('set-comorbid_DM_nephropathy', false)
+                    this.note.detail.comorbid_DM_nephropathy = false
+                    EventBus.$emit('set-comorbid_DM_neuropathy', false)
+                    this.note.detail.comorbid_DM_neuropathy = false
+                    EventBus.$emit('set-comorbid_DM_diet', false)
+                    this.note.detail.comorbid_DM_diet = false
+                    EventBus.$emit('set-comorbid_DM_oral_meds', false)
+                    this.note.detail.comorbid_DM_oral_meds = false
+                    EventBus.$emit('set-comorbid_DM_insulin', false)
+                    this.note.detail.comorbid_DM_insulin = false
+                }
+            })
         }
+        // computed: {
+        //     DMComplicationChecks() {
+        //         return [
+        //             {field: "comorbid_DM_DR", label: "DR", checked: this.note.detail.comorbid_DM_DR},
+        //             {field: "comorbid_DM_nephropathy", label: "Nephropathy", checked: this.note.detail.comorbid_DM_nephropathy},
+        //             {field: "comorbid_DM_neuropathy", label: "Neuropathy", checked: this.note.detail.comorbid_DM_neuropathy}
+        //         ]
+        //     },
+        //     DMTreatmentChecks() {
+        //         return [
+        //             {field: "comorbid_DM_diet", label: "Diet", checked: this.note.detail.comorbid_DM_diet},
+        //             {field: "comorbid_DM_oral_meds", label: "Oral Meds", checked: this.note.detail.comorbid_DM_oral_meds},
+        //             {field: "comorbid_DM_insulin", label: "Insulin", checked: this.note.detail.comorbid_DM_insulin}
+        //         ]
+        //     }
+        // }
 
         // implement input-text sync data
         // window.location.href

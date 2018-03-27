@@ -2540,7 +2540,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         EventBus.$on('reset-comorbid_DM-extras', function (value) {
             if (value != _this.inputRadioExtrasTriggerValue) {
                 EventBus.$emit('set-comorbid_DM_type', null);
-                _this.note.detail.comorbid_DM_DR = null;
+                _this.note.detail.comorbid_DM_type = null;
                 EventBus.$emit('set-comorbid_DM_DR', false);
                 _this.note.detail.comorbid_DM_DR = 0;
                 EventBus.$emit('set-comorbid_DM_nephropathy', false);

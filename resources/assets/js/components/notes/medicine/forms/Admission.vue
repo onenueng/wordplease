@@ -341,7 +341,7 @@
             EventBus.$on('reset-comorbid_DM-extras', (value) => {
                 if ( value != this.inputRadioExtrasTriggerValue ) {
                     EventBus.$emit('set-comorbid_DM_type', null)
-                    this.note.detail.comorbid_DM_DR = null
+                    this.note.detail.comorbid_DM_type = null
                     EventBus.$emit('set-comorbid_DM_DR', false)
                     this.note.detail.comorbid_DM_DR = 0
                     EventBus.$emit('set-comorbid_DM_nephropathy', false)

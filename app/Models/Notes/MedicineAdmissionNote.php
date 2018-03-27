@@ -41,6 +41,7 @@ class MedicineAdmissionNote extends Model
         if ( $value === null ) {
             $this->$field = null;
             // return $this->save();
+            $this->save();
             return $field;
         }
 
@@ -87,6 +88,7 @@ class MedicineAdmissionNote extends Model
         // }
 
         // return $this->save();
+        $this->save();
         return $field;
     }
 }

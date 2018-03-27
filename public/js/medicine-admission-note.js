@@ -2490,34 +2490,34 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         EventBus.$on('reset-comorbid_DM-extras', function (value) {
             if (value != _this.inputRadioExtrasTriggerValue) {
                 EventBus.$emit('set-comorbid_DM_type', null);
-                _this.note.detail.comorbid_DM_DR = null;
-                EventBus.$emit('set-comorbid_DM_DR', 0);
-                _this.note.detail.comorbid_DM_DR = 0;
-                EventBus.$emit('set-comorbid_DM_nephropathy', 0);
-                _this.note.detail.comorbid_DM_nephropathy = 0;
-                EventBus.$emit('set-comorbid_DM_neuropathy', 0);
-                _this.note.detail.comorbid_DM_neuropathy = 0;
-                EventBus.$emit('set-comorbid_DM_diet', 0);
-                _this.note.detail.comorbid_DM_diet = 0;
-                EventBus.$emit('set-comorbid_DM_oral_meds', 0);
-                _this.note.detail.comorbid_DM_oral_meds = 0;
-                EventBus.$emit('set-comorbid_DM_insulin', 0);
-                _this.note.detail.comorbid_DM_insulin = 0;
+                // this.note.detail.comorbid_DM_DR = null
+                EventBus.$emit('set-comorbid_DM_DR', false);
+                // this.note.detail.comorbid_DM_DR = 0
+                EventBus.$emit('set-comorbid_DM_nephropathy', false);
+                // this.note.detail.comorbid_DM_nephropathy = 0
+                EventBus.$emit('set-comorbid_DM_neuropathy', false);
+                // this.note.detail.comorbid_DM_neuropathy = 0
+                EventBus.$emit('set-comorbid_DM_diet', false);
+                // this.note.detail.comorbid_DM_diet = 0
+                EventBus.$emit('set-comorbid_DM_oral_meds', false);
+                // this.note.detail.comorbid_DM_oral_meds = 0
+                EventBus.$emit('set-comorbid_DM_insulin', false);
+                // this.note.detail.comorbid_DM_insulin = 0
             }
         });
 
         EventBus.$on('reset-comorbid_valvular_heart_disease-extras', function (value) {
             if (value != _this.inputRadioExtrasTriggerValue) {
-                EventBus.$emit('set-comorbid_valvular_heart_disease_AS', 0);
-                _this.note.detail.comorbid_valvular_heart_disease_AS = 0;
-                EventBus.$emit('set-comorbid_valvular_heart_disease_AR', 0);
-                _this.note.detail.comorbid_valvular_heart_disease_AR = 0;
-                EventBus.$emit('set-comorbid_valvular_heart_disease_MS', 0);
-                _this.note.detail.comorbid_valvular_heart_disease_MS = 0;
-                EventBus.$emit('set-comorbid_valvular_heart_disease_MR', 0);
-                _this.note.detail.comorbid_valvular_heart_disease_MR = 0;
-                EventBus.$emit('set-comorbid_valvular_heart_disease_TR', 0);
-                _this.note.detail.comorbid_valvular_heart_disease_TR = 0;
+                EventBus.$emit('set-comorbid_valvular_heart_disease_AS', false);
+                // this.note.detail.comorbid_valvular_heart_disease_AS = 0
+                EventBus.$emit('set-comorbid_valvular_heart_disease_AR', false);
+                // this.note.detail.comorbid_valvular_heart_disease_AR = 0
+                EventBus.$emit('set-comorbid_valvular_heart_disease_MS', false);
+                // this.note.detail.comorbid_valvular_heart_disease_MS = 0
+                EventBus.$emit('set-comorbid_valvular_heart_disease_MR', false);
+                // this.note.detail.comorbid_valvular_heart_disease_MR = 0
+                EventBus.$emit('set-comorbid_valvular_heart_disease_TR', false);
+                // this.note.detail.comorbid_valvular_heart_disease_TR = 0
             }
         });
     }
@@ -3015,7 +3015,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 //     this.thisChecked = value
                 //     this.autosave()
                 // }
-                if (value != _this.checkValue) {
+                if (value !== _this.checkValue) {
                     _this.checkValue = value;
                     _this.autosave();
                 }

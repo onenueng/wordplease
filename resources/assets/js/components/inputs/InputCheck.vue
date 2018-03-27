@@ -84,7 +84,7 @@
                     //     this.thisChecked = value
                     //     this.autosave()
                     // }
-                    if ( value != this.checkValue ) {
+                    if ( value !== this.checkValue ) {
                         this.checkValue = value
                         this.autosave()
                     }

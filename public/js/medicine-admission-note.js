@@ -2394,6 +2394,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             note: {},
             comorbidOptions: [{ label: "No data", value: 255 }, { label: "No", value: 0 }, { label: "Yes", value: 1 }],
             // DMComplicationChecks: {},
+            // DMTreatmentChecks: {},
+            // ValvularHeartDiseaseChecks: {},
             inputRadioExtrasTriggerValue: 1,
             getDataUrl: "/note-data/" + window.location.pathname.split("/")[2]
         };
@@ -2458,6 +2460,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             setterEvent: "set-comorbid_valvular_heart_disease_TR"
         }];
     },
+
+    // computed : {
+    //     DMComplicationChecks () {
+    //         return [
+    //                     {
+    //                         field: "comorbid_DM_DR", label: "DR",
+    //                         checked: this.note.detail.comorbid_DM_DR,
+    //                         setterEvent: 'set-comorbid_DM_DR'
+    //                     },
+    //                     {
+    //                         field: "comorbid_DM_nephropathy",
+    //                         label: "Nephropathy",
+    //                         checked: this.note.detail.comorbid_DM_nephropathy,
+    //                         setterEvent: 'set-comorbid_DM_nephropathy'
+    //                     },
+    //                     {
+    //                         field: "comorbid_DM_neuropathy",
+    //                         label: "Neuropathy",
+    //                         checked: this.note.detail.comorbid_DM_neuropathy,
+    //                         setterEvent: 'set-comorbid_DM_neuropathy'
+    //                     }
+    //                 ]
+    //     }
+    // },
     mounted: function mounted() {
         var _this = this;
 
@@ -2965,15 +2991,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             // this element checked state ['checked' or ''].
-            thisChecked: '',
-            forTestCheck: ''
+            // thisChecked: '',
+            // forTestCheck: '',
+            checkValue: false
         };
     },
     mounted: function mounted() {
         var _this = this;
 
         // render checked state or not.
-        this.thisChecked = this.checked === undefined || this.checked == 0 ? '' : 'checked';
+        // this.thisChecked = (this.checked === undefined || this.checked == 0) ? '' : 'checked'
+        this.checkValue = this.checked !== undefined && this.checked != 0;
 
         // init BT tooltip if labelDescription available.
         if (this.labelDescription !== undefined) {
@@ -2982,9 +3010,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         if (this.setterEvent !== undefined) {
             EventBus.$on(this.setterEvent, function (value) {
-                value = value ? 'checked' : '';
-                if (value != _this.thisChecked) {
-                    _this.thisChecked = value;
+                // value = value ? 'checked' : ''
+                // if (value != this.thisChecked) {
+                //     this.thisChecked = value
+                //     this.autosave()
+                // }
+                if (value != _this.checkValue) {
+                    _this.checkValue = value;
                     _this.autosave();
                 }
             });
@@ -2993,7 +3025,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         if (this.needSync !== undefined) {
             var url = '/note-data/' + window.location.pathname.split("/")[2] + '/' + this.field;
             axios.get(url).then(function (response) {
-                _this.thisChecked = response.data ? 'checked' : '';
+                // this.thisChecked = response.data ? 'checked' : ''
+                _this.checkValue = response.data == 1;
             }).catch(function (error) {
                 console.log(error);
             });
@@ -3005,21 +3038,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         check: function check() {
             var _this2 = this;
 
-            this.thisChecked = this.thisChecked == '' ? 'checked' : '';
+            // this.thisChecked = (this.thisChecked == '') ? 'checked' : ''
+            this.checkValue = !this.checkValue;
 
             this.autosave();
 
             if (this.emitOnUpdate !== undefined) {
                 this.emitEvents.forEach(function (event) {
                     // [name][mode 1:checked 2:unchecked][value]
-                    if (event[1] == _this2.thisChecked) {
+                    // if (event[1] == this.thisChecked) {
+                    //     EventBus.$emit(event[0], event[2])
+                    // }
+                    if (event[1] == _this2.isChecked) {
                         EventBus.$emit(event[0], event[2]);
                     }
                 });
             }
         },
         autosave: function autosave() {
-            if (this.field !== undefined) EventBus.$emit('autosave', this.field, this.thisChecked.length > 0);
+            if (this.field !== undefined) {
+                // EventBus.$emit('autosave', this.field, (this.thisChecked.length > 0))
+                EventBus.$emit('autosave', this.field, this.checkValue);
+            }
         }
     },
     computed: {
@@ -3029,8 +3069,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
             return this.emitOnUpdate;
         },
-        testChecked: function testChecked() {
-            return this.forTestCheck;
+        isChecked: function isChecked() {
+            return this.checkValue ? 'checked' : '';
         }
     }
 });
@@ -3052,7 +3092,7 @@ var render = function() {
         _c("input", {
           staticClass: "material-checkbox",
           attrs: { type: "checkbox", id: _vm.field, name: _vm.field },
-          domProps: { checked: _vm.testChecked },
+          domProps: { checked: _vm.isChecked },
           on: {
             click: function($event) {
               _vm.check()

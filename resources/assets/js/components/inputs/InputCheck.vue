@@ -5,7 +5,7 @@
                     class="material-checkbox"
                     :id="field"
                     :name="field"
-                    :checked="testChecked"
+                    :checked="isChecked"
                     @click="check()"/>
             <label  class="material-checkbox-group-label"
                     :for="field">
@@ -62,13 +62,15 @@
         data () {
             return {
                 // this element checked state ['checked' or ''].
-                thisChecked: '',
-                forTestCheck: ''
+                // thisChecked: '',
+                // forTestCheck: '',
+                checkValue: false
             }
         },
         mounted() {
             // render checked state or not.
-            this.thisChecked = (this.checked === undefined || this.checked == 0) ? '' : 'checked'
+            // this.thisChecked = (this.checked === undefined || this.checked == 0) ? '' : 'checked'
+            this.checkValue = ( this.checked !== undefined && this.checked != 0 )
 
             // init BT tooltip if labelDescription available.
             if (this.labelDescription !== undefined) {
@@ -77,9 +79,13 @@
 
             if (this.setterEvent !== undefined) {
                 EventBus.$on(this.setterEvent, (value) => {
-                    value = value ? 'checked' : ''
-                    if (value != this.thisChecked) {
-                        this.thisChecked = value
+                    // value = value ? 'checked' : ''
+                    // if (value != this.thisChecked) {
+                    //     this.thisChecked = value
+                    //     this.autosave()
+                    // }
+                    if ( value != this.checkValue ) {
+                        this.checkValue = value
                         this.autosave()
                     }
                 })
@@ -89,7 +95,8 @@
                 let url = '/note-data/' + window.location.pathname.split("/")[2] + '/' + this.field
                     axios.get(url)
                          .then( (response) => {
-                            this.thisChecked = response.data ? 'checked' : ''
+                            // this.thisChecked = response.data ? 'checked' : ''
+                            this.checkValue = (response.data == 1)
                          })
                          .catch( (error) => {
                             console.log(error)
@@ -99,22 +106,28 @@
         methods: {
             // handle check event.
             check() {
-                this.thisChecked = (this.thisChecked == '') ? 'checked' : ''
+                // this.thisChecked = (this.thisChecked == '') ? 'checked' : ''
+                this.checkValue = !this.checkValue
 
                 this.autosave()
 
                 if (this.emitOnUpdate !== undefined) {
                     (this.emitEvents).forEach((event) => {
                         // [name][mode 1:checked 2:unchecked][value]
-                        if (event[1] == this.thisChecked) {
+                        // if (event[1] == this.thisChecked) {
+                        //     EventBus.$emit(event[0], event[2])
+                        // }
+                        if (event[1] == this.isChecked) {
                             EventBus.$emit(event[0], event[2])
                         }
                     })
                 }
             },
             autosave() {
-                if (this.field !== undefined)
-                    EventBus.$emit('autosave', this.field, (this.thisChecked.length > 0))
+                if (this.field !== undefined) {
+                    // EventBus.$emit('autosave', this.field, (this.thisChecked.length > 0))
+                    EventBus.$emit('autosave', this.field, this.checkValue)
+                }
             }
         },
         computed: {
@@ -124,8 +137,8 @@
                 }
                 return this.emitOnUpdate
             },
-            testChecked() {
-                return this.forTestCheck
+            isChecked() {
+                return this.checkValue ? 'checked' : ''
             }
         }
     }

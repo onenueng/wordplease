@@ -40,7 +40,8 @@ class MedicineAdmissionNote extends Model
     {
         if ( $value === null ) {
             $this->$field = null;
-            return $this->save();
+            // return $this->save();
+            return $field;
         }
 
         $selectItemFields = ['admit_reason'];
@@ -85,6 +86,7 @@ class MedicineAdmissionNote extends Model
         //     }
         // }
 
-        return $this->save();
+        // return $this->save();
+        return $field;
     }
 }

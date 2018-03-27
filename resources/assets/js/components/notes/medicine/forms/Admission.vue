@@ -178,6 +178,8 @@
                     { label: "Yes", value: 1 }
                 ],
                 // DMComplicationChecks: {},
+                // DMTreatmentChecks: {},
+                // ValvularHeartDiseaseChecks: {},
                 inputRadioExtrasTriggerValue: 1,
                 getDataUrl: "/note-data/" + window.location.pathname.split("/")[2]
             }
@@ -256,6 +258,29 @@
                 }
             ]
         },
+        // computed : {
+        //     DMComplicationChecks () {
+        //         return [
+        //                     {
+        //                         field: "comorbid_DM_DR", label: "DR",
+        //                         checked: this.note.detail.comorbid_DM_DR,
+        //                         setterEvent: 'set-comorbid_DM_DR'
+        //                     },
+        //                     {
+        //                         field: "comorbid_DM_nephropathy",
+        //                         label: "Nephropathy",
+        //                         checked: this.note.detail.comorbid_DM_nephropathy,
+        //                         setterEvent: 'set-comorbid_DM_nephropathy'
+        //                     },
+        //                     {
+        //                         field: "comorbid_DM_neuropathy",
+        //                         label: "Neuropathy",
+        //                         checked: this.note.detail.comorbid_DM_neuropathy,
+        //                         setterEvent: 'set-comorbid_DM_neuropathy'
+        //                     }
+        //                 ]
+        //     }
+        // },
         mounted () {
             EventBus.$on('reset-comorbid_DM-extras', (value) => {
                 if ( value != this.inputRadioExtrasTriggerValue ) {

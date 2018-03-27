@@ -2441,32 +2441,38 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         //         setterEvent: 'set-comorbid_DM_insulin'
         //     }
         // ]
-        this.ValvularHeartDiseaseChecks = [{
-            field: "comorbid_valvular_heart_disease_AS",
-            label: "AS",
-            checked: this.note.detail.comorbid_valvular_heart_disease_AS,
-            setterEvent: "set-comorbid_valvular_heart_disease_AS"
-        }, {
-            field: "comorbid_valvular_heart_disease_AR",
-            label: "AR",
-            checked: this.note.detail.comorbid_valvular_heart_disease_AR,
-            setterEvent: "set-comorbid_valvular_heart_disease_AR"
-        }, {
-            field: "comorbid_valvular_heart_disease_MS",
-            label: "MS",
-            checked: this.note.detail.comorbid_valvular_heart_disease_MS,
-            setterEvent: "set-comorbid_valvular_heart_disease_MS"
-        }, {
-            field: "comorbid_valvular_heart_disease_MR",
-            label: "MR",
-            checked: this.note.detail.comorbid_valvular_heart_disease_MR,
-            setterEvent: "set-comorbid_valvular_heart_disease_MR"
-        }, {
-            field: "comorbid_valvular_heart_disease_TR",
-            label: "TR",
-            checked: this.note.detail.comorbid_valvular_heart_disease_TR,
-            setterEvent: "set-comorbid_valvular_heart_disease_TR"
-        }];
+        // this.ValvularHeartDiseaseChecks = [
+        //     {
+        //         field: "comorbid_valvular_heart_disease_AS",
+        //         label: "AS",
+        //         checked: this.note.detail.comorbid_valvular_heart_disease_AS,
+        //         setterEvent: "set-comorbid_valvular_heart_disease_AS"
+        //     },
+        //     {
+        //         field: "comorbid_valvular_heart_disease_AR",
+        //         label: "AR",
+        //         checked: this.note.detail.comorbid_valvular_heart_disease_AR,
+        //         setterEvent: "set-comorbid_valvular_heart_disease_AR"
+        //     },
+        //     {
+        //         field: "comorbid_valvular_heart_disease_MS",
+        //         label: "MS",
+        //         checked: this.note.detail.comorbid_valvular_heart_disease_MS,
+        //         setterEvent: "set-comorbid_valvular_heart_disease_MS"
+        //     },
+        //     {
+        //         field: "comorbid_valvular_heart_disease_MR",
+        //         label: "MR",
+        //         checked: this.note.detail.comorbid_valvular_heart_disease_MR,
+        //         setterEvent: "set-comorbid_valvular_heart_disease_MR"
+        //     },
+        //     {
+        //         field: "comorbid_valvular_heart_disease_TR",
+        //         label: "TR",
+        //         checked: this.note.detail.comorbid_valvular_heart_disease_TR,
+        //         setterEvent: "set-comorbid_valvular_heart_disease_TR"
+        //     }
+        // ]
     },
 
     computed: {

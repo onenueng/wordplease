@@ -47,12 +47,18 @@ class MedicineAdmissionNote extends Model
 
         $selectItemFields = ['admit_reason'];
 
-        // $fieldsWithExtras = [
-        //     'comorbid_DM' => '1|comorbid_DM_type|comorbid_DM_DR=>false|comorbid_DM_nephropathy=>false|comorbid_DM_neuropathy=>false|comorbid_DM_diet=>false|comorbid_DM_oral_meds=>false|comorbid_DM_insulin=>false',
-        // ];
+        $fieldsWithExtras = [
+            'comorbid_DM' => '1|comorbid_DM_type|comorbid_DM_DR=>false|comorbid_DM_nephropathy=>false|comorbid_DM_neuropathy=>false|comorbid_DM_diet=>false|comorbid_DM_oral_meds=>false|comorbid_DM_insulin=>false',
+
+            'comorbid_valvular_heart_disease' => '1|comorbid_valvular_heart_disease_AS=>false|comorbid_valvular_heart_disease_AR=>false|comorbid_valvular_heart_disease_MS=>false|comorbid_valvular_heart_disease_MR=>false|comorbid_valvular_heart_disease_TR=>false|comorbid_valvular_heart_disease_other',
+        ];
 
         if ( array_search($field, $selectItemFields) !== false ) {
-            $item = app('db')->table('select_items')->select('value')->where(['field_name' => $field, 'label' => $value])->first();
+            $item = app('db')->table('select_items')
+                             ->select('value')
+                             ->where(['field_name' => $field, 'label' => $value])
+                             ->first();
+
             if ( $item === null ) {
                 $item = \App\Models\Lists\SelectItem::insert([
                             'field_name' => $field,
@@ -68,24 +74,24 @@ class MedicineAdmissionNote extends Model
             $this->$field = $value;
         }
 
-        // if ( array_key_exists($field, $fieldsWithExtras) ) {
-        //     $extras = explode('|', $fieldsWithExtras[$field]);
-        //     if ( $value != $extras[0] ) {
-        //         for ( $i=1; $i < count($extras); $i++ ) {
-        //             if ( strpos($extras[$i], '=>false') ) {
-        //                 $fieldName = str_replace('=>false', '', $extras[$i]);
-        //                 $this->$fieldName = false;
-        //                 $refreshData[] = ['name' => $fieldName, 'value' => false];
-        //             } else {
-        //                 $fieldName = $extras[$i];
-        //                 $this->$fieldName = null;
-        //                 $refreshData[] = ['name' => $fieldName, 'value'  => null];
-        //             }
-        //         }
-        //         $this->save();
-        //         return $refreshData;
-        //     }
-        // }
+        if ( array_key_exists($field, $fieldsWithExtras) ) {
+            $extras = explode('|', $fieldsWithExtras[$field]);
+            if ( $value != $extras[0] ) {
+                for ( $i=1; $i < count($extras); $i++ ) {
+                    if ( strpos($extras[$i], '=>false') ) {
+                        $fieldName = str_replace('=>false', '', $extras[$i]);
+                        $this->$fieldName = false;
+                        $refreshData[] = ['name' => $fieldName, 'value' => false];
+                    } else {
+                        $fieldName = $extras[$i];
+                        $this->$fieldName = null;
+                        $refreshData[] = ['name' => $fieldName, 'value'  => null];
+                    }
+                }
+                // $this->save();
+                // return $refreshData;
+            }
+        }
 
         // return $this->save();
         $this->save();

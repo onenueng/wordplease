@@ -19,7 +19,7 @@ window.app = new Vue({
 
         lastActiveSessionCheck: 0
     },
-    mounted() {
+    created () {
 
         /* *** Handle session timeout *** */
         this.lastActiveSessionCheck = Date.now()

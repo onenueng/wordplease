@@ -96,8 +96,7 @@
                                 {"label": "I", "value": 1},
                                 {"label": "II", "value": 2}
                             ]'
-                            :value="note.detail.comorbid_DM_type"
-                            setter-event="set-comorbid_DM_type">
+                            :value="note.detail.comorbid_DM_type">
                         </input-radio><!-- DM type -->
 
                         <input-check-group
@@ -172,111 +171,60 @@
         data () {
             return {
                 note: {},
-                comorbidOptions: [
-                    { label: "No data", value: 255 },
-                    { label: "No", value: 0 },
-                    { label: "Yes", value: 1 }
-                ],
-                // DMComplicationChecks: {},
-                // DMTreatmentChecks: {},
-                // ValvularHeartDiseaseChecks: {},
-                inputRadioExtrasTriggerValue: 1,
+                
                 getDataUrl: "/note-data/" + window.location.pathname.split("/")[2]
             }
         },
         created () {
             this.note = JSON.parse(this.serializedNote)
-            // this.DMComplicationChecks = [
-            //     {
-            //         field: "comorbid_DM_DR", label: "DR",
-            //         checked: this.note.detail.comorbid_DM_DR,
-            //         setterEvent: 'set-comorbid_DM_DR'
-            //     },
-            //     {
-            //         field: "comorbid_DM_nephropathy",
-            //         label: "Nephropathy",
-            //         checked: this.note.detail.comorbid_DM_nephropathy,
-            //         setterEvent: 'set-comorbid_DM_nephropathy'
-            //     },
-            //     {
-            //         field: "comorbid_DM_neuropathy",
-            //         label: "Neuropathy",
-            //         checked: this.note.detail.comorbid_DM_neuropathy,
-            //         setterEvent: 'set-comorbid_DM_neuropathy'
-            //     }
-            // ]
-            // this.DMTreatmentChecks = [
-            //     {
-            //         field: "comorbid_DM_diet",
-            //         label: "Diet",
-            //         checked: this.note.detail.comorbid_DM_diet,
-            //         setterEvent: 'set-comorbid_DM_diet'
-            //     },
-            //     {
-            //         field: "comorbid_DM_oral_meds",
-            //         label: "Oral Meds",
-            //         checked: this.note.detail.comorbid_DM_oral_meds,
-            //         setterEvent: 'set-comorbid_DM_oral_meds'
-            //     },
-            //     {
-            //         field: "comorbid_DM_insulin",
-            //         label: "Insulin",
-            //         checked: this.note.detail.comorbid_DM_insulin,
-            //         setterEvent: 'set-comorbid_DM_insulin'
-            //     }
-            // ]
-            // this.ValvularHeartDiseaseChecks = [
-            //     {
-            //         field: "comorbid_valvular_heart_disease_AS",
-            //         label: "AS",
-            //         checked: this.note.detail.comorbid_valvular_heart_disease_AS,
-            //         setterEvent: "set-comorbid_valvular_heart_disease_AS"
-            //     },
-            //     {
-            //         field: "comorbid_valvular_heart_disease_AR",
-            //         label: "AR",
-            //         checked: this.note.detail.comorbid_valvular_heart_disease_AR,
-            //         setterEvent: "set-comorbid_valvular_heart_disease_AR"
-            //     },
-            //     {
-            //         field: "comorbid_valvular_heart_disease_MS",
-            //         label: "MS",
-            //         checked: this.note.detail.comorbid_valvular_heart_disease_MS,
-            //         setterEvent: "set-comorbid_valvular_heart_disease_MS"
-            //     },
-            //     {
-            //         field: "comorbid_valvular_heart_disease_MR",
-            //         label: "MR",
-            //         checked: this.note.detail.comorbid_valvular_heart_disease_MR,
-            //         setterEvent: "set-comorbid_valvular_heart_disease_MR"
-            //     },
-            //     {
-            //         field: "comorbid_valvular_heart_disease_TR",
-            //         label: "TR",
-            //         checked: this.note.detail.comorbid_valvular_heart_disease_TR,
-            //         setterEvent: "set-comorbid_valvular_heart_disease_TR"
-            //     }
-            // ]
+
+            this.comorbidOptions = [
+                { label: "No data", value: 255 },
+                { label: "No", value: 0 },
+                { label: "Yes", value: 1 }
+            ]
+
+            this.inputRadioExtrasTriggerValue = 1
+            
+            EventBus.$on('reset-comorbid_DM-extras', (value) => {
+                if ( value != this.inputRadioExtrasTriggerValue ) {
+                    this.note.detail.comorbid_DM_type = null
+                    this.note.detail.comorbid_DM_DR = 0
+                    this.note.detail.comorbid_DM_nephropathy = 0
+                    this.note.detail.comorbid_DM_neuropathy = 0
+                    this.note.detail.comorbid_DM_diet = 0
+                    this.note.detail.comorbid_DM_oral_meds = 0
+                    this.note.detail.comorbid_DM_insulin = 0
+                }
+            })
+
+            EventBus.$on('reset-comorbid_valvular_heart_disease-extras', (value) => {
+                if ( value != this.inputRadioExtrasTriggerValue ) {
+                    this.note.detail.comorbid_valvular_heart_disease_AS = 0
+                    this.note.detail.comorbid_valvular_heart_disease_AR = 0
+                    this.note.detail.comorbid_valvular_heart_disease_MS = 0
+                    this.note.detail.comorbid_valvular_heart_disease_MR = 0
+                    this.note.detail.comorbid_valvular_heart_disease_TR = 0
+                    this.note.detail.comorbid_valvular_heart_disease_other = null
+                }
+            })
         },
         computed : {
             DMComplicationChecks () {
                 return [
                             {
                                 field: "comorbid_DM_DR", label: "DR",
-                                checked: this.note.detail.comorbid_DM_DR,
-                                setterEvent: 'set-comorbid_DM_DR'
+                                checked: this.note.detail.comorbid_DM_DR
                             },
                             {
                                 field: "comorbid_DM_nephropathy",
                                 label: "Nephropathy",
-                                checked: this.note.detail.comorbid_DM_nephropathy,
-                                setterEvent: 'set-comorbid_DM_nephropathy'
+                                checked: this.note.detail.comorbid_DM_nephropathy
                             },
                             {
                                 field: "comorbid_DM_neuropathy",
                                 label: "Neuropathy",
-                                checked: this.note.detail.comorbid_DM_neuropathy,
-                                setterEvent: 'set-comorbid_DM_neuropathy'
+                                checked: this.note.detail.comorbid_DM_neuropathy
                             }
                         ]
             },
@@ -285,20 +233,17 @@
                     {
                         field: "comorbid_DM_diet",
                         label: "Diet",
-                        checked: this.note.detail.comorbid_DM_diet,
-                        setterEvent: 'set-comorbid_DM_diet'
+                        checked: this.note.detail.comorbid_DM_diet
                     },
                     {
                         field: "comorbid_DM_oral_meds",
                         label: "Oral Meds",
-                        checked: this.note.detail.comorbid_DM_oral_meds,
-                        setterEvent: 'set-comorbid_DM_oral_meds'
+                        checked: this.note.detail.comorbid_DM_oral_meds
                     },
                     {
                         field: "comorbid_DM_insulin",
                         label: "Insulin",
-                        checked: this.note.detail.comorbid_DM_insulin,
-                        setterEvent: 'set-comorbid_DM_insulin'
+                        checked: this.note.detail.comorbid_DM_insulin
                     }
                 ]
             },
@@ -307,87 +252,32 @@
                     {
                         field: "comorbid_valvular_heart_disease_AS",
                         label: "AS",
-                        checked: this.note.detail.comorbid_valvular_heart_disease_AS,
-                        setterEvent: "set-comorbid_valvular_heart_disease_AS"
+                        checked: this.note.detail.comorbid_valvular_heart_disease_AS
                     },
                     {
                         field: "comorbid_valvular_heart_disease_AR",
                         label: "AR",
-                        checked: this.note.detail.comorbid_valvular_heart_disease_AR,
-                        setterEvent: "set-comorbid_valvular_heart_disease_AR"
+                        checked: this.note.detail.comorbid_valvular_heart_disease_AR
                     },
                     {
                         field: "comorbid_valvular_heart_disease_MS",
                         label: "MS",
-                        checked: this.note.detail.comorbid_valvular_heart_disease_MS,
-                        setterEvent: "set-comorbid_valvular_heart_disease_MS"
+                        checked: this.note.detail.comorbid_valvular_heart_disease_MS
                     },
                     {
                         field: "comorbid_valvular_heart_disease_MR",
                         label: "MR",
-                        checked: this.note.detail.comorbid_valvular_heart_disease_MR,
-                        setterEvent: "set-comorbid_valvular_heart_disease_MR"
+                        checked: this.note.detail.comorbid_valvular_heart_disease_MR
                     },
                     {
                         field: "comorbid_valvular_heart_disease_TR",
                         label: "TR",
-                        checked: this.note.detail.comorbid_valvular_heart_disease_TR,
-                        setterEvent: "set-comorbid_valvular_heart_disease_TR"
+                        checked: this.note.detail.comorbid_valvular_heart_disease_TR
                     }
                 ]
             }
         },
-        mounted () {
-            EventBus.$on('reset-comorbid_DM-extras', (value) => {
-                if ( value != this.inputRadioExtrasTriggerValue ) {
-                    EventBus.$emit('set-comorbid_DM_type', null)
-                    this.note.detail.comorbid_DM_type = null
-                    EventBus.$emit('set-comorbid_DM_DR', false)
-                    this.note.detail.comorbid_DM_DR = 0
-                    EventBus.$emit('set-comorbid_DM_nephropathy', false)
-                    this.note.detail.comorbid_DM_nephropathy = 0
-                    EventBus.$emit('set-comorbid_DM_neuropathy', false)
-                    this.note.detail.comorbid_DM_neuropathy = 0
-                    EventBus.$emit('set-comorbid_DM_diet', false)
-                    this.note.detail.comorbid_DM_diet = 0
-                    EventBus.$emit('set-comorbid_DM_oral_meds', false)
-                    this.note.detail.comorbid_DM_oral_meds = 0
-                    EventBus.$emit('set-comorbid_DM_insulin', false)
-                    this.note.detail.comorbid_DM_insulin = 0
-                }
-            })
-
-            EventBus.$on('reset-comorbid_valvular_heart_disease-extras', (value) => {
-                if ( value != this.inputRadioExtrasTriggerValue ) {
-                    EventBus.$emit('set-comorbid_valvular_heart_disease_AS', false)
-                    this.note.detail.comorbid_valvular_heart_disease_AS = 0
-                    EventBus.$emit('set-comorbid_valvular_heart_disease_AR', false)
-                    this.note.detail.comorbid_valvular_heart_disease_AR = 0
-                    EventBus.$emit('set-comorbid_valvular_heart_disease_MS', false)
-                    this.note.detail.comorbid_valvular_heart_disease_MS = 0
-                    EventBus.$emit('set-comorbid_valvular_heart_disease_MR', false)
-                    this.note.detail.comorbid_valvular_heart_disease_MR = 0
-                    EventBus.$emit('set-comorbid_valvular_heart_disease_TR', false)
-                    this.note.detail.comorbid_valvular_heart_disease_TR = 0
-                }
-            })
-        }
-        // computed: {
-        //     DMComplicationChecks() {
-        //         return [
-        //             {field: "comorbid_DM_DR", label: "DR", checked: this.note.detail.comorbid_DM_DR},
-        //             {field: "comorbid_DM_nephropathy", label: "Nephropathy", checked: this.note.detail.comorbid_DM_nephropathy},
-        //             {field: "comorbid_DM_neuropathy", label: "Neuropathy", checked: this.note.detail.comorbid_DM_neuropathy}
-        //         ]
-        //     },
-        //     DMTreatmentChecks() {
-        //         return [
-        //             {field: "comorbid_DM_diet", label: "Diet", checked: this.note.detail.comorbid_DM_diet},
-        //             {field: "comorbid_DM_oral_meds", label: "Oral Meds", checked: this.note.detail.comorbid_DM_oral_meds},
-        //             {field: "comorbid_DM_insulin", label: "Insulin", checked: this.note.detail.comorbid_DM_insulin}
-        //         ]
-        //     }
-        // }
+        
 
         // implement input-text sync data
         // window.location.href

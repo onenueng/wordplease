@@ -2407,22 +2407,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         EventBus.$on('reset-comorbid_DM-extras', function (value) {
             if (value != _this.inputRadioExtrasTriggerValue) {
                 _this.note.detail.comorbid_DM_type = null;
-                _this.note.detail.comorbid_DM_DR = 0;
-                _this.note.detail.comorbid_DM_nephropathy = 0;
-                _this.note.detail.comorbid_DM_neuropathy = 0;
-                _this.note.detail.comorbid_DM_diet = 0;
-                _this.note.detail.comorbid_DM_oral_meds = 0;
-                _this.note.detail.comorbid_DM_insulin = 0;
+                _this.note.detail.comorbid_DM_DR = false;
+                _this.note.detail.comorbid_DM_nephropathy = false;
+                _this.note.detail.comorbid_DM_neuropathy = false;
+                _this.note.detail.comorbid_DM_diet = false;
+                _this.note.detail.comorbid_DM_oral_meds = false;
+                _this.note.detail.comorbid_DM_insulin = false;
             }
         });
 
         EventBus.$on('reset-comorbid_valvular_heart_disease-extras', function (value) {
             if (value != _this.inputRadioExtrasTriggerValue) {
-                _this.note.detail.comorbid_valvular_heart_disease_AS = 0;
-                _this.note.detail.comorbid_valvular_heart_disease_AR = 0;
-                _this.note.detail.comorbid_valvular_heart_disease_MS = 0;
-                _this.note.detail.comorbid_valvular_heart_disease_MR = 0;
-                _this.note.detail.comorbid_valvular_heart_disease_TR = 0;
+                _this.note.detail.comorbid_valvular_heart_disease_AS = false;
+                _this.note.detail.comorbid_valvular_heart_disease_AR = false;
+                _this.note.detail.comorbid_valvular_heart_disease_MS = false;
+                _this.note.detail.comorbid_valvular_heart_disease_MR = false;
+                _this.note.detail.comorbid_valvular_heart_disease_TR = false;
                 _this.note.detail.comorbid_valvular_heart_disease_other = null;
             }
         });
@@ -2913,7 +2913,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         // checked state ['checked' or undefined].
         checked: {
-            type: [String, Number],
+            type: [String, Number, Boolean],
             required: false
         },
         // need to sync value with database on render or not ['needSync' or undefined].

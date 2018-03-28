@@ -40,7 +40,7 @@
             },
             // checked state ['checked' or undefined].
             checked: {
-                type: [String, Number],
+                type: [String, Number, Boolean],
                 required: false
             },
             // need to sync value with database on render or not ['needSync' or undefined].

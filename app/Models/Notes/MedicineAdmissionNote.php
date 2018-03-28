@@ -15,7 +15,35 @@ class MedicineAdmissionNote extends Model
      */
     protected $casts = ['id' => 'UUID'];
 
-    protected $slecteItemFields = ['admit_reason'];
+    protected $selectItemFields = ['admit_reason'];
+
+    protected $fieldsWithExtras = [
+        'comorbid_DM' => [
+            'noneTriggerValue' => 1,
+            'fields' => [
+                'comorbid_DM_type' => null,
+                'comorbid_DM_DR' => false,
+                'comorbid_DM_nephropathy' => false,
+                'comorbid_DM_neuropathy' => false,
+                'comorbid_DM_diet' => false,
+                'comorbid_DM_oral_meds' => false,
+                'comorbid_DM_insulin' => false
+            ]
+        ],
+
+        'comorbid_valvular_heart_disease' => [
+            'noneTriggerValue' => 1,
+            'fields' => [
+                'comorbid_valvular_heart_disease_AS' => false,
+                'comorbid_valvular_heart_disease_AR' => false,
+                'comorbid_valvular_heart_disease_MS' => false,
+                'comorbid_valvular_heart_disease_MR' => false,
+                'comorbid_valvular_heart_disease_TR' => false,
+                'comorbid_valvular_heart_disease_other' => false
+            ]
+        ]
+
+    ];
 
     public function header()
     {
@@ -24,7 +52,7 @@ class MedicineAdmissionNote extends Model
 
     public function genExtraFields()
     {
-        foreach ($this->slecteItemFields as $field) {
+        foreach ($this->selectItemFields as $field) {
             $name = $field . '_text';
             $this->$name = $this->$field
                             ? app('db')->table('select_items')
@@ -40,20 +68,11 @@ class MedicineAdmissionNote extends Model
     {
         if ( $value === null ) {
             $this->$field = null;
-            // return $this->save();
             $this->save();
             return $field;
         }
 
-        $selectItemFields = ['admit_reason'];
-
-        $fieldsWithExtras = [
-            'comorbid_DM' => '1|comorbid_DM_type|comorbid_DM_DR=>false|comorbid_DM_nephropathy=>false|comorbid_DM_neuropathy=>false|comorbid_DM_diet=>false|comorbid_DM_oral_meds=>false|comorbid_DM_insulin=>false',
-
-            'comorbid_valvular_heart_disease' => '1|comorbid_valvular_heart_disease_AS=>false|comorbid_valvular_heart_disease_AR=>false|comorbid_valvular_heart_disease_MS=>false|comorbid_valvular_heart_disease_MR=>false|comorbid_valvular_heart_disease_TR=>false|comorbid_valvular_heart_disease_other',
-        ];
-
-        if ( array_search($field, $selectItemFields) !== false ) {
+        if ( array_search($field, $this->selectItemFields) !== false ) {
             $item = app('db')->table('select_items')
                              ->select('value')
                              ->where(['field_name' => $field, 'label' => $value])
@@ -74,26 +93,14 @@ class MedicineAdmissionNote extends Model
             $this->$field = $value;
         }
 
-        if ( array_key_exists($field, $fieldsWithExtras) ) {
-            $extras = explode('|', $fieldsWithExtras[$field]);
-            if ( $value != $extras[0] ) {
-                for ( $i=1; $i < count($extras); $i++ ) {
-                    if ( strpos($extras[$i], '=>false') ) {
-                        $fieldName = str_replace('=>false', '', $extras[$i]);
-                        $this->$fieldName = false;
-                        $refreshData[] = ['name' => $fieldName, 'value' => false];
-                    } else {
-                        $fieldName = $extras[$i];
-                        $this->$fieldName = null;
-                        $refreshData[] = ['name' => $fieldName, 'value'  => null];
-                    }
-                }
-                // $this->save();
-                // return $refreshData;
+        if ( array_key_exists($field, $this->fieldsWithExtras)
+             && $value != $this->fieldsWithExtras[$field]['noneTriggerValue'] 
+           ) {
+            foreach ( $this->fieldsWithExtras[$field]['fields'] as $key => $value ) {
+                $this->$key = $value;
             }
         }
 
-        // return $this->save();
         $this->save();
         return $field;
     }

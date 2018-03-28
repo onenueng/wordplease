@@ -189,22 +189,22 @@
             EventBus.$on('reset-comorbid_DM-extras', (value) => {
                 if ( value != this.inputRadioExtrasTriggerValue ) {
                     this.note.detail.comorbid_DM_type = null
-                    this.note.detail.comorbid_DM_DR = 0
-                    this.note.detail.comorbid_DM_nephropathy = 0
-                    this.note.detail.comorbid_DM_neuropathy = 0
-                    this.note.detail.comorbid_DM_diet = 0
-                    this.note.detail.comorbid_DM_oral_meds = 0
-                    this.note.detail.comorbid_DM_insulin = 0
+                    this.note.detail.comorbid_DM_DR = false
+                    this.note.detail.comorbid_DM_nephropathy = false
+                    this.note.detail.comorbid_DM_neuropathy = false
+                    this.note.detail.comorbid_DM_diet = false
+                    this.note.detail.comorbid_DM_oral_meds = false
+                    this.note.detail.comorbid_DM_insulin = false
                 }
             })
 
             EventBus.$on('reset-comorbid_valvular_heart_disease-extras', (value) => {
                 if ( value != this.inputRadioExtrasTriggerValue ) {
-                    this.note.detail.comorbid_valvular_heart_disease_AS = 0
-                    this.note.detail.comorbid_valvular_heart_disease_AR = 0
-                    this.note.detail.comorbid_valvular_heart_disease_MS = 0
-                    this.note.detail.comorbid_valvular_heart_disease_MR = 0
-                    this.note.detail.comorbid_valvular_heart_disease_TR = 0
+                    this.note.detail.comorbid_valvular_heart_disease_AS = false
+                    this.note.detail.comorbid_valvular_heart_disease_AR = false
+                    this.note.detail.comorbid_valvular_heart_disease_MS = false
+                    this.note.detail.comorbid_valvular_heart_disease_MR = false
+                    this.note.detail.comorbid_valvular_heart_disease_TR = false
                     this.note.detail.comorbid_valvular_heart_disease_other = null
                 }
             })
@@ -214,7 +214,7 @@
                 return [
                             {
                                 field: "comorbid_DM_DR", label: "DR",
-                                checked: this.note.detail.comorbid_DM_DR
+                                checked: this.note.detail.comorbid_DM_DR,
                             },
                             {
                                 field: "comorbid_DM_nephropathy",

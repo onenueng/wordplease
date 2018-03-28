@@ -61,15 +61,11 @@
         },
         data () {
             return {
-                // this element checked state ['checked' or ''].
-                // thisChecked: '',
-                // forTestCheck: '',
                 checkValue: false
             }
         },
         mounted() {
             // render checked state or not.
-            // this.thisChecked = (this.checked === undefined || this.checked == 0) ? '' : 'checked'
             this.checkValue = ( this.checked !== undefined && this.checked != 0 )
 
             // init BT tooltip if labelDescription available.
@@ -79,11 +75,6 @@
 
             if (this.setterEvent !== undefined) {
                 EventBus.$on(this.setterEvent, (value) => {
-                    // value = value ? 'checked' : ''
-                    // if (value != this.thisChecked) {
-                    //     this.thisChecked = value
-                    //     this.autosave()
-                    // }
                     if ( value !== this.checkValue ) {
                         this.checkValue = value
                         this.autosave()
@@ -125,7 +116,6 @@
             },
             autosave() {
                 if (this.field !== undefined) {
-                    // EventBus.$emit('autosave', this.field, (this.thisChecked.length > 0))
                     EventBus.$emit('autosave', this.field, this.checkValue)
                 }
             }

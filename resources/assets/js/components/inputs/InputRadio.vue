@@ -73,7 +73,7 @@
             },
             // string in form of json {"emit": "", "icon": "", "title": "" }.
             labelAction: {
-                type: String,
+                type: [String, Object],
                 required: false
             },
             // string in form fo array of json [{"label": "","value": ""},{...}].
@@ -241,28 +241,34 @@
 
             // check if has content in default slot.
             hasDefaultSlot() {
-                return !!this.$slots.default;
+                return !!this.$slots.default
             },
             // extract label action emit event name.
             labelActionEmitEventName() {
                 if (this.labelAction !== undefined) {
-                    return JSON.parse(this.labelAction).emit;
+                    return typeof this.labelAction == 'string' 
+                           ? JSON.parse(this.labelAction).emit
+                           : this.labelAction.emit
                 }
-                return '';
+                return ''
             },
             // extract label action icon.
             labelActionIcon() {
                 if (this.labelAction !== undefined) {
-                    return 'fa fa-' + JSON.parse(this.labelAction).icon;
+                    return 'fa fa-' + (typeof this.labelAction == 'string'
+                                       ? JSON.parse(this.labelAction).icon
+                                       : this.labelAction.icon)
                 }
-                return '';
+                return ''
             },
             // extract label action icon title.
             labelActionTitle() {
                 if (this.labelAction !== undefined) {
-                    return JSON.parse(this.labelAction).title;
+                    return typeof this.labelAction == 'string'
+                           ? JSON.parse(this.labelAction).title
+                           : this.labelAction.title
                 }
-                return '';
+                return ''
             },
             triggerValues() {
                 if (this.triggerValue !== undefined) {

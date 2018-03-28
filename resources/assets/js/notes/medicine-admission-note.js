@@ -6,16 +6,13 @@ window.EventBus = new Vue()
 Vue.component('note', require('../components/notes/medicine/forms/Admission.vue'))
 Vue.component('page-navbar', require('../components/navbars/EditNote.vue'))
 Vue.component('modal-dialog', require('../components/modals/Dialog.vue'))
+Vue.component('alert-box', require('../components/alerts/AlertBox.vue'))
 Vue.component('button-app', require('../components/ButtonApp.vue'))
 
 window.app = new Vue({
     el: '#app',
     data: {
         autosaveIcon: 'hide',
-
-        dialogHeading: '',
-        dialogMessage: '',
-        dialogButtonLabel: '',
 
         lastActiveSessionCheck: 0
     },
@@ -25,14 +22,11 @@ window.app = new Vue({
         this.lastActiveSessionCheck = Date.now()
         $(window).on("focus", (e) => {
             let timeDiff = Date.now() - this.lastActiveSessionCheck
-            if ( (timeDiff) > (window.SESSION_LIFETIME) ) {
+            if ( true || (timeDiff) > (window.SESSION_LIFETIME) ) {
                 axios.get('/is-session-active')
                      .then((response) => {
                         if ( !response.data.active ) {
-                            this.dialogHeading = 'Attention please !!'
-                            this.dialogMessage = 'Your are now logged off, Please reload this page or loss your data.'
-                            this.dialogButtonLabel = 'Got it'
-                            EventBus.$emit('toggle-modal-dialog', 'show')
+                            this.showDialog('419')
                         }
                      })
             }
@@ -43,26 +37,25 @@ window.app = new Vue({
             this.autosaveIcon = 'show'
             // axios.post('/note/autosave', { field: field, value: value })
             axios.post('/note/' + window.location.pathname.split("/")[2] + '/autosave', { field: field, value: value })
-                 .then((response) => {
+                 .then( (response) => {
                     console.log(response.data)
 
                     // remove timeout later
                     // setTimeout(() => { this.autosaveIcon = 'hide' }, 1000)
                     this.autosaveIcon = 'hide'
                  })
-                 .catch((error) => {
+                 .catch( (error) => {
                     this.autosaveIcon = 'hide'
                     if (error.response) {
                         // The request was made and the server responded with a status code
                         // that falls out of the range of 2xx
-                        console.log(error.response.data)
-                        console.log(error.response.status)
-                        console.log(error.response.headers)
-                        if (error.response.status == 419) {
-                            this.dialogHeading = 'Attention please !!'
-                            this.dialogMessage = 'Your are now logged off, Please reload this page or loss your data.'
-                            this.dialogButtonLabel = 'Got it'
-                            EventBus.$emit('toggle-modal-dialog', 'show')
+                        // console.log(error.response.data)
+                        // console.log(error.response.status)
+                        // console.log(error.response.headers)
+                        if ( error.response.status == 419 ) {
+                            this.showDialog('419')
+                        } else if ( error.response.status == 500 ) {
+                            this.showDialog('500')
                         }
                     } else if (error.request) {
                         // The request was made but no response was received
@@ -78,5 +71,28 @@ window.app = new Vue({
         })
 
         $('#page-loader').remove()
+    },
+
+    methods: {
+        showDialog(code) {
+            switch (code) {
+                case '419':
+                    EventBus.$emit('toggle-modal-dialog',
+                                   'Your are now logged off, Please reload this page or loss your data.',
+                                   'Attention please !!',
+                                   'Got it',
+                                   'show')
+                    break
+                case '500':
+                    EventBus.$emit('toggle-modal-dialog',
+                                   'Server error, Please try again later or get the Helpdesk.',
+                                   'Attention please !!',
+                                   'Got it',
+                                   'show')
+                    break
+                defualt :
+                    break
+            }
+        }
     }
 })

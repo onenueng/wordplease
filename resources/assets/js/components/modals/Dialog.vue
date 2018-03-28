@@ -23,23 +23,23 @@
 
 <script>
     export default {
-        props: {
-            heading: {
-                type: String,
-                required: true
-            },
-            message: {
-                type: String,
-                required: true
-            },
-            buttonLabel: {
-                type: String,
-                required: true
-            },
+        data () {
+            return {
+                heading: '',
+                message: '',
+                buttonLabel: ''
+            }
         },
         mounted() {
-            EventBus.$on('toggle-modal-dialog', (toggle) => {
-                $('#modal-dialog').modal(toggle === undefined ? 'toggle' : toggle)
+            EventBus.$on('toggle-modal-dialog', (message,
+                                                 heading = 'Wordplease says',
+                                                 buttonLabel = 'OK',
+                                                 toggle = 'toggle') => {
+                this.message = message
+                this.heading = heading
+                this.buttonLabel = buttonLabel
+                this.toggle = toggle
+                $('#modal-dialog').modal(toggle)
             })
         }
     }

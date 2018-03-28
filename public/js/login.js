@@ -326,21 +326,19 @@ module.exports = __webpack_require__(141);
 // use global event bus
 window.EventBus = new Vue();
 
-Vue.component('navbar-right', __webpack_require__(41));
-Vue.component('navbar-left', __webpack_require__(43));
-Vue.component('login-page', __webpack_require__(142));
-Vue.component('modal-dialog', __webpack_require__(23));
-Vue.component('navbar', __webpack_require__(28));
-Vue.component('button-app', __webpack_require__(11));
-Vue.component('alert', __webpack_require__(45));
+Vue.component('navbar-right', __webpack_require__(41)); // in component
+Vue.component('navbar-left', __webpack_require__(43)); // in component
+Vue.component('modal-dialog', __webpack_require__(23)); // app
+Vue.component('login-page', __webpack_require__(142)); // this page
+Vue.component('alert-box', __webpack_require__(238)); // app
+Vue.component('navbar', __webpack_require__(28)); // in component
+Vue.component('button-app', __webpack_require__(11)); // in component
+Vue.component('alert', __webpack_require__(45)); // in component
+
 
 window.app = new Vue({
     el: '#app',
     data: {
-        dialogHeading: '',
-        dialogMessage: '',
-        dialogButtonLabel: '',
-
         lastActiveSessionCheck: 0
     },
     mounted: function mounted() {
@@ -350,19 +348,31 @@ window.app = new Vue({
         this.lastActiveSessionCheck = Date.now();
         $(window).on("focus", function (e) {
             var timeDiff = Date.now() - _this.lastActiveSessionCheck;
-            if (timeDiff > window.SESSION_LIFETIME) {
+            if (true) {
                 axios.get('/is-session-active').then(function (response) {
                     if (!response.data.active) {
-                        _this.dialogHeading = 'Attention please !!';
-                        _this.dialogMessage = 'Session timeout, Please reload this page to continue using.';
-                        _this.dialogButtonLabel = 'Got it';
-                        EventBus.$emit('toggle-modal-dialog', 'show');
+                        _this.showDialog('419');
                     }
                 });
             }
         });
 
         $('#page-loader').remove();
+    },
+
+
+    methods: {
+        showDialog: function showDialog(code) {
+            switch (code) {
+                case '419':
+                    EventBus.$emit('toggle-modal-dialog', 'Your are now logged off, Please reload this page or loss your data.', 'Attention please !!', 'Got it', 'show');
+                    break;
+                case '500':
+                    EventBus.$emit('toggle-modal-dialog', 'Server error, Please try again later or get the Helpdesk.', 'Attention please !!', 'Got it', 'show');
+                    break;
+                    defualt: break;
+            }
+        }
     }
 });
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
@@ -917,6 +927,85 @@ module.exports = Component.exports
 
 /***/ }),
 
+/***/ 238:
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(239)
+}
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(241)
+/* template */
+var __vue_template__ = __webpack_require__(242)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/alerts/AlertBox.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-365f0320", Component.options)
+  } else {
+    hotAPI.reload("data-v-365f0320", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ 239:
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(240);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(3)("48dded52", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-365f0320\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./AlertBox.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-365f0320\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./AlertBox.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+
 /***/ 24:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -940,6 +1029,144 @@ if(false) {
  }
  // When the module is disposed, remove the <style> tags
  module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+
+/***/ 240:
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n#alert-box {\n    font-size: 1em;\n    width: 400px;\n    position: fixed;\n    top: 105px;\n    right: 15px;\n    z-index:10;\n}\n#alert-icon {\n    font-size:2em;\n    float:left;\n    margin-right: .5em;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ 241:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            icon: '',
+            show: false,
+            status: '',
+            message: '',
+            duration: 5000
+        };
+    },
+    mounted: function mounted() {
+        var _this = this;
+
+        EventBus.$on('toggle-alert-box', function () {
+            var message = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+            var status = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'info';
+            var duration = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 5000;
+
+            _this.setIcon();
+            _this.show = true;
+            _this.status = status;
+            _this.message = message;
+            _this.duration = duration;
+            setTimeout(function () {
+                _this.show = false;
+            }, _this.duration);
+        });
+    },
+
+    methods: {
+        setIcon: function setIcon() {
+            switch (this.status) {
+                case 'warning':
+                    return 'fa fa-exclamation-circle';
+                case 'danger':
+                    return 'fa fa-warning';
+                default:
+                    return 'fa fa-info-circle';
+            }
+        }
+    },
+    computed: {
+        boxClass: function boxClass() {
+            return "alert alert-dismissible fade in alert-" + this.status;
+        }
+    }
+});
+
+/***/ }),
+
+/***/ 242:
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("transition", { attrs: { name: "slide-fade" } }, [
+    _vm.show
+      ? _c(
+          "div",
+          { class: _vm.boxClass, attrs: { role: "alert", id: "alert-box" } },
+          [
+            _c(
+              "button",
+              {
+                staticClass: "close",
+                attrs: { type: "button" },
+                on: {
+                  click: function($event) {
+                    _vm.show = false
+                  }
+                }
+              },
+              [_c("span", { staticClass: "fa fa-times-circle" })]
+            ),
+            _vm._v(" "),
+            _c("span", { class: _vm.setIcon, attrs: { id: "alert-icon" } }),
+            _vm._v(" "),
+            _c("p", {
+              staticClass: "bigger-font-25",
+              domProps: { innerHTML: _vm._s(_vm.message) }
+            })
+          ]
+        )
+      : _vm._e()
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-365f0320", module.exports)
+  }
 }
 
 /***/ }),
@@ -989,23 +1216,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: {
-        heading: {
-            type: String,
-            required: true
-        },
-        message: {
-            type: String,
-            required: true
-        },
-        buttonLabel: {
-            type: String,
-            required: true
-        }
+    data: function data() {
+        return {
+            heading: '',
+            message: '',
+            buttonLabel: ''
+        };
     },
     mounted: function mounted() {
-        EventBus.$on('toggle-modal-dialog', function (toggle) {
-            $('#modal-dialog').modal(toggle === undefined ? 'toggle' : toggle);
+        var _this = this;
+
+        EventBus.$on('toggle-modal-dialog', function (message) {
+            var heading = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'Wordplease says';
+            var buttonLabel = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'OK';
+            var toggle = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'toggle';
+
+            _this.message = message;
+            _this.heading = heading;
+            _this.buttonLabel = buttonLabel;
+            _this.toggle = toggle;
+            $('#modal-dialog').modal(toggle);
         });
     }
 });

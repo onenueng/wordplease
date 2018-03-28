@@ -1,6 +1,7 @@
 <template>
 
 <div class="container-fluid"><!-- note content -->
+    <modal-child-pugh-score-detail></modal-child-pugh-score-detail>
     <panel heading='Admission data'><!-- Panel Admission Data -->
         <div class="row"><!-- wrap content with row class -->
             <input-text
@@ -123,7 +124,7 @@
                         
                         <input-check-group
                             label="Specify : "
-                            :checks="ValvularHeartDiseaseChecks">
+                            :checks="valvularHeartDiseaseChecks">
                         </input-check-group><!-- valvular heart disease specify AS, AR, MS, MR, TR  -->
 
                         <input-text
@@ -134,6 +135,52 @@
                         </input-text><!-- valvular heart disease specify other -->
                     </input-radio><!-- comorbid valvular heart disease -->
                 </div><!-- valvular heart disease comorbid and its extra contents -->
+                <div><hr class="line" /></div>
+
+                <div class="material-box">
+                    <input-radio
+                        field="comorbid_asthma"
+                        label="Asthma :"
+                        :options="comorbidOptions"
+                        :value="note.detail.comorbid_asthma">
+                    </input-radio>
+                </div><!-- asthma comorbid -->
+                <div><hr class="line" /></div>
+
+                <div class="material-box">
+                    <input-radio
+                        field="comorbid_cirrhosis"
+                        label="Cirrhosis :"
+                        :options="comorbidOptions"
+                        :value="note.detail.comorbid_asthma"
+                        :trigger-value="inputRadioExtrasTriggerValue">
+                        
+                        <input-radio 
+                            field="comorbid_cirrhosis_child_pugh_score"
+                            :value="note.detail.comorbid_cirrhosis_child_pugh_score"
+                            label="Child-Pugh's Score :"
+                            :label-action="cirrhosisLabelAction"
+                            options='[
+                                {"label": "A", "value": "A"},
+                                {"label": "B", "value": "B"},
+                                {"label": "C", "value": "C"}
+                            ]'>
+                        </input-radio><!-- cirrhosis Child-Pugh's score -->
+                        
+                        <input-check-group 
+                            label="Specify : "
+                            :checks="cirrhosisSpecificChecks">
+                        </input-check-group><!-- cirrhosis specify HBV, HCV, NASH, Cryptogenic  -->
+
+                        <!-- cirrhosis specify other -->
+                        <input-text
+                            field="comorbid_cirrhosis_other"
+                            :value="note.detail.comorbid_cirrhosis_other"
+                            size="normal"
+                            placeholder="Other specific, type here.">
+                        </input-text>
+                    </input-radio>
+                </div><!-- comorbid cirrhosis -->
                 <div><hr class="line" /></div>
             </div><!-- comorbid DM, VHD, Asthma, Cirrhosis, HCV -->
         </div><!-- wrap content with row class -->
@@ -150,6 +197,7 @@
     import InputTextarea from '../../../inputs/InputTextarea.vue'
     import InputSuggestion from '../../../inputs/InputSuggestion.vue'
     import InputCheckGroup from '../../../inputs/InputCheckGroup.vue'
+    import ChildPughScore from '../../../modals/Medicine/ChildPughScore.vue'
 
     export default {
         components: {
@@ -160,7 +208,8 @@
             'input-select' : InputSelect,
             'input-textarea' : InputTextarea,
             'input-suggestion' : InputSuggestion,
-            'input-check-group' : InputCheckGroup
+            'input-check-group' : InputCheckGroup,
+            'modal-child-pugh-score-detail' : ChildPughScore
         },
         props: {
             serializedNote: {
@@ -171,7 +220,7 @@
         data () {
             return {
                 note: {},
-                
+
                 getDataUrl: "/note-data/" + window.location.pathname.split("/")[2]
             }
         },
@@ -208,6 +257,12 @@
                     this.note.detail.comorbid_valvular_heart_disease_other = null
                 }
             })
+
+            this.cirrhosisLabelAction = {
+                emit: "toggle-modal-child-pugh-score-detail",
+                icon: "question-circle", 
+                title: "Click to learn more about Child-Pugh's Score"
+            }
         },
         computed : {
             DMComplicationChecks () {
@@ -247,7 +302,7 @@
                     }
                 ]
             },
-            ValvularHeartDiseaseChecks () {
+            valvularHeartDiseaseChecks () {
                 return [
                     {
                         field: "comorbid_valvular_heart_disease_AS",
@@ -273,6 +328,44 @@
                         field: "comorbid_valvular_heart_disease_TR",
                         label: "TR",
                         checked: this.note.detail.comorbid_valvular_heart_disease_TR
+                    }
+                ]
+            },
+            cirrhosisSpecificChecks () {
+                return [
+                    {
+                        field: "comorbid_cirrhosis_HBV",
+                        label: "HBV",
+                        checked: this.note.detail.comorbid_cirrhosis_HBV,
+                        emitOnUpdate: [
+                            ["HBV-checked","checked",1],
+                            ["cirrhosis-cryptogenic-unchecked","checked",""]
+                        ],
+                        setterEvent: "cirrhosis-specify-unchecked"
+                    },
+                    {
+                        field: "comorbid_cirrhosis_HCV",
+                        label: "HCV",
+                        checked: this.note.detail.comorbid_cirrhosis_HCV,
+                        emitOnUpdate: [
+                            ["HCV-checked","checked",1],
+                            ["cirrhosis-cryptogenic-unchecked","checked",""]
+                        ],
+                        setterEvent: "cirrhosis-specify-unchecked"
+                    },
+                    {
+                        field: "comorbid_cirrhosis_NASH",
+                        label: "NASH",
+                        checked: this.note.detail.comorbid_cirrhosis_NASH,
+                        emitOnUpdate: [["cirrhosis-cryptogenic-unchecked","checked",""]],
+                        setterEvent: "cirrhosis-specify-unchecked"
+                    },
+                    {
+                        field: "comorbid_cirrhosis_cryptogenic",
+                        label: "Cryptogenic",
+                        checked: this.note.detail.comorbid_cirrhosis_cryptogenic,
+                        emitOnUpdate: [["cirrhosis-specify-unchecked","checked",""]],
+                        setterEvent: "cirrhosis-cryptogenic-unchecked"
                     }
                 ]
             }

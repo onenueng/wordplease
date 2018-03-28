@@ -1339,23 +1339,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: {
-        heading: {
-            type: String,
-            required: true
-        },
-        message: {
-            type: String,
-            required: true
-        },
-        buttonLabel: {
-            type: String,
-            required: true
-        }
+    data: function data() {
+        return {
+            heading: '',
+            message: '',
+            buttonLabel: ''
+        };
     },
     mounted: function mounted() {
-        EventBus.$on('toggle-modal-dialog', function (toggle) {
-            $('#modal-dialog').modal(toggle === undefined ? 'toggle' : toggle);
+        var _this = this;
+
+        EventBus.$on('toggle-modal-dialog', function (message) {
+            var heading = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'Wordplease says';
+            var buttonLabel = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'OK';
+            var toggle = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'toggle';
+
+            _this.message = message;
+            _this.heading = heading;
+            _this.buttonLabel = buttonLabel;
+            _this.toggle = toggle;
+            $('#modal-dialog').modal(toggle);
         });
     }
 });

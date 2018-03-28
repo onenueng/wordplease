@@ -21,6 +21,7 @@ Route::get('/not-allowed', function() {
 Route::get('/lists/{type}/{listName}', 'ListController@getList');
 
 Route::get('/is-session-active', function() {
+    return ['active' => false];
     return ['active' => ( app('request')->header('X-CSRF-TOKEN') == csrf_token() )];
 });
 

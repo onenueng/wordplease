@@ -38,6 +38,21 @@ class CreateMedicineAdmissionNotesTable extends Migration
             $table->boolean('comorbid_valvular_heart_disease_TR')->default(false);
             $table->string('comorbid_valvular_heart_disease_other')->nullable();
 
+            $table->tinyInteger('comorbid_asthma')->unsigned()->nullable();
+
+            $table->tinyInteger('comorbid_cirrhosis')->unsigned()->nullable();
+            $table->string('comorbid_cirrhosis_child_pugh_score')->nullable();
+            $table->boolean('comorbid_cirrhosis_HBV')->default(false);
+            $table->boolean('comorbid_cirrhosis_HCV')->default(false);
+            $table->boolean('comorbid_cirrhosis_NASH')->default(false);
+            $table->boolean('comorbid_cirrhosis_cryptogenic')->default(false);
+            $table->string('comorbid_cirrhosis_other')->nullable();
+
+            $table->tinyInteger('comorbid_HCV')->unsigned()->nullable();
+
+            $table->tinyInteger('comorbid_lukemia')->unsigned()->nullable();
+            $table->tinyInteger('comorbid_lukemia_specific')->unsigned()->nullable();
+
             $table->timestamps();
         });
     }

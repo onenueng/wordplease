@@ -21,12 +21,10 @@
         <i class="fa fa-circle-o-notch fa-spin fa-5x"></i>
     </div>
     <div id="app">
-        <!-- app modal diaglog -->
-        <modal-dialog
-            :heading="dialogHeading"
-            :message="dialogMessage"
-            :button-label="dialogButtonLabel">
-        </modal-dialog>
+        
+        <alert-box></alert-box><!-- app alert box -->
+
+        <modal-dialog></modal-dialog><!-- app modal diaglog -->
         @yield('content')
     </div>
     <script src="{{ mix('/js/manifest.js') }}"></script>

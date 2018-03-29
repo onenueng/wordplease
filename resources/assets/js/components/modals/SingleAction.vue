@@ -39,33 +39,36 @@
 </template>
 
 <script>
+    import ButtonApp from '../buttons/ButtonApp.vue'
+
     export default {
-        props: {
-            label: {
-                type: String,
-                required: true
-            },
-            heading: {
-                type: String,
-                required: true
-            },
-            action: {
-                type: String,
-                required: true
-            },
-            content: {
-                type: String,
-                required: true
-            }
+        components: {
+            'button-app': ButtonApp
         },
         data() {
             return {
+                content: '',
+                heading: '',
+                label: '',
+                action: '',
                 processing: false
             }
         },
         mounted() {
-            EventBus.$on('toggle-modal-action', (config) => {
-                $('#modal-action').modal((config == undefined ? 'hide' : config))
+            EventBus.$on('toggle-modal-action', (content,
+                                                 heading = 'Wordplease says',
+                                                 label = 'OK',
+                                                 action = 'toggle-modal-action') => {
+                if ( content === undefined ) {
+                    $('#modal-action').modal('hide')
+                    this.processing = false
+                } else {
+                    this.content = content
+                    this.heading = heading
+                    this.label = label
+                    this.action = action
+                    $('#modal-action').modal('show')
+                }
             })
 
             EventBus.$on('modal-action-processing', (processing) => {

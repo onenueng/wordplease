@@ -276,6 +276,10 @@ class Inspiration
                 'cite' => 'John Locke'
             ],
             [
+                'text' => "“If you really want to do something, you'll find a way. If you don't, you'll find an excuse.”",
+                'cite' => 'Jim Rohn'
+            ],
+            [
                 'text' => "“”",
                 'cite' => ''
             ],

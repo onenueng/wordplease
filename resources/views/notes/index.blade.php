@@ -3,14 +3,7 @@
 @section('title', auth()->user()->name)
 
 @section('content')
-
-<!-- create note confirmation -->
-<modal-action
-    :label="actionModalButtonLabel"
-    :action="actionModalEvent"
-    :heading="actionModalHeading"
-    :content="actionModalContent">
-</modal-action>
+<modal-action></modal-action><!-- create note confirmation -->
 
 <page-navbar
     link="/"

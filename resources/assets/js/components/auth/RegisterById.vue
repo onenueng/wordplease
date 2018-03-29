@@ -88,7 +88,16 @@
 </template>
 
 <script>
+    import Alert from '../alerts/Alert.vue'
+    import ButtonApp from '../buttons/ButtonApp.vue'
+    import InputState from '../inputs/InputState.vue'
+
     export default {
+        components: {
+            'alert': Alert,
+            'button-app': ButtonApp,
+            'input-state': InputState
+        },
         props: {
             idName: {
                 type: String,

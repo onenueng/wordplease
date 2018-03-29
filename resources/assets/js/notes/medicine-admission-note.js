@@ -22,11 +22,11 @@ window.app = new Vue({
         this.lastActiveSessionCheck = Date.now()
         $(window).on("focus", (e) => {
             let timeDiff = Date.now() - this.lastActiveSessionCheck
-            if ( true || (timeDiff) > (window.SESSION_LIFETIME) ) {
+            if ( (timeDiff) > (window.SESSION_LIFETIME) ) {
                 axios.get('/is-session-active')
                      .then((response) => {
                         if ( !response.data.active ) {
-                            this.showDialog('419')
+                            EventBus.$emit('show-common-dialog', 'error-419')
                         }
                      })
             }
@@ -53,9 +53,9 @@ window.app = new Vue({
                         // console.log(error.response.status)
                         // console.log(error.response.headers)
                         if ( error.response.status == 419 ) {
-                            this.showDialog('419')
+                            EventBus.$emit('show-common-dialog', 'error-419')
                         } else if ( error.response.status == 500 ) {
-                            this.showDialog('500')
+                            EventBus.$emit('show-common-dialog', 'error-500')
                         }
                     } else if (error.request) {
                         // The request was made but no response was received
@@ -71,28 +71,5 @@ window.app = new Vue({
         })
 
         $('#page-loader').remove()
-    },
-
-    methods: {
-        showDialog(code) {
-            switch (code) {
-                case '419':
-                    EventBus.$emit('toggle-modal-dialog',
-                                   'Your are now logged off, Please reload this page or loss your data.',
-                                   'Attention please !!',
-                                   'Got it',
-                                   'show')
-                    break
-                case '500':
-                    EventBus.$emit('toggle-modal-dialog',
-                                   'Server error, Please try again later or get the Helpdesk.',
-                                   'Attention please !!',
-                                   'Got it',
-                                   'show')
-                    break
-                defualt :
-                    break
-            }
-        }
     }
 })

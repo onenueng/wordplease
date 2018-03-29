@@ -1,26 +1,14 @@
 require('../bootstrap')
 
-// use global event bus
-window.EventBus = new Vue()
+window.EventBus = new Vue() // use global event bus
 
-Vue.component('register-by-email', require('../components/auth/RegisterByEmail.vue'))
-Vue.component('register-by-id', require('../components/auth/RegisterById.vue'))
-Vue.component('navbar-right', require('../components/navbars/NavbarRight.vue'))
 Vue.component('register-page', require('../components/auth/RegisterPage.vue'))
-Vue.component('navbar-left', require('../components/navbars/NavbarLeft.vue'))
-Vue.component('input-state', require('../components/inputs/InputState.vue'))
 Vue.component('modal-dialog', require('../components/modals/Dialog.vue'))
-Vue.component('navbar', require('../components/navbars/Navbar.vue'))
-Vue.component('button-app', require('../components/ButtonApp.vue'))
-Vue.component('alert', require('../components/Alert.vue'))
+Vue.component('alert-box', require('../components/alerts/AlertBox.vue'))
 
 window.app = new Vue({
     el: '#app',
     data: {
-        dialogHeading: '',
-        dialogMessage: '',
-        dialogButtonLabel: '',
-
         lastActiveSessionCheck: 0
     },
     mounted() {
@@ -28,14 +16,11 @@ window.app = new Vue({
         this.lastActiveSessionCheck = Date.now()
         $(window).on("focus", (e) => {
             let timeDiff = Date.now() - this.lastActiveSessionCheck
-            if ((timeDiff) > (window.SESSION_LIFETIME)) {
+            if ( true || (timeDiff) > (window.SESSION_LIFETIME)) {
                 axios.get('/is-session-active')
                     .then((response) => {
                         if (!response.data.active) {
-                            this.dialogHeading = 'Attention please !!'
-                            this.dialogMessage = 'Session timeout, Please reload this page to continue using.'
-                            this.dialogButtonLabel = 'Got it'
-                            EventBus.$emit('toggle-modal-dialog', 'show')
+                            EventBus.$emit('show-common-dialog', 'error-419')
                         }
                     })
             }

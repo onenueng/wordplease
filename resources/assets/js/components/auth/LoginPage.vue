@@ -65,7 +65,20 @@
 </template>
 
 <script>
+    import Alert from '../alerts/Alert.vue'
+    import Navbar from '../navbars/Navbar.vue'
+    import ButtonApp from '../buttons/ButtonApp.vue'
+    import NavbarLeft from '../navbars/NavbarLeft.vue'
+    import NavbarRight from '../navbars/NavbarRight.vue'
+    
     export default {
+        components: {
+            'alert': Alert,
+            'navbar': Navbar,
+            'button-app': ButtonApp,
+            'navbar-left': NavbarLeft,
+            'navbar-right': NavbarRight,
+        },
         data() {
             return {
                 userInputOrgId: '',

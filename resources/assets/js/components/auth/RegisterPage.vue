@@ -39,7 +39,20 @@
 </template>
 
 <script>
+    import Navbar from '../../components/navbars/Navbar.vue'
+    import NavbarLeft from '../../components/navbars/NavbarLeft.vue'
+    import RegisterById from '../../components/auth/RegisterById.vue'
+    import NavbarRight from '../../components/navbars/NavbarRight.vue'
+    import RegisterByEmail from '../../components/auth/RegisterByEmail.vue'
+    
     export default {
+        components: {
+            'navbar': Navbar,
+            'navbar-left': NavbarLeft,
+            'navbar-right': NavbarRight,
+            'register-by-id': RegisterById,
+            'register-by-email': RegisterByEmail
+        },
         props: {
             // field name on database.
             idName: {

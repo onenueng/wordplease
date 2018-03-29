@@ -41,7 +41,33 @@ class MedicineAdmissionNote extends Model
                 'comorbid_valvular_heart_disease_TR' => false,
                 'comorbid_valvular_heart_disease_other' => false
             ]
-        ]
+        ],
+
+        'comorbid_cirrhosis' => [
+            'noneTriggerValue' => 1,
+            'fields' => [
+                'comorbid_cirrhosis_child_pugh_score' => null,
+                'comorbid_cirrhosis_HBV' => false,
+                'comorbid_cirrhosis_HCV' => false,
+                'comorbid_cirrhosis_NASH' => false,
+                'comorbid_cirrhosis_cryptogenic' => false,
+                'comorbid_cirrhosis_other' => null
+            ]
+        ],
+
+        'comorbid_lukemia' => [
+            'noneTriggerValue' => 1,
+            'fields' => [
+                'comorbid_lukemia_specific' => null
+            ]
+        ],
+
+        'comorbid_ICD' => [
+            'noneTriggerValue' => 1,
+            'fields' => [
+                'comorbid_ICD_other' => null
+            ]
+        ],
 
     ];
 
@@ -69,6 +95,7 @@ class MedicineAdmissionNote extends Model
         if ( $value === null ) {
             $this->$field = null;
             $this->save();
+            $this->header->touch();
             return $field;
         }
 
@@ -102,6 +129,7 @@ class MedicineAdmissionNote extends Model
         }
 
         $this->save();
+        $this->header->touch();
         return $field;
     }
 }

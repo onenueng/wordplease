@@ -50,7 +50,7 @@
             },
             // event emit when checked/unchecked.
             emitOnUpdate: {
-
+                type: [String, Array],
                 required: false
             },
             // event emit when checked/unchecked.
@@ -108,9 +108,10 @@
                         // if (event[1] == this.thisChecked) {
                         //     EventBus.$emit(event[0], event[2])
                         // }
-                        if (event[1] == this.isChecked) {
-                            EventBus.$emit(event[0], event[2])
-                        }
+                        // if (event[1] == this.isChecked) {
+                        //     EventBus.$emit(event[0], event[2])
+                        // }
+                        EventBus.$emit(event, this.checkValue)
                     })
                 }
             },
@@ -122,8 +123,9 @@
         },
         computed: {
             emitEvents() {
-                if (typeof this.emitOnUpdate == 'String') {
-                    return JSON.parse(this.emitOnUpdate)
+                if (typeof this.emitOnUpdate == 'string') {
+                    // return JSON.parse(this.emitOnUpdate)
+                    return (this.emitOnUpdate).split(",")
                 }
                 return this.emitOnUpdate
             },

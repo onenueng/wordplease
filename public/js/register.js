@@ -175,7 +175,7 @@ window.app = new Vue({
         this.lastActiveSessionCheck = Date.now();
         $(window).on("focus", function (e) {
             var timeDiff = Date.now() - _this.lastActiveSessionCheck;
-            if (true) {
+            if (timeDiff > window.SESSION_LIFETIME) {
                 axios.get('/is-session-active').then(function (response) {
                     if (!response.data.active) {
                         EventBus.$emit('show-common-dialog', 'error-419');
@@ -2419,9 +2419,8 @@ var render = function() {
         [
           _c("div", { staticClass: "modal-content" }, [
             _c("div", { staticClass: "modal-header" }, [
-              _vm._v(
-                "\n                " + _vm._s(_vm.heading) + "\n            "
-              )
+              _c("span", { staticClass: "fa fa-comment-o" }),
+              _vm._v(" " + _vm._s(_vm.heading) + "\n            ")
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "modal-body" }, [

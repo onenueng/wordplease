@@ -1988,9 +1988,8 @@ var render = function() {
         [
           _c("div", { staticClass: "modal-content" }, [
             _c("div", { staticClass: "modal-header" }, [
-              _vm._v(
-                "\n                " + _vm._s(_vm.heading) + "\n            "
-              )
+              _c("span", { staticClass: "fa fa-comment-o" }),
+              _vm._v(" " + _vm._s(_vm.heading) + "\n            ")
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "modal-body" }, [

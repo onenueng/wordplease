@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Contracts\UserAPI;
+use Illuminate\Http\Request;
 use App\Traits\Authorizable;
 use App\Traits\DataImportable;
 use App\Http\Controllers\Controller;
@@ -38,12 +39,12 @@ class RegisterController extends Controller
      * @param  Illuminate\Http\Request via DI container
      * @return Illuminate\Http\Response
      */
-    public function getUser(UserAPI $api)
+    public function getUser(UserAPI $api, Request $request)
     {
-        $org_id = app('request')->org_id;
+        // $org_id = app('request')->org_id;
 
         // check if the ID already exist
-        if ( \App\User::findByUniqueField('org_id', $org_id) != null ) {
+        if ( \App\User::findByUniqueField('org_id', $request->org_id) != null ) {
             return [
                 'reply_code' => 99, 'reply_text' => 'this ID already taken.',
                 'state' => 'error', 'icon' => 'remove',
@@ -51,7 +52,7 @@ class RegisterController extends Controller
         }
 
         // *** IMPLEMENT ThrottlesLogins ***
-        $data = $api->getUser(app('request')->org_id);
+        $data = $api->getUser($request->org_id);
         switch ($data['reply_code']) {
             case 0:
                 $data['state'] = 'success';
@@ -76,10 +77,8 @@ class RegisterController extends Controller
      * @param  Illuminate\Http\Request via DI container
      * @return Illuminate\Http\Response
      */
-    public function isDataAvailable()
+    public function isDataAvailable(Request $request)
     {
-        $request = app('request');
-
         // handle field named 'username' exception
         if ( $request->field == 'username' ) {
             $user = \App\User::findByUniqueField('name', $request->value);
@@ -103,10 +102,8 @@ class RegisterController extends Controller
      * @param  Illuminate\Http\Request via DI container
      * @return Illuminate\Http\Response
      */
-    public function register()
+    public function register(Request $request)
     {
-        $request = app('request');
-
         // register every requests
         $newUser = \App\User::insert($request->user);
 

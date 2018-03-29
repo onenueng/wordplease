@@ -152,8 +152,9 @@
                         field="comorbid_cirrhosis"
                         label="Cirrhosis :"
                         :options="comorbidOptions"
-                        :value="note.detail.comorbid_asthma"
-                        :trigger-value="inputRadioExtrasTriggerValue">
+                        :value="note.detail.comorbid_cirrhosis"
+                        :trigger-value="inputRadioExtrasTriggerValue"
+                        emit-on-update="reset-comorbid_cirrhosis-extras">
                         
                         <input-radio 
                             field="comorbid_cirrhosis_child_pugh_score"
@@ -172,15 +173,70 @@
                             :checks="cirrhosisSpecificChecks">
                         </input-check-group><!-- cirrhosis specify HBV, HCV, NASH, Cryptogenic  -->
 
-                        <!-- cirrhosis specify other -->
                         <input-text
                             field="comorbid_cirrhosis_other"
                             :value="note.detail.comorbid_cirrhosis_other"
                             size="normal"
                             placeholder="Other specific, type here.">
-                        </input-text>
+                        </input-text><!-- cirrhosis specify other -->
                     </input-radio>
                 </div><!-- comorbid cirrhosis -->
+                <div><hr class="line" /></div>
+
+                <div class="material-box">
+                    <input-radio
+                        field="comorbid_HCV"
+                        label="HCV infection :"
+                        :value="note.detail.comorbid_HCV"
+                        :options="comorbidOptions"
+                        setter-event='set-comorbid_HCV'
+                        store-data='note-store-data'>
+                    </input-radio>
+                </div><!-- HBV comorbid -->
+                <div><hr class="line" /></div>
+
+                <div class="material-box">
+                    <input-radio
+                        field="comorbid_lukemia"
+                        label="Lukemia :"
+                        :options="comorbidOptions"
+                        :value="note.detail.comorbid_lukemia"
+                        :trigger-value="inputRadioExtrasTriggerValue"
+                        emit-on-update="reset-comorbid_lukemia-extras">
+                        
+                        <input-radio 
+                            field="comorbid_lukemia_specific"
+                            label="Specify :"
+                            :value="note.detail.comorbid_lukemia_specific"
+                            options='[
+                                {"label": "ALL", "value": 1},
+                                {"label": "AML", "value": 2},
+                                {"label": "CLL", "value": 3},
+                                {"label": "CML", "value": 4}
+                            ]'>
+                        </input-radio><!-- lukemia specific -->
+                    </input-radio>
+                </div><!-- lukemia cirrhosis -->
+                <div><hr class="line" /></div>
+
+                <div class="material-box">
+                    <input-radio 
+                        field="comorbid_ICD"
+                        label="ICD "
+                        label-description="Implantable Cardioverter Defibrillator"
+                        :options="comorbidOptions"
+                        :value="note.detail.comorbid_ICD"
+                        :trigger-value="inputRadioExtrasTriggerValue"
+                        emit-on-update="reset-comorbid_ICD-extras">
+                        
+                        <input-text
+                            field="comorbid_ICD_other"
+                            :value="note.detail.comorbid_ICD_other"
+                            size="normal"
+                            placeholder="Specific ICD type.">
+                        </input-text><!-- ICD specify other -->
+                    </input-radio>
+                </div><!-- comorbid ICD -->
                 <div><hr class="line" /></div>
             </div><!-- comorbid DM, VHD, Asthma, Cirrhosis, HCV -->
         </div><!-- wrap content with row class -->
@@ -220,7 +276,7 @@
         data () {
             return {
                 note: {},
-
+                states: [],
                 getDataUrl: "/note-data/" + window.location.pathname.split("/")[2]
             }
         },
@@ -235,6 +291,10 @@
 
             this.inputRadioExtrasTriggerValue = 1
             
+            EventBus.$on('note-store-data', (field, value) => {
+                this.note.detail[field] = value
+            })
+
             EventBus.$on('reset-comorbid_DM-extras', (value) => {
                 if ( value != this.inputRadioExtrasTriggerValue ) {
                     this.note.detail.comorbid_DM_type = null
@@ -263,6 +323,51 @@
                 icon: "question-circle", 
                 title: "Click to learn more about Child-Pugh's Score"
             }
+
+            EventBus.$on('reset-comorbid_cirrhosis-extras', (value) => {
+                if ( value != this.inputRadioExtrasTriggerValue ) {
+                    this.note.detail.comorbid_cirrhosis_child_pugh_score = null
+                    this.note.detail.comorbid_cirrhosis_HBV = false
+                    this.note.detail.comorbid_cirrhosis_HCV = false
+                    this.note.detail.comorbid_cirrhosis_NASH = false
+                    this.note.detail.comorbid_cirrhosis_cryptogenic = false
+                    this.note.detail.comorbid_cirrhosis_other = null
+                }
+            })
+
+            EventBus.$on('click-comorbid_cirrhosis_none_cryptogenic', (value) => {
+                if (value) {
+                    EventBus.$emit('set-cirrhosis_cryptogenic', false)
+                }
+            })
+
+            EventBus.$on('click-comorbid_cirrhosis_cryptogenic', (value) => {
+                if (value) {
+                    EventBus.$emit('set-cirrhosis_HBV', false)
+                    EventBus.$emit('set-cirrhosis_HCV', false)
+                    EventBus.$emit('set-cirrhosis_NASH', false)
+                }
+            })
+
+            EventBus.$on('click-comorbid_HCV', (value) => {
+                if (value && this.note.detail.comorbid_HCV !== 1) {
+                    EventBus.$emit('set-comorbid_HCV', 1)
+                    EventBus.$emit('toggle-alert-box', 'HCV infection also checked')
+                }
+            })
+
+            EventBus.$on('reset-comorbid_lukemia-extras', (value) => {
+                if ( value != this.inputRadioExtrasTriggerValue ) {
+                    this.note.detail.comorbid_lukemia_specific = null
+                }
+            })
+
+            EventBus.$on('reset-comorbid_ICD-extras', (value) => {
+                if ( value != this.inputRadioExtrasTriggerValue ) {
+                    this.note.detail.comorbid_ICD_other = null
+                }
+            })
+            
         },
         computed : {
             DMComplicationChecks () {
@@ -337,35 +442,29 @@
                         field: "comorbid_cirrhosis_HBV",
                         label: "HBV",
                         checked: this.note.detail.comorbid_cirrhosis_HBV,
-                        emitOnUpdate: [
-                            ["HBV-checked","checked",1],
-                            ["cirrhosis-cryptogenic-unchecked","checked",""]
-                        ],
-                        setterEvent: "cirrhosis-specify-unchecked"
+                        emitOnUpdate: 'click-comorbid_cirrhosis_none_cryptogenic',
+                        setterEvent: "set-cirrhosis_HBV"
                     },
                     {
                         field: "comorbid_cirrhosis_HCV",
                         label: "HCV",
                         checked: this.note.detail.comorbid_cirrhosis_HCV,
-                        emitOnUpdate: [
-                            ["HCV-checked","checked",1],
-                            ["cirrhosis-cryptogenic-unchecked","checked",""]
-                        ],
-                        setterEvent: "cirrhosis-specify-unchecked"
+                        emitOnUpdate: 'click-comorbid_cirrhosis_none_cryptogenic,click-comorbid_HCV',
+                        setterEvent: "set-cirrhosis_HCV"
                     },
                     {
                         field: "comorbid_cirrhosis_NASH",
                         label: "NASH",
                         checked: this.note.detail.comorbid_cirrhosis_NASH,
-                        emitOnUpdate: [["cirrhosis-cryptogenic-unchecked","checked",""]],
-                        setterEvent: "cirrhosis-specify-unchecked"
+                        emitOnUpdate: 'click-comorbid_cirrhosis_none_cryptogenic',
+                        setterEvent: "set-cirrhosis_NASH"
                     },
                     {
                         field: "comorbid_cirrhosis_cryptogenic",
                         label: "Cryptogenic",
                         checked: this.note.detail.comorbid_cirrhosis_cryptogenic,
-                        emitOnUpdate: [["cirrhosis-specify-unchecked","checked",""]],
-                        setterEvent: "cirrhosis-cryptogenic-unchecked"
+                        emitOnUpdate: 'click-comorbid_cirrhosis_cryptogenic',
+                        setterEvent: "set-cirrhosis_cryptogenic"
                     }
                 ]
             }

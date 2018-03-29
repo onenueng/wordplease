@@ -3,7 +3,7 @@
         <div class="modal-dialog modal-sm" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    {{ heading }}
+                    <span class="fa fa-comment-o"></span> {{ heading }}
                 </div>
                 <div class="modal-body">
                     {{ message }}

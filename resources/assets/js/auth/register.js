@@ -16,7 +16,7 @@ window.app = new Vue({
         this.lastActiveSessionCheck = Date.now()
         $(window).on("focus", (e) => {
             let timeDiff = Date.now() - this.lastActiveSessionCheck
-            if ( true || (timeDiff) > (window.SESSION_LIFETIME)) {
+            if ( (timeDiff) > (window.SESSION_LIFETIME) ) {
                 axios.get('/is-session-active')
                     .then((response) => {
                         if (!response.data.active) {

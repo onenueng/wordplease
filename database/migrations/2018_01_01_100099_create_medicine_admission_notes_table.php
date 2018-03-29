@@ -53,7 +53,17 @@ class CreateMedicineAdmissionNotesTable extends Migration
             $table->tinyInteger('comorbid_lukemia')->unsigned()->nullable();
             $table->tinyInteger('comorbid_lukemia_specific')->unsigned()->nullable();
 
-            $table->timestamps();
+            $table->tinyInteger('comorbid_ICD')->unsigned()->nullable();
+            $table->string('comorbid_ICD_other')->nullable();
+
+            $table->tinyInteger('comorbid_SLE')->unsigned()->nullable();
+            
+            $table->tinyInteger('comorbid_dementia')->unsigned()->nullable();
+            $table->boolean('comorbid_dementia_vascular')->default(false);
+            $table->boolean('comorbid_dementia_alzheimer')->default(false);
+            $table->string('comorbid_dementia_other')->nullable();
+            
+            // $table->timestamps();
         });
     }
 

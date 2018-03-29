@@ -1426,9 +1426,8 @@ var render = function() {
         [
           _c("div", { staticClass: "modal-content" }, [
             _c("div", { staticClass: "modal-header" }, [
-              _vm._v(
-                "\n                " + _vm._s(_vm.heading) + "\n            "
-              )
+              _c("span", { staticClass: "fa fa-comment-o" }),
+              _vm._v(" " + _vm._s(_vm.heading) + "\n            ")
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "modal-body" }, [
@@ -2653,6 +2652,62 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2685,7 +2740,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             note: {},
-
+            states: [],
             getDataUrl: "/note-data/" + window.location.pathname.split("/")[2]
         };
     },
@@ -2697,6 +2752,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.comorbidOptions = [{ label: "No data", value: 255 }, { label: "No", value: 0 }, { label: "Yes", value: 1 }];
 
         this.inputRadioExtrasTriggerValue = 1;
+
+        EventBus.$on('note-store-data', function (field, value) {
+            _this.note.detail[field] = value;
+        });
 
         EventBus.$on('reset-comorbid_DM-extras', function (value) {
             if (value != _this.inputRadioExtrasTriggerValue) {
@@ -2726,6 +2785,50 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             icon: "question-circle",
             title: "Click to learn more about Child-Pugh's Score"
         };
+
+        EventBus.$on('reset-comorbid_cirrhosis-extras', function (value) {
+            if (value != _this.inputRadioExtrasTriggerValue) {
+                _this.note.detail.comorbid_cirrhosis_child_pugh_score = null;
+                _this.note.detail.comorbid_cirrhosis_HBV = false;
+                _this.note.detail.comorbid_cirrhosis_HCV = false;
+                _this.note.detail.comorbid_cirrhosis_NASH = false;
+                _this.note.detail.comorbid_cirrhosis_cryptogenic = false;
+                _this.note.detail.comorbid_cirrhosis_other = null;
+            }
+        });
+
+        EventBus.$on('click-comorbid_cirrhosis_none_cryptogenic', function (value) {
+            if (value) {
+                EventBus.$emit('set-cirrhosis_cryptogenic', false);
+            }
+        });
+
+        EventBus.$on('click-comorbid_cirrhosis_cryptogenic', function (value) {
+            if (value) {
+                EventBus.$emit('set-cirrhosis_HBV', false);
+                EventBus.$emit('set-cirrhosis_HCV', false);
+                EventBus.$emit('set-cirrhosis_NASH', false);
+            }
+        });
+
+        EventBus.$on('click-comorbid_HCV', function (value) {
+            if (value && _this.note.detail.comorbid_HCV !== 1) {
+                EventBus.$emit('set-comorbid_HCV', 1);
+                EventBus.$emit('toggle-alert-box', 'HCV infection also checked');
+            }
+        });
+
+        EventBus.$on('reset-comorbid_lukemia-extras', function (value) {
+            if (value != _this.inputRadioExtrasTriggerValue) {
+                _this.note.detail.comorbid_lukemia_specific = null;
+            }
+        });
+
+        EventBus.$on('reset-comorbid_ICD-extras', function (value) {
+            if (value != _this.inputRadioExtrasTriggerValue) {
+                _this.note.detail.comorbid_ICD_other = null;
+            }
+        });
     },
 
     computed: {
@@ -2786,26 +2889,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 field: "comorbid_cirrhosis_HBV",
                 label: "HBV",
                 checked: this.note.detail.comorbid_cirrhosis_HBV,
-                emitOnUpdate: [["HBV-checked", "checked", 1], ["cirrhosis-cryptogenic-unchecked", "checked", ""]],
-                setterEvent: "cirrhosis-specify-unchecked"
+                emitOnUpdate: 'click-comorbid_cirrhosis_none_cryptogenic',
+                setterEvent: "set-cirrhosis_HBV"
             }, {
                 field: "comorbid_cirrhosis_HCV",
                 label: "HCV",
                 checked: this.note.detail.comorbid_cirrhosis_HCV,
-                emitOnUpdate: [["HCV-checked", "checked", 1], ["cirrhosis-cryptogenic-unchecked", "checked", ""]],
-                setterEvent: "cirrhosis-specify-unchecked"
+                emitOnUpdate: 'click-comorbid_cirrhosis_none_cryptogenic,click-comorbid_HCV',
+                setterEvent: "set-cirrhosis_HCV"
             }, {
                 field: "comorbid_cirrhosis_NASH",
                 label: "NASH",
                 checked: this.note.detail.comorbid_cirrhosis_NASH,
-                emitOnUpdate: [["cirrhosis-cryptogenic-unchecked", "checked", ""]],
-                setterEvent: "cirrhosis-specify-unchecked"
+                emitOnUpdate: 'click-comorbid_cirrhosis_none_cryptogenic',
+                setterEvent: "set-cirrhosis_NASH"
             }, {
                 field: "comorbid_cirrhosis_cryptogenic",
                 label: "Cryptogenic",
                 checked: this.note.detail.comorbid_cirrhosis_cryptogenic,
-                emitOnUpdate: [["cirrhosis-specify-unchecked", "checked", ""]],
-                setterEvent: "cirrhosis-cryptogenic-unchecked"
+                emitOnUpdate: 'click-comorbid_cirrhosis_cryptogenic',
+                setterEvent: "set-cirrhosis_cryptogenic"
             }];
         }
     }
@@ -3250,7 +3353,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         // event emit when checked/unchecked.
         emitOnUpdate: {
-
+            type: [String, Array],
             required: false
         },
         // event emit when checked/unchecked.
@@ -3311,9 +3414,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     // if (event[1] == this.thisChecked) {
                     //     EventBus.$emit(event[0], event[2])
                     // }
-                    if (event[1] == _this2.isChecked) {
-                        EventBus.$emit(event[0], event[2]);
-                    }
+                    // if (event[1] == this.isChecked) {
+                    //     EventBus.$emit(event[0], event[2])
+                    // }
+                    EventBus.$emit(event, _this2.checkValue);
                 });
             }
         },
@@ -3325,8 +3429,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     computed: {
         emitEvents: function emitEvents() {
-            if (typeof this.emitOnUpdate == 'String') {
-                return JSON.parse(this.emitOnUpdate);
+            if (typeof this.emitOnUpdate == 'string') {
+                // return JSON.parse(this.emitOnUpdate)
+                return this.emitOnUpdate.split(",");
             }
             return this.emitOnUpdate;
         },
@@ -3595,6 +3700,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             type: String,
             required: false
         },
+        storeData: {
+            type: String,
+            required: false
+        },
         emitOnUpdate: {
             type: String,
             required: false
@@ -3612,6 +3721,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         autosave: function autosave() {
             if (this.field !== undefined) {
                 EventBus.$emit('autosave', this.field, this.currentValue);
+                if (this.storeData !== undefined) {
+                    EventBus.$emit(this.storeData, this.field, this.currentValue);
+                }
             }
 
             if (this.emitOnUpdate !== undefined) {
@@ -3641,11 +3753,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (this.currentValue != value) {
                 this.currentValue = value;
                 this.autosave();
-
-                // if ( this.emitOnUpdate !== undefined ) {
-                //     EventBus.$emit(this.emitOnUpdate, this.currentValue)
-                // }
             }
+
+            // check if need to store
         },
 
         // reset to unchecked all options.
@@ -5977,8 +6087,9 @@ var render = function() {
                         field: "comorbid_cirrhosis",
                         label: "Cirrhosis :",
                         options: _vm.comorbidOptions,
-                        value: _vm.note.detail.comorbid_asthma,
-                        "trigger-value": _vm.inputRadioExtrasTriggerValue
+                        value: _vm.note.detail.comorbid_cirrhosis,
+                        "trigger-value": _vm.inputRadioExtrasTriggerValue,
+                        "emit-on-update": "reset-comorbid_cirrhosis-extras"
                       }
                     },
                     [
@@ -6007,6 +6118,97 @@ var render = function() {
                           value: _vm.note.detail.comorbid_cirrhosis_other,
                           size: "normal",
                           placeholder: "Other specific, type here."
+                        }
+                      })
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("div", [_c("hr", { staticClass: "line" })]),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "material-box" },
+                [
+                  _c("input-radio", {
+                    attrs: {
+                      field: "comorbid_HCV",
+                      label: "HCV infection :",
+                      value: _vm.note.detail.comorbid_HCV,
+                      options: _vm.comorbidOptions,
+                      "setter-event": "set-comorbid_HCV",
+                      "store-data": "note-store-data"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("div", [_c("hr", { staticClass: "line" })]),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "material-box" },
+                [
+                  _c(
+                    "input-radio",
+                    {
+                      attrs: {
+                        field: "comorbid_lukemia",
+                        label: "Lukemia :",
+                        options: _vm.comorbidOptions,
+                        value: _vm.note.detail.comorbid_lukemia,
+                        "trigger-value": _vm.inputRadioExtrasTriggerValue,
+                        "emit-on-update": "reset-comorbid_lukemia-extras"
+                      }
+                    },
+                    [
+                      _c("input-radio", {
+                        attrs: {
+                          field: "comorbid_lukemia_specific",
+                          label: "Specify :",
+                          value: _vm.note.detail.comorbid_lukemia_specific,
+                          options:
+                            '[\n                                {"label": "ALL", "value": 1},\n                                {"label": "AML", "value": 2},\n                                {"label": "CLL", "value": 3},\n                                {"label": "CML", "value": 4}\n                            ]'
+                        }
+                      })
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("div", [_c("hr", { staticClass: "line" })]),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "material-box" },
+                [
+                  _c(
+                    "input-radio",
+                    {
+                      attrs: {
+                        field: "comorbid_ICD",
+                        label: "ICD ",
+                        "label-description":
+                          "Implantable Cardioverter Defibrillator",
+                        options: _vm.comorbidOptions,
+                        value: _vm.note.detail.comorbid_ICD,
+                        "trigger-value": _vm.inputRadioExtrasTriggerValue,
+                        "emit-on-update": "reset-comorbid_ICD-extras"
+                      }
+                    },
+                    [
+                      _c("input-text", {
+                        attrs: {
+                          field: "comorbid_ICD_other",
+                          value: _vm.note.detail.comorbid_ICD_other,
+                          size: "normal",
+                          placeholder: "Specific ICD type."
                         }
                       })
                     ],

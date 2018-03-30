@@ -371,20 +371,20 @@
                 <div class="material-box">
                     <input-radio
                         field="comorbid_lymphoma"
+                        :value="note.detail.comorbid_lymphoma"
                         label="Lymphoma :"
-                        options="{{ $comorbidOptions }}"
-                        trigger-value="1">
+                        :options="comorbidOptions"
+                        :trigger-value="inputRadioExtrasTriggerValue"
+                        emit-on-update="reset-comorbid_lymphoma-extras">
 
-                        <!-- lymphoma specify -->
                         <div class="form-inline">
                             <input-select
                                 field="comorbid_lymphoma_specific"
-                                value=""
+                                :value="note.detail.comorbid_lymphoma_specific_text"
                                 label="Specify :"
-                                size="normal"
-                                need-sync>
+                                size="normal">
                             </input-select>
-                        </div>
+                        </div><!-- lymphoma specify -->
                     </input-radio>
                 </div><!-- lymphoma comorbid -->
                 <div><hr class="line" /></div>
@@ -392,32 +392,23 @@
                 <div class="material-box">
                     <input-radio
                         field="comorbid_cancer"
+                        :value="note.detail.comorbid_cancer"
                         label="Cancer :"
-                        options="{{ $comorbidOptions }}"
-                        trigger-value="1">
+                        :options="comorbidOptions"
+                        :trigger-value="inputRadioExtrasTriggerValue"
+                        emit-on-update="reset-comorbid_cancer-extras">
 
                         <!-- cancer specify Lung Liver Colon Breast Prostate Cervix Pancreas Brain  -->
                         <input-check-group
-                            checks='[
-                                {"field": "comorbid_cancer_lung", "label": "Lung"},
-                                {"field": "comorbid_cancer_liver", "label": "Liver"},
-                                {"field": "comorbid_cancer_colon", "label": "Colon"},
-                                {"field": "comorbid_cancer_breast", "label": "Breast"},
-                                {"field": "comorbid_cancer_prostate", "label": "Prostate"},
-                                {"field": "comorbid_cancer_cervix", "label": "Cervix"},
-                                {"field": "comorbid_cancer_pancreas", "label": "Pancreas"},
-                                {"field": "comorbid_cancer_brain", "label": "Brain"}
-                            ]'
-                            need-sync>
+                            :checks="cancerOrganChecks">
                         </input-check-group>
 
                         <!-- cancer specify other -->
                         <input-text
                             field="comorbid_cancer_other"
-                            value=""
+                            :value="note.detail.comorbid_cancer_other"
                             size="normal"
-                            placeholder="Other specific, type here."
-                            need-sync>
+                            placeholder="Other specific, type here.">
                         </input-text>
                     </input-radio>
                 </div><!-- comorbid cancer -->
@@ -426,43 +417,22 @@
                 <div class="material-box">
                     <input-radio
                         field="comorbid_other_autoimmune_disease"
+                        :value="note.detail.comorbid_other_autoimmune_disease"
                         label="Other Autoimmune Disease :"
-                        options="{{ $comorbidOptions }}"
-                        trigger-value="1">
-
-                        <!-- Other Autoimmune Disease specify Lung Liver Colon Breast Prostate Cervix Pancreas Brain  -->
+                        :options="comorbidOptions"
+                        :trigger-value="inputRadioExtrasTriggerValue"
+                        emit-on-update="reset-comorbid_other_autoimmune_disease-extras">
+                        
                         <input-check-group
-                            checks='[
-                                {
-                                    "field": "comorbid_other_autoimmune_disease_UCTD",
-                                    "label": "UCTD",
-                                    "labelDescription": "Undifferentiated connective tissue disease"
-                                },
-                                {
-                                    "field": "comorbid_other_autoimmune_disease_sjrogren_syndrome", "label": "Sjrögren syndrome"
-                                },
-                                {
-                                    "field": "comorbid_other_autoimmune_disease_MCTD",
-                                    "label": "MCTD",
-                                    "labelDescription": "Mixed connective tissue disease"
-                                },
-                                {
-                                    "field": "comorbid_other_autoimmune_disease_DMPM",
-                                    "label": "DMPM",
-                                    "labelDescription": "Dermatomyositis polymyositis"
-                                }
-                            ]'
-                            need-sync>
-                        </input-check-group>
-
-                        <!-- Other Autoimmune Disease specify other -->
+                            :checks="otherAutoimmuneDiseaseChecks">
+                        </input-check-group><!-- Other Autoimmune Disease specify Lung Liver Colon Breast Prostate Cervix Pancreas Brain  -->
+                        
                         <input-text
                             field="comorbid_other_autoimmune_disease_other"
-                            value=""
+                            :value="note.detail.comorbid_other_autoimmune_disease_other"
                             size="normal"
-                            placeholder="Other specific, type here."
-                            need-sync>
-                        </input-text>
+                            placeholder="Other specific, type here.">
+                        </input-text><!-- Other Autoimmune Disease specify other -->
                     </input-radio>
                 </div><!-- comorbid Other Autoimmune Disease -->
                 <div><hr class="line" /></div>
@@ -628,6 +598,32 @@
                 }
             })
 
+            EventBus.$on('reset-comorbid_lymphoma-extras', (value) => {
+                if ( value != this.inputRadioExtrasTriggerValue ) {
+                    this.note.detail.comorbid_lymphoma_specific_text = null
+                }
+            })
+
+            EventBus.$on('reset-comorbid_cancer-extras', (value) => {
+                this.note.detail.comorbid_cancer_lung = false
+                this.note.detail.comorbid_cancer_liver = false
+                this.note.detail.comorbid_cancer_colon = false
+                this.note.detail.comorbid_cancer_breast = false
+                this.note.detail.comorbid_cancer_prostate = false
+                this.note.detail.comorbid_cancer_cervix = false
+                this.note.detail.comorbid_cancer_pancreas = false
+                this.note.detail.comorbid_cancer_brain = false
+                this.note.detail.comorbid_cancer_other = null
+            })
+
+            EventBus.$on('reset-comorbid_other_autoimmune_disease-extras', (value) => {
+                this.note.detail.comorbid_other_autoimmune_disease_UCTD = false
+                this.note.detail.comorbid_other_autoimmune_disease_sjrogren_syndrome = false
+                this.note.detail.comorbid_other_autoimmune_disease_MCTD = false
+                this.note.detail.comorbid_other_autoimmune_disease_DMPM = false
+                this.note.detail.comorbid_other_autoimmune_disease_other = null
+            })
+
         },
         computed : {
             DMComplicationChecks () {
@@ -782,6 +778,77 @@
                         field: "comorbid_HIV_CMV",
                         checked: this.note.detail.comorbid_HIV_CMV,
                         label: "CMV"
+                    }
+                ]
+            },
+            cancerOrganChecks () {
+                return [
+                    {
+                        field: "comorbid_cancer_lung",
+                        checked: this.note.detail.comorbid_cancer_lung,
+                        label: "Lung"
+                    },
+                    {
+                        field: "comorbid_cancer_liver",
+                        checked: this.note.detail.comorbid_cancer_liver,
+                        label: "Liver"
+                    },
+                    {
+                        field: "comorbid_cancer_colon",
+                        checked: this.note.detail.comorbid_cancer_colon,
+                        label: "Colon"
+                    },
+                    {
+                        field: "comorbid_cancer_breast",
+                        checked: this.note.detail.comorbid_cancer_breast,
+                        label: "Breast"
+                    },
+                    {
+                        field: "comorbid_cancer_prostate",
+                        checked: this.note.detail.comorbid_cancer_prostate,
+                        label: "Prostate"
+                    },
+                    {
+                        field: "comorbid_cancer_cervix",
+                        checked: this.note.detail.comorbid_cancer_cervix,
+                        label: "Cervix"
+                    },
+                    {
+                        field: "comorbid_cancer_pancreas",
+                        checked: this.note.detail.comorbid_cancer_pancreas,
+                        label: "Pancreas"
+                    },
+                    {
+                        field: "comorbid_cancer_brain",
+                        checked: this.note.detail.comorbid_cancer_brain,
+                        label: "Brain"
+                    }
+                ]
+            },
+            otherAutoimmuneDiseaseChecks () {
+                return [
+                    {
+                        field: "comorbid_other_autoimmune_disease_UCTD",
+                        label: "UCTD",
+                        checked: this.note.detail.comorbid_other_autoimmune_disease_UCTD,
+                        labelDescription: "Undifferentiated connective tissue disease"
+                    },
+                    {
+                        field: "comorbid_other_autoimmune_disease_sjrogren_syndrome",
+                        label: "Sjrögren syndrome",
+                        checked: this.note.detail.comorbid_other_autoimmune_disease_sjrogren_syndrome,
+                    },
+                    {
+                        field: "comorbid_other_autoimmune_disease_MCTD",
+                        label: "MCTD",
+                        checked: this.note.detail.comorbid_other_autoimmune_disease_MCTD,
+                        labelDescription: "Mixed connective tissue disease"
+                    },
+                    {
+                        field: "comorbid_other_autoimmune_disease_DMPM",
+                        label: "DMPM",
+                        checked: this.note.detail.comorbid_other_autoimmune_disease_DMPM,
+                        labelDescription: "Dermatomyositis polymyositis"
                     }
                 ]
             }

@@ -169,34 +169,20 @@ class MedicineAdmissionNote extends Model
 
     public function autosave($field, $value)
     {
-        if ( $value === null ) {
-            $this->$field = null;
-            $this->save();
-            $this->header->touch();
-            return $field;
-        }
-
         if ( array_search($field, $this->selectItemFields) !== false ) {
-            $item = app('db')->table('select_items')
-                             ->select('value')
-                             ->where(['field_name' => $field, 'label' => $value])
-                             ->first();
-
-            if ( $item === null ) {
-                $item = \App\Models\Lists\SelectItem::insert([
-                            'field_name' => $field,
-                            'value' => \App\Models\Lists\SelectItem::where('field_name', $field)->count() + 1,
-                            'label' => $value,
-                            'order' => 0,
-                            'active' => false,
-                        ]);
-                $item = \App\Models\Lists\SelectItem::where(['field_name' => $field, 'label' => $value])->first();
-            }
-            $this->$field = $item->value;
+            $this->$field = $this->getSelectItemValue($field, $value);
         } else {
             $this->$field = $value;
         }
 
+        $this->resetExtrasIfNeeded($field, $value);
+        $this->save();
+        $this->header->touch();
+        return $field;
+    }
+
+    protected function resetExtrasIfNeeded($field, $value)
+    {
         if ( array_key_exists($field, $this->fieldsWithExtras)
              && $value != $this->fieldsWithExtras[$field]['noneTriggerValue']
            ) {
@@ -204,9 +190,26 @@ class MedicineAdmissionNote extends Model
                 $this->$key = $value;
             }
         }
+    }
 
-        $this->save();
-        $this->header->touch();
-        return $field;
+    protected function getSelectItemValue($field, $value)
+    {
+        $item = app('db')->table('select_items')
+                         ->select('value')
+                         ->where(['field_name' => $field, 'label' => $value])
+                         ->first();
+
+        if ( $item === null ) {
+            $item = \App\Models\Lists\SelectItem::insert([
+                        'field_name' => $field,
+                        'value' => \App\Models\Lists\SelectItem::where('field_name', $field)->count() + 1,
+                        'label' => $value,
+                        'order' => 0,
+                        'active' => false,
+                    ]);
+            $item = \App\Models\Lists\SelectItem::where(['field_name' => $field, 'label' => $value])->first();
+        }
+
+        return $item->value;
     }
 }

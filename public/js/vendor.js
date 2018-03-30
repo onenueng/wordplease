@@ -27474,7 +27474,7 @@ return jQuery;
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(36), __webpack_require__(67)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(36), __webpack_require__(73)(module)))
 
 /***/ }),
 
@@ -29866,7 +29866,7 @@ if (typeof jQuery === 'undefined') {
 /***/ 14:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(68);
+module.exports = __webpack_require__(74);
 
 /***/ }),
 
@@ -40833,14 +40833,14 @@ Vue.compile = compileToFunctions;
 
 module.exports = Vue;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(36), __webpack_require__(86).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(36), __webpack_require__(92).setImmediate))
 
 /***/ }),
 
 /***/ 16:
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(jQuery) {/* flatpickr v4.4.2, @license MIT */
+/* WEBPACK VAR INJECTION */(function(jQuery) {/* flatpickr v4.4.3, @license MIT */
 (function (global, factory) {
      true ? module.exports = factory() :
     typeof define === 'function' && define.amd ? define(factory) :
@@ -41360,9 +41360,9 @@ module.exports = Vue;
         if (self.daysContainer !== undefined) {
           self.calendarContainer.style.visibility = "hidden";
           self.calendarContainer.style.display = "block";
-          var daysWidth = (self.calendarContainer.clientWidth + 1) * self.config.showMonths + "px";
-          self.daysContainer.style.width = daysWidth;
-          self.calendarContainer.style.width = daysWidth;
+          var daysWidth = (self.daysContainer.offsetWidth + 1) * self.config.showMonths;
+          self.daysContainer.style.width = daysWidth + "px";
+          self.calendarContainer.style.width = daysWidth + "px";
 
           if (self.weekWrapper !== undefined) {
             self.calendarContainer.style.width = daysWidth + self.weekWrapper.offsetWidth + "px";
@@ -41679,7 +41679,7 @@ module.exports = Vue;
           if (isDateInRange(date) && !isDateSelected(date)) dayElement.classList.add("inRange");
         }
 
-        if (self.weekNumbers && className !== "prevMonthDay" && dayNumber % 7 === 1) {
+        if (self.weekNumbers && self.config.showMonths === 1 && className !== "prevMonthDay" && dayNumber % 7 === 1) {
           self.weekNumbers.insertAdjacentHTML("beforeend", "<span class='flatpickr-day'>" + self.config.getWeek(date) + "</span>");
         }
 
@@ -41731,7 +41731,7 @@ module.exports = Vue;
         }
 
         clearNode(self.daysContainer);
-        if (self.weekNumbers && self.weekNumbers.firstChild) clearNode(self.weekNumbers);
+        if (self.weekNumbers) clearNode(self.weekNumbers);
         var frag = document.createDocumentFragment();
 
         for (var i = 0; i < self.config.showMonths; i++) {
@@ -42469,7 +42469,7 @@ module.exports = Vue;
         if (t === undefined) return;
         var target = t;
         var selectedDate = self.latestSelectedDateObj = new Date(target.dateObj.getTime());
-        var shouldChangeMonth = selectedDate.getMonth() !== self.currentMonth && self.config.mode !== "range";
+        var shouldChangeMonth = (selectedDate.getMonth() < self.currentMonth || selectedDate.getMonth() > self.currentMonth + self.config.showMonths - 1) && self.config.mode !== "range";
         self.selectedDateElem = target;
         if (self.config.mode === "single") self.selectedDates = [selectedDate];else if (self.config.mode === "multiple") {
           var selectedIndex = isDateSelected(selectedDate);
@@ -42491,6 +42491,7 @@ module.exports = Vue;
           triggerEvent("onMonthChange");
         }
 
+        updateNavigationCurrentMonth();
         buildDays();
         if (self.config.minDate && self.minDateHasTime && self.config.enableTime && compareDates(selectedDate, self.config.minDate) === 0) setHoursFromDate(self.config.minDate);
         updateValue();
@@ -42504,7 +42505,7 @@ module.exports = Vue;
           } else updateNavigationCurrentMonth();
         }
 
-        if (!shouldChangeMonth && self.config.mode !== "range") focusOnDay(target.$i, 0);else self.selectedDateElem && self.selectedDateElem.focus();
+        if (!shouldChangeMonth && self.config.mode !== "range" && self.config.showMonths === 1) focusOnDay(target.$i, 0);else self.selectedDateElem && self.selectedDateElem.focus();
         if (self.hourElement !== undefined) setTimeout(function () {
           return self.hourElement !== undefined && self.hourElement.select();
         }, 451);
@@ -44204,7 +44205,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ 200:
+/***/ 234:
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(12);
@@ -44254,7 +44255,7 @@ module.exports = g;
 /* WEBPACK VAR INJECTION */(function(process) {
 
 var utils = __webpack_require__(4);
-var normalizeHeaderName = __webpack_require__(71);
+var normalizeHeaderName = __webpack_require__(77);
 
 var DEFAULT_CONTENT_TYPE = {
   'Content-Type': 'application/x-www-form-urlencoded'
@@ -44270,10 +44271,10 @@ function getDefaultAdapter() {
   var adapter;
   if (typeof XMLHttpRequest !== 'undefined') {
     // For browsers use XHR adapter
-    adapter = __webpack_require__(60);
+    adapter = __webpack_require__(65);
   } else if (typeof process !== 'undefined') {
     // For node use HTTP adapter
-    adapter = __webpack_require__(60);
+    adapter = __webpack_require__(65);
   }
   return adapter;
 }
@@ -44344,7 +44345,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = defaults;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(59)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(64)))
 
 /***/ }),
 
@@ -44354,8 +44355,8 @@ module.exports = defaults;
 "use strict";
 
 
-var bind = __webpack_require__(58);
-var isBuffer = __webpack_require__(69);
+var bind = __webpack_require__(63);
+var isBuffer = __webpack_require__(75);
 
 /*global toString:true*/
 
@@ -44659,7 +44660,7 @@ module.exports = {
 
 /***/ }),
 
-/***/ 58:
+/***/ 63:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44678,7 +44679,7 @@ module.exports = function bind(fn, thisArg) {
 
 /***/ }),
 
-/***/ 59:
+/***/ 64:
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -44869,19 +44870,19 @@ process.umask = function() { return 0; };
 
 /***/ }),
 
-/***/ 60:
+/***/ 65:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(4);
-var settle = __webpack_require__(72);
-var buildURL = __webpack_require__(74);
-var parseHeaders = __webpack_require__(75);
-var isURLSameOrigin = __webpack_require__(76);
-var createError = __webpack_require__(61);
-var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(77);
+var settle = __webpack_require__(78);
+var buildURL = __webpack_require__(80);
+var parseHeaders = __webpack_require__(81);
+var isURLSameOrigin = __webpack_require__(82);
+var createError = __webpack_require__(66);
+var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(83);
 
 module.exports = function xhrAdapter(config) {
   return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -44978,7 +44979,7 @@ module.exports = function xhrAdapter(config) {
     // This is only done if running in a standard browser environment.
     // Specifically not if we're in a web worker, or react-native.
     if (utils.isStandardBrowserEnv()) {
-      var cookies = __webpack_require__(78);
+      var cookies = __webpack_require__(84);
 
       // Add xsrf header
       var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
@@ -45057,13 +45058,13 @@ module.exports = function xhrAdapter(config) {
 
 /***/ }),
 
-/***/ 61:
+/***/ 66:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var enhanceError = __webpack_require__(73);
+var enhanceError = __webpack_require__(79);
 
 /**
  * Create an Error with the specified message, config, error code, request and response.
@@ -45083,7 +45084,7 @@ module.exports = function createError(message, config, code, request, response) 
 
 /***/ }),
 
-/***/ 62:
+/***/ 67:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45096,7 +45097,7 @@ module.exports = function isCancel(value) {
 
 /***/ }),
 
-/***/ 63:
+/***/ 68:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45123,7 +45124,7 @@ module.exports = Cancel;
 
 /***/ }),
 
-/***/ 67:
+/***/ 73:
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -45152,15 +45153,15 @@ module.exports = function(module) {
 
 /***/ }),
 
-/***/ 68:
+/***/ 74:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(4);
-var bind = __webpack_require__(58);
-var Axios = __webpack_require__(70);
+var bind = __webpack_require__(63);
+var Axios = __webpack_require__(76);
 var defaults = __webpack_require__(38);
 
 /**
@@ -45194,15 +45195,15 @@ axios.create = function create(instanceConfig) {
 };
 
 // Expose Cancel & CancelToken
-axios.Cancel = __webpack_require__(63);
-axios.CancelToken = __webpack_require__(84);
-axios.isCancel = __webpack_require__(62);
+axios.Cancel = __webpack_require__(68);
+axios.CancelToken = __webpack_require__(90);
+axios.isCancel = __webpack_require__(67);
 
 // Expose all/spread
 axios.all = function all(promises) {
   return Promise.all(promises);
 };
-axios.spread = __webpack_require__(85);
+axios.spread = __webpack_require__(91);
 
 module.exports = axios;
 
@@ -45212,7 +45213,7 @@ module.exports.default = axios;
 
 /***/ }),
 
-/***/ 69:
+/***/ 75:
 /***/ (function(module, exports) {
 
 /*!
@@ -45240,7 +45241,7 @@ function isSlowBuffer (obj) {
 
 /***/ }),
 
-/***/ 70:
+/***/ 76:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45248,10 +45249,10 @@ function isSlowBuffer (obj) {
 
 var defaults = __webpack_require__(38);
 var utils = __webpack_require__(4);
-var InterceptorManager = __webpack_require__(79);
-var dispatchRequest = __webpack_require__(80);
-var isAbsoluteURL = __webpack_require__(82);
-var combineURLs = __webpack_require__(83);
+var InterceptorManager = __webpack_require__(85);
+var dispatchRequest = __webpack_require__(86);
+var isAbsoluteURL = __webpack_require__(88);
+var combineURLs = __webpack_require__(89);
 
 /**
  * Create a new instance of Axios
@@ -45334,7 +45335,7 @@ module.exports = Axios;
 
 /***/ }),
 
-/***/ 71:
+/***/ 77:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45354,13 +45355,13 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 
 /***/ }),
 
-/***/ 72:
+/***/ 78:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var createError = __webpack_require__(61);
+var createError = __webpack_require__(66);
 
 /**
  * Resolve or reject a Promise based on response status.
@@ -45388,7 +45389,7 @@ module.exports = function settle(resolve, reject, response) {
 
 /***/ }),
 
-/***/ 73:
+/***/ 79:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45417,7 +45418,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
 
 /***/ }),
 
-/***/ 74:
+/***/ 80:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45493,7 +45494,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 
 /***/ }),
 
-/***/ 75:
+/***/ 81:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45538,7 +45539,7 @@ module.exports = function parseHeaders(headers) {
 
 /***/ }),
 
-/***/ 76:
+/***/ 82:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45614,7 +45615,7 @@ module.exports = (
 
 /***/ }),
 
-/***/ 77:
+/***/ 83:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45658,7 +45659,7 @@ module.exports = btoa;
 
 /***/ }),
 
-/***/ 78:
+/***/ 84:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45719,7 +45720,7 @@ module.exports = (
 
 /***/ }),
 
-/***/ 79:
+/***/ 85:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45779,15 +45780,15 @@ module.exports = InterceptorManager;
 
 /***/ }),
 
-/***/ 80:
+/***/ 86:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(4);
-var transformData = __webpack_require__(81);
-var isCancel = __webpack_require__(62);
+var transformData = __webpack_require__(87);
+var isCancel = __webpack_require__(67);
 var defaults = __webpack_require__(38);
 
 /**
@@ -45866,7 +45867,7 @@ module.exports = function dispatchRequest(config) {
 
 /***/ }),
 
-/***/ 81:
+/***/ 87:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45894,7 +45895,7 @@ module.exports = function transformData(data, headers, fns) {
 
 /***/ }),
 
-/***/ 82:
+/***/ 88:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45916,7 +45917,7 @@ module.exports = function isAbsoluteURL(url) {
 
 /***/ }),
 
-/***/ 83:
+/***/ 89:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45938,13 +45939,13 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 
 /***/ }),
 
-/***/ 84:
+/***/ 90:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var Cancel = __webpack_require__(63);
+var Cancel = __webpack_require__(68);
 
 /**
  * A `CancelToken` is an object that can be used to request cancellation of an operation.
@@ -46003,7 +46004,7 @@ module.exports = CancelToken;
 
 /***/ }),
 
-/***/ 85:
+/***/ 91:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46038,7 +46039,7 @@ module.exports = function spread(callback) {
 
 /***/ }),
 
-/***/ 86:
+/***/ 92:
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var apply = Function.prototype.apply;
@@ -46091,7 +46092,7 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(87);
+__webpack_require__(93);
 // On some exotic environments, it's not clear which object `setimmeidate` was
 // able to install onto.  Search each possibility in the same order as the
 // `setimmediate` library.
@@ -46106,7 +46107,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 
 /***/ }),
 
-/***/ 87:
+/***/ 93:
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -46296,8 +46297,8 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(36), __webpack_require__(59)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(36), __webpack_require__(64)))
 
 /***/ })
 
-},[200]);
+},[234]);

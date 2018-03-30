@@ -121,7 +121,7 @@
                         :trigger-value="inputRadioExtrasTriggerValue"
                         :value="note.detail.comorbid_valvular_heart_disease"
                         emit-on-update="reset-comorbid_valvular_heart_disease-extras">
-                        
+
                         <input-check-group
                             label="Specify : "
                             :checks="valvularHeartDiseaseChecks">
@@ -155,8 +155,8 @@
                         :value="note.detail.comorbid_cirrhosis"
                         :trigger-value="inputRadioExtrasTriggerValue"
                         emit-on-update="reset-comorbid_cirrhosis-extras">
-                        
-                        <input-radio 
+
+                        <input-radio
                             field="comorbid_cirrhosis_child_pugh_score"
                             :value="note.detail.comorbid_cirrhosis_child_pugh_score"
                             label="Child-Pugh's Score :"
@@ -167,8 +167,8 @@
                                 {"label": "C", "value": "C"}
                             ]'>
                         </input-radio><!-- cirrhosis Child-Pugh's score -->
-                        
-                        <input-check-group 
+
+                        <input-check-group
                             label="Specify : "
                             :checks="cirrhosisSpecificChecks">
                         </input-check-group><!-- cirrhosis specify HBV, HCV, NASH, Cryptogenic  -->
@@ -203,8 +203,8 @@
                         :value="note.detail.comorbid_lukemia"
                         :trigger-value="inputRadioExtrasTriggerValue"
                         emit-on-update="reset-comorbid_lukemia-extras">
-                        
-                        <input-radio 
+
+                        <input-radio
                             field="comorbid_lukemia_specific"
                             label="Specify :"
                             :value="note.detail.comorbid_lukemia_specific"
@@ -220,7 +220,7 @@
                 <div><hr class="line" /></div>
 
                 <div class="material-box">
-                    <input-radio 
+                    <input-radio
                         field="comorbid_ICD"
                         label="ICD "
                         label-description="Implantable Cardioverter Defibrillator"
@@ -228,7 +228,7 @@
                         :value="note.detail.comorbid_ICD"
                         :trigger-value="inputRadioExtrasTriggerValue"
                         emit-on-update="reset-comorbid_ICD-extras">
-                        
+
                         <input-text
                             field="comorbid_ICD_other"
                             :value="note.detail.comorbid_ICD_other"
@@ -238,7 +238,235 @@
                     </input-radio>
                 </div><!-- comorbid ICD -->
                 <div><hr class="line" /></div>
+
+                <div class="material-box">
+                    <input-radio
+                        field="comorbid_SLE"
+                        :value="note.detail.comorbid_SLE"
+                        label="SLE "
+                        :options="comorbidOptions">
+                    </input-radio>
+                </div><!-- comorbid SLE -->
+                <div><hr class="line" /></div>
+
+                <div class="material-box">
+                    <input-radio
+                        field="comorbid_dementia"
+                        :value="note.detail.comorbid_dementia"
+                        label="Dementia :"
+                        :options="comorbidOptions"
+                        :trigger-value="inputRadioExtrasTriggerValue"
+                        emit-on-update="reset-comorbid_dementia-extras">
+
+                        <input-check-group
+                            checks='[
+                                {"field": "comorbid_dementia_vascular", "label": "Vascular"},
+                                {"field": "comorbid_dementia_alzheimer", "label": "Alzheimer"}
+                            ]'>
+                        </input-check-group><!-- dementia specify Vascular Alzheimer  -->
+
+                        <input-text
+                            field="comorbid_dementia_other"
+                            :value="note.detail.comorbid_dementia_other"
+                            size="normal"
+                            placeholder="Other specific, type here.">
+                        </input-text><!-- dementia specify other -->
+                    </input-radio>
+                </div><!-- comorbid dementia -->
+                <div><hr class="line" /></div>
             </div><!-- comorbid DM, VHD, Asthma, Cirrhosis, HCV -->
+
+            <div class="col-xs-12 col-sm-6 col-md-4">
+                <div class="material-box">
+                    <input-radio
+                        field="comorbid_HT"
+                        :value="note.detail.comorbid_HT"
+                        label="HT :"
+                        :options="comorbidOptions">
+                    </input-radio>
+                </div><!-- HT comorbid -->
+                <div><hr class="line" /></div>
+
+                <div class="material-box">
+                    <input-radio
+                        field="comorbid_stroke"
+                        :value="note.detail.comorbid_stroke"
+                        label="Stroke : "
+                        :options="comorbidOptions"
+                        :trigger-value="inputRadioExtrasTriggerValue"
+                        emit-on-update="reset-comorbid_stroke-extras">
+
+                        <div class="form-inline">
+                            <input-select
+                                v-for="symptom in strokeSymptoms"
+                                :key="symptom.field"
+                                :field="symptom.field"
+                                :value="symptom.value"
+                                :label="symptom.label"
+                                size="normal"
+                                not-allow-other>
+                            </input-select>
+                        </div><!-- foreach stroke symptom -->
+                    </input-radio><!-- stroke comorbid and its extra contents -->
+                </div><!-- stroke comorbid and its extra contents -->
+                <div><hr class="line" /></div>
+
+                <div class="material-box">
+                    <input-radio
+                        field="comorbid_CKD"
+                        :value="note.detail.comorbid_CKD"
+                        label="CKD "
+                        label-description="Chronic Kidney Disease"
+                        :options="comorbidOptions"
+                        :trigger-value="inputRadioExtrasTriggerValue"
+                        emit-on-update="reset-comorbid_CKD-extras">
+
+                        <div class="form-inline">
+                            <input-select
+                                field="comorbid_CKD_stage"
+                                :value="note.detail.comorbid_CKD_stage_text"
+                                label="Stage :"
+                                size="normal"
+                                not-allow-other>
+                            </input-select><!-- CKD stage -->
+                        </div>
+                    </input-radio><!-- CKD comorbid and its extra contents -->
+                </div><!-- CKD comorbid and its extra contents -->
+                <div><hr class="line" /></div>
+
+                <div class="material-box">
+                    <input-radio
+                        field="comorbid_coagulopathy"
+                        :value="note.detail.comorbid_coagulopathy"
+                        label="Coagulopathy :"
+                        :options="comorbidOptions">
+                    </input-radio>
+                </div> <!-- coagulopathy comorbid -->
+                <div><hr class="line" /></div>
+
+                <div class="material-box">
+                    <input-radio
+                        field="comorbid_HIV"
+                        :value="note.detail.comorbid_HIV"
+                        label="HIV :"
+                        :options="comorbidOptions"
+                        :trigger-value="inputRadioExtrasTriggerValue"
+                        emit-on-update="reset-comorbid_HIV-extras">
+
+                        <input-check-group
+                            label="Previous opportunistic infection : "
+                            :checks="HIVPreviousOpportunisticInfectionChecks">
+                        </input-check-group><!-- HIV Previous opportunistic infection TB, PCP, Candidiasis, CMV -->
+
+                        <input-text
+                            field="comorbid_HIV_other"
+                            :value="note.detail.comorbid_HIV_other"
+                            size="normal"
+                            placeholder="Other specific, type here.">
+                        </input-text><!-- HIV specify other -->
+                    </input-radio>
+                </div><!-- HIV comorbid -->
+                <div><hr class="line" /></div>
+
+                <div class="material-box">
+                    <input-radio
+                        field="comorbid_lymphoma"
+                        label="Lymphoma :"
+                        options="{{ $comorbidOptions }}"
+                        trigger-value="1">
+
+                        <!-- lymphoma specify -->
+                        <div class="form-inline">
+                            <input-select
+                                field="comorbid_lymphoma_specific"
+                                value=""
+                                label="Specify :"
+                                size="normal"
+                                need-sync>
+                            </input-select>
+                        </div>
+                    </input-radio>
+                </div><!-- lymphoma comorbid -->
+                <div><hr class="line" /></div>
+
+                <div class="material-box">
+                    <input-radio
+                        field="comorbid_cancer"
+                        label="Cancer :"
+                        options="{{ $comorbidOptions }}"
+                        trigger-value="1">
+
+                        <!-- cancer specify Lung Liver Colon Breast Prostate Cervix Pancreas Brain  -->
+                        <input-check-group
+                            checks='[
+                                {"field": "comorbid_cancer_lung", "label": "Lung"},
+                                {"field": "comorbid_cancer_liver", "label": "Liver"},
+                                {"field": "comorbid_cancer_colon", "label": "Colon"},
+                                {"field": "comorbid_cancer_breast", "label": "Breast"},
+                                {"field": "comorbid_cancer_prostate", "label": "Prostate"},
+                                {"field": "comorbid_cancer_cervix", "label": "Cervix"},
+                                {"field": "comorbid_cancer_pancreas", "label": "Pancreas"},
+                                {"field": "comorbid_cancer_brain", "label": "Brain"}
+                            ]'
+                            need-sync>
+                        </input-check-group>
+
+                        <!-- cancer specify other -->
+                        <input-text
+                            field="comorbid_cancer_other"
+                            value=""
+                            size="normal"
+                            placeholder="Other specific, type here."
+                            need-sync>
+                        </input-text>
+                    </input-radio>
+                </div><!-- comorbid cancer -->
+                <div><hr class="line" /></div>
+
+                <div class="material-box">
+                    <input-radio
+                        field="comorbid_other_autoimmune_disease"
+                        label="Other Autoimmune Disease :"
+                        options="{{ $comorbidOptions }}"
+                        trigger-value="1">
+
+                        <!-- Other Autoimmune Disease specify Lung Liver Colon Breast Prostate Cervix Pancreas Brain  -->
+                        <input-check-group
+                            checks='[
+                                {
+                                    "field": "comorbid_other_autoimmune_disease_UCTD",
+                                    "label": "UCTD",
+                                    "labelDescription": "Undifferentiated connective tissue disease"
+                                },
+                                {
+                                    "field": "comorbid_other_autoimmune_disease_sjrogren_syndrome", "label": "Sjrögren syndrome"
+                                },
+                                {
+                                    "field": "comorbid_other_autoimmune_disease_MCTD",
+                                    "label": "MCTD",
+                                    "labelDescription": "Mixed connective tissue disease"
+                                },
+                                {
+                                    "field": "comorbid_other_autoimmune_disease_DMPM",
+                                    "label": "DMPM",
+                                    "labelDescription": "Dermatomyositis polymyositis"
+                                }
+                            ]'
+                            need-sync>
+                        </input-check-group>
+
+                        <!-- Other Autoimmune Disease specify other -->
+                        <input-text
+                            field="comorbid_other_autoimmune_disease_other"
+                            value=""
+                            size="normal"
+                            placeholder="Other specific, type here."
+                            need-sync>
+                        </input-text>
+                    </input-radio>
+                </div><!-- comorbid Other Autoimmune Disease -->
+                <div><hr class="line" /></div>
+            </div><!-- comorbid HT, Stroke, CKD, Coagulopathy, HIV -->
         </div><!-- wrap content with row class -->
     </panel><!-- Panel Hisroty -->
 </div>
@@ -290,7 +518,7 @@
             ]
 
             this.inputRadioExtrasTriggerValue = 1
-            
+
             EventBus.$on('note-store-data', (field, value) => {
                 this.note.detail[field] = value
             })
@@ -320,7 +548,7 @@
 
             this.cirrhosisLabelAction = {
                 emit: "toggle-modal-child-pugh-score-detail",
-                icon: "question-circle", 
+                icon: "question-circle",
                 title: "Click to learn more about Child-Pugh's Score"
             }
 
@@ -367,7 +595,39 @@
                     this.note.detail.comorbid_ICD_other = null
                 }
             })
-            
+
+            EventBus.$on('reset-comorbid_dementia-extras', (value) => {
+                if ( value != this.inputRadioExtrasTriggerValue ) {
+                    this.note.detail.comorbid_dementia_vascular = false
+                    this.note.detail.comorbid_dementia_alzheimer = false
+                    this.note.detail.comorbid_dementia_other = null
+                }
+            })
+
+            EventBus.$on('reset-comorbid_stroke-extras', (value) => {
+                if ( value != this.inputRadioExtrasTriggerValue ) {
+                    this.note.detail.comorbid_stroke_ischemic_text = null
+                    this.note.detail.comorbid_stroke_hemorrhagic_text = null
+                    this.note.detail.comorbid_stroke_iembolic_text = null
+                }
+            })
+
+            EventBus.$on('reset-comorbid_CKD-extras', (value) => {
+                if ( value != this.inputRadioExtrasTriggerValue ) {
+                    this.note.detail.comorbid_CKD_stage_text = null
+                }
+            })
+
+            EventBus.$on('reset-comorbid_HIV-extras', (value) => {
+                if ( value != this.inputRadioExtrasTriggerValue ) {
+                    this.note.detail.comorbid_HIV_other = null
+                    this.note.detail.comorbid_HIV_TB = false
+                    this.note.detail.comorbid_HIV_PCP = false
+                    this.note.detail.comorbid_HIV_candidiasis = false
+                    this.note.detail.comorbid_HIV_CMV = false
+                }
+            })
+
         },
         computed : {
             DMComplicationChecks () {
@@ -467,9 +727,66 @@
                         setterEvent: "set-cirrhosis_cryptogenic"
                     }
                 ]
+            },
+            dementiaSpecificChecks () {
+                return [
+                    {
+                        field: "comorbid_dementia_vascular",
+                        value: this.note.detail.comorbid_dementia_vascular,
+                        label: "Vascular"
+                    },
+                    {
+                        field: "comorbid_dementia_alzheimer",
+                        value: this.note.detail.comorbid_dementia_alzheimer,
+                        label: "Alzheimer"
+                    }
+                ]
+            },
+            strokeSymptoms () {
+                return  [
+                    {
+                        field: 'comorbid_stroke_ischemic',
+                        value: this.note.detail.comorbid_stroke_ischemic_text,
+                        label: 'Ischemic :'
+                    },
+                    {
+                        field: 'comorbid_stroke_hemorrhagic',
+                        value: this.note.detail.comorbid_stroke_hemorrhagic_text,
+                        label: 'Hemorrhagic :'
+                    },
+                    {
+                        field: 'comorbid_stroke_iembolic',
+                        value: this.note.detail.comorbid_stroke_iembolic_text,
+                        label: 'Iembolic :'
+                    }
+                ]
+            },
+            HIVPreviousOpportunisticInfectionChecks () {
+                return [
+                    {
+                        field: "comorbid_HIV_TB",
+                        checked: this.note.detail.comorbid_HIV_TB,
+                        label: "TB"
+                    },
+                    {
+                        field: "comorbid_HIV_PCP",
+                        checked: this.note.detail.comorbid_HIV_PCP,
+                        label: "PCP"
+                    },
+                    {
+                        field: "comorbid_HIV_candidiasis",
+                        checked: this.note.detail.comorbid_HIV_candidiasis,
+                        label: "Candidiasis"
+                    },
+                    {
+                        field: "comorbid_HIV_CMV",
+                        checked: this.note.detail.comorbid_HIV_CMV,
+                        label: "CMV"
+                    }
+                ]
             }
-        },
-        
+        }
+
 
         // implement input-text sync data
         // window.location.href

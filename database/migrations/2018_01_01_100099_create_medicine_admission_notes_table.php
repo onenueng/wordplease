@@ -57,13 +57,51 @@ class CreateMedicineAdmissionNotesTable extends Migration
             $table->string('comorbid_ICD_other')->nullable();
 
             $table->tinyInteger('comorbid_SLE')->unsigned()->nullable();
-            
+
             $table->tinyInteger('comorbid_dementia')->unsigned()->nullable();
             $table->boolean('comorbid_dementia_vascular')->default(false);
             $table->boolean('comorbid_dementia_alzheimer')->default(false);
             $table->string('comorbid_dementia_other')->nullable();
-            
-            // $table->timestamps();
+
+            $table->tinyInteger('comorbid_HT')->unsigned()->nullable();
+
+            $table->tinyInteger('comorbid_stroke')->unsigned()->nullable();
+            $table->tinyInteger('comorbid_stroke_ischemic')->unsigned()->nullable();
+            $table->tinyInteger('comorbid_stroke_hemorrhagic')->unsigned()->nullable();
+            $table->tinyInteger('comorbid_stroke_iembolic')->unsigned()->nullable();
+
+            $table->tinyInteger('comorbid_CKD')->unsigned()->nullable();
+            $table->tinyInteger('comorbid_CKD_stage')->unsigned()->nullable();
+
+            $table->tinyInteger('comorbid_coagulopathy')->unsigned()->nullable();
+
+            $table->tinyInteger('comorbid_HIV')->unsigned()->nullable();
+            $table->boolean('comorbid_HIV_TB')->default(false);
+            $table->boolean('comorbid_HIV_PCP')->default(false);
+            $table->boolean('comorbid_HIV_candidiasis')->default(false);
+            $table->boolean('comorbid_HIV_CMV')->default(false);
+            $table->string('comorbid_HIV_other')->nullable();
+
+            $table->tinyInteger('comorbid_lymphoma')->unsigned()->nullable();
+            $table->tinyInteger('comorbid_lymphoma_specific')->unsigned()->nullable();
+
+            $table->tinyInteger('comorbid_cancer')->unsigned()->nullable();
+            $table->boolean('comorbid_cancer_lung')->default(false);
+            $table->boolean('comorbid_cancer_liver')->default(false);
+            $table->boolean('comorbid_cancer_colon')->default(false);
+            $table->boolean('comorbid_cancer_breast')->default(false);
+            $table->boolean('comorbid_cancer_prostate')->default(false);
+            $table->boolean('comorbid_cancer_cervix')->default(false);
+            $table->boolean('comorbid_cancer_pancreas')->default(false);
+            $table->boolean('comorbid_cancer_brain')->default(false);
+            $table->string('comorbid_cancer_other')->nullable();
+
+            $table->tinyInteger('comorbid_other_autoimmune_disease')->unsigned()->nullable();
+            $table->boolean('comorbid_other_autoimmune_disease_UCTD')->default(false);
+            $table->boolean('comorbid_other_autoimmune_disease_sjrogren_syndrome')->default(false);
+            $table->boolean('comorbid_other_autoimmune_disease_MCTD')->default(false);
+            $table->boolean('comorbid_other_autoimmune_disease_DMPM')->default(false);
+            $table->string('comorbid_other_autoimmune_disease_other')->nullable();
         });
     }
 

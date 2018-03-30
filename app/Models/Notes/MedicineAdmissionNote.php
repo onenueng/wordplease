@@ -15,7 +15,16 @@ class MedicineAdmissionNote extends Model
      */
     protected $casts = ['id' => 'UUID'];
 
-    protected $selectItemFields = ['admit_reason'];
+    public $timestamps = false;
+
+    protected $selectItemFields = [
+        'admit_reason',
+        'comorbid_stroke_ischemic',
+        'comorbid_stroke_hemorrhagic',
+        'comorbid_stroke_iembolic',
+        'comorbid_CKD_stage',
+        'comorbid_lymphoma_specific'
+    ];
 
     protected $fieldsWithExtras = [
         'comorbid_DM' => [
@@ -69,6 +78,74 @@ class MedicineAdmissionNote extends Model
             ]
         ],
 
+        'comorbid_dementia' => [
+            'noneTriggerValue' => 1,
+            'fields' => [
+                'comorbid_dementia_other' => null,
+                'comorbid_dementia_vascular' => false,
+                'comorbid_dementia_alzheimer' => false
+            ]
+        ],
+
+        'comorbid_stroke' => [
+            'noneTriggerValue' => 1,
+            'fields' => [
+                'comorbid_stroke_ischemic' => null,
+                'comorbid_stroke_hemorrhagic' => null,
+                'comorbid_stroke_iembolic' => null
+            ]
+        ],
+
+        'comorbid_CKD' => [
+            'noneTriggerValue' => 1,
+            'fields' => [
+                'comorbid_CKD_stage' => null
+            ]
+        ],
+
+        'comorbid_HIV' => [
+            'noneTriggerValue' => 1,
+            'fields' => [
+                'comorbid_HIV_TB' => false,
+                'comorbid_HIV_PCP' => false,
+                'comorbid_HIV_candidiasis' => false,
+                'comorbid_HIV_CMV' => false,
+                'comorbid_HIV_other' => null
+            ]
+        ],
+
+        'comorbid_lymphoma' => [
+            'noneTriggerValue' => 1,
+            'fields' => [
+                'comorbid_lymphoma_specific' => null
+            ]
+        ],
+
+        'comorbid_cancer' => [
+            'noneTriggerValue' => 1,
+            'fields' => [
+                'comorbid_cancer_lung' => false,
+                'comorbid_cancer_liver' => false,
+                'comorbid_cancer_colon' => false,
+                'comorbid_cancer_breast' => false,
+                'comorbid_cancer_prostate' => false,
+                'comorbid_cancer_cervix' => false,
+                'comorbid_cancer_pancreas' => false,
+                'comorbid_cancer_brain' => false,
+                'comorbid_cancer_other' => null
+            ]
+        ],
+
+        'comorbid_other_autoimmune_disease' => [
+            'noneTriggerValue' => 1,
+            'fields' => [
+                'comorbid_other_autoimmune_disease_UCTD' => false,
+                'comorbid_other_autoimmune_disease_sjrogren_syndrome' => false,
+                'comorbid_other_autoimmune_disease_MCTD' => false,
+                'comorbid_other_autoimmune_disease_DMPM' => false,
+                'comorbid_other_autoimmune_disease_other' => null
+            ]
+        ]
     ];
 
     public function header()
@@ -121,7 +198,7 @@ class MedicineAdmissionNote extends Model
         }
 
         if ( array_key_exists($field, $this->fieldsWithExtras)
-             && $value != $this->fieldsWithExtras[$field]['noneTriggerValue'] 
+             && $value != $this->fieldsWithExtras[$field]['noneTriggerValue']
            ) {
             foreach ( $this->fieldsWithExtras[$field]['fields'] as $key => $value ) {
                 $this->$key = $value;

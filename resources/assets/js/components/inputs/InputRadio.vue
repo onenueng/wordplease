@@ -199,17 +199,12 @@
                 }
             })
 
-            if (this.field !== undefined) {
-                EventBus.$on(this.field, (value) => {
-                    this.check(value)
-                })
-            }
-
             // listen to event to set option value.
             if (this.setterEvent !== undefined) {
+                // let eventName = this.setterEvent != '' ? this.setterEvent : 'set-' + this.field
+                
                 EventBus.$on(this.setterEvent, (value) => {
                     this.check(value)
-                    // EventBus.$emit('show-alert', this.label.replace(' :', '') + ' also checked', 'success')
                 })
             }
 
@@ -219,9 +214,11 @@
 
                 this.showReset = true
 
-                if (this.value == this.triggerValue) {
-                    this.showExtra = true
-                }
+                // if (this.value == this.triggerValue) {
+                //     this.showExtra = true
+                // }
+
+                this.showExtra = this.isTriggerExtra(this.value)
 
             }
 

@@ -23,7 +23,10 @@ class MedicineAdmissionNote extends Model
         'comorbid_stroke_hemorrhagic',
         'comorbid_stroke_iembolic',
         'comorbid_CKD_stage',
-        'comorbid_lymphoma_specific'
+        'comorbid_lymphoma_specific',
+        'comorbid_CAD_specific',
+        'comorbid_hyperlipidemia_specific',
+        'comorbid_epilepsy_specific',
     ];
 
     protected $fieldsWithExtras = [
@@ -145,7 +148,52 @@ class MedicineAdmissionNote extends Model
                 'comorbid_other_autoimmune_disease_DMPM' => false,
                 'comorbid_other_autoimmune_disease_other' => null
             ]
-        ]
+        ],
+
+        'comorbid_psychiatric_illness' => [
+            'noneTriggerValue' => 1,
+            'fields' => [
+                'comorbid_psychiatric_illness_schizophrenia' => false,
+                'comorbid_psychiatric_illness_major_depression' => false,
+                'comorbid_psychiatric_illness_bipolar_disorder' => false,
+                'comorbid_psychiatric_illness_adjustment_disorder' => false,
+                'comorbid_psychiatric_illness_obcessive_compulsive_disorder' => false,
+                'comorbid_psychiatric_illness_other' => null
+            ]
+        ],
+
+        'comorbid_epilepsy' => [
+            'noneTriggerValue' => 1,
+            'fields' => [
+                'comorbid_epilepsy_specific' => null
+            ]
+        ],
+
+        'comorbid_pacemaker_implant' => [
+            'noneTriggerValue' => 1,
+            'fields' => [
+                'comorbid_pacemaker_implant_specific' => null
+            ]
+        ],
+
+        'comorbid_chronic_arthritis' => [
+            'noneTriggerValue' => 1,
+            'fields' => [
+                'comorbid_chronic_arthritis_CPPD' => false,
+                'comorbid_chronic_arthritis_rheumatoid' => false,
+                'comorbid_chronic_arthritis_OA' => false,
+                'comorbid_chronic_arthritis_spondyloarthropathy' => false,
+                'comorbid_chronic_arthritis_other' => null,
+            ]
+        ],
+
+        'comorbid_TB' => [
+            'noneTriggerValue' => 1,
+            'fields' => [
+                'comorbid_TB_pulmonary' => false,
+                'comorbid_TB_other' => null,
+            ]
+        ],
     ];
 
     public function header()

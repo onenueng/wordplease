@@ -1,5 +1,8 @@
 <template>
-    <transition name="slide-fade">
+    <!-- <transition name="slide-fade"> -->
+    <transition name="custom-classes-transition"
+                enter-active-class="animated bounceIn"
+                leave-active-class="animated bounceOut">
         <div  v-if="show"
               role="alert"
               id="alert-box"
@@ -58,16 +61,18 @@
 
 <style>
     #alert-box {
-        font-size: 1em;
         width: 400px;
         position: fixed;
-        top: 105px;
+        top: 0px;
         right: 15px;
-        z-index:10;
+        z-index: 99999;
+        border: 3px double;
+        -webkit-box-shadow: 0 10px 6px -6px #777;
+              -moz-box-shadow: 0 10px 6px -6px #777;
+                   box-shadow: 0 10px 6px -6px #777;
     }
 
     #alert-icon {
-        font-size:2em;
         float:left;
         margin-right: .5em;
     }

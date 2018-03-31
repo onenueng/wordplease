@@ -1718,7 +1718,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, "\n#alert-box {\n    font-size: 1em;\n    width: 400px;\n    position: fixed;\n    top: 105px;\n    right: 15px;\n    z-index:10;\n}\n#alert-icon {\n    font-size:2em;\n    float:left;\n    margin-right: .5em;\n}\n", ""]);
+exports.push([module.i, "\n#alert-box {\n    width: 400px;\n    position: fixed;\n    top: 0px;\n    right: 15px;\n    z-index: 99999;\n    border: 3px double;\n    -webkit-box-shadow: 0 10px 6px -6px #777;\n               box-shadow: 0 10px 6px -6px #777;\n}\n#alert-icon {\n    float:left;\n    margin-right: .5em;\n}\n", ""]);
 
 // exports
 
@@ -1729,6 +1729,9 @@ exports.push([module.i, "\n#alert-box {\n    font-size: 1em;\n    width: 400px;\
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
 //
 //
 //
@@ -1803,36 +1806,46 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("transition", { attrs: { name: "slide-fade" } }, [
-    _vm.show
-      ? _c(
-          "div",
-          { class: _vm.boxClass, attrs: { role: "alert", id: "alert-box" } },
-          [
-            _c(
-              "button",
-              {
-                staticClass: "close",
-                attrs: { type: "button" },
-                on: {
-                  click: function($event) {
-                    _vm.show = false
+  return _c(
+    "transition",
+    {
+      attrs: {
+        name: "custom-classes-transition",
+        "enter-active-class": "animated bounceIn",
+        "leave-active-class": "animated bounceOut"
+      }
+    },
+    [
+      _vm.show
+        ? _c(
+            "div",
+            { class: _vm.boxClass, attrs: { role: "alert", id: "alert-box" } },
+            [
+              _c(
+                "button",
+                {
+                  staticClass: "close",
+                  attrs: { type: "button" },
+                  on: {
+                    click: function($event) {
+                      _vm.show = false
+                    }
                   }
-                }
-              },
-              [_c("span", { staticClass: "fa fa-times-circle" })]
-            ),
-            _vm._v(" "),
-            _c("span", { class: _vm.setIcon, attrs: { id: "alert-icon" } }),
-            _vm._v(" "),
-            _c("p", {
-              staticClass: "bigger-font-25",
-              domProps: { innerHTML: _vm._s(_vm.message) }
-            })
-          ]
-        )
-      : _vm._e()
-  ])
+                },
+                [_c("span", { staticClass: "fa fa-times-circle" })]
+              ),
+              _vm._v(" "),
+              _c("span", { class: _vm.setIcon, attrs: { id: "alert-icon" } }),
+              _vm._v(" "),
+              _c("p", {
+                staticClass: "bigger-font-25",
+                domProps: { innerHTML: _vm._s(_vm.message) }
+              })
+            ]
+          )
+        : _vm._e()
+    ]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -2646,12 +2659,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__inputs_InputSelect_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__inputs_InputSelect_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__inputs_InputTextarea_vue__ = __webpack_require__(214);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__inputs_InputTextarea_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__inputs_InputTextarea_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__inputs_InputSuggestion_vue__ = __webpack_require__(219);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__inputs_InputSuggestion_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__inputs_InputSuggestion_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__inputs_InputCheckGroup_vue__ = __webpack_require__(222);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__inputs_InputCheckGroup_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__inputs_InputCheckGroup_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__modals_Medicine_ChildPughScore_vue__ = __webpack_require__(225);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__modals_Medicine_ChildPughScore_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__modals_Medicine_ChildPughScore_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__inputs_InputTextAddon_vue__ = __webpack_require__(251);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__inputs_InputTextAddon_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__inputs_InputTextAddon_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__inputs_InputSuggestion_vue__ = __webpack_require__(219);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__inputs_InputSuggestion_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__inputs_InputSuggestion_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__inputs_InputCheckGroup_vue__ = __webpack_require__(222);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__inputs_InputCheckGroup_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__inputs_InputCheckGroup_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__modals_Medicine_ChildPughScore_vue__ = __webpack_require__(225);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__modals_Medicine_ChildPughScore_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__modals_Medicine_ChildPughScore_vue__);
 //
 //
 //
@@ -3096,6 +3111,315 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
@@ -3115,9 +3439,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         'input-radio': __WEBPACK_IMPORTED_MODULE_3__inputs_InputRadio_vue___default.a,
         'input-select': __WEBPACK_IMPORTED_MODULE_4__inputs_InputSelect_vue___default.a,
         'input-textarea': __WEBPACK_IMPORTED_MODULE_5__inputs_InputTextarea_vue___default.a,
-        'input-suggestion': __WEBPACK_IMPORTED_MODULE_6__inputs_InputSuggestion_vue___default.a,
-        'input-check-group': __WEBPACK_IMPORTED_MODULE_7__inputs_InputCheckGroup_vue___default.a,
-        'modal-child-pugh-score-detail': __WEBPACK_IMPORTED_MODULE_8__modals_Medicine_ChildPughScore_vue___default.a
+        'input-text-addon': __WEBPACK_IMPORTED_MODULE_6__inputs_InputTextAddon_vue___default.a,
+        'input-suggestion': __WEBPACK_IMPORTED_MODULE_7__inputs_InputSuggestion_vue___default.a,
+        'input-check-group': __WEBPACK_IMPORTED_MODULE_8__inputs_InputCheckGroup_vue___default.a,
+        'modal-child-pugh-score-detail': __WEBPACK_IMPORTED_MODULE_9__modals_Medicine_ChildPughScore_vue___default.a
     },
     props: {
         serializedNote: {
@@ -3128,18 +3453,34 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             note: {},
-            states: [],
             getDataUrl: "/note-data/" + window.location.pathname.split("/")[2]
         };
     },
     created: function created() {
-        var _this = this;
-
         this.note = JSON.parse(this.serializedNote);
 
         this.comorbidOptions = [{ label: "No data", value: 255 }, { label: "No", value: 0 }, { label: "Yes", value: 1 }];
 
         this.inputRadioExtrasTriggerValue = 1;
+
+        this.cirrhosisLabelAction = {
+            emit: "toggle-modal-child-pugh-score-detail",
+            icon: "question-circle",
+            title: "Click to learn more about Child-Pugh's Score"
+        };
+    },
+    mounted: function mounted() {
+        var _this = this;
+
+        // this.note = JSON.parse(this.serializedNote)
+
+        EventBus.$on('comorbid-negative-all', function () {
+            _this.setComorbidAll(0);
+        });
+
+        EventBus.$on('comorbid-no-data-all', function () {
+            _this.setComorbidAll(255);
+        });
 
         EventBus.$on('note-store-data', function (field, value) {
             _this.note.detail[field] = value;
@@ -3167,12 +3508,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this.note.detail.comorbid_valvular_heart_disease_other = null;
             }
         });
-
-        this.cirrhosisLabelAction = {
-            emit: "toggle-modal-child-pugh-score-detail",
-            icon: "question-circle",
-            title: "Click to learn more about Child-Pugh's Score"
-        };
 
         EventBus.$on('reset-comorbid_cirrhosis-extras', function (value) {
             if (value != _this.inputRadioExtrasTriggerValue) {
@@ -3203,6 +3538,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (value && _this.note.detail.comorbid_HCV !== 1) {
                 EventBus.$emit('set-comorbid_HCV', 1);
                 EventBus.$emit('toggle-alert-box', 'HCV infection also checked');
+            }
+        });
+
+        EventBus.$on('click-comorbid_HBV', function (value) {
+            if (value && _this.note.detail.comorbid_HBV !== 1) {
+                EventBus.$emit('set-comorbid_HBV', 1);
+                EventBus.$emit('toggle-alert-box', 'HBV infection also checked');
             }
         });
 
@@ -3257,23 +3599,77 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         });
 
         EventBus.$on('reset-comorbid_cancer-extras', function (value) {
-            _this.note.detail.comorbid_cancer_lung = false;
-            _this.note.detail.comorbid_cancer_liver = false;
-            _this.note.detail.comorbid_cancer_colon = false;
-            _this.note.detail.comorbid_cancer_breast = false;
-            _this.note.detail.comorbid_cancer_prostate = false;
-            _this.note.detail.comorbid_cancer_cervix = false;
-            _this.note.detail.comorbid_cancer_pancreas = false;
-            _this.note.detail.comorbid_cancer_brain = false;
-            _this.note.detail.comorbid_cancer_other = null;
+            if (value != _this.inputRadioExtrasTriggerValue) {
+                _this.note.detail.comorbid_cancer_lung = false;
+                _this.note.detail.comorbid_cancer_liver = false;
+                _this.note.detail.comorbid_cancer_colon = false;
+                _this.note.detail.comorbid_cancer_breast = false;
+                _this.note.detail.comorbid_cancer_prostate = false;
+                _this.note.detail.comorbid_cancer_cervix = false;
+                _this.note.detail.comorbid_cancer_pancreas = false;
+                _this.note.detail.comorbid_cancer_brain = false;
+                _this.note.detail.comorbid_cancer_other = null;
+            }
         });
 
         EventBus.$on('reset-comorbid_other_autoimmune_disease-extras', function (value) {
-            _this.note.detail.comorbid_other_autoimmune_disease_UCTD = false;
-            _this.note.detail.comorbid_other_autoimmune_disease_sjrogren_syndrome = false;
-            _this.note.detail.comorbid_other_autoimmune_disease_MCTD = false;
-            _this.note.detail.comorbid_other_autoimmune_disease_DMPM = false;
-            _this.note.detail.comorbid_other_autoimmune_disease_other = null;
+            if (value != _this.inputRadioExtrasTriggerValue) {
+                _this.note.detail.comorbid_other_autoimmune_disease_UCTD = false;
+                _this.note.detail.comorbid_other_autoimmune_disease_sjrogren_syndrome = false;
+                _this.note.detail.comorbid_other_autoimmune_disease_MCTD = false;
+                _this.note.detail.comorbid_other_autoimmune_disease_DMPM = false;
+                _this.note.detail.comorbid_other_autoimmune_disease_other = null;
+            }
+        });
+
+        EventBus.$on('reset-comorbid_psychiatric_illness-extras', function (value) {
+            if (value != _this.inputRadioExtrasTriggerValue) {
+                _this.note.detail.comorbid_psychiatric_illness_schizophrenia = false;
+                _this.note.detail.comorbid_psychiatric_illness_major_depression = false;
+                _this.note.detail.comorbid_psychiatric_illness_bipolar_disorder = false;
+                _this.note.detail.comorbid_psychiatric_illness_adjustment_disorder = false;
+                _this.note.detail.comorbid_psychiatric_illness_obcessive_compulsive_disorder = false;
+                _this.note.detail.comorbid_psychiatric_illness_other = null;
+            }
+        });
+
+        EventBus.$on('reset-comorbid_CAD-extras', function (value) {
+            if (value != _this.inputRadioExtrasTriggerValue) {
+                _this.note.detail.comorbid_CAD_specific_text = null;
+            }
+        });
+
+        EventBus.$on('reset-comorbid_epilepsy-extras', function (value) {
+            if (value != _this.inputRadioExtrasTriggerValue) {
+                _this.note.detail.comorbid_epilepsy_specific_text = null;
+            }
+        });
+
+        EventBus.$on('reset-comorbid_pacemaker_implant-extras', function (value) {
+            if (value != _this.inputRadioExtrasTriggerValue) {
+                _this.note.detail.comorbid_pacemaker_implant_specific = null;
+            }
+        });
+
+        EventBus.$on('reset-comorbid_chronic_arthritis-extras', function (value) {
+            if (value != _this.inputRadioExtrasTriggerValue) {
+                _this.note.detail.comorbid_chronic_arthritis_CPPD = false;
+                _this.note.detail.comorbid_chronic_arthritis_rheumatoid = false;
+                _this.note.detail.comorbid_chronic_arthritis_OA = false;
+                _this.note.detail.comorbid_chronic_arthritis_spondyloarthropathy = false;
+                _this.note.detail.comorbid_chronic_arthritis_other = null;
+            }
+        });
+
+        EventBus.$on('reset-comorbid_TB-extras', function (value) {
+            if (value != _this.inputRadioExtrasTriggerValue) {
+                _this.note.detail.comorbid_TB_pulmonary = false;
+                _this.note.detail.comorbid_TB_other = null;
+            }
+        });
+
+        this.$nextTick(function () {
+            console.log('all things loaded');
         });
     },
 
@@ -3335,7 +3731,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 field: "comorbid_cirrhosis_HBV",
                 label: "HBV",
                 checked: this.note.detail.comorbid_cirrhosis_HBV,
-                emitOnUpdate: 'click-comorbid_cirrhosis_none_cryptogenic',
+                emitOnUpdate: 'click-comorbid_cirrhosis_none_cryptogenic,click-comorbid_HBV',
                 setterEvent: "set-cirrhosis_HBV"
             }, {
                 field: "comorbid_cirrhosis_HCV",
@@ -3458,6 +3854,87 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 checked: this.note.detail.comorbid_other_autoimmune_disease_DMPM,
                 labelDescription: "Dermatomyositis polymyositis"
             }];
+        },
+        psychiatricIllnessChecks: function psychiatricIllnessChecks() {
+            return [{
+                field: "comorbid_psychiatric_illness_schizophrenia",
+                checked: this.note.detail.comorbid_psychiatric_illness_schizophrenia,
+                label: "Schizophrenia"
+            }, {
+                field: "comorbid_psychiatric_illness_major_depression",
+                checked: this.note.detail.comorbid_psychiatric_illness_major_depression,
+                label: "Major depression"
+            }, {
+                field: "comorbid_psychiatric_illness_bipolar_disorder",
+                checked: this.note.detail.comorbid_psychiatric_illness_bipolar_disorder,
+                label: "Bipolar disorder"
+            }, {
+                field: "comorbid_psychiatric_illness_adjustment_disorder",
+                checked: this.note.detail.comorbid_psychiatric_illness_adjustment_disorder,
+                label: "Adjustment disorder"
+            }, {
+                field: "comorbid_psychiatric_illness_obcessive_compulsive_disorder",
+                checked: this.note.detail.comorbid_psychiatric_illness_obcessive_compulsive_disorder,
+                label: "Obcessive compulsive disorder"
+            }];
+        },
+        chronicArthritisSpecificChecks: function chronicArthritisSpecificChecks() {
+            return [{
+                field: "comorbid_chronic_arthritis_CPPD",
+                checked: this.note.detail.comorbid_chronic_arthritis_CPPD,
+                label: "CPPD",
+                labelDescription: "Calcium pryophosphate dihydrate"
+            }, {
+                field: "comorbid_chronic_arthritis_rheumatoid",
+                checked: this.note.detail.comorbid_chronic_arthritis_rheumatoid,
+                label: "Rheumatoid"
+            }, {
+                field: "comorbid_chronic_arthritis_OA",
+                checked: this.note.detail.comorbid_chronic_arthritis_OA,
+                label: "OA",
+                labelDescription: "Osteoarthritis"
+            }, {
+                field: "comorbid_chronic_arthritis_spondyloarthropathy",
+                checked: this.note.detail.comorbid_chronic_arthritis_spondyloarthropathy,
+                label: "Spondyloarthropathy"
+            }];
+        },
+        TBSpecificChecks: function TBSpecificChecks() {
+            return [{
+                field: "comorbid_TB_pulmonary",
+                checked: this.note.detail.comorbid_TB_pulmonary,
+                label: "Pulmonary"
+            }];
+        }
+    },
+    methods: {
+        setComorbidAll: function setComorbidAll(value) {
+            EventBus.$emit('set-comorbid_DM', value);
+            EventBus.$emit('set-comorbid_valvular_heart_disease', value);
+            EventBus.$emit('set-comorbid_asthma', value);
+            EventBus.$emit('set-comorbid_cirrhosis', value);
+            EventBus.$emit('set-comorbid_HCV', value);
+            EventBus.$emit('set-comorbid_lukemia', value);
+            EventBus.$emit('set-comorbid_ICD', value);
+            EventBus.$emit('set-comorbid_SLE', value);
+            EventBus.$emit('set-comorbid_dementia', value);
+            EventBus.$emit('set-comorbid_HT', value);
+            EventBus.$emit('set-comorbid_stroke', value);
+            EventBus.$emit('set-comorbid_CKD', value);
+            EventBus.$emit('set-comorbid_coagulopathy', value);
+            EventBus.$emit('set-comorbid_HIV', value);
+            EventBus.$emit('set-comorbid_lymphoma', value);
+            EventBus.$emit('set-comorbid_cancer', value);
+            EventBus.$emit('set-comorbid_other_autoimmune_disease', value);
+            EventBus.$emit('set-comorbid_psychiatric_illness', value);
+            EventBus.$emit('set-comorbid_CAD', value);
+            EventBus.$emit('set-comorbid_COPD', value);
+            EventBus.$emit('set-comorbid_hyperlipidemia', value);
+            EventBus.$emit('set-comorbid_HBV', value);
+            EventBus.$emit('set-comorbid_epilepsy', value);
+            EventBus.$emit('set-comorbid_pacemaker_implant', value);
+            EventBus.$emit('set-comorbid_chronic_arthritis', value);
+            EventBus.$emit('set-comorbid_TB', value);
         }
     }
 
@@ -3632,7 +4109,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
 
         if (this.needSync !== undefined) {
-            // let url = '/note-data/' + window.location.pathname.split("/")[2] + '/' + this.field
             var url = this.needSync + '/' + this.field;
             axios.get(url).then(function (response) {
                 _this.userInput = response.data;
@@ -4355,17 +4831,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
         });
 
-        if (this.field !== undefined) {
-            EventBus.$on(this.field, function (value) {
-                _this.check(value);
-            });
-        }
-
         // listen to event to set option value.
         if (this.setterEvent !== undefined) {
+            // let eventName = this.setterEvent != '' ? this.setterEvent : 'set-' + this.field
+
             EventBus.$on(this.setterEvent, function (value) {
                 _this.check(value);
-                // EventBus.$emit('show-alert', this.label.replace(' :', '') + ' also checked', 'success')
             });
         }
 
@@ -4375,9 +4846,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.showReset = true;
 
-            if (this.value == this.triggerValue) {
-                this.showExtra = true;
-            }
+            // if (this.value == this.triggerValue) {
+            //     this.showExtra = true
+            // }
+
+            this.showExtra = this.isTriggerExtra(this.value);
         }
 
         if (this.needSync !== undefined) {
@@ -5227,6 +5700,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
 
         autosize($(this.domRef));
+
         this.onkeypress = _.debounce(function () {
             var countChars = _this.userInput.length;
             if (countChars > .5 * _this.getMaxChars) {
@@ -5241,9 +5715,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this.toggleStatus('');
             }
         }, 300);
+
         this.onkeypressSave = _.debounce(function () {
             _this.autosave();
         }, 5000);
+
+        // seem like Vue delay update so, we delay autosize process to take effect
+        setTimeout(function () {
+            autosize.update($(_this.domRef));
+        }, 100);
     },
 
     methods: {
@@ -6478,7 +6958,6 @@ var render = function() {
                 field: "chief_complaint",
                 label: "Chief complaint :",
                 grid: "12-12-12",
-                "max-chars": "50",
                 value: _vm.note.detail.chief_complaint
               }
             }),
@@ -6502,7 +6981,7 @@ var render = function() {
                 _vm._v(" "),
                 _c("button-app", {
                   attrs: {
-                    action: "comorbid-no-at-all",
+                    action: "comorbid-negative-all",
                     status: "draft",
                     label: "No comorbids",
                     size: "sm"
@@ -6524,6 +7003,7 @@ var render = function() {
                         field: "comorbid_DM",
                         label: "DM :",
                         options: _vm.comorbidOptions,
+                        "setter-event": "set-comorbid_DM",
                         "trigger-value": _vm.inputRadioExtrasTriggerValue,
                         value: _vm.note.detail.comorbid_DM,
                         "emit-on-update": "reset-comorbid_DM-extras"
@@ -6573,6 +7053,7 @@ var render = function() {
                         field: "comorbid_valvular_heart_disease",
                         label: "Valvular heart disease :",
                         options: _vm.comorbidOptions,
+                        "setter-event": "set-comorbid_valvular_heart_disease",
                         "trigger-value": _vm.inputRadioExtrasTriggerValue,
                         value: _vm.note.detail.comorbid_valvular_heart_disease,
                         "emit-on-update":
@@ -6615,6 +7096,7 @@ var render = function() {
                       field: "comorbid_asthma",
                       label: "Asthma :",
                       options: _vm.comorbidOptions,
+                      "setter-event": "set-comorbid_asthma",
                       value: _vm.note.detail.comorbid_asthma
                     }
                   })
@@ -6635,6 +7117,7 @@ var render = function() {
                         field: "comorbid_cirrhosis",
                         label: "Cirrhosis :",
                         options: _vm.comorbidOptions,
+                        "setter-event": "set-comorbid_cirrhosis",
                         value: _vm.note.detail.comorbid_cirrhosis,
                         "trigger-value": _vm.inputRadioExtrasTriggerValue,
                         "emit-on-update": "reset-comorbid_cirrhosis-extras"
@@ -6684,10 +7167,10 @@ var render = function() {
                   _c("input-radio", {
                     attrs: {
                       field: "comorbid_HCV",
-                      label: "HCV infection :",
-                      value: _vm.note.detail.comorbid_HCV,
+                      label: "HCV :",
                       options: _vm.comorbidOptions,
                       "setter-event": "set-comorbid_HCV",
+                      value: _vm.note.detail.comorbid_HCV,
                       "store-data": "note-store-data"
                     }
                   })
@@ -6706,8 +7189,9 @@ var render = function() {
                     {
                       attrs: {
                         field: "comorbid_lukemia",
-                        label: "Lukemia :",
+                        label: "Lukemia",
                         options: _vm.comorbidOptions,
+                        "setter-event": "set-comorbid_lukemia",
                         value: _vm.note.detail.comorbid_lukemia,
                         "trigger-value": _vm.inputRadioExtrasTriggerValue,
                         "emit-on-update": "reset-comorbid_lukemia-extras"
@@ -6742,10 +7226,11 @@ var render = function() {
                       attrs: {
                         field: "comorbid_ICD",
                         label: "ICD ",
+                        options: _vm.comorbidOptions,
+                        "setter-event": "set-comorbid_ICD",
+                        value: _vm.note.detail.comorbid_ICD,
                         "label-description":
                           "Implantable Cardioverter Defibrillator",
-                        options: _vm.comorbidOptions,
-                        value: _vm.note.detail.comorbid_ICD,
                         "trigger-value": _vm.inputRadioExtrasTriggerValue,
                         "emit-on-update": "reset-comorbid_ICD-extras"
                       }
@@ -6775,9 +7260,10 @@ var render = function() {
                   _c("input-radio", {
                     attrs: {
                       field: "comorbid_SLE",
-                      value: _vm.note.detail.comorbid_SLE,
                       label: "SLE ",
-                      options: _vm.comorbidOptions
+                      options: _vm.comorbidOptions,
+                      "setter-event": "set-comorbid_SLE",
+                      value: _vm.note.detail.comorbid_SLE
                     }
                   })
                 ],
@@ -6795,9 +7281,10 @@ var render = function() {
                     {
                       attrs: {
                         field: "comorbid_dementia",
-                        value: _vm.note.detail.comorbid_dementia,
                         label: "Dementia :",
                         options: _vm.comorbidOptions,
+                        "setter-event": "set-comorbid_dementia",
+                        value: _vm.note.detail.comorbid_dementia,
                         "trigger-value": _vm.inputRadioExtrasTriggerValue,
                         "emit-on-update": "reset-comorbid_dementia-extras"
                       }
@@ -6838,6 +7325,7 @@ var render = function() {
                       field: "comorbid_HT",
                       value: _vm.note.detail.comorbid_HT,
                       label: "HT :",
+                      "setter-event": "set-comorbid_HT",
                       options: _vm.comorbidOptions
                     }
                   })
@@ -6858,6 +7346,7 @@ var render = function() {
                         field: "comorbid_stroke",
                         value: _vm.note.detail.comorbid_stroke,
                         label: "Stroke : ",
+                        "setter-event": "set-comorbid_stroke",
                         options: _vm.comorbidOptions,
                         "trigger-value": _vm.inputRadioExtrasTriggerValue,
                         "emit-on-update": "reset-comorbid_stroke-extras"
@@ -6899,8 +7388,9 @@ var render = function() {
                         field: "comorbid_CKD",
                         value: _vm.note.detail.comorbid_CKD,
                         label: "CKD ",
-                        "label-description": "Chronic Kidney Disease",
+                        "setter-event": "set-comorbid_CKD",
                         options: _vm.comorbidOptions,
+                        "label-description": "Chronic Kidney Disease",
                         "trigger-value": _vm.inputRadioExtrasTriggerValue,
                         "emit-on-update": "reset-comorbid_CKD-extras"
                       }
@@ -6939,6 +7429,7 @@ var render = function() {
                       field: "comorbid_coagulopathy",
                       value: _vm.note.detail.comorbid_coagulopathy,
                       label: "Coagulopathy :",
+                      "setter-event": "set-comorbid_coagulopathy",
                       options: _vm.comorbidOptions
                     }
                   })
@@ -6959,6 +7450,7 @@ var render = function() {
                         field: "comorbid_HIV",
                         value: _vm.note.detail.comorbid_HIV,
                         label: "HIV :",
+                        "setter-event": "set-comorbid_HIV",
                         options: _vm.comorbidOptions,
                         "trigger-value": _vm.inputRadioExtrasTriggerValue,
                         "emit-on-update": "reset-comorbid_HIV-extras"
@@ -7000,6 +7492,7 @@ var render = function() {
                         field: "comorbid_lymphoma",
                         value: _vm.note.detail.comorbid_lymphoma,
                         label: "Lymphoma :",
+                        "setter-event": "set-comorbid_lymphoma",
                         options: _vm.comorbidOptions,
                         "trigger-value": _vm.inputRadioExtrasTriggerValue,
                         "emit-on-update": "reset-comorbid_lymphoma-extras"
@@ -7041,6 +7534,7 @@ var render = function() {
                         field: "comorbid_cancer",
                         value: _vm.note.detail.comorbid_cancer,
                         label: "Cancer :",
+                        "setter-event": "set-comorbid_cancer",
                         options: _vm.comorbidOptions,
                         "trigger-value": _vm.inputRadioExtrasTriggerValue,
                         "emit-on-update": "reset-comorbid_cancer-extras"
@@ -7080,6 +7574,7 @@ var render = function() {
                         value:
                           _vm.note.detail.comorbid_other_autoimmune_disease,
                         label: "Other Autoimmune Disease :",
+                        "setter-event": "set-comorbid_other_autoimmune_disease",
                         options: _vm.comorbidOptions,
                         "trigger-value": _vm.inputRadioExtrasTriggerValue,
                         "emit-on-update":
@@ -7108,11 +7603,494 @@ var render = function() {
                 1
               ),
               _vm._v(" "),
+              _c("div", [_c("hr", { staticClass: "line" })]),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "material-box" },
+                [
+                  _c(
+                    "input-radio",
+                    {
+                      attrs: {
+                        field: "comorbid_psychiatric_illness",
+                        value: _vm.note.detail.comorbid_psychiatric_illness,
+                        label: "Psychiatric illness :",
+                        "setter-event": "set-comorbid_psychiatric_illness",
+                        options: _vm.comorbidOptions,
+                        "trigger-value": _vm.inputRadioExtrasTriggerValue,
+                        "emit-on-update":
+                          "reset-comorbid_psychiatric_illness-extras"
+                      }
+                    },
+                    [
+                      _c("input-check-group", {
+                        attrs: { checks: _vm.psychiatricIllnessChecks }
+                      }),
+                      _vm._v(" "),
+                      _c("input-text", {
+                        attrs: {
+                          field: "comorbid_psychiatric_illness_other",
+                          value:
+                            _vm.note.detail.comorbid_psychiatric_illness_other,
+                          placeholder: "Other specific, type here."
+                        }
+                      })
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
               _c("div", [_c("hr", { staticClass: "line" })])
-            ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-xs-12 col-sm-6 col-md-4" }, [
+              _c(
+                "div",
+                { staticClass: "material-box" },
+                [
+                  _c(
+                    "input-radio",
+                    {
+                      attrs: {
+                        field: "comorbid_CAD",
+                        value: _vm.note.detail.comorbid_CAD,
+                        label: "CAD ",
+                        "setter-event": "set-comorbid_CAD",
+                        options: _vm.comorbidOptions,
+                        "label-description": "Coronary Artery Disease",
+                        "trigger-value": _vm.inputRadioExtrasTriggerValue,
+                        "emit-on-update": "reset-comorbid_CAD-extras"
+                      }
+                    },
+                    [
+                      _c(
+                        "div",
+                        { staticClass: "form-inline" },
+                        [
+                          _c("input-select", {
+                            attrs: {
+                              field: "comorbid_CAD_specific",
+                              value: _vm.note.detail.comorbid_CAD_specific_text,
+                              label: "Specify :",
+                              size: "normal"
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    ]
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("div", [_c("hr", { staticClass: "line" })]),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "material-box" },
+                [
+                  _c("input-radio", {
+                    attrs: {
+                      field: "comorbid_COPD",
+                      value: _vm.note.detail.comorbid_COPD,
+                      label: "COPD :",
+                      "setter-event": "set-comorbid_COPD",
+                      options: _vm.comorbidOptions
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("div", [_c("hr", { staticClass: "line" })]),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "material-box" },
+                [
+                  _c(
+                    "input-radio",
+                    {
+                      attrs: {
+                        field: "comorbid_hyperlipidemia",
+                        value: _vm.note.detail.comorbid_hyperlipidemia,
+                        label: "Hyperlipidemia : ",
+                        "setter-event": "set-comorbid_hyperlipidemia",
+                        options: _vm.comorbidOptions,
+                        "trigger-value": _vm.inputRadioExtrasTriggerValue,
+                        "emit-on-update": "reset-comorbid_hyperlipidemia-extras"
+                      }
+                    },
+                    [
+                      _c(
+                        "div",
+                        { staticClass: "form-inline" },
+                        [
+                          _c("input-select", {
+                            attrs: {
+                              field: "comorbid_hyperlipidemia_specific",
+                              value:
+                                _vm.note.detail
+                                  .comorbid_hyperlipidemia_specific,
+                              label: "Specify :",
+                              size: "normal",
+                              "not-allow-other": ""
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    ]
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("div", [_c("hr", { staticClass: "line" })]),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "material-box" },
+                [
+                  _c("input-radio", {
+                    attrs: {
+                      field: "comorbid_HBV",
+                      value: _vm.note.detail.comorbid_HBV,
+                      label: "HBV infection :",
+                      "setter-event": "set-comorbid_HBV",
+                      options: _vm.comorbidOptions,
+                      "store-data": "note-store-data"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("div", [_c("hr", { staticClass: "line" })]),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "material-box" },
+                [
+                  _c(
+                    "input-radio",
+                    {
+                      attrs: {
+                        field: "comorbid_epilepsy",
+                        value: _vm.note.detail.comorbid_epilepsy,
+                        label: "Epilepsy :",
+                        "setter-event": "set-comorbid_epilepsy",
+                        options: _vm.comorbidOptions,
+                        "trigger-value": _vm.inputRadioExtrasTriggerValue,
+                        "emit-on-update": "reset-comorbid_epilepsy-extras"
+                      }
+                    },
+                    [
+                      _c(
+                        "div",
+                        { staticClass: "form-inline" },
+                        [
+                          _c("input-select", {
+                            attrs: {
+                              field: "comorbid_epilepsy_specific",
+                              value:
+                                _vm.note.detail.comorbid_epilepsy_specific_text,
+                              label: "Specify :",
+                              size: "normal"
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    ]
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("div", [_c("hr", { staticClass: "line" })]),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "material-box" },
+                [
+                  _c(
+                    "input-radio",
+                    {
+                      attrs: {
+                        field: "comorbid_pacemaker_implant",
+                        value: _vm.note.detail.comorbid_pacemaker_implant,
+                        label: "Pacemaker implant :",
+                        "setter-event": "set-comorbid_pacemaker_implant",
+                        options: _vm.comorbidOptions,
+                        "trigger-value": _vm.inputRadioExtrasTriggerValue,
+                        "emit-on-update":
+                          "reset-comorbid_pacemaker_implant-extras"
+                      }
+                    },
+                    [
+                      _c("input-radio", {
+                        attrs: {
+                          field: "comorbid_pacemaker_implant_specific",
+                          value:
+                            _vm.note.detail.comorbid_pacemaker_implant_specific,
+                          label: "Specify :",
+                          options:
+                            '[\n                                {\n                                    "label": "DDDR", "value": 1,\n                                    "labelDescription": "dual-chamber, rate-modulated"\n                                },\n                                {   "label": "VI", "value": 2   }\n                            ]'
+                        }
+                      })
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("div", [_c("hr", { staticClass: "line" })]),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "material-box" },
+                [
+                  _c(
+                    "input-radio",
+                    {
+                      attrs: {
+                        field: "comorbid_chronic_arthritis",
+                        value: _vm.note.detail.comorbid_chronic_arthritis,
+                        label: "Chronic arthritis :",
+                        "setter-event": "set-comorbid_chronic_arthritis",
+                        options: _vm.comorbidOptions,
+                        "trigger-value": _vm.inputRadioExtrasTriggerValue,
+                        "emit-on-update":
+                          "reset-comorbid_chronic_arthritis-extras"
+                      }
+                    },
+                    [
+                      _c("input-check-group", {
+                        attrs: { checks: _vm.chronicArthritisSpecificChecks }
+                      }),
+                      _vm._v(" "),
+                      _c("input-text", {
+                        attrs: {
+                          field: "comorbid_chronic_arthritis_other",
+                          value:
+                            _vm.note.detail.comorbid_chronic_arthritis_other,
+                          size: "normal",
+                          placeholder: "Other specific, type here."
+                        }
+                      })
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("div", [_c("hr", { staticClass: "line" })]),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "material-box" },
+                [
+                  _c(
+                    "input-radio",
+                    {
+                      attrs: {
+                        field: "comorbid_TB",
+                        value: _vm.note.detail.comorbid_TB,
+                        label: "TB :",
+                        "setter-event": "set-comorbid_TB",
+                        options: _vm.comorbidOptions,
+                        "trigger-value": _vm.inputRadioExtrasTriggerValue,
+                        "emit-on-update": "reset-comorbid_TB-extras"
+                      }
+                    },
+                    [
+                      _c("input-check-group", {
+                        attrs: { checks: _vm.TBSpecificChecks }
+                      }),
+                      _vm._v(" "),
+                      _c("input-text", {
+                        attrs: {
+                          field: "comorbid_TB_other",
+                          value: _vm.note.detail.comorbid_TB_other,
+                          size: "normal",
+                          placeholder: "Other specific, type here."
+                        }
+                      })
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("div", [_c("hr", { staticClass: "line" })])
+            ]),
+            _vm._v(" "),
+            _c("input-textarea", {
+              attrs: {
+                field: "other_comorbid",
+                value: _vm.note.detail.other_comorbid,
+                label: "Other comorbid :",
+                grid: "12-12-12",
+                "max-chars": "1000"
+              }
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-xs-12" }, [
+              _c("hr", { staticClass: "line" })
+            ]),
+            _vm._v(" "),
+            _c("input-textarea", {
+              attrs: {
+                field: "history_of_present_illness",
+                value: _vm.note.detail.history_of_present_illness,
+                label: "History of present illness :",
+                grid: "12-12-6",
+                "max-chars": "2000"
+              }
+            }),
+            _vm._v(" "),
+            _c("input-textarea", {
+              attrs: {
+                field: "history_of_past_illness",
+                value: _vm.note.detail.history_of_past_illness,
+                label: "History of past illness :",
+                grid: "12-12-6",
+                "max-chars": "2000"
+              }
+            })
           ],
           1
         )
+      ]),
+      _vm._v(" "),
+      _c("panel", { attrs: { heading: "Personal and Social history" } }, [
+        _c("div", { staticClass: "row" }, [
+          _vm.note.admission.patient.gender == 0
+            ? _c("div", { staticClass: "col-xs-12 col-sm-6 col-md-4" }, [
+                _c(
+                  "div",
+                  { staticClass: "material-box" },
+                  [
+                    _c(
+                      "input-radio",
+                      {
+                        attrs: {
+                          field: "pregnancy",
+                          value: _vm.note.detail.pregnancy,
+                          label: "Pregnant : ",
+                          options:
+                            '[\n                            {"label": "No", "value": "0"},\n                            {"label": "Yes", "value": "1"},\n                            {"label": "Uncertain", "value": "2"}\n                        ]',
+                          "trigger-value": _vm.inputRadioExtrasTriggerValue
+                        }
+                      },
+                      [
+                        _c("input-text-addon", {
+                          attrs: {
+                            field: "gestation_weeks",
+                            value: _vm.note.detail.gestation_weeks,
+                            "front-addon": "Gestation",
+                            pattern: "^([1-9]|[123]\\d|40)$",
+                            "invalid-text":
+                              "Data could not be saved, Accept 1 to 40 weeks only.",
+                            "rear-addon": "Weeks"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c("input-text-addon", {
+                      attrs: {
+                        field: "LMP",
+                        value: _vm.note.detail.LMP,
+                        "front-addon":
+                          'LMP <a role="button" data-toggle="tooltip" title="ลงข้อมูล LMP เป็นวันที่ในรูปแบบ dd/mm/yyyy หรือหากไม่ทราบให้บรรยายเช่น 10 ปีที่ผ่านมา เป็นต้น"><i class="fa fa-info-circle"></i></a>'
+                      }
+                    })
+                  ],
+                  1
+                )
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-xs-12 col-sm-6 col-md-4" }, [
+            _c(
+              "div",
+              { staticClass: "material-box" },
+              [
+                _c(
+                  "input-radio",
+                  {
+                    attrs: {
+                      field: "alcohol",
+                      value: _vm.note.detail.alcohol,
+                      label: "Alcohol : ",
+                      options:
+                        '[\n                            {"label": "No", "value": "0"},\n                            {"label": "Yes", "value": "1"},\n                            {"label": "Ex-drinker", "value": "2"}\n                        ]',
+                      "trigger-value": "[1,2]"
+                    }
+                  },
+                  [
+                    _c("input-textarea", {
+                      attrs: {
+                        field: "alcohol_description",
+                        value: _vm.note.detail.alcohol_description,
+                        placeholder: "description"
+                      }
+                    })
+                  ],
+                  1
+                )
+              ],
+              1
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-xs-12 col-sm-6 col-md-4" }, [
+            _c(
+              "div",
+              { staticClass: "material-box" },
+              [
+                _c(
+                  "input-radio",
+                  {
+                    attrs: {
+                      field: "cigarette_smoking",
+                      value: _vm.note.detail.cigarette_smoking,
+                      label: "Cigarette smoking : ",
+                      options:
+                        '[\n                            {"label": "No", "value": "0"},\n                            {"label": "Yes", "value": "1"},\n                            {"label": "Ex-smoker", "value": "2"}\n                        ]',
+                      "trigger-value": "[1,2]"
+                    }
+                  },
+                  [
+                    _c("input-textarea", {
+                      attrs: {
+                        field: "smoke_description",
+                        value: _vm.note.detail.smoke_description,
+                        placeholder: "description"
+                      }
+                    })
+                  ],
+                  1
+                )
+              ],
+              1
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-xs-12" }, [
+            _c("hr", { staticClass: "line" })
+          ])
+        ])
       ])
     ],
     1
@@ -7303,6 +8281,494 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-2a949d7f", module.exports)
+  }
+}
+
+/***/ }),
+/* 234 */,
+/* 235 */,
+/* 236 */,
+/* 237 */,
+/* 238 */,
+/* 239 */,
+/* 240 */,
+/* 241 */,
+/* 242 */,
+/* 243 */,
+/* 244 */,
+/* 245 */,
+/* 246 */,
+/* 247 */,
+/* 248 */,
+/* 249 */,
+/* 250 */,
+/* 251 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(252)
+}
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(254)
+/* template */
+var __vue_template__ = __webpack_require__(255)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/inputs/InputTextAddon.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-c122ff30", Component.options)
+  } else {
+    hotAPI.reload("data-v-c122ff30", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 252 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(253);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(3)("4f90b41b", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-c122ff30\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./InputTextAddon.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-c122ff30\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./InputTextAddon.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 253 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.add-margin-bottom {\n    margin-bottom: 3px;\n}\n.invalid-input {\n    color: #fff;\n    background:#d9534f;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 254 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* WEBPACK VAR INJECTION */(function($) {var _props;
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: (_props = {
+        // field name on database.
+        field: {
+            type: String,
+            required: false
+        },
+        label: {
+            type: String,
+            required: false
+        },
+        labelDescription: {
+            type: String,
+            required: false
+        },
+        placeholder: {
+            type: String,
+            required: false
+        },
+        // define Bootstrap grid class in mobile-tablet-desktop order
+        grid: {
+            type: String,
+            required: false
+        },
+        // initial value.
+        value: {
+            type: [String, Number],
+            required: false
+        },
+        // allow user type-in or not, Just mention this option.
+        readonly: {
+            type: String,
+            required: false
+        },
+        // define Bootstrap form-group has-feedback which size of form-group should use.
+        size: {
+            type: String,
+            required: false
+        },
+        // need to sync value with database on render or not ['needSync' or undefined].
+        needSync: {
+            type: String,
+            required: false
+        }
+    }, _defineProperty(_props, 'placeholder', {
+        type: String,
+        required: false
+    }), _defineProperty(_props, 'frontAddon', {
+        type: String,
+        required: false
+    }), _defineProperty(_props, 'rearAddon', {
+        type: String,
+        required: false
+    }), _defineProperty(_props, 'emitOnUpdate', {
+
+        required: false
+    }), _defineProperty(_props, 'setterEvent', {
+        type: String,
+        required: false
+    }), _defineProperty(_props, 'setterFrontAddon', {
+        type: String,
+        required: false
+    }), _defineProperty(_props, 'setterRearAddon', {
+        type: String,
+        required: false
+    }), _defineProperty(_props, 'pattern', {
+        type: String,
+        required: false
+    }), _defineProperty(_props, 'invalidText', {
+        type: String,
+        required: false
+    }), _props),
+    data: function data() {
+        return {
+            userInput: '',
+            lastSave: '',
+            frontAddonHtml: '',
+            rearAddonHtml: '',
+            inputClass: 'form-control'
+        };
+    },
+    mounted: function mounted() {
+        var _this = this;
+
+        // init label tooltip if available.
+        if (this.labelDescription !== undefined) {
+            $('a[title="' + this.labelDescription + '"]').tooltip();
+        }
+
+        if (this.setterEvent !== undefined) {
+            EventBus.$on(this.setterEvent, function (value) {
+                if (value != _this.userInput) {
+                    _this.userInput = value;
+                    _this.autosave();
+                }
+            });
+        }
+
+        if (this.rearAddon !== undefined) {
+            this.rearAddonHtml = this.rearAddon;
+        }
+
+        if (this.frontAddon !== undefined) {
+            this.frontAddonHtml = this.frontAddon;
+        }
+
+        if (this.setterRearAddon !== undefined) {
+            EventBus.$on(this.setterRearAddon, function (html) {
+                _this.rearAddonHtml = html;
+            });
+        }
+
+        if (this.setterFrontAddon !== undefined) {
+            EventBus.$on(this.setterFrontAddon, function (html) {
+                _this.frontAddonHtml = html;
+            });
+        }
+
+        if (this.needSync !== undefined) {
+            var url = this.needSync + '/' + this.field;
+            axios.get(url).then(function (response) {
+                _this.userInput = response.data;
+            }).catch(function (error) {
+                _this.userInput = 'error';
+            });
+        }
+
+        if (this.value === undefined) this.lastSave = this.userInput = '';else this.lastSave = this.userInput = this.value;
+
+        if (this.frontAddon !== undefined && this.frontAddon.search('data-toggle="tooltip"') >= 0) {
+            setTimeout(function () {
+                $('span.input-group-addon a[data-toggle=tooltip]').tooltip();
+            }, 100);
+        } else {
+            if (this.rearAddon !== undefined && this.rearAddon.search('data-toggle="tooltip"') >= 0) {
+                setTimeout(function () {
+                    $('span.input-group-addon a[data-toggle=tooltip]').tooltip();
+                }, 100);
+            }
+        }
+
+        if (this.pattern !== undefined) {
+            $(this.inputDom).tooltip({
+                placement: "bottom",
+                trigger: "hover",
+                delay: { "show": 100, "hide": 500 }
+            });
+        }
+    },
+
+    methods: {
+        autosave: function autosave() {
+            if (this.readonly != '' && this.userInput != this.lastSave) {
+                EventBus.$emit('autosave', this.field, this.userInput);
+                this.lastSave = this.userInput;
+            }
+        },
+        isValidate: function isValidate() {
+            if (this.pattern !== undefined) {
+                if (this.userInput.match(this.regex) !== null) {
+                    $(this.inputDom).attr('data-original-title', '');
+                    $(this.inputDom).tooltip('hide');
+                    this.inputClass = 'form-control';
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            return true;
+        },
+        oninput: function oninput() {
+            var _this2 = this;
+
+            if (this.emitOnUpdateEvents !== null) {
+                this.emitOnUpdateEvents.forEach(function (event) {
+                    EventBus.$emit(event, _this2.userInput);
+                });
+            }
+        },
+        onblur: function onblur() {
+            if (this.isValidate()) {
+                this.autosave();
+            } else {
+                $(this.inputDom).attr('data-original-title', this.invalidTextComputed);
+                $(this.inputDom).tooltip('show');
+                this.inputClass = 'form-control invalid-input';
+            }
+        }
+    },
+    computed: {
+        hasLabel: function hasLabel() {
+            return !(this.label === undefined);
+        },
+        componentSize: function componentSize() {
+            if (this.size == 'normal') {
+                return 'form-group add-margin-bottom';
+            }
+            return 'form-group-sm add-margin-bottom';
+        },
+        componentGrid: function componentGrid() {
+            if (this.grid === undefined) {
+                return '';
+            }
+            var grid = this.grid.split('-');
+            return 'col-xs-' + grid[0] + ' col-sm-' + grid[1] + ' col-md-' + grid[2];
+        },
+        emitOnUpdateEvents: function emitOnUpdateEvents() {
+            if (this.emitOnUpdate !== undefined) {
+                return JSON.parse(this.emitOnUpdate);
+            }
+            return null;
+        },
+        regex: function regex() {
+            if (this.pattern !== null) {
+                return new RegExp(this.pattern);
+            }
+            return null;
+        },
+        inputDom: function inputDom() {
+            return this.field !== undefined ? '#' + this.field : '';
+        },
+        invalidTextComputed: function invalidTextComputed() {
+            var defaultText = 'Invalid format. Data cannot be saved.';
+            return this.invalidText === undefined ? defaultText : this.invalidText;
+        }
+    }
+});
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(1)))
+
+/***/ }),
+/* 255 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { class: _vm.componentGrid }, [
+    _c("div", { class: _vm.componentSize }, [
+      _vm.hasLabel
+        ? _c(
+            "label",
+            { staticClass: "control-label", attrs: { for: _vm.field } },
+            [
+              _c("span", { domProps: { innerHTML: _vm._s(_vm.label) } }),
+              _vm._v(" "),
+              _vm.labelDescription !== undefined
+                ? _c(
+                    "a",
+                    {
+                      attrs: {
+                        role: "button",
+                        "data-toggle": "tooltip",
+                        title: _vm.labelDescription
+                      }
+                    },
+                    [_c("i", { staticClass: "fa fa-info-circle" })]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.labelDescription !== undefined
+                ? _c("span", [_vm._v(":")])
+                : _vm._e()
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c("div", { staticClass: "input-group" }, [
+        _vm.frontAddon !== undefined
+          ? _c("span", {
+              staticClass: "input-group-addon",
+              domProps: { innerHTML: _vm._s(_vm.frontAddonHtml) }
+            })
+          : _vm._e(),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.userInput,
+              expression: "userInput"
+            }
+          ],
+          class: _vm.inputClass,
+          attrs: {
+            type: "text",
+            readonly: _vm.readonly,
+            placeholder: _vm.placeholder,
+            name: _vm.field,
+            id: _vm.field
+          },
+          domProps: { value: _vm.userInput },
+          on: {
+            input: [
+              function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.userInput = $event.target.value
+              },
+              function($event) {
+                _vm.oninput()
+              }
+            ],
+            blur: function($event) {
+              _vm.onblur()
+            }
+          }
+        }),
+        _vm._v(" "),
+        _vm.rearAddon !== undefined
+          ? _c("span", {
+              staticClass: "input-group-addon",
+              domProps: { innerHTML: _vm._s(_vm.rearAddonHtml) }
+            })
+          : _vm._e()
+      ])
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-c122ff30", module.exports)
   }
 }
 

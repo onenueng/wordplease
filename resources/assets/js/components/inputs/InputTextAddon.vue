@@ -1,9 +1,9 @@
 <template>
     <div :class="componentGrid">
-        <div :class="componentSize" :style="isMaxWidth">
-            <label v-if="hasLabel"
-                   class="control-label topped"
-                   :for="field">
+        <div :class="componentSize">
+            <label  v-if="hasLabel"
+                    class="control-label"
+                    :for="field">
                 <span v-html="label"></span>
                 <a  v-if="labelDescription !== undefined"
                     role="button"
@@ -13,15 +13,25 @@
                 </a>
                 <span v-if="labelDescription !== undefined">:</span>
             </label>
-            <input type="text"
-                   :class="inputClass"
-                   :readonly="readonly"
-                   :name="field"
-                   :id="field"
-                   :placeholder="placeholder"
-                   v-model="userInput"
-                   @blur="onblur()"
-                   :style="isMaxWidth" />
+            <div class="input-group">
+                <span   v-if="frontAddon !== undefined"
+                        class="input-group-addon"
+                        v-html="frontAddonHtml">
+                </span>
+                <input  type="text"
+                        :class="inputClass"
+                        :readonly="readonly"
+                        :placeholder="placeholder"
+                        :name="field"
+                        :id="field"
+                        v-model="userInput"
+                        @input="oninput()"
+                        @blur="onblur()" />
+                <span   v-if="rearAddon !== undefined"
+                        class="input-group-addon"
+                        v-html="rearAddonHtml">
+                </span>
+            </div>
         </div>
     </div>
 </template>
@@ -34,16 +44,15 @@
                 type: String,
                 required: false
             },
-            // input type default is text
-            format: {
-                type: String,
-                required: false
-            },
             label: {
                 type: String,
                 required: false  
             },
             labelDescription: {
+                type: String,
+                required: false  
+            },
+            placeholder: {
                 type: String,
                 required: false  
             },
@@ -54,7 +63,7 @@
             },
             // initial value.
             value: {
-                type: String,
+                type: [String, Number],
                 required: false
             },
             // allow user type-in or not, Just mention this option.
@@ -76,9 +85,29 @@
                 type: String,
                 required: false
             },
-            setterEvent: {
+            frontAddon: {
                 type: String,
                 required: false  
+            },
+            rearAddon: {
+                type: String,
+                required: false  
+            },
+            emitOnUpdate: {
+                
+                required: false
+            },
+            setterEvent: {
+                type: String,
+                required: false
+            },
+            setterFrontAddon: {
+                type: String,
+                required: false
+            },
+            setterRearAddon: {
+                type: String,
+                required: false
             },
             pattern: {
                 type: String,
@@ -93,7 +122,8 @@
             return {
                 userInput: '',
                 lastSave: '',
-                type: 'text',
+                frontAddonHtml: '',
+                rearAddonHtml: '',
                 inputClass: 'form-control'
             }
         },
@@ -103,8 +133,33 @@
                 $('a[title="' + this.labelDescription + '"]').tooltip()
             }
 
-            if ( this.format !== undefined ) {
-                this.type = this.format
+            if (this.setterEvent !== undefined) {
+                EventBus.$on(this.setterEvent, (value) => {
+                    if (value != this.userInput) {
+                        this.userInput = value
+                        this.autosave()
+                    }
+                })
+            }
+
+            if (this.rearAddon !== undefined) {
+                this.rearAddonHtml = this.rearAddon
+            }
+
+            if (this.frontAddon !== undefined) {
+                this.frontAddonHtml = this.frontAddon
+            }
+
+            if (this.setterRearAddon !== undefined) {
+                EventBus.$on(this.setterRearAddon, (html) => {
+                    this.rearAddonHtml = html
+                })
+            }
+
+            if (this.setterFrontAddon !== undefined) {
+                EventBus.$on(this.setterFrontAddon, (html) => {
+                    this.frontAddonHtml = html
+                })   
             }
 
             if (this.needSync !== undefined) {
@@ -123,10 +178,19 @@
             else
                 this.lastSave = this.userInput = this.value
 
-            if ( this.setterEvent !== undefined ) {
-                EventBus.$on(this.setterEvent, (value) => {
-                    this.userInput = value
-                    this.autosave()
+            if (this.frontAddon !== undefined && this.frontAddon.search('data-toggle="tooltip"') >= 0) {
+                setTimeout(() => { $('span.input-group-addon a[data-toggle=tooltip]').tooltip() }, 100)
+            } else {
+                if (this.rearAddon !== undefined && this.rearAddon.search('data-toggle="tooltip"') >= 0) {
+                    setTimeout(() => { $('span.input-group-addon a[data-toggle=tooltip]').tooltip() }, 100)
+                }    
+            }
+
+            if ( this.pattern !== undefined) {
+                $(this.inputDom).tooltip({
+                    placement: "bottom",
+                    trigger: "hover",
+                    delay: { "show": 100, "hide": 500 }
                 })
             }
         },
@@ -138,7 +202,7 @@
                 }
             },
             isValidate() {
-                if ( this.pattern !== null ) {
+                if ( this.pattern !== undefined ) {
                     if ( this.userInput.match(this.regex) !== null ) {
                         $(this.inputDom).attr('data-original-title', '')
                         $(this.inputDom).tooltip('hide')
@@ -149,6 +213,13 @@
                     }
                 }
                 return true
+            },
+            oninput() {
+                if ( this.emitOnUpdateEvents !== null) {
+                    this.emitOnUpdateEvents.forEach((event) => {
+                        EventBus.$emit(event, this.userInput)
+                    })
+                }
             },
             onblur() {
                 if ( this.isValidate() ) {
@@ -166,9 +237,9 @@
             },
             componentSize() {
                 if (this.size == 'normal') {
-                    return 'form-group'
+                    return 'form-group add-margin-bottom'
                 }
-                return 'form-group-sm'
+                return 'form-group-sm add-margin-bottom'
             },
             componentGrid() {
                 if (this.grid === undefined) {
@@ -177,11 +248,11 @@
                 let grid = this.grid.split('-')
                 return 'col-xs-' + (grid[0]) + ' col-sm-' + (grid[1]) + ' col-md-' + (grid[2])
             },
-            isMaxWidth() {
-                if ( this.label === undefined ) {
-                    return "width: 100%;"
+            emitOnUpdateEvents() {
+                if ( this.emitOnUpdate !== undefined) {
+                    return JSON.parse(this.emitOnUpdate)
                 }
-                return ""
+                return null
             },
             regex() {
                 if ( this.pattern !== null ) {
@@ -199,3 +270,14 @@
         }
     }
 </script>
+
+<style>
+    .add-margin-bottom {
+        margin-bottom: 3px;
+    }
+
+    .invalid-input {
+        color: #fff;
+        background:#d9534f;
+    }
+</style>

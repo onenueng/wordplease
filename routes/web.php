@@ -58,7 +58,7 @@ Route::post('/try-create-note', 'NoteController@store');
 Route::get('/note/{id}/edit', 'NoteController@edit');
 Route::post('/note/{id}/autosave', 'NoteController@autosave');
 // Route::get('/note-data/{id}/{fieldName}', 'NoteController@getData');
-// Route::get('/get-note/{id}', 'NoteController@getNote');
+// Route::post('/get-note/{id}', 'NoteController@getNote');
 
 /*
 |--------------------------------------------------------------------------

@@ -1718,7 +1718,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, "\n#alert-box {\n    font-size: 1em;\n    width: 400px;\n    position: fixed;\n    top: 105px;\n    right: 15px;\n    z-index:10;\n}\n#alert-icon {\n    font-size:2em;\n    float:left;\n    margin-right: .5em;\n}\n", ""]);
+exports.push([module.i, "\n#alert-box {\n    width: 400px;\n    position: fixed;\n    top: 0px;\n    right: 15px;\n    z-index: 99999;\n    border: 3px double;\n    -webkit-box-shadow: 0 10px 6px -6px #777;\n               box-shadow: 0 10px 6px -6px #777;\n}\n#alert-icon {\n    float:left;\n    margin-right: .5em;\n}\n", ""]);
 
 // exports
 
@@ -1729,6 +1729,9 @@ exports.push([module.i, "\n#alert-box {\n    font-size: 1em;\n    width: 400px;\
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
 //
 //
 //
@@ -1803,36 +1806,46 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("transition", { attrs: { name: "slide-fade" } }, [
-    _vm.show
-      ? _c(
-          "div",
-          { class: _vm.boxClass, attrs: { role: "alert", id: "alert-box" } },
-          [
-            _c(
-              "button",
-              {
-                staticClass: "close",
-                attrs: { type: "button" },
-                on: {
-                  click: function($event) {
-                    _vm.show = false
+  return _c(
+    "transition",
+    {
+      attrs: {
+        name: "custom-classes-transition",
+        "enter-active-class": "animated bounceIn",
+        "leave-active-class": "animated bounceOut"
+      }
+    },
+    [
+      _vm.show
+        ? _c(
+            "div",
+            { class: _vm.boxClass, attrs: { role: "alert", id: "alert-box" } },
+            [
+              _c(
+                "button",
+                {
+                  staticClass: "close",
+                  attrs: { type: "button" },
+                  on: {
+                    click: function($event) {
+                      _vm.show = false
+                    }
                   }
-                }
-              },
-              [_c("span", { staticClass: "fa fa-times-circle" })]
-            ),
-            _vm._v(" "),
-            _c("span", { class: _vm.setIcon, attrs: { id: "alert-icon" } }),
-            _vm._v(" "),
-            _c("p", {
-              staticClass: "bigger-font-25",
-              domProps: { innerHTML: _vm._s(_vm.message) }
-            })
-          ]
-        )
-      : _vm._e()
-  ])
+                },
+                [_c("span", { staticClass: "fa fa-times-circle" })]
+              ),
+              _vm._v(" "),
+              _c("span", { class: _vm.setIcon, attrs: { id: "alert-icon" } }),
+              _vm._v(" "),
+              _c("p", {
+                staticClass: "bigger-font-25",
+                domProps: { innerHTML: _vm._s(_vm.message) }
+              })
+            ]
+          )
+        : _vm._e()
+    ]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true

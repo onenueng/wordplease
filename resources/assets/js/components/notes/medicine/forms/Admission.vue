@@ -62,7 +62,6 @@
                 field="chief_complaint"
                 label="Chief complaint :"
                 grid="12-12-12"
-                max-chars="50"
                 :value="note.detail.chief_complaint">
             </input-textarea><!-- chief complaint -->
             <div class="col-xs-12"><hr class="line" /></div><!-- separate line -->
@@ -74,18 +73,20 @@
                     size="sm">
                 </button-app><!-- set all comorbids to no data -->
                 <button-app
-                    action="comorbid-no-at-all"
+                    action="comorbid-negative-all"
                     status="draft"
                     label="No comorbids"
                     size="sm">
                 </button-app><!-- set all comorbids to negative -->
             </div><!--  format content to fit left margin -->
+
             <div class="col-xs-12 col-sm-6 col-md-4">
                 <div class="material-box">
                     <input-radio
                         field="comorbid_DM"
                         label="DM :"
                         :options="comorbidOptions"
+                        setter-event="set-comorbid_DM"
                         :trigger-value="inputRadioExtrasTriggerValue"
                         :value="note.detail.comorbid_DM"
                         emit-on-update="reset-comorbid_DM-extras">
@@ -118,6 +119,7 @@
                         field="comorbid_valvular_heart_disease"
                         label="Valvular heart disease :"
                         :options="comorbidOptions"
+                        setter-event="set-comorbid_valvular_heart_disease"
                         :trigger-value="inputRadioExtrasTriggerValue"
                         :value="note.detail.comorbid_valvular_heart_disease"
                         emit-on-update="reset-comorbid_valvular_heart_disease-extras">
@@ -142,6 +144,7 @@
                         field="comorbid_asthma"
                         label="Asthma :"
                         :options="comorbidOptions"
+                        setter-event="set-comorbid_asthma"
                         :value="note.detail.comorbid_asthma">
                     </input-radio>
                 </div><!-- asthma comorbid -->
@@ -152,6 +155,7 @@
                         field="comorbid_cirrhosis"
                         label="Cirrhosis :"
                         :options="comorbidOptions"
+                        setter-event="set-comorbid_cirrhosis"
                         :value="note.detail.comorbid_cirrhosis"
                         :trigger-value="inputRadioExtrasTriggerValue"
                         emit-on-update="reset-comorbid_cirrhosis-extras">
@@ -186,20 +190,21 @@
                 <div class="material-box">
                     <input-radio
                         field="comorbid_HCV"
-                        label="HCV infection :"
-                        :value="note.detail.comorbid_HCV"
+                        label="HCV :"
                         :options="comorbidOptions"
-                        setter-event='set-comorbid_HCV'
+                        setter-event="set-comorbid_HCV"
+                        :value="note.detail.comorbid_HCV"
                         store-data='note-store-data'>
                     </input-radio>
-                </div><!-- HBV comorbid -->
+                </div><!-- HCV comorbid -->
                 <div><hr class="line" /></div>
 
                 <div class="material-box">
                     <input-radio
                         field="comorbid_lukemia"
-                        label="Lukemia :"
+                        label="Lukemia"
                         :options="comorbidOptions"
+                        setter-event="set-comorbid_lukemia"
                         :value="note.detail.comorbid_lukemia"
                         :trigger-value="inputRadioExtrasTriggerValue"
                         emit-on-update="reset-comorbid_lukemia-extras">
@@ -223,9 +228,10 @@
                     <input-radio
                         field="comorbid_ICD"
                         label="ICD "
-                        label-description="Implantable Cardioverter Defibrillator"
                         :options="comorbidOptions"
+                        setter-event="set-comorbid_ICD"
                         :value="note.detail.comorbid_ICD"
+                        label-description="Implantable Cardioverter Defibrillator"
                         :trigger-value="inputRadioExtrasTriggerValue"
                         emit-on-update="reset-comorbid_ICD-extras">
 
@@ -242,9 +248,10 @@
                 <div class="material-box">
                     <input-radio
                         field="comorbid_SLE"
-                        :value="note.detail.comorbid_SLE"
                         label="SLE "
-                        :options="comorbidOptions">
+                        :options="comorbidOptions"
+                        setter-event="set-comorbid_SLE"
+                        :value="note.detail.comorbid_SLE">
                     </input-radio>
                 </div><!-- comorbid SLE -->
                 <div><hr class="line" /></div>
@@ -252,9 +259,10 @@
                 <div class="material-box">
                     <input-radio
                         field="comorbid_dementia"
-                        :value="note.detail.comorbid_dementia"
                         label="Dementia :"
                         :options="comorbidOptions"
+                        setter-event="set-comorbid_dementia"
+                        :value="note.detail.comorbid_dementia"
                         :trigger-value="inputRadioExtrasTriggerValue"
                         emit-on-update="reset-comorbid_dementia-extras">
 
@@ -282,6 +290,7 @@
                         field="comorbid_HT"
                         :value="note.detail.comorbid_HT"
                         label="HT :"
+                        setter-event="set-comorbid_HT"
                         :options="comorbidOptions">
                     </input-radio>
                 </div><!-- HT comorbid -->
@@ -292,6 +301,7 @@
                         field="comorbid_stroke"
                         :value="note.detail.comorbid_stroke"
                         label="Stroke : "
+                        setter-event="set-comorbid_stroke"
                         :options="comorbidOptions"
                         :trigger-value="inputRadioExtrasTriggerValue"
                         emit-on-update="reset-comorbid_stroke-extras">
@@ -316,8 +326,9 @@
                         field="comorbid_CKD"
                         :value="note.detail.comorbid_CKD"
                         label="CKD "
-                        label-description="Chronic Kidney Disease"
+                        setter-event="set-comorbid_CKD"
                         :options="comorbidOptions"
+                        label-description="Chronic Kidney Disease"
                         :trigger-value="inputRadioExtrasTriggerValue"
                         emit-on-update="reset-comorbid_CKD-extras">
 
@@ -339,6 +350,7 @@
                         field="comorbid_coagulopathy"
                         :value="note.detail.comorbid_coagulopathy"
                         label="Coagulopathy :"
+                        setter-event="set-comorbid_coagulopathy"
                         :options="comorbidOptions">
                     </input-radio>
                 </div> <!-- coagulopathy comorbid -->
@@ -349,6 +361,7 @@
                         field="comorbid_HIV"
                         :value="note.detail.comorbid_HIV"
                         label="HIV :"
+                        setter-event="set-comorbid_HIV"
                         :options="comorbidOptions"
                         :trigger-value="inputRadioExtrasTriggerValue"
                         emit-on-update="reset-comorbid_HIV-extras">
@@ -373,6 +386,7 @@
                         field="comorbid_lymphoma"
                         :value="note.detail.comorbid_lymphoma"
                         label="Lymphoma :"
+                        setter-event="set-comorbid_lymphoma"
                         :options="comorbidOptions"
                         :trigger-value="inputRadioExtrasTriggerValue"
                         emit-on-update="reset-comorbid_lymphoma-extras">
@@ -394,6 +408,7 @@
                         field="comorbid_cancer"
                         :value="note.detail.comorbid_cancer"
                         label="Cancer :"
+                        setter-event="set-comorbid_cancer"
                         :options="comorbidOptions"
                         :trigger-value="inputRadioExtrasTriggerValue"
                         emit-on-update="reset-comorbid_cancer-extras">
@@ -419,6 +434,7 @@
                         field="comorbid_other_autoimmune_disease"
                         :value="note.detail.comorbid_other_autoimmune_disease"
                         label="Other Autoimmune Disease :"
+                        setter-event="set-comorbid_other_autoimmune_disease"
                         :options="comorbidOptions"
                         :trigger-value="inputRadioExtrasTriggerValue"
                         emit-on-update="reset-comorbid_other_autoimmune_disease-extras">
@@ -436,9 +452,301 @@
                     </input-radio>
                 </div><!-- comorbid Other Autoimmune Disease -->
                 <div><hr class="line" /></div>
+
+                <div class="material-box">
+                    <input-radio
+                        field="comorbid_psychiatric_illness"
+                        :value="note.detail.comorbid_psychiatric_illness"
+                        label="Psychiatric illness :"
+                        setter-event="set-comorbid_psychiatric_illness"
+                        :options="comorbidOptions"
+                        :trigger-value="inputRadioExtrasTriggerValue"
+                        emit-on-update="reset-comorbid_psychiatric_illness-extras">
+                        <input-check-group
+                            :checks="psychiatricIllnessChecks">
+                        </input-check-group>
+                        <input-text
+                            field="comorbid_psychiatric_illness_other"
+                            :value="note.detail.comorbid_psychiatric_illness_other"
+                            placeholder="Other specific, type here.">
+                        </input-text>
+                    </input-radio>
+                </div><!-- Psychiatric illness comorbid -->
+                <div><hr class="line" /></div>
             </div><!-- comorbid HT, Stroke, CKD, Coagulopathy, HIV -->
+
+            <div class="col-xs-12 col-sm-6 col-md-4">
+
+                <div class="material-box">
+                    <input-radio
+                        field="comorbid_CAD"
+                        :value="note.detail.comorbid_CAD"
+                        label="CAD "
+                        setter-event="set-comorbid_CAD"
+                        :options="comorbidOptions"
+                        label-description="Coronary Artery Disease"
+                        :trigger-value="inputRadioExtrasTriggerValue"
+                        emit-on-update="reset-comorbid_CAD-extras">
+                        
+                        <div class="form-inline">
+                            <input-select
+                                field="comorbid_CAD_specific"
+                                :value="note.detail.comorbid_CAD_specific_text"
+                                label="Specify :"
+                                size="normal">
+                            </input-select>
+                        </div><!-- CAD specify -->
+                    </input-radio>
+                </div><!-- CAD comorbid and its extra contents -->
+                <div><hr class="line" /></div>
+
+                <div class="material-box">
+                    <input-radio
+                        field="comorbid_COPD"
+                        :value="note.detail.comorbid_COPD"
+                        label="COPD :"
+                        setter-event="set-comorbid_COPD"
+                        :options="comorbidOptions">
+                    </input-radio>
+                </div><!-- COPD comorbid -->
+                <div><hr class="line" /></div>
+
+                <div class="material-box">
+                    <input-radio
+                        field="comorbid_hyperlipidemia"
+                        :value="note.detail.comorbid_hyperlipidemia"
+                        label="Hyperlipidemia : "
+                        setter-event="set-comorbid_hyperlipidemia"
+                        :options="comorbidOptions"
+                        :trigger-value="inputRadioExtrasTriggerValue"
+                        emit-on-update="reset-comorbid_hyperlipidemia-extras">
+                        
+                        <div class="form-inline">
+                            <input-select
+                                field="comorbid_hyperlipidemia_specific"
+                                :value="note.detail.comorbid_hyperlipidemia_specific"
+                                label="Specify :"
+                                size="normal"
+                                not-allow-other>
+                            </input-select>
+                        </div><!-- hyperlipidemia specify -->
+                    </input-radio><!-- hyperlipidemia comorbid and its extra contents -->
+                </div><!-- hyperlipidemia comorbid and its extra contents -->
+                <div><hr class="line" /></div>
+
+                <div class="material-box">
+                    <input-radio
+                        field="comorbid_HBV"
+                        :value="note.detail.comorbid_HBV"
+                        label="HBV infection :"
+                        setter-event="set-comorbid_HBV"
+                        :options="comorbidOptions"
+                        store-data='note-store-data'>
+                    </input-radio>
+                </div><!-- HBV comorbid -->
+                <div><hr class="line" /></div>
+
+                <div class="material-box">
+                    <input-radio
+                        field="comorbid_epilepsy"
+                        :value="note.detail.comorbid_epilepsy"
+                        label="Epilepsy :"
+                        setter-event="set-comorbid_epilepsy"
+                        :options="comorbidOptions"
+                        :trigger-value="inputRadioExtrasTriggerValue"
+                        emit-on-update="reset-comorbid_epilepsy-extras">
+
+                        <!-- epilepsy specify -->
+                        <div class="form-inline">
+                            <input-select
+                                field="comorbid_epilepsy_specific"
+                                :value="note.detail.comorbid_epilepsy_specific_text"
+                                label="Specify :"
+                                size="normal">
+                            </input-select>
+                        </div>
+                    </input-radio>
+                </div><!-- epilepsy comorbid -->
+                <div><hr class="line" /></div>
+
+                <div class="material-box">
+                    <input-radio
+                        field="comorbid_pacemaker_implant"
+                        :value="note.detail.comorbid_pacemaker_implant"
+                        label="Pacemaker implant :"
+                        setter-event="set-comorbid_pacemaker_implant"
+                        :options="comorbidOptions"
+                        :trigger-value="inputRadioExtrasTriggerValue"
+                        emit-on-update="reset-comorbid_pacemaker_implant-extras">
+                        
+                        <input-radio 
+                            field="comorbid_pacemaker_implant_specific"
+                            :value="note.detail.comorbid_pacemaker_implant_specific"
+                            label="Specify :"
+                            options='[
+                                {
+                                    "label": "DDDR", "value": 1,
+                                    "labelDescription": "dual-chamber, rate-modulated"
+                                },
+                                {   "label": "VI", "value": 2   }
+                            ]'>
+                        </input-radio>
+                    </input-radio><!-- Pacemaker implant Child-Pugh's score -->
+                </div><!-- Pacemaker implant cirrhosis -->
+                <div><hr class="line" /></div>
+
+                <div class="material-box">
+                    <input-radio
+                        field="comorbid_chronic_arthritis"
+                        :value="note.detail.comorbid_chronic_arthritis"
+                        label="Chronic arthritis :"
+                        setter-event="set-comorbid_chronic_arthritis"
+                        :options="comorbidOptions"
+                        :trigger-value="inputRadioExtrasTriggerValue"
+                        emit-on-update="reset-comorbid_chronic_arthritis-extras">
+                        
+                        <input-check-group 
+                            :checks="chronicArthritisSpecificChecks">
+                        </input-check-group><!-- Chronic arthritis specify Lung Liver Colon Breast Prostate Cervix Pancreas Brain  -->
+
+                        <input-text
+                            field="comorbid_chronic_arthritis_other"
+                            :value="note.detail.comorbid_chronic_arthritis_other"
+                            size="normal"
+                            placeholder="Other specific, type here.">
+                        </input-text><!-- Chronic arthritis specify other -->
+                    </input-radio>
+                </div><!-- comorbid Chronic arthritis -->
+                <div><hr class="line" /></div>
+
+                <div class="material-box">
+                    <input-radio
+                        field="comorbid_TB"
+                        :value="note.detail.comorbid_TB"
+                        label="TB :"
+                        setter-event="set-comorbid_TB"
+                        :options="comorbidOptions"
+                        :trigger-value="inputRadioExtrasTriggerValue"
+                        emit-on-update="reset-comorbid_TB-extras">
+                        
+                        <input-check-group 
+                            :checks="TBSpecificChecks">
+                        </input-check-group><!-- TB specify  -->
+
+                        <input-text
+                            field="comorbid_TB_other"
+                            :value="note.detail.comorbid_TB_other"
+                            size="normal"
+                            placeholder="Other specific, type here.">
+                        </input-text><!-- TB specify other -->
+                    </input-radio>
+                </div><!-- comorbid TB -->
+                <div><hr class="line" /></div>
+            </div><!-- CAD, COPD, Hyperlipidemia, HBV -->
+            
+            <input-textarea
+                field="other_comorbid"
+                :value="note.detail.other_comorbid"
+                label="Other comorbid :"
+                grid="12-12-12"
+                max-chars="1000">
+            </input-textarea><!-- other comorbid  -->
+            <div class="col-xs-12"><hr class="line" /></div>
+
+            <input-textarea
+                field="history_of_present_illness"
+                :value="note.detail.history_of_present_illness"
+                label="History of present illness :"
+                grid="12-12-6"
+                max-chars="2000" >
+            </input-textarea><!-- history of present illness  -->
+            <input-textarea
+                field="history_of_past_illness"
+                :value="note.detail.history_of_past_illness"
+                label="History of past illness :"
+                grid="12-12-6"
+                max-chars="2000" >
+            </input-textarea><!-- history of past illness  -->
         </div><!-- wrap content with row class -->
     </panel><!-- Panel Hisroty -->
+    <panel heading="Personal and Social history">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-4" v-if="note.admission.patient.gender == 0">
+                <div class="material-box">
+                    <input-radio
+                        field="pregnancy"
+                        :value="note.detail.pregnancy"
+                        label="Pregnant : "
+                        options='[
+                            {"label": "No", "value": "0"},
+                            {"label": "Yes", "value": "1"},
+                            {"label": "Uncertain", "value": "2"}
+                        ]'
+                        :trigger-value="inputRadioExtrasTriggerValue">
+                        <input-text-addon
+                            field="gestation_weeks"
+                            :value="note.detail.gestation_weeks"
+                            front-addon="Gestation"
+                            pattern="^([1-9]|[123]\d|40)$"
+                            invalid-text="Data could not be saved, Accept 1 to 40 weeks only."
+                            rear-addon="Weeks">
+                        </input-text-addon>
+                    </input-radio>
+
+                    <input-text-addon
+                        field="LMP"
+                        :value="note.detail.LMP"
+                        front-addon='LMP <a role="button" data-toggle="tooltip" title="ลงข้อมูล LMP เป็นวันที่ในรูปแบบ dd/mm/yyyy หรือหากไม่ทราบให้บรรยายเช่น 10 ปีที่ผ่านมา เป็นต้น"><i class="fa fa-info-circle"></i></a>'>
+                    </input-text-addon><!-- LMP -->
+                </div><!-- pregnancy -->
+            </div><!-- Female's Extras -->
+
+            <div class="col-xs-12 col-sm-6 col-md-4">
+                <div class="material-box">
+                    <input-radio
+                        field="alcohol"
+                        :value="note.detail.alcohol"
+                        label="Alcohol : "
+                        options='[
+                            {"label": "No", "value": "0"},
+                            {"label": "Yes", "value": "1"},
+                            {"label": "Ex-drinker", "value": "2"}
+                        ]'
+                        trigger-value="[1,2]">
+                        <!-- alcohol_description  -->
+                        <input-textarea
+                            field="alcohol_description"
+                            :value="note.detail.alcohol_description"
+                            placeholder="description">
+                        </input-textarea>
+                    </input-radio>
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-6 col-md-4">
+                <div class="material-box">
+                    <input-radio
+                        field="cigarette_smoking"
+                        :value="note.detail.cigarette_smoking"
+                        label="Cigarette smoking : "
+                        options='[
+                            {"label": "No", "value": "0"},
+                            {"label": "Yes", "value": "1"},
+                            {"label": "Ex-smoker", "value": "2"}
+                        ]'
+                        trigger-value="[1,2]">
+                        <!-- smoke_description  -->
+                        <input-textarea
+                            field="smoke_description"
+                            :value="note.detail.smoke_description"
+                            placeholder="description">
+                        </input-textarea>
+                    </input-radio>
+                </div>
+            </div>
+            <div class="col-xs-12"><hr class="line" /></div>
+        </div><!-- wrap content with row class -->
+    </panel><!-- panel Personal and Social history -->
 </div>
 </template>
 
@@ -449,6 +757,7 @@
     import InputRadio from '../../../inputs/InputRadio.vue'
     import InputSelect from '../../../inputs/InputSelect.vue'
     import InputTextarea from '../../../inputs/InputTextarea.vue'
+    import InputTextAddon from '../../../inputs/InputTextAddon.vue'
     import InputSuggestion from '../../../inputs/InputSuggestion.vue'
     import InputCheckGroup from '../../../inputs/InputCheckGroup.vue'
     import ChildPughScore from '../../../modals/Medicine/ChildPughScore.vue'
@@ -461,6 +770,7 @@
             'input-radio': InputRadio,
             'input-select' : InputSelect,
             'input-textarea' : InputTextarea,
+            'input-text-addon' : InputTextAddon,
             'input-suggestion' : InputSuggestion,
             'input-check-group' : InputCheckGroup,
             'modal-child-pugh-score-detail' : ChildPughScore
@@ -474,7 +784,6 @@
         data () {
             return {
                 note: {},
-                states: [],
                 getDataUrl: "/note-data/" + window.location.pathname.split("/")[2]
             }
         },
@@ -489,9 +798,21 @@
 
             this.inputRadioExtrasTriggerValue = 1
 
-            EventBus.$on('note-store-data', (field, value) => {
-                this.note.detail[field] = value
-            })
+            this.cirrhosisLabelAction = {
+                emit: "toggle-modal-child-pugh-score-detail",
+                icon: "question-circle",
+                title: "Click to learn more about Child-Pugh's Score"
+            }
+
+        },
+        mounted () {
+            // this.note = JSON.parse(this.serializedNote)
+
+            EventBus.$on('comorbid-negative-all', () => { this.setComorbidAll(0) })
+
+            EventBus.$on('comorbid-no-data-all', () => { this.setComorbidAll(255) })
+
+            EventBus.$on('note-store-data', (field, value) => { this.note.detail[field] = value })
 
             EventBus.$on('reset-comorbid_DM-extras', (value) => {
                 if ( value != this.inputRadioExtrasTriggerValue ) {
@@ -515,12 +836,6 @@
                     this.note.detail.comorbid_valvular_heart_disease_other = null
                 }
             })
-
-            this.cirrhosisLabelAction = {
-                emit: "toggle-modal-child-pugh-score-detail",
-                icon: "question-circle",
-                title: "Click to learn more about Child-Pugh's Score"
-            }
 
             EventBus.$on('reset-comorbid_cirrhosis-extras', (value) => {
                 if ( value != this.inputRadioExtrasTriggerValue ) {
@@ -551,6 +866,13 @@
                 if (value && this.note.detail.comorbid_HCV !== 1) {
                     EventBus.$emit('set-comorbid_HCV', 1)
                     EventBus.$emit('toggle-alert-box', 'HCV infection also checked')
+                }
+            })
+
+            EventBus.$on('click-comorbid_HBV', (value) => {
+                if (value && this.note.detail.comorbid_HBV !== 1) {
+                    EventBus.$emit('set-comorbid_HBV', 1)
+                    EventBus.$emit('toggle-alert-box', 'HBV infection also checked')
                 }
             })
 
@@ -605,25 +927,78 @@
             })
 
             EventBus.$on('reset-comorbid_cancer-extras', (value) => {
-                this.note.detail.comorbid_cancer_lung = false
-                this.note.detail.comorbid_cancer_liver = false
-                this.note.detail.comorbid_cancer_colon = false
-                this.note.detail.comorbid_cancer_breast = false
-                this.note.detail.comorbid_cancer_prostate = false
-                this.note.detail.comorbid_cancer_cervix = false
-                this.note.detail.comorbid_cancer_pancreas = false
-                this.note.detail.comorbid_cancer_brain = false
-                this.note.detail.comorbid_cancer_other = null
+                if ( value != this.inputRadioExtrasTriggerValue ) {
+                    this.note.detail.comorbid_cancer_lung = false
+                    this.note.detail.comorbid_cancer_liver = false
+                    this.note.detail.comorbid_cancer_colon = false
+                    this.note.detail.comorbid_cancer_breast = false
+                    this.note.detail.comorbid_cancer_prostate = false
+                    this.note.detail.comorbid_cancer_cervix = false
+                    this.note.detail.comorbid_cancer_pancreas = false
+                    this.note.detail.comorbid_cancer_brain = false
+                    this.note.detail.comorbid_cancer_other = null
+                }
             })
 
             EventBus.$on('reset-comorbid_other_autoimmune_disease-extras', (value) => {
-                this.note.detail.comorbid_other_autoimmune_disease_UCTD = false
-                this.note.detail.comorbid_other_autoimmune_disease_sjrogren_syndrome = false
-                this.note.detail.comorbid_other_autoimmune_disease_MCTD = false
-                this.note.detail.comorbid_other_autoimmune_disease_DMPM = false
-                this.note.detail.comorbid_other_autoimmune_disease_other = null
+                if ( value != this.inputRadioExtrasTriggerValue ) {
+                    this.note.detail.comorbid_other_autoimmune_disease_UCTD = false
+                    this.note.detail.comorbid_other_autoimmune_disease_sjrogren_syndrome = false
+                    this.note.detail.comorbid_other_autoimmune_disease_MCTD = false
+                    this.note.detail.comorbid_other_autoimmune_disease_DMPM = false
+                    this.note.detail.comorbid_other_autoimmune_disease_other = null
+                }
             })
 
+            EventBus.$on('reset-comorbid_psychiatric_illness-extras', (value) => {
+                if ( value != this.inputRadioExtrasTriggerValue ) {
+                    this.note.detail.comorbid_psychiatric_illness_schizophrenia = false
+                    this.note.detail.comorbid_psychiatric_illness_major_depression = false
+                    this.note.detail.comorbid_psychiatric_illness_bipolar_disorder = false
+                    this.note.detail.comorbid_psychiatric_illness_adjustment_disorder = false
+                    this.note.detail.comorbid_psychiatric_illness_obcessive_compulsive_disorder = false
+                    this.note.detail.comorbid_psychiatric_illness_other = null
+                }
+            })
+
+            EventBus.$on('reset-comorbid_CAD-extras', (value) => {
+                if ( value != this.inputRadioExtrasTriggerValue ) {
+                    this.note.detail.comorbid_CAD_specific_text = null
+                }
+            })
+
+            EventBus.$on('reset-comorbid_epilepsy-extras', (value) => {
+                if ( value != this.inputRadioExtrasTriggerValue ) {
+                    this.note.detail.comorbid_epilepsy_specific_text = null
+                }
+            })
+
+            EventBus.$on('reset-comorbid_pacemaker_implant-extras', (value) => {
+                if ( value != this.inputRadioExtrasTriggerValue ) {
+                    this.note.detail.comorbid_pacemaker_implant_specific = null
+                }
+            })
+
+            EventBus.$on('reset-comorbid_chronic_arthritis-extras', (value) => {
+                if ( value != this.inputRadioExtrasTriggerValue ) {
+                    this.note.detail.comorbid_chronic_arthritis_CPPD = false
+                    this.note.detail.comorbid_chronic_arthritis_rheumatoid = false
+                    this.note.detail.comorbid_chronic_arthritis_OA = false
+                    this.note.detail.comorbid_chronic_arthritis_spondyloarthropathy = false
+                    this.note.detail.comorbid_chronic_arthritis_other = null
+                }
+            })
+
+            EventBus.$on('reset-comorbid_TB-extras', (value) => {
+                if ( value != this.inputRadioExtrasTriggerValue ) {
+                    this.note.detail.comorbid_TB_pulmonary = false
+                    this.note.detail.comorbid_TB_other = null
+                }
+            })
+
+            this.$nextTick( () => {
+                console.log('all things loaded')
+            })
         },
         computed : {
             DMComplicationChecks () {
@@ -698,7 +1073,7 @@
                         field: "comorbid_cirrhosis_HBV",
                         label: "HBV",
                         checked: this.note.detail.comorbid_cirrhosis_HBV,
-                        emitOnUpdate: 'click-comorbid_cirrhosis_none_cryptogenic',
+                        emitOnUpdate: 'click-comorbid_cirrhosis_none_cryptogenic,click-comorbid_HBV',
                         setterEvent: "set-cirrhosis_HBV"
                     },
                     {
@@ -851,6 +1226,100 @@
                         labelDescription: "Dermatomyositis polymyositis"
                     }
                 ]
+            },
+            psychiatricIllnessChecks () {
+                return [
+                    {
+                        field: "comorbid_psychiatric_illness_schizophrenia",
+                        checked: this.note.detail.comorbid_psychiatric_illness_schizophrenia,
+                        label: "Schizophrenia"
+                    },
+                    {
+                        field: "comorbid_psychiatric_illness_major_depression",
+                        checked: this.note.detail.comorbid_psychiatric_illness_major_depression,
+                        label: "Major depression"
+                    },
+                    {
+                        field: "comorbid_psychiatric_illness_bipolar_disorder",
+                        checked: this.note.detail.comorbid_psychiatric_illness_bipolar_disorder,
+                        label: "Bipolar disorder"
+                    },
+                    {
+                        field: "comorbid_psychiatric_illness_adjustment_disorder",
+                        checked: this.note.detail.comorbid_psychiatric_illness_adjustment_disorder,
+                        label: "Adjustment disorder"
+                    },
+                    {
+                        field: "comorbid_psychiatric_illness_obcessive_compulsive_disorder",
+                        checked: this.note.detail.comorbid_psychiatric_illness_obcessive_compulsive_disorder,
+                        label: "Obcessive compulsive disorder"
+                    }
+                ]
+            },
+            chronicArthritisSpecificChecks () {
+                return [
+                    {
+                        field: "comorbid_chronic_arthritis_CPPD",
+                        checked: this.note.detail.comorbid_chronic_arthritis_CPPD,
+                        label: "CPPD",
+                        labelDescription: "Calcium pryophosphate dihydrate"
+                    },
+                    {
+                        field: "comorbid_chronic_arthritis_rheumatoid",
+                        checked: this.note.detail.comorbid_chronic_arthritis_rheumatoid,
+                        label: "Rheumatoid"
+                    },
+                    {
+                        field: "comorbid_chronic_arthritis_OA",
+                        checked: this.note.detail.comorbid_chronic_arthritis_OA,
+                        label: "OA",
+                        labelDescription: "Osteoarthritis"
+                    },
+                    {
+                        field: "comorbid_chronic_arthritis_spondyloarthropathy",
+                        checked: this.note.detail.comorbid_chronic_arthritis_spondyloarthropathy,
+                        label: "Spondyloarthropathy"
+                    }
+                ]
+            },
+            TBSpecificChecks () {
+                return [
+                    {
+                        field: "comorbid_TB_pulmonary",
+                        checked: this.note.detail.comorbid_TB_pulmonary,
+                        label: "Pulmonary"
+                    }
+                ]
+            }
+        },
+        methods : {
+            setComorbidAll (value) {
+                EventBus.$emit('set-comorbid_DM', value)
+                EventBus.$emit('set-comorbid_valvular_heart_disease', value)
+                EventBus.$emit('set-comorbid_asthma', value)
+                EventBus.$emit('set-comorbid_cirrhosis', value)
+                EventBus.$emit('set-comorbid_HCV', value)
+                EventBus.$emit('set-comorbid_lukemia', value)
+                EventBus.$emit('set-comorbid_ICD', value)
+                EventBus.$emit('set-comorbid_SLE', value)
+                EventBus.$emit('set-comorbid_dementia', value)
+                EventBus.$emit('set-comorbid_HT', value)
+                EventBus.$emit('set-comorbid_stroke', value)
+                EventBus.$emit('set-comorbid_CKD', value)
+                EventBus.$emit('set-comorbid_coagulopathy', value)
+                EventBus.$emit('set-comorbid_HIV', value)
+                EventBus.$emit('set-comorbid_lymphoma', value)
+                EventBus.$emit('set-comorbid_cancer', value)
+                EventBus.$emit('set-comorbid_other_autoimmune_disease', value)
+                EventBus.$emit('set-comorbid_psychiatric_illness', value)
+                EventBus.$emit('set-comorbid_CAD', value)
+                EventBus.$emit('set-comorbid_COPD', value)
+                EventBus.$emit('set-comorbid_hyperlipidemia', value)
+                EventBus.$emit('set-comorbid_HBV', value)
+                EventBus.$emit('set-comorbid_epilepsy', value)
+                EventBus.$emit('set-comorbid_pacemaker_implant', value)
+                EventBus.$emit('set-comorbid_chronic_arthritis', value)
+                EventBus.$emit('set-comorbid_TB', value)
             }
         }
 

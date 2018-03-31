@@ -115,6 +115,7 @@
             }
 
             autosize($(this.domRef))
+
             this.onkeypress = _.debounce(() => {
                 let countChars = this.userInput.length
                 if (countChars > (.5*this.getMaxChars)) {
@@ -128,8 +129,12 @@
                 } else {
                     this.toggleStatus('')
                 }
-            }, 300);
+            }, 300)
+
             this.onkeypressSave = _.debounce(() => { this.autosave() }, 5000)
+
+            // seem like Vue delay update so, we delay autosize process to take effect
+            setTimeout(() => { autosize.update($(this.domRef)) }, 100)
         },
         methods: {
             getGrid() {

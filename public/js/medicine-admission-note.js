@@ -3419,6 +3419,77 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -3453,6 +3524,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             note: {},
+            store: {},
             getDataUrl: "/note-data/" + window.location.pathname.split("/")[2]
         };
     },
@@ -3461,7 +3533,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         this.comorbidOptions = [{ label: "No data", value: 255 }, { label: "No", value: 0 }, { label: "Yes", value: 1 }];
 
-        this.inputRadioExtrasTriggerValue = 1;
+        this.comorbidExtrasTriggerValue = 1;
 
         this.cirrhosisLabelAction = {
             emit: "toggle-modal-child-pugh-score-detail",
@@ -3482,12 +3554,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             _this.setComorbidAll(255);
         });
 
+        EventBus.$on('store-data', function (field, value) {
+            console.log(value);
+            _this.store[field] = value;
+        });
+
         EventBus.$on('note-store-data', function (field, value) {
             _this.note.detail[field] = value;
         });
 
         EventBus.$on('reset-comorbid_DM-extras', function (value) {
-            if (value != _this.inputRadioExtrasTriggerValue) {
+            if (value != _this.comorbidExtrasTriggerValue) {
                 _this.note.detail.comorbid_DM_type = null;
                 _this.note.detail.comorbid_DM_DR = false;
                 _this.note.detail.comorbid_DM_nephropathy = false;
@@ -3499,7 +3576,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         });
 
         EventBus.$on('reset-comorbid_valvular_heart_disease-extras', function (value) {
-            if (value != _this.inputRadioExtrasTriggerValue) {
+            if (value != _this.comorbidExtrasTriggerValue) {
                 _this.note.detail.comorbid_valvular_heart_disease_AS = false;
                 _this.note.detail.comorbid_valvular_heart_disease_AR = false;
                 _this.note.detail.comorbid_valvular_heart_disease_MS = false;
@@ -3510,7 +3587,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         });
 
         EventBus.$on('reset-comorbid_cirrhosis-extras', function (value) {
-            if (value != _this.inputRadioExtrasTriggerValue) {
+            if (value != _this.comorbidExtrasTriggerValue) {
                 _this.note.detail.comorbid_cirrhosis_child_pugh_score = null;
                 _this.note.detail.comorbid_cirrhosis_HBV = false;
                 _this.note.detail.comorbid_cirrhosis_HCV = false;
@@ -3549,19 +3626,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         });
 
         EventBus.$on('reset-comorbid_lukemia-extras', function (value) {
-            if (value != _this.inputRadioExtrasTriggerValue) {
+            if (value != _this.comorbidExtrasTriggerValue) {
                 _this.note.detail.comorbid_lukemia_specific = null;
             }
         });
 
         EventBus.$on('reset-comorbid_ICD-extras', function (value) {
-            if (value != _this.inputRadioExtrasTriggerValue) {
+            if (value != _this.comorbidExtrasTriggerValue) {
                 _this.note.detail.comorbid_ICD_other = null;
             }
         });
 
         EventBus.$on('reset-comorbid_dementia-extras', function (value) {
-            if (value != _this.inputRadioExtrasTriggerValue) {
+            if (value != _this.comorbidExtrasTriggerValue) {
                 _this.note.detail.comorbid_dementia_vascular = false;
                 _this.note.detail.comorbid_dementia_alzheimer = false;
                 _this.note.detail.comorbid_dementia_other = null;
@@ -3569,7 +3646,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         });
 
         EventBus.$on('reset-comorbid_stroke-extras', function (value) {
-            if (value != _this.inputRadioExtrasTriggerValue) {
+            if (value != _this.comorbidExtrasTriggerValue) {
                 _this.note.detail.comorbid_stroke_ischemic_text = null;
                 _this.note.detail.comorbid_stroke_hemorrhagic_text = null;
                 _this.note.detail.comorbid_stroke_iembolic_text = null;
@@ -3577,13 +3654,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         });
 
         EventBus.$on('reset-comorbid_CKD-extras', function (value) {
-            if (value != _this.inputRadioExtrasTriggerValue) {
+            if (value != _this.comorbidExtrasTriggerValue) {
                 _this.note.detail.comorbid_CKD_stage_text = null;
             }
         });
 
         EventBus.$on('reset-comorbid_HIV-extras', function (value) {
-            if (value != _this.inputRadioExtrasTriggerValue) {
+            if (value != _this.comorbidExtrasTriggerValue) {
                 _this.note.detail.comorbid_HIV_other = null;
                 _this.note.detail.comorbid_HIV_TB = false;
                 _this.note.detail.comorbid_HIV_PCP = false;
@@ -3593,13 +3670,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         });
 
         EventBus.$on('reset-comorbid_lymphoma-extras', function (value) {
-            if (value != _this.inputRadioExtrasTriggerValue) {
+            if (value != _this.comorbidExtrasTriggerValue) {
                 _this.note.detail.comorbid_lymphoma_specific_text = null;
             }
         });
 
         EventBus.$on('reset-comorbid_cancer-extras', function (value) {
-            if (value != _this.inputRadioExtrasTriggerValue) {
+            if (value != _this.comorbidExtrasTriggerValue) {
                 _this.note.detail.comorbid_cancer_lung = false;
                 _this.note.detail.comorbid_cancer_liver = false;
                 _this.note.detail.comorbid_cancer_colon = false;
@@ -3613,7 +3690,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         });
 
         EventBus.$on('reset-comorbid_other_autoimmune_disease-extras', function (value) {
-            if (value != _this.inputRadioExtrasTriggerValue) {
+            if (value != _this.comorbidExtrasTriggerValue) {
                 _this.note.detail.comorbid_other_autoimmune_disease_UCTD = false;
                 _this.note.detail.comorbid_other_autoimmune_disease_sjrogren_syndrome = false;
                 _this.note.detail.comorbid_other_autoimmune_disease_MCTD = false;
@@ -3623,7 +3700,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         });
 
         EventBus.$on('reset-comorbid_psychiatric_illness-extras', function (value) {
-            if (value != _this.inputRadioExtrasTriggerValue) {
+            if (value != _this.comorbidExtrasTriggerValue) {
                 _this.note.detail.comorbid_psychiatric_illness_schizophrenia = false;
                 _this.note.detail.comorbid_psychiatric_illness_major_depression = false;
                 _this.note.detail.comorbid_psychiatric_illness_bipolar_disorder = false;
@@ -3634,25 +3711,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         });
 
         EventBus.$on('reset-comorbid_CAD-extras', function (value) {
-            if (value != _this.inputRadioExtrasTriggerValue) {
+            if (value != _this.comorbidExtrasTriggerValue) {
                 _this.note.detail.comorbid_CAD_specific_text = null;
             }
         });
 
         EventBus.$on('reset-comorbid_epilepsy-extras', function (value) {
-            if (value != _this.inputRadioExtrasTriggerValue) {
+            if (value != _this.comorbidExtrasTriggerValue) {
                 _this.note.detail.comorbid_epilepsy_specific_text = null;
             }
         });
 
         EventBus.$on('reset-comorbid_pacemaker_implant-extras', function (value) {
-            if (value != _this.inputRadioExtrasTriggerValue) {
+            if (value != _this.comorbidExtrasTriggerValue) {
                 _this.note.detail.comorbid_pacemaker_implant_specific = null;
             }
         });
 
         EventBus.$on('reset-comorbid_chronic_arthritis-extras', function (value) {
-            if (value != _this.inputRadioExtrasTriggerValue) {
+            if (value != _this.comorbidExtrasTriggerValue) {
                 _this.note.detail.comorbid_chronic_arthritis_CPPD = false;
                 _this.note.detail.comorbid_chronic_arthritis_rheumatoid = false;
                 _this.note.detail.comorbid_chronic_arthritis_OA = false;
@@ -3662,14 +3739,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         });
 
         EventBus.$on('reset-comorbid_TB-extras', function (value) {
-            if (value != _this.inputRadioExtrasTriggerValue) {
+            if (value != _this.comorbidExtrasTriggerValue) {
                 _this.note.detail.comorbid_TB_pulmonary = false;
                 _this.note.detail.comorbid_TB_other = null;
             }
         });
 
-        this.$nextTick(function () {
-            console.log('all things loaded');
+        EventBus.$on('reset-pregnancy-extras', function (value) {
+            if (value != _this.comorbidExtrasTriggerValue) {
+                _this.note.detail.gestation_weeks = null;
+            }
+        });
+
+        EventBus.$on('reset-alcohol-extras', function (value) {
+            if (value == 0) {
+                _this.note.detail.alcohol_description = null;
+            }
+        });
+
+        EventBus.$on('reset-cigarette_smoking-extras', function (value) {
+            if (value == 0) {
+                _this.note.detail.smoke_description = null;
+            }
         });
     },
 
@@ -3904,6 +3995,37 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 field: "comorbid_TB_pulmonary",
                 checked: this.note.detail.comorbid_TB_pulmonary,
                 label: "Pulmonary"
+            }];
+        },
+        specialRequirementChecks: function specialRequirementChecks() {
+            return [{
+                field: "NG_tube",
+                checked: this.note.detail.NG_tube,
+                label: "NG tube"
+            }, {
+                field: "NG_suction",
+                checked: this.note.detail.NG_suction,
+                label: "NG suction"
+            }, {
+                field: "gastrostomy_feeding",
+                checked: this.note.detail.gastrostomy_feeding,
+                label: "Gastrostomy feeding"
+            }, {
+                field: "urinary_cath_care",
+                checked: this.note.detail.urinary_cath_care,
+                label: "Urinary cath. care"
+            }, {
+                field: "tracheostomy_care",
+                checked: this.note.detail.tracheostomy_care,
+                label: "Tracheostomy care"
+            }, {
+                field: "hearing_impaiment",
+                checked: this.note.detail.hearing_impaiment,
+                label: "Hearing impaiment"
+            }, {
+                field: "isolation_room",
+                checked: this.note.detail.isolation_room,
+                label: "Isolation room"
             }];
         }
     },
@@ -6038,11 +6160,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             type: String,
             required: false
         },
+        storeData: {
+            type: String,
+            required: false
+        },
         targetId: {
             type: String,
             required: false
         }
-
     },
     data: function data() {
         return {
@@ -6058,11 +6183,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         if (this.value === undefined || this.value === null) this.lastData = this.userInput = '';else this.lastData = this.userInput = this.value;
 
         // listen to event to trigger event
-        if (this.interfaceEvent !== undefined) {
-            EventBus.$on(this.interfaceEvent, function () {
-                _this.emitUpdate();
-            });
-        }
+        // if (this.interfaceEvent !== undefined) {
+        //     EventBus.$on(this.interfaceEvent, () => {
+        //         this.emitUpdate()
+        //     })
+        // }
 
         // initial autocomplete instance
         $('#' + this.id).autocomplete({
@@ -6133,6 +6258,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         tryAutosave: function tryAutosave() {
             var _this2 = this;
 
+            if (this.storeData !== undefined) {
+                EventBus.$emit(this.storeData, this.id, this.userInput);
+            }
             setTimeout(function () {
                 if (!_this2.saved) {
                     _this2.autosave();
@@ -6148,9 +6276,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return '/lists/' + this.serviceUrl;
         },
         id: function id() {
-            if (this.targetId !== undefined) return this.targetId;
+            if (this.targetId !== undefined) {
+                return this.targetId;
+            }
 
-            if (this.field !== undefined) return this.field;
+            if (this.field !== undefined) {
+                return this.field;
+            }
 
             return Date.now() + this.serviceUrl.replace(new RegExp('/', 'g'), '');
         }
@@ -7004,7 +7136,7 @@ var render = function() {
                         label: "DM :",
                         options: _vm.comorbidOptions,
                         "setter-event": "set-comorbid_DM",
-                        "trigger-value": _vm.inputRadioExtrasTriggerValue,
+                        "trigger-value": _vm.comorbidExtrasTriggerValue,
                         value: _vm.note.detail.comorbid_DM,
                         "emit-on-update": "reset-comorbid_DM-extras"
                       }
@@ -7054,7 +7186,7 @@ var render = function() {
                         label: "Valvular heart disease :",
                         options: _vm.comorbidOptions,
                         "setter-event": "set-comorbid_valvular_heart_disease",
-                        "trigger-value": _vm.inputRadioExtrasTriggerValue,
+                        "trigger-value": _vm.comorbidExtrasTriggerValue,
                         value: _vm.note.detail.comorbid_valvular_heart_disease,
                         "emit-on-update":
                           "reset-comorbid_valvular_heart_disease-extras"
@@ -7119,7 +7251,7 @@ var render = function() {
                         options: _vm.comorbidOptions,
                         "setter-event": "set-comorbid_cirrhosis",
                         value: _vm.note.detail.comorbid_cirrhosis,
-                        "trigger-value": _vm.inputRadioExtrasTriggerValue,
+                        "trigger-value": _vm.comorbidExtrasTriggerValue,
                         "emit-on-update": "reset-comorbid_cirrhosis-extras"
                       }
                     },
@@ -7193,7 +7325,7 @@ var render = function() {
                         options: _vm.comorbidOptions,
                         "setter-event": "set-comorbid_lukemia",
                         value: _vm.note.detail.comorbid_lukemia,
-                        "trigger-value": _vm.inputRadioExtrasTriggerValue,
+                        "trigger-value": _vm.comorbidExtrasTriggerValue,
                         "emit-on-update": "reset-comorbid_lukemia-extras"
                       }
                     },
@@ -7231,7 +7363,7 @@ var render = function() {
                         value: _vm.note.detail.comorbid_ICD,
                         "label-description":
                           "Implantable Cardioverter Defibrillator",
-                        "trigger-value": _vm.inputRadioExtrasTriggerValue,
+                        "trigger-value": _vm.comorbidExtrasTriggerValue,
                         "emit-on-update": "reset-comorbid_ICD-extras"
                       }
                     },
@@ -7285,7 +7417,7 @@ var render = function() {
                         options: _vm.comorbidOptions,
                         "setter-event": "set-comorbid_dementia",
                         value: _vm.note.detail.comorbid_dementia,
-                        "trigger-value": _vm.inputRadioExtrasTriggerValue,
+                        "trigger-value": _vm.comorbidExtrasTriggerValue,
                         "emit-on-update": "reset-comorbid_dementia-extras"
                       }
                     },
@@ -7348,7 +7480,7 @@ var render = function() {
                         label: "Stroke : ",
                         "setter-event": "set-comorbid_stroke",
                         options: _vm.comorbidOptions,
-                        "trigger-value": _vm.inputRadioExtrasTriggerValue,
+                        "trigger-value": _vm.comorbidExtrasTriggerValue,
                         "emit-on-update": "reset-comorbid_stroke-extras"
                       }
                     },
@@ -7391,7 +7523,7 @@ var render = function() {
                         "setter-event": "set-comorbid_CKD",
                         options: _vm.comorbidOptions,
                         "label-description": "Chronic Kidney Disease",
-                        "trigger-value": _vm.inputRadioExtrasTriggerValue,
+                        "trigger-value": _vm.comorbidExtrasTriggerValue,
                         "emit-on-update": "reset-comorbid_CKD-extras"
                       }
                     },
@@ -7452,7 +7584,7 @@ var render = function() {
                         label: "HIV :",
                         "setter-event": "set-comorbid_HIV",
                         options: _vm.comorbidOptions,
-                        "trigger-value": _vm.inputRadioExtrasTriggerValue,
+                        "trigger-value": _vm.comorbidExtrasTriggerValue,
                         "emit-on-update": "reset-comorbid_HIV-extras"
                       }
                     },
@@ -7494,7 +7626,7 @@ var render = function() {
                         label: "Lymphoma :",
                         "setter-event": "set-comorbid_lymphoma",
                         options: _vm.comorbidOptions,
-                        "trigger-value": _vm.inputRadioExtrasTriggerValue,
+                        "trigger-value": _vm.comorbidExtrasTriggerValue,
                         "emit-on-update": "reset-comorbid_lymphoma-extras"
                       }
                     },
@@ -7536,7 +7668,7 @@ var render = function() {
                         label: "Cancer :",
                         "setter-event": "set-comorbid_cancer",
                         options: _vm.comorbidOptions,
-                        "trigger-value": _vm.inputRadioExtrasTriggerValue,
+                        "trigger-value": _vm.comorbidExtrasTriggerValue,
                         "emit-on-update": "reset-comorbid_cancer-extras"
                       }
                     },
@@ -7576,7 +7708,7 @@ var render = function() {
                         label: "Other Autoimmune Disease :",
                         "setter-event": "set-comorbid_other_autoimmune_disease",
                         options: _vm.comorbidOptions,
-                        "trigger-value": _vm.inputRadioExtrasTriggerValue,
+                        "trigger-value": _vm.comorbidExtrasTriggerValue,
                         "emit-on-update":
                           "reset-comorbid_other_autoimmune_disease-extras"
                       }
@@ -7618,7 +7750,7 @@ var render = function() {
                         label: "Psychiatric illness :",
                         "setter-event": "set-comorbid_psychiatric_illness",
                         options: _vm.comorbidOptions,
-                        "trigger-value": _vm.inputRadioExtrasTriggerValue,
+                        "trigger-value": _vm.comorbidExtrasTriggerValue,
                         "emit-on-update":
                           "reset-comorbid_psychiatric_illness-extras"
                       }
@@ -7661,7 +7793,7 @@ var render = function() {
                         "setter-event": "set-comorbid_CAD",
                         options: _vm.comorbidOptions,
                         "label-description": "Coronary Artery Disease",
-                        "trigger-value": _vm.inputRadioExtrasTriggerValue,
+                        "trigger-value": _vm.comorbidExtrasTriggerValue,
                         "emit-on-update": "reset-comorbid_CAD-extras"
                       }
                     },
@@ -7721,7 +7853,7 @@ var render = function() {
                         label: "Hyperlipidemia : ",
                         "setter-event": "set-comorbid_hyperlipidemia",
                         options: _vm.comorbidOptions,
-                        "trigger-value": _vm.inputRadioExtrasTriggerValue,
+                        "trigger-value": _vm.comorbidExtrasTriggerValue,
                         "emit-on-update": "reset-comorbid_hyperlipidemia-extras"
                       }
                     },
@@ -7785,7 +7917,7 @@ var render = function() {
                         label: "Epilepsy :",
                         "setter-event": "set-comorbid_epilepsy",
                         options: _vm.comorbidOptions,
-                        "trigger-value": _vm.inputRadioExtrasTriggerValue,
+                        "trigger-value": _vm.comorbidExtrasTriggerValue,
                         "emit-on-update": "reset-comorbid_epilepsy-extras"
                       }
                     },
@@ -7827,7 +7959,7 @@ var render = function() {
                         label: "Pacemaker implant :",
                         "setter-event": "set-comorbid_pacemaker_implant",
                         options: _vm.comorbidOptions,
-                        "trigger-value": _vm.inputRadioExtrasTriggerValue,
+                        "trigger-value": _vm.comorbidExtrasTriggerValue,
                         "emit-on-update":
                           "reset-comorbid_pacemaker_implant-extras"
                       }
@@ -7865,7 +7997,7 @@ var render = function() {
                         label: "Chronic arthritis :",
                         "setter-event": "set-comorbid_chronic_arthritis",
                         options: _vm.comorbidOptions,
-                        "trigger-value": _vm.inputRadioExtrasTriggerValue,
+                        "trigger-value": _vm.comorbidExtrasTriggerValue,
                         "emit-on-update":
                           "reset-comorbid_chronic_arthritis-extras"
                       }
@@ -7906,7 +8038,7 @@ var render = function() {
                         label: "TB :",
                         "setter-event": "set-comorbid_TB",
                         options: _vm.comorbidOptions,
-                        "trigger-value": _vm.inputRadioExtrasTriggerValue,
+                        "trigger-value": _vm.comorbidExtrasTriggerValue,
                         "emit-on-update": "reset-comorbid_TB-extras"
                       }
                     },
@@ -7972,125 +8104,237 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("panel", { attrs: { heading: "Personal and Social history" } }, [
-        _c("div", { staticClass: "row" }, [
-          _vm.note.admission.patient.gender == 0
-            ? _c("div", { staticClass: "col-xs-12 col-sm-6 col-md-4" }, [
-                _c(
-                  "div",
-                  { staticClass: "material-box" },
-                  [
-                    _c(
-                      "input-radio",
-                      {
-                        attrs: {
-                          field: "pregnancy",
-                          value: _vm.note.detail.pregnancy,
-                          label: "Pregnant : ",
-                          options:
-                            '[\n                            {"label": "No", "value": "0"},\n                            {"label": "Yes", "value": "1"},\n                            {"label": "Uncertain", "value": "2"}\n                        ]',
-                          "trigger-value": _vm.inputRadioExtrasTriggerValue
-                        }
-                      },
-                      [
-                        _c("input-text-addon", {
+        _c(
+          "div",
+          { staticClass: "row" },
+          [
+            _vm.note.admission.patient.gender == 0
+              ? _c("div", { staticClass: "col-xs-12 col-sm-6 col-md-4" }, [
+                  _c(
+                    "div",
+                    { staticClass: "material-box" },
+                    [
+                      _c(
+                        "input-radio",
+                        {
                           attrs: {
-                            field: "gestation_weeks",
-                            value: _vm.note.detail.gestation_weeks,
-                            "front-addon": "Gestation",
-                            pattern: "^([1-9]|[123]\\d|40)$",
-                            "invalid-text":
-                              "Data could not be saved, Accept 1 to 40 weeks only.",
-                            "rear-addon": "Weeks"
+                            field: "pregnancy",
+                            value: _vm.note.detail.pregnancy,
+                            label: "Pregnant : ",
+                            options:
+                              '[\n                            {"label": "No", "value": "0"},\n                            {"label": "Yes", "value": "1"},\n                            {"label": "Uncertain", "value": "2"}\n                        ]',
+                            "trigger-value": _vm.comorbidExtrasTriggerValue,
+                            "emit-on-update": "reset-pregnancy-extras"
                           }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c("input-text-addon", {
+                        },
+                        [
+                          _c("input-text-addon", {
+                            attrs: {
+                              field: "gestation_weeks",
+                              value: _vm.note.detail.gestation_weeks,
+                              "front-addon": "Gestation",
+                              pattern: "^([1-9]|[123]\\d|40)$",
+                              "invalid-text":
+                                "Data could not be saved, Accept 1 to 40 weeks only.",
+                              "rear-addon": "Weeks"
+                            }
+                          })
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c("input-text-addon", {
+                        attrs: {
+                          field: "LMP",
+                          value: _vm.note.detail.LMP,
+                          "front-addon":
+                            'LMP <a role="button" data-toggle="tooltip" title="ลงข้อมูล LMP เป็นวันที่ในรูปแบบ dd/mm/yyyy หรือหากไม่ทราบให้บรรยายเช่น 10 ปีที่ผ่านมา เป็นต้น"><i class="fa fa-info-circle"></i></a>'
+                        }
+                      })
+                    ],
+                    1
+                  )
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-xs-12 col-sm-6 col-md-4" }, [
+              _c(
+                "div",
+                { staticClass: "material-box" },
+                [
+                  _c(
+                    "input-radio",
+                    {
                       attrs: {
-                        field: "LMP",
-                        value: _vm.note.detail.LMP,
-                        "front-addon":
-                          'LMP <a role="button" data-toggle="tooltip" title="ลงข้อมูล LMP เป็นวันที่ในรูปแบบ dd/mm/yyyy หรือหากไม่ทราบให้บรรยายเช่น 10 ปีที่ผ่านมา เป็นต้น"><i class="fa fa-info-circle"></i></a>'
+                        field: "alcohol",
+                        value: _vm.note.detail.alcohol,
+                        label: "Alcohol : ",
+                        options:
+                          '[\n                            {"label": "No", "value": "0"},\n                            {"label": "Yes", "value": "1"},\n                            {"label": "Ex-drinker", "value": "2"}\n                        ]',
+                        "trigger-value": "[1,2]",
+                        "emit-on-update": "reset-alcohol-extras"
                       }
-                    })
-                  ],
-                  1
-                )
-              ])
-            : _vm._e(),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-xs-12 col-sm-6 col-md-4" }, [
+                    },
+                    [
+                      _c("input-textarea", {
+                        attrs: {
+                          field: "alcohol_description",
+                          value: _vm.note.detail.alcohol_description,
+                          placeholder: "description"
+                        }
+                      })
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-xs-12 col-sm-6 col-md-4" }, [
+              _c(
+                "div",
+                { staticClass: "material-box" },
+                [
+                  _c(
+                    "input-radio",
+                    {
+                      attrs: {
+                        field: "cigarette_smoking",
+                        value: _vm.note.detail.cigarette_smoking,
+                        label: "Cigarette smoking : ",
+                        options:
+                          '[\n                            {"label": "No", "value": "0"},\n                            {"label": "Yes", "value": "1"},\n                            {"label": "Ex-smoker", "value": "2"}\n                        ]',
+                        "trigger-value": "[1,2]",
+                        "emit-on-update": "reset-cigarette_smoking-extras"
+                      }
+                    },
+                    [
+                      _c("input-textarea", {
+                        attrs: {
+                          field: "smoke_description",
+                          value: _vm.note.detail.smoke_description,
+                          placeholder: "description"
+                        }
+                      })
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-xs-12" }, [
+              _c("hr", { staticClass: "line" })
+            ]),
+            _vm._v(" "),
+            _c("input-textarea", {
+              attrs: {
+                field: "personal_social_history",
+                value: _vm.note.detail.personal_social_history,
+                placeholder: "personal and social history description",
+                grid: "12-12-12",
+                "max-chars": "2000"
+              }
+            })
+          ],
+          1
+        )
+      ]),
+      _vm._v(" "),
+      _c("panel", { attrs: { heading: "Special requirement" } }, [
+        _c(
+          "div",
+          { staticClass: "row" },
+          [
             _c(
               "div",
-              { staticClass: "material-box" },
+              { staticClass: "col-xs-12" },
               [
-                _c(
-                  "input-radio",
-                  {
-                    attrs: {
-                      field: "alcohol",
-                      value: _vm.note.detail.alcohol,
-                      label: "Alcohol : ",
-                      options:
-                        '[\n                            {"label": "No", "value": "0"},\n                            {"label": "Yes", "value": "1"},\n                            {"label": "Ex-drinker", "value": "2"}\n                        ]',
-                      "trigger-value": "[1,2]"
-                    }
-                  },
-                  [
-                    _c("input-textarea", {
-                      attrs: {
-                        field: "alcohol_description",
-                        value: _vm.note.detail.alcohol_description,
-                        placeholder: "description"
-                      }
-                    })
-                  ],
-                  1
-                )
+                _c("input-check-group", {
+                  attrs: { checks: _vm.specialRequirementChecks }
+                })
               ],
               1
-            )
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-xs-12 col-sm-6 col-md-4" }, [
-            _c(
-              "div",
-              { staticClass: "material-box" },
-              [
-                _c(
-                  "input-radio",
-                  {
-                    attrs: {
-                      field: "cigarette_smoking",
-                      value: _vm.note.detail.cigarette_smoking,
-                      label: "Cigarette smoking : ",
-                      options:
-                        '[\n                            {"label": "No", "value": "0"},\n                            {"label": "Yes", "value": "1"},\n                            {"label": "Ex-smoker", "value": "2"}\n                        ]',
-                      "trigger-value": "[1,2]"
-                    }
-                  },
-                  [
-                    _c("input-textarea", {
-                      attrs: {
-                        field: "smoke_description",
-                        value: _vm.note.detail.smoke_description,
-                        placeholder: "description"
-                      }
-                    })
-                  ],
-                  1
-                )
-              ],
-              1
-            )
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-xs-12" }, [
-            _c("hr", { staticClass: "line" })
-          ])
-        ])
+            ),
+            _vm._v(" "),
+            _c("input-textarea", {
+              attrs: {
+                field: "other_special_requirement",
+                value: _vm.note.detail.other_special_requirement,
+                placeholder: "Other requirement, type here",
+                grid: "12-12-12"
+              }
+            })
+          ],
+          1
+        )
+      ]),
+      _vm._v(" "),
+      _c("panel", { attrs: { heading: "Family history" } }, [
+        _c(
+          "div",
+          { staticClass: "row" },
+          [
+            _c("input-textarea", {
+              attrs: {
+                field: "family_history",
+                value: _vm.note.detail.family_history,
+                grid: "12-12-12",
+                "max-chars": "2000"
+              }
+            })
+          ],
+          1
+        )
+      ]),
+      _vm._v(" "),
+      _c("panel", { attrs: { heading: "Current medications" } }, [
+        _c(
+          "div",
+          { staticClass: "row" },
+          [
+            _c("input-suggestion", {
+              attrs: {
+                "target-id": "current_medications_helper",
+                "store-data": "store-data",
+                grid: "8-8-4",
+                "service-url": "autocomplete/drug",
+                placeholder: "search drug using generic, trade or synonym name"
+              }
+            }),
+            _vm._v(" "),
+            _c("button-app", {
+              attrs: {
+                action: "append-current-medications",
+                label: "Append",
+                status: "draft",
+                size: "sm"
+              }
+            }),
+            _vm._v(" "),
+            _c("button-app", {
+              attrs: {
+                action: "put-current-medications",
+                label: "Put",
+                status: "draft",
+                size: "sm"
+              }
+            }),
+            _vm._v(" "),
+            _c("input-textarea", {
+              attrs: {
+                field: "current_medications",
+                value: _vm.note.detail.current_medications,
+                "setter-event": "set-current-medications",
+                "max-chars": "1000",
+                grid: "12-12-12"
+              }
+            })
+          ],
+          1
+        )
       ])
     ],
     1

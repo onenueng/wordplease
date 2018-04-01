@@ -87,7 +87,7 @@
                         label="DM :"
                         :options="comorbidOptions"
                         setter-event="set-comorbid_DM"
-                        :trigger-value="inputRadioExtrasTriggerValue"
+                        :trigger-value="comorbidExtrasTriggerValue"
                         :value="note.detail.comorbid_DM"
                         emit-on-update="reset-comorbid_DM-extras">
 
@@ -120,7 +120,7 @@
                         label="Valvular heart disease :"
                         :options="comorbidOptions"
                         setter-event="set-comorbid_valvular_heart_disease"
-                        :trigger-value="inputRadioExtrasTriggerValue"
+                        :trigger-value="comorbidExtrasTriggerValue"
                         :value="note.detail.comorbid_valvular_heart_disease"
                         emit-on-update="reset-comorbid_valvular_heart_disease-extras">
 
@@ -157,7 +157,7 @@
                         :options="comorbidOptions"
                         setter-event="set-comorbid_cirrhosis"
                         :value="note.detail.comorbid_cirrhosis"
-                        :trigger-value="inputRadioExtrasTriggerValue"
+                        :trigger-value="comorbidExtrasTriggerValue"
                         emit-on-update="reset-comorbid_cirrhosis-extras">
 
                         <input-radio
@@ -206,7 +206,7 @@
                         :options="comorbidOptions"
                         setter-event="set-comorbid_lukemia"
                         :value="note.detail.comorbid_lukemia"
-                        :trigger-value="inputRadioExtrasTriggerValue"
+                        :trigger-value="comorbidExtrasTriggerValue"
                         emit-on-update="reset-comorbid_lukemia-extras">
 
                         <input-radio
@@ -232,7 +232,7 @@
                         setter-event="set-comorbid_ICD"
                         :value="note.detail.comorbid_ICD"
                         label-description="Implantable Cardioverter Defibrillator"
-                        :trigger-value="inputRadioExtrasTriggerValue"
+                        :trigger-value="comorbidExtrasTriggerValue"
                         emit-on-update="reset-comorbid_ICD-extras">
 
                         <input-text
@@ -263,7 +263,7 @@
                         :options="comorbidOptions"
                         setter-event="set-comorbid_dementia"
                         :value="note.detail.comorbid_dementia"
-                        :trigger-value="inputRadioExtrasTriggerValue"
+                        :trigger-value="comorbidExtrasTriggerValue"
                         emit-on-update="reset-comorbid_dementia-extras">
 
                         <input-check-group
@@ -303,7 +303,7 @@
                         label="Stroke : "
                         setter-event="set-comorbid_stroke"
                         :options="comorbidOptions"
-                        :trigger-value="inputRadioExtrasTriggerValue"
+                        :trigger-value="comorbidExtrasTriggerValue"
                         emit-on-update="reset-comorbid_stroke-extras">
 
                         <div class="form-inline">
@@ -329,7 +329,7 @@
                         setter-event="set-comorbid_CKD"
                         :options="comorbidOptions"
                         label-description="Chronic Kidney Disease"
-                        :trigger-value="inputRadioExtrasTriggerValue"
+                        :trigger-value="comorbidExtrasTriggerValue"
                         emit-on-update="reset-comorbid_CKD-extras">
 
                         <div class="form-inline">
@@ -363,7 +363,7 @@
                         label="HIV :"
                         setter-event="set-comorbid_HIV"
                         :options="comorbidOptions"
-                        :trigger-value="inputRadioExtrasTriggerValue"
+                        :trigger-value="comorbidExtrasTriggerValue"
                         emit-on-update="reset-comorbid_HIV-extras">
 
                         <input-check-group
@@ -388,7 +388,7 @@
                         label="Lymphoma :"
                         setter-event="set-comorbid_lymphoma"
                         :options="comorbidOptions"
-                        :trigger-value="inputRadioExtrasTriggerValue"
+                        :trigger-value="comorbidExtrasTriggerValue"
                         emit-on-update="reset-comorbid_lymphoma-extras">
 
                         <div class="form-inline">
@@ -410,7 +410,7 @@
                         label="Cancer :"
                         setter-event="set-comorbid_cancer"
                         :options="comorbidOptions"
-                        :trigger-value="inputRadioExtrasTriggerValue"
+                        :trigger-value="comorbidExtrasTriggerValue"
                         emit-on-update="reset-comorbid_cancer-extras">
 
                         <!-- cancer specify Lung Liver Colon Breast Prostate Cervix Pancreas Brain  -->
@@ -436,7 +436,7 @@
                         label="Other Autoimmune Disease :"
                         setter-event="set-comorbid_other_autoimmune_disease"
                         :options="comorbidOptions"
-                        :trigger-value="inputRadioExtrasTriggerValue"
+                        :trigger-value="comorbidExtrasTriggerValue"
                         emit-on-update="reset-comorbid_other_autoimmune_disease-extras">
                         
                         <input-check-group
@@ -460,7 +460,7 @@
                         label="Psychiatric illness :"
                         setter-event="set-comorbid_psychiatric_illness"
                         :options="comorbidOptions"
-                        :trigger-value="inputRadioExtrasTriggerValue"
+                        :trigger-value="comorbidExtrasTriggerValue"
                         emit-on-update="reset-comorbid_psychiatric_illness-extras">
                         <input-check-group
                             :checks="psychiatricIllnessChecks">
@@ -485,7 +485,7 @@
                         setter-event="set-comorbid_CAD"
                         :options="comorbidOptions"
                         label-description="Coronary Artery Disease"
-                        :trigger-value="inputRadioExtrasTriggerValue"
+                        :trigger-value="comorbidExtrasTriggerValue"
                         emit-on-update="reset-comorbid_CAD-extras">
                         
                         <div class="form-inline">
@@ -518,7 +518,7 @@
                         label="Hyperlipidemia : "
                         setter-event="set-comorbid_hyperlipidemia"
                         :options="comorbidOptions"
-                        :trigger-value="inputRadioExtrasTriggerValue"
+                        :trigger-value="comorbidExtrasTriggerValue"
                         emit-on-update="reset-comorbid_hyperlipidemia-extras">
                         
                         <div class="form-inline">
@@ -553,7 +553,7 @@
                         label="Epilepsy :"
                         setter-event="set-comorbid_epilepsy"
                         :options="comorbidOptions"
-                        :trigger-value="inputRadioExtrasTriggerValue"
+                        :trigger-value="comorbidExtrasTriggerValue"
                         emit-on-update="reset-comorbid_epilepsy-extras">
 
                         <!-- epilepsy specify -->
@@ -576,7 +576,7 @@
                         label="Pacemaker implant :"
                         setter-event="set-comorbid_pacemaker_implant"
                         :options="comorbidOptions"
-                        :trigger-value="inputRadioExtrasTriggerValue"
+                        :trigger-value="comorbidExtrasTriggerValue"
                         emit-on-update="reset-comorbid_pacemaker_implant-extras">
                         
                         <input-radio 
@@ -602,7 +602,7 @@
                         label="Chronic arthritis :"
                         setter-event="set-comorbid_chronic_arthritis"
                         :options="comorbidOptions"
-                        :trigger-value="inputRadioExtrasTriggerValue"
+                        :trigger-value="comorbidExtrasTriggerValue"
                         emit-on-update="reset-comorbid_chronic_arthritis-extras">
                         
                         <input-check-group 
@@ -626,7 +626,7 @@
                         label="TB :"
                         setter-event="set-comorbid_TB"
                         :options="comorbidOptions"
-                        :trigger-value="inputRadioExtrasTriggerValue"
+                        :trigger-value="comorbidExtrasTriggerValue"
                         emit-on-update="reset-comorbid_TB-extras">
                         
                         <input-check-group 
@@ -682,7 +682,8 @@
                             {"label": "Yes", "value": "1"},
                             {"label": "Uncertain", "value": "2"}
                         ]'
-                        :trigger-value="inputRadioExtrasTriggerValue">
+                        :trigger-value="comorbidExtrasTriggerValue"
+                        emit-on-update="reset-pregnancy-extras">
                         <input-text-addon
                             field="gestation_weeks"
                             :value="note.detail.gestation_weeks"
@@ -712,16 +713,17 @@
                             {"label": "Yes", "value": "1"},
                             {"label": "Ex-drinker", "value": "2"}
                         ]'
-                        trigger-value="[1,2]">
-                        <!-- alcohol_description  -->
+                        trigger-value="[1,2]"
+                        emit-on-update="reset-alcohol-extras">
+                        
                         <input-textarea
                             field="alcohol_description"
                             :value="note.detail.alcohol_description"
                             placeholder="description">
-                        </input-textarea>
+                        </input-textarea><!-- alcohol_description  -->
                     </input-radio>
                 </div>
-            </div>
+            </div><!-- alcohol -->
 
             <div class="col-xs-12 col-sm-6 col-md-4">
                 <div class="material-box">
@@ -734,19 +736,88 @@
                             {"label": "Yes", "value": "1"},
                             {"label": "Ex-smoker", "value": "2"}
                         ]'
-                        trigger-value="[1,2]">
-                        <!-- smoke_description  -->
+                        trigger-value="[1,2]"
+                        emit-on-update="reset-cigarette_smoking-extras">
+                        
                         <input-textarea
                             field="smoke_description"
                             :value="note.detail.smoke_description"
                             placeholder="description">
-                        </input-textarea>
+                        </input-textarea><!-- smoke_description  -->
                     </input-radio>
                 </div>
-            </div>
-            <div class="col-xs-12"><hr class="line" /></div>
+            </div><!-- smoke -->
+
+            <div class="col-xs-12"><hr class="line" /></div><!-- seperate line -->
+
+            <input-textarea
+                field="personal_social_history"
+                :value="note.detail.personal_social_history"
+                placeholder="personal and social history description"
+                grid="12-12-12"
+                max-chars="2000" >
+            </input-textarea><!-- personal social history -->
         </div><!-- wrap content with row class -->
     </panel><!-- panel Personal and Social history -->
+    <panel heading="Special requirement">
+        <div class="row">
+            <div class="col-xs-12">
+                <input-check-group
+                    :checks="specialRequirementChecks">
+                </input-check-group>
+            </div>
+
+            <input-textarea
+                field="other_special_requirement"
+                :value="note.detail.other_special_requirement"
+                placeholder="Other requirement, type here"
+                grid="12-12-12">
+            </input-textarea><!-- other special requirement -->
+        </div><!-- wrap with row -->
+    </panel><!-- panel Special requirement -->
+    <panel heading="Family history">
+        <div class="row">
+            <input-textarea
+                field="family_history"
+                :value="note.detail.family_history"
+                grid="12-12-12"
+                max-chars="2000">
+            </input-textarea>
+        </div><!-- wrap with row -->
+    </panel><!-- panel Family history -->
+    <panel heading="Current medications">
+        <div class="row">
+            <input-suggestion
+                target-id="current_medications_helper"
+                store-data="store-data"
+                grid="8-8-4"
+                service-url="autocomplete/drug"
+                placeholder="search drug using generic, trade or synonym name">
+            </input-suggestion><!-- drug search helper -->
+
+            <button-app
+                action="append-current-medications"
+                label="Append"
+                status="draft"
+                size="sm">
+            </button-app><!-- med append button -->
+
+            <button-app
+                action="put-current-medications"
+                label="Put"
+                status="draft"
+                size="sm">
+            </button-app><!-- med put button -->
+            
+            <input-textarea
+                field="current_medications"
+                :value="note.detail.current_medications"
+                setter-event="set-current-medications"
+                max-chars="1000"
+                grid="12-12-12">
+            </input-textarea><!-- current medications -->
+        </div><!-- wrap with row -->
+    </panel><!-- panel Current medications -->
 </div>
 </template>
 
@@ -784,6 +855,7 @@
         data () {
             return {
                 note: {},
+                store: {},
                 getDataUrl: "/note-data/" + window.location.pathname.split("/")[2]
             }
         },
@@ -796,7 +868,7 @@
                 { label: "Yes", value: 1 }
             ]
 
-            this.inputRadioExtrasTriggerValue = 1
+            this.comorbidExtrasTriggerValue = 1
 
             this.cirrhosisLabelAction = {
                 emit: "toggle-modal-child-pugh-score-detail",
@@ -812,10 +884,15 @@
 
             EventBus.$on('comorbid-no-data-all', () => { this.setComorbidAll(255) })
 
+            EventBus.$on('store-data', (field, value) => {
+                console.log(value)
+                this.store[field] = value
+            })
+
             EventBus.$on('note-store-data', (field, value) => { this.note.detail[field] = value })
 
             EventBus.$on('reset-comorbid_DM-extras', (value) => {
-                if ( value != this.inputRadioExtrasTriggerValue ) {
+                if ( value != this.comorbidExtrasTriggerValue ) {
                     this.note.detail.comorbid_DM_type = null
                     this.note.detail.comorbid_DM_DR = false
                     this.note.detail.comorbid_DM_nephropathy = false
@@ -827,7 +904,7 @@
             })
 
             EventBus.$on('reset-comorbid_valvular_heart_disease-extras', (value) => {
-                if ( value != this.inputRadioExtrasTriggerValue ) {
+                if ( value != this.comorbidExtrasTriggerValue ) {
                     this.note.detail.comorbid_valvular_heart_disease_AS = false
                     this.note.detail.comorbid_valvular_heart_disease_AR = false
                     this.note.detail.comorbid_valvular_heart_disease_MS = false
@@ -838,7 +915,7 @@
             })
 
             EventBus.$on('reset-comorbid_cirrhosis-extras', (value) => {
-                if ( value != this.inputRadioExtrasTriggerValue ) {
+                if ( value != this.comorbidExtrasTriggerValue ) {
                     this.note.detail.comorbid_cirrhosis_child_pugh_score = null
                     this.note.detail.comorbid_cirrhosis_HBV = false
                     this.note.detail.comorbid_cirrhosis_HCV = false
@@ -877,19 +954,19 @@
             })
 
             EventBus.$on('reset-comorbid_lukemia-extras', (value) => {
-                if ( value != this.inputRadioExtrasTriggerValue ) {
+                if ( value != this.comorbidExtrasTriggerValue ) {
                     this.note.detail.comorbid_lukemia_specific = null
                 }
             })
 
             EventBus.$on('reset-comorbid_ICD-extras', (value) => {
-                if ( value != this.inputRadioExtrasTriggerValue ) {
+                if ( value != this.comorbidExtrasTriggerValue ) {
                     this.note.detail.comorbid_ICD_other = null
                 }
             })
 
             EventBus.$on('reset-comorbid_dementia-extras', (value) => {
-                if ( value != this.inputRadioExtrasTriggerValue ) {
+                if ( value != this.comorbidExtrasTriggerValue ) {
                     this.note.detail.comorbid_dementia_vascular = false
                     this.note.detail.comorbid_dementia_alzheimer = false
                     this.note.detail.comorbid_dementia_other = null
@@ -897,7 +974,7 @@
             })
 
             EventBus.$on('reset-comorbid_stroke-extras', (value) => {
-                if ( value != this.inputRadioExtrasTriggerValue ) {
+                if ( value != this.comorbidExtrasTriggerValue ) {
                     this.note.detail.comorbid_stroke_ischemic_text = null
                     this.note.detail.comorbid_stroke_hemorrhagic_text = null
                     this.note.detail.comorbid_stroke_iembolic_text = null
@@ -905,13 +982,13 @@
             })
 
             EventBus.$on('reset-comorbid_CKD-extras', (value) => {
-                if ( value != this.inputRadioExtrasTriggerValue ) {
+                if ( value != this.comorbidExtrasTriggerValue ) {
                     this.note.detail.comorbid_CKD_stage_text = null
                 }
             })
 
             EventBus.$on('reset-comorbid_HIV-extras', (value) => {
-                if ( value != this.inputRadioExtrasTriggerValue ) {
+                if ( value != this.comorbidExtrasTriggerValue ) {
                     this.note.detail.comorbid_HIV_other = null
                     this.note.detail.comorbid_HIV_TB = false
                     this.note.detail.comorbid_HIV_PCP = false
@@ -921,13 +998,13 @@
             })
 
             EventBus.$on('reset-comorbid_lymphoma-extras', (value) => {
-                if ( value != this.inputRadioExtrasTriggerValue ) {
+                if ( value != this.comorbidExtrasTriggerValue ) {
                     this.note.detail.comorbid_lymphoma_specific_text = null
                 }
             })
 
             EventBus.$on('reset-comorbid_cancer-extras', (value) => {
-                if ( value != this.inputRadioExtrasTriggerValue ) {
+                if ( value != this.comorbidExtrasTriggerValue ) {
                     this.note.detail.comorbid_cancer_lung = false
                     this.note.detail.comorbid_cancer_liver = false
                     this.note.detail.comorbid_cancer_colon = false
@@ -941,7 +1018,7 @@
             })
 
             EventBus.$on('reset-comorbid_other_autoimmune_disease-extras', (value) => {
-                if ( value != this.inputRadioExtrasTriggerValue ) {
+                if ( value != this.comorbidExtrasTriggerValue ) {
                     this.note.detail.comorbid_other_autoimmune_disease_UCTD = false
                     this.note.detail.comorbid_other_autoimmune_disease_sjrogren_syndrome = false
                     this.note.detail.comorbid_other_autoimmune_disease_MCTD = false
@@ -951,7 +1028,7 @@
             })
 
             EventBus.$on('reset-comorbid_psychiatric_illness-extras', (value) => {
-                if ( value != this.inputRadioExtrasTriggerValue ) {
+                if ( value != this.comorbidExtrasTriggerValue ) {
                     this.note.detail.comorbid_psychiatric_illness_schizophrenia = false
                     this.note.detail.comorbid_psychiatric_illness_major_depression = false
                     this.note.detail.comorbid_psychiatric_illness_bipolar_disorder = false
@@ -962,25 +1039,25 @@
             })
 
             EventBus.$on('reset-comorbid_CAD-extras', (value) => {
-                if ( value != this.inputRadioExtrasTriggerValue ) {
+                if ( value != this.comorbidExtrasTriggerValue ) {
                     this.note.detail.comorbid_CAD_specific_text = null
                 }
             })
 
             EventBus.$on('reset-comorbid_epilepsy-extras', (value) => {
-                if ( value != this.inputRadioExtrasTriggerValue ) {
+                if ( value != this.comorbidExtrasTriggerValue ) {
                     this.note.detail.comorbid_epilepsy_specific_text = null
                 }
             })
 
             EventBus.$on('reset-comorbid_pacemaker_implant-extras', (value) => {
-                if ( value != this.inputRadioExtrasTriggerValue ) {
+                if ( value != this.comorbidExtrasTriggerValue ) {
                     this.note.detail.comorbid_pacemaker_implant_specific = null
                 }
             })
 
             EventBus.$on('reset-comorbid_chronic_arthritis-extras', (value) => {
-                if ( value != this.inputRadioExtrasTriggerValue ) {
+                if ( value != this.comorbidExtrasTriggerValue ) {
                     this.note.detail.comorbid_chronic_arthritis_CPPD = false
                     this.note.detail.comorbid_chronic_arthritis_rheumatoid = false
                     this.note.detail.comorbid_chronic_arthritis_OA = false
@@ -990,14 +1067,28 @@
             })
 
             EventBus.$on('reset-comorbid_TB-extras', (value) => {
-                if ( value != this.inputRadioExtrasTriggerValue ) {
+                if ( value != this.comorbidExtrasTriggerValue ) {
                     this.note.detail.comorbid_TB_pulmonary = false
                     this.note.detail.comorbid_TB_other = null
                 }
             })
 
-            this.$nextTick( () => {
-                console.log('all things loaded')
+            EventBus.$on('reset-pregnancy-extras', (value) => {
+                if ( value != this.comorbidExtrasTriggerValue ) {
+                    this.note.detail.gestation_weeks = null
+                }
+            })
+
+            EventBus.$on('reset-alcohol-extras', (value) => {
+                if ( value == 0 ) {
+                    this.note.detail.alcohol_description = null
+                }
+            })
+
+            EventBus.$on('reset-cigarette_smoking-extras', (value) => {
+                if ( value == 0 ) {
+                    this.note.detail.smoke_description = null
+                }
             })
         },
         computed : {
@@ -1288,6 +1379,45 @@
                         field: "comorbid_TB_pulmonary",
                         checked: this.note.detail.comorbid_TB_pulmonary,
                         label: "Pulmonary"
+                    }
+                ]
+            },
+            specialRequirementChecks () {
+                return [
+                    {
+                        field: "NG_tube",
+                        checked: this.note.detail.NG_tube,
+                        label: "NG tube"
+                    },
+                    {
+                        field: "NG_suction",
+                        checked: this.note.detail.NG_suction,
+                        label: "NG suction"
+                    },
+                    {
+                        field: "gastrostomy_feeding",
+                        checked: this.note.detail.gastrostomy_feeding,
+                        label: "Gastrostomy feeding"
+                    },
+                    {
+                        field: "urinary_cath_care",
+                        checked: this.note.detail.urinary_cath_care,
+                        label: "Urinary cath. care"
+                    },
+                    {
+                        field: "tracheostomy_care",
+                        checked: this.note.detail.tracheostomy_care,
+                        label: "Tracheostomy care"
+                    },
+                    {
+                        field: "hearing_impaiment",
+                        checked: this.note.detail.hearing_impaiment,
+                        label: "Hearing impaiment"
+                    },
+                    {
+                        field: "isolation_room",
+                        checked: this.note.detail.isolation_room,
+                        label: "Isolation room"
                     }
                 ]
             }

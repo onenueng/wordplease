@@ -151,6 +151,20 @@ class CreateMedicineAdmissionNotesTable extends Migration
             $table->string('alcohol_description')->nullable();
             $table->unsignedTinyInteger('cigarette_smoking')->nullable();
             $table->string('smoke_description')->nullable();
+            $table->text('personal_social_history')->nullable();
+
+            $table->boolean('NG_tube')->default(false);
+            $table->boolean('NG_suction')->default(false);
+            $table->boolean('gastrostomy_feeding')->default(false);
+            $table->boolean('urinary_cath_care')->default(false);
+            $table->boolean('tracheostomy_care')->default(false);
+            $table->boolean('hearing_impaiment')->default(false);
+            $table->boolean('isolation_room')->default(false);
+            $table->string('other_special_requirement')->nullable();
+
+            $table->text('family_history')->nullable();
+
+            $table->text('current_medications')->nullable();
         });
     }
 

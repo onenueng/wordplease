@@ -64,11 +64,14 @@
                 type: String,
                 required: false  
             },
+            storeData: {
+                type: String,
+                required: false
+            },
             targetId: {
                 type: String,
                 required: false  
             }
-
         },
         data () {
             return {
@@ -85,11 +88,11 @@
                 this.lastData = this.userInput = this.value
 
             // listen to event to trigger event
-            if (this.interfaceEvent !== undefined) {
-                EventBus.$on(this.interfaceEvent, () => {
-                    this.emitUpdate()
-                })
-            }
+            // if (this.interfaceEvent !== undefined) {
+            //     EventBus.$on(this.interfaceEvent, () => {
+            //         this.emitUpdate()
+            //     })
+            // }
 
             // initial autocomplete instance
             $('#' + this.id).autocomplete({
@@ -159,6 +162,9 @@
                 }
             },
             tryAutosave() {
+                if ( this.storeData !== undefined ) {
+                    EventBus.$emit(this.storeData, this.id, this.userInput)
+                }
                 setTimeout( () => {
                     if ( !this.saved ) {
                         this.autosave()
@@ -175,15 +181,15 @@
                 return  '/lists/' + this.serviceUrl
             },
             id() {
-                if (this.targetId !== undefined)
+                if (this.targetId !== undefined) {
                     return this.targetId
+                }
                 
-                if (this.field !== undefined)
+                if (this.field !== undefined) {
                     return this.field
+                }
                 
                 return Date.now() + this.serviceUrl.replace(new RegExp('/', 'g'), '')
-                
-
             }
         }
     }

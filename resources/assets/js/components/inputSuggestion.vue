@@ -78,11 +78,11 @@
                 this.lastData = this.userInput = this.value
 
             // listen to event to trigger event
-            if (this.interfaceEvent !== undefined) {
-                EventBus.$on(this.interfaceEvent, () => {
-                    this.emitUpdate()
-                })
-            }
+            // if (this.interfaceEvent !== undefined) {
+            //     EventBus.$on(this.interfaceEvent, () => {
+            //         this.emitUpdate()
+            //     })
+            // }
 
             // initial autocomplete instance
             $('#' + this.id).autocomplete({

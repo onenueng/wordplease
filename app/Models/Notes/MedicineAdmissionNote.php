@@ -31,7 +31,7 @@ class MedicineAdmissionNote extends Model
 
     protected $fieldsWithExtras = [
         'comorbid_DM' => [
-            'noneTriggerValue' => 1,
+            'resetTriggerValues' => [0,255],
             'fields' => [
                 'comorbid_DM_type' => null,
                 'comorbid_DM_DR' => false,
@@ -44,7 +44,7 @@ class MedicineAdmissionNote extends Model
         ],
 
         'comorbid_valvular_heart_disease' => [
-            'noneTriggerValue' => 1,
+            'resetTriggerValues' => [0,255],
             'fields' => [
                 'comorbid_valvular_heart_disease_AS' => false,
                 'comorbid_valvular_heart_disease_AR' => false,
@@ -56,7 +56,7 @@ class MedicineAdmissionNote extends Model
         ],
 
         'comorbid_cirrhosis' => [
-            'noneTriggerValue' => 1,
+            'resetTriggerValues' => [0,255],
             'fields' => [
                 'comorbid_cirrhosis_child_pugh_score' => null,
                 'comorbid_cirrhosis_HBV' => false,
@@ -68,21 +68,21 @@ class MedicineAdmissionNote extends Model
         ],
 
         'comorbid_lukemia' => [
-            'noneTriggerValue' => 1,
+            'resetTriggerValues' => [0,255],
             'fields' => [
                 'comorbid_lukemia_specific' => null
             ]
         ],
 
         'comorbid_ICD' => [
-            'noneTriggerValue' => 1,
+            'resetTriggerValues' => [0,255],
             'fields' => [
                 'comorbid_ICD_other' => null
             ]
         ],
 
         'comorbid_dementia' => [
-            'noneTriggerValue' => 1,
+            'resetTriggerValues' => [0,255],
             'fields' => [
                 'comorbid_dementia_other' => null,
                 'comorbid_dementia_vascular' => false,
@@ -91,7 +91,7 @@ class MedicineAdmissionNote extends Model
         ],
 
         'comorbid_stroke' => [
-            'noneTriggerValue' => 1,
+            'resetTriggerValues' => [0,255],
             'fields' => [
                 'comorbid_stroke_ischemic' => null,
                 'comorbid_stroke_hemorrhagic' => null,
@@ -100,14 +100,14 @@ class MedicineAdmissionNote extends Model
         ],
 
         'comorbid_CKD' => [
-            'noneTriggerValue' => 1,
+            'resetTriggerValues' => [0,255],
             'fields' => [
                 'comorbid_CKD_stage' => null
             ]
         ],
 
         'comorbid_HIV' => [
-            'noneTriggerValue' => 1,
+            'resetTriggerValues' => [0,255],
             'fields' => [
                 'comorbid_HIV_TB' => false,
                 'comorbid_HIV_PCP' => false,
@@ -118,14 +118,14 @@ class MedicineAdmissionNote extends Model
         ],
 
         'comorbid_lymphoma' => [
-            'noneTriggerValue' => 1,
+            'resetTriggerValues' => [0,255],
             'fields' => [
                 'comorbid_lymphoma_specific' => null
             ]
         ],
 
         'comorbid_cancer' => [
-            'noneTriggerValue' => 1,
+            'resetTriggerValues' => [0,255],
             'fields' => [
                 'comorbid_cancer_lung' => false,
                 'comorbid_cancer_liver' => false,
@@ -140,7 +140,7 @@ class MedicineAdmissionNote extends Model
         ],
 
         'comorbid_other_autoimmune_disease' => [
-            'noneTriggerValue' => 1,
+            'resetTriggerValues' => [0,255],
             'fields' => [
                 'comorbid_other_autoimmune_disease_UCTD' => false,
                 'comorbid_other_autoimmune_disease_sjrogren_syndrome' => false,
@@ -151,7 +151,7 @@ class MedicineAdmissionNote extends Model
         ],
 
         'comorbid_psychiatric_illness' => [
-            'noneTriggerValue' => 1,
+            'resetTriggerValues' => [0,255],
             'fields' => [
                 'comorbid_psychiatric_illness_schizophrenia' => false,
                 'comorbid_psychiatric_illness_major_depression' => false,
@@ -163,21 +163,21 @@ class MedicineAdmissionNote extends Model
         ],
 
         'comorbid_epilepsy' => [
-            'noneTriggerValue' => 1,
+            'resetTriggerValues' => [0,255],
             'fields' => [
                 'comorbid_epilepsy_specific' => null
             ]
         ],
 
         'comorbid_pacemaker_implant' => [
-            'noneTriggerValue' => 1,
+            'resetTriggerValues' => [0,255],
             'fields' => [
                 'comorbid_pacemaker_implant_specific' => null
             ]
         ],
 
         'comorbid_chronic_arthritis' => [
-            'noneTriggerValue' => 1,
+            'resetTriggerValues' => [0,255],
             'fields' => [
                 'comorbid_chronic_arthritis_CPPD' => false,
                 'comorbid_chronic_arthritis_rheumatoid' => false,
@@ -188,10 +188,31 @@ class MedicineAdmissionNote extends Model
         ],
 
         'comorbid_TB' => [
-            'noneTriggerValue' => 1,
+            'resetTriggerValues' => [0,255],
             'fields' => [
                 'comorbid_TB_pulmonary' => false,
                 'comorbid_TB_other' => null,
+            ]
+        ],
+
+        'pregnancy' => [
+            'resetTriggerValues' => [0,2],
+            'fields' => [
+                'gestation_weeks' => null,
+            ]
+        ],
+
+        'alcohol' => [
+            'resetTriggerValues' => [0],
+            'fields' => [
+                'alcohol_description' => null,
+            ]
+        ],
+
+        'cigarette_smoking' => [
+            'resetTriggerValues' => [0],
+            'fields' => [
+                'smoke_description' => null,
             ]
         ],
     ];
@@ -232,7 +253,8 @@ class MedicineAdmissionNote extends Model
     protected function resetExtrasIfNeeded($field, $value)
     {
         if ( array_key_exists($field, $this->fieldsWithExtras)
-             && $value != $this->fieldsWithExtras[$field]['noneTriggerValue']
+             && in_array($value, $this->fieldsWithExtras[$field]['resetTriggerValues']) 
+             // $value != $this->fieldsWithExtras[$field]['noneTriggerValue']
            ) {
             foreach ( $this->fieldsWithExtras[$field]['fields'] as $key => $value ) {
                 $this->$key = $value;

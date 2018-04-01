@@ -2862,11 +2862,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         if (this.value === undefined) this.lastData = this.userInput = '';else this.lastData = this.userInput = this.value;
 
         // listen to event to trigger event
-        if (this.interfaceEvent !== undefined) {
-            EventBus.$on(this.interfaceEvent, function () {
-                _this.emitUpdate();
-            });
-        }
+        // if (this.interfaceEvent !== undefined) {
+        //     EventBus.$on(this.interfaceEvent, () => {
+        //         this.emitUpdate()
+        //     })
+        // }
 
         // initial autocomplete instance
         $('#' + this.id).autocomplete({

@@ -165,6 +165,44 @@ class CreateMedicineAdmissionNotesTable extends Migration
             $table->text('family_history')->nullable();
 
             $table->text('current_medications')->nullable();
+
+            $table->string('allergy')->nullable();
+
+            $table->text('general_symptoms')->nullable();
+            $table->unsignedTinyInteger('review_system_hair_and_skin')->nullable();
+            $table->text('review_system_hair_and_skin_description')->nullable();
+            $table->unsignedTinyInteger('review_system_head')->nullable();
+            $table->text('review_system_head_description')->nullable();
+            $table->unsignedTinyInteger('review_system_eye_ENT')->nullable();
+            $table->text('review_system_eye_ENT_description')->nullable();
+            $table->unsignedTinyInteger('review_system_breast')->nullable();
+            $table->text('review_system_breast_description')->nullable();
+            $table->unsignedTinyInteger('review_system_CVS')->nullable();
+            $table->text('review_system_CVS_description')->nullable();
+            $table->unsignedTinyInteger('review_system_RS')->nullable();
+            $table->text('review_system_RS_description')->nullable();
+            $table->unsignedTinyInteger('review_system_GI')->nullable();
+            $table->text('review_system_GI_description')->nullable();
+            $table->unsignedTinyInteger('review_system_GU')->nullable();
+            $table->text('review_system_GU_description')->nullable();
+            $table->unsignedTinyInteger('review_system_musculoskeletal')->nullable();
+            $table->text('review_system_musculoskeletal_description')->nullable();
+            $table->unsignedTinyInteger('review_system_nervous_system')->nullable();
+            $table->text('review_system_nervous_system_description')->nullable();
+            $table->unsignedTinyInteger('review_system_psychological_symptoms')->nullable();
+            $table->text('review_system_psychological_symptoms_description')->nullable();
+
+            $table->decimal('temperature_celsius', 3, 1)->nullable();
+            $table->unsignedTinyInteger('pulse_rate_per_min')->nullable();
+            $table->unsignedTinyInteger('respiratory_rate_per_min')->nullable();
+            $table->string('BP', 7)->nullable();
+            $table->boolean('estimated_height')->default(0);
+            $table->decimal('height_cm', 4, 1)->nullable();
+            $table->boolean('estimated_weight')->default(0);
+            $table->decimal('weight_kg', 4, 1)->nullable();
+            $table->unsignedTinyInteger('SpO2')->nullable();
+            $table->unsignedTinyInteger('breathing')->nullable();
+            $table->decimal('O2_rate', 3, 1)->nullable();
         });
     }
 

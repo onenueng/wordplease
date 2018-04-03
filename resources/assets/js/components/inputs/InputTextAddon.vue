@@ -2,7 +2,7 @@
     <div :class="componentGrid">
         <div :class="componentSize">
             <label  v-if="hasLabel"
-                    class="control-label"
+                    class="control-label topped"
                     :for="field">
                 <span v-html="label"></span>
                 <a  v-if="labelDescription !== undefined"
@@ -16,7 +16,7 @@
             <div class="input-group">
                 <span   v-if="frontAddon !== undefined"
                         class="input-group-addon"
-                        v-html="frontAddonHtml">
+                        v-html="frontAddon">
                 </span>
                 <input  type="text"
                         :class="inputClass"
@@ -25,11 +25,10 @@
                         :name="field"
                         :id="field"
                         v-model="userInput"
-                        @input="oninput()"
                         @blur="onblur()" />
                 <span   v-if="rearAddon !== undefined"
                         class="input-group-addon"
-                        v-html="rearAddonHtml">
+                        v-html="rearAddon">
                 </span>
             </div>
         </div>
@@ -101,14 +100,18 @@
                 type: String,
                 required: false
             },
-            setterFrontAddon: {
+            storeData: {
                 type: String,
                 required: false
             },
-            setterRearAddon: {
-                type: String,
-                required: false
-            },
+            // setterFrontAddon: {
+            //     type: String,
+            //     required: false
+            // },
+            // setterRearAddon: {
+            //     type: String,
+            //     required: false
+            // },
             pattern: {
                 type: String,
                 required: false
@@ -120,10 +123,10 @@
         },
         data () {
             return {
-                userInput: '',
-                lastSave: '',
-                frontAddonHtml: '',
-                rearAddonHtml: '',
+                userInput: null,
+                lastSave: null,
+                // frontAddonHtml: '',
+                // rearAddonHtml: '',
                 inputClass: 'form-control'
             }
         },
@@ -142,25 +145,25 @@
                 })
             }
 
-            if (this.rearAddon !== undefined) {
-                this.rearAddonHtml = this.rearAddon
-            }
+            // if (this.rearAddon !== undefined) {
+            //     this.rearAddonHtml = this.rearAddon
+            // }
 
-            if (this.frontAddon !== undefined) {
-                this.frontAddonHtml = this.frontAddon
-            }
+            // if (this.frontAddon !== undefined) {
+            //     this.frontAddonHtml = this.frontAddon
+            // }
 
-            if (this.setterRearAddon !== undefined) {
-                EventBus.$on(this.setterRearAddon, (html) => {
-                    this.rearAddonHtml = html
-                })
-            }
+            // if (this.setterRearAddon !== undefined) {
+            //     EventBus.$on(this.setterRearAddon, (html) => {
+            //         this.rearAddonHtml = html
+            //     })
+            // }
 
-            if (this.setterFrontAddon !== undefined) {
-                EventBus.$on(this.setterFrontAddon, (html) => {
-                    this.frontAddonHtml = html
-                })   
-            }
+            // if (this.setterFrontAddon !== undefined) {
+            //     EventBus.$on(this.setterFrontAddon, (html) => {
+            //         this.frontAddonHtml = html
+            //     })   
+            // }
 
             if (this.needSync !== undefined) {
                 let url = this.needSync + '/' + this.field
@@ -173,10 +176,11 @@
                      })
             }
 
-            if (this.value === undefined)
-                this.lastSave = this.userInput = ''
-            else
+            if (this.value === undefined) {
+                this.lastSave = this.userInput = null
+            } else {
                 this.lastSave = this.userInput = this.value
+            }
 
             if (this.frontAddon !== undefined && this.frontAddon.search('data-toggle="tooltip"') >= 0) {
                 setTimeout(() => { $('span.input-group-addon a[data-toggle=tooltip]').tooltip() }, 100)
@@ -199,26 +203,29 @@
                 if ( this.readonly != '' && (this.userInput != this.lastSave)) {
                     EventBus.$emit('autosave', this.field, this.userInput)
                     this.lastSave = this.userInput
+
+                    if ( this.storeData !== undefined ) {
+                        EventBus.$emit(this.storeData, this.field, this.userInput)
+                    }
+
+                    if ( this.emitOnUpdateEvents !== null) {
+                        this.emitOnUpdateEvents.forEach((event) => {
+                            EventBus.$emit(event, this.userInput)
+                        })
+                    }
                 }
             },
             isValidate() {
-                if ( this.pattern !== undefined ) {
-                    if ( this.userInput.match(this.regex) !== null ) {
-                        $(this.inputDom).attr('data-original-title', '')
-                        $(this.inputDom).tooltip('hide')
-                        this.inputClass = 'form-control'
-                        return true
-                    } else {
-                        return false
-                    }
+                if ( this.pattern === undefined || this.userInput == null || this.userInput == '' ) {
+                    return true    
                 }
-                return true
-            },
-            oninput() {
-                if ( this.emitOnUpdateEvents !== null) {
-                    this.emitOnUpdateEvents.forEach((event) => {
-                        EventBus.$emit(event, this.userInput)
-                    })
+                if ( this.regex.test(this.userInput) ) {
+                    $(this.inputDom).attr('data-original-title', '')
+                    $(this.inputDom).tooltip('hide')
+                    this.inputClass = 'form-control'
+                    return true
+                } else {
+                    return false
                 }
             },
             onblur() {
@@ -250,7 +257,12 @@
             },
             emitOnUpdateEvents() {
                 if ( this.emitOnUpdate !== undefined) {
-                    return JSON.parse(this.emitOnUpdate)
+                    // return JSON.parse(this.emitOnUpdate)
+                    if (typeof this.emitOnUpdate == 'string') {
+                        // return JSON.parse(this.emitOnUpdate)
+                        return (this.emitOnUpdate).split(",")
+                    }
+                    return this.emitOnUpdate
                 }
                 return null
             },

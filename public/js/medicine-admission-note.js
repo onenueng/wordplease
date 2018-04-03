@@ -2525,7 +2525,7 @@ module.exports = __webpack_require__(194);
 window.EventBus = new Vue();
 
 Vue.component('note', __webpack_require__(195));
-Vue.component('page-navbar', __webpack_require__(231));
+Vue.component('page-navbar', __webpack_require__(236));
 Vue.component('modal-dialog', __webpack_require__(19));
 Vue.component('alert-box', __webpack_require__(31));
 Vue.component('button-app', __webpack_require__(42));
@@ -2603,7 +2603,7 @@ var normalizeComponent = __webpack_require__(0)
 /* script */
 var __vue_script__ = __webpack_require__(196)
 /* template */
-var __vue_template__ = __webpack_require__(230)
+var __vue_template__ = __webpack_require__(235)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -2647,7 +2647,7 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Panel_vue__ = __webpack_require__(47);
+/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Panel_vue__ = __webpack_require__(47);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Panel_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__Panel_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__inputs_InputText_vue__ = __webpack_require__(197);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__inputs_InputText_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__inputs_InputText_vue__);
@@ -2659,14 +2659,345 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__inputs_InputSelect_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__inputs_InputSelect_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__inputs_InputTextarea_vue__ = __webpack_require__(214);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__inputs_InputTextarea_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__inputs_InputTextarea_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__inputs_InputTextAddon_vue__ = __webpack_require__(251);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__inputs_InputTextAddon_vue__ = __webpack_require__(219);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__inputs_InputTextAddon_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__inputs_InputTextAddon_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__inputs_InputSuggestion_vue__ = __webpack_require__(219);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__inputs_InputSuggestion_vue__ = __webpack_require__(224);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__inputs_InputSuggestion_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__inputs_InputSuggestion_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__inputs_InputCheckGroup_vue__ = __webpack_require__(222);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__inputs_InputCheckGroup_vue__ = __webpack_require__(227);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__inputs_InputCheckGroup_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__inputs_InputCheckGroup_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__modals_Medicine_ChildPughScore_vue__ = __webpack_require__(225);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__modals_Medicine_ChildPughScore_vue__ = __webpack_require__(230);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__modals_Medicine_ChildPughScore_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__modals_Medicine_ChildPughScore_vue__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -3540,11 +3871,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             icon: "question-circle",
             title: "Click to learn more about Child-Pugh's Score"
         };
+
+        this.reviewSystemPhysicalExamOptions = [{ label: "Normal", value: 1 }, { label: "Abnormal", value: 2 }];
     },
     mounted: function mounted() {
         var _this = this;
-
-        // this.note = JSON.parse(this.serializedNote)
 
         EventBus.$on('comorbid-negative-all', function () {
             _this.setComorbidAll(0);
@@ -3555,7 +3886,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         });
 
         EventBus.$on('store-data', function (field, value) {
-            console.log(value);
             _this.store[field] = value;
         });
 
@@ -3760,6 +4090,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         EventBus.$on('reset-cigarette_smoking-extras', function (value) {
             if (value == 0) {
                 _this.note.detail.smoke_description = null;
+            }
+        });
+
+        EventBus.$on('append-current_medications', function () {
+            _this.setCurrentMedications('append');
+        });
+
+        EventBus.$on('put-current_medications', function () {
+            _this.setCurrentMedications('put');
+        });
+
+        EventBus.$on('BMI-updates', function () {
+            EventBus.$emit('update-BMI', _this.autoCalculateBMI);
+            if (_this.autoCalculateBMI !== null) {
+                EventBus.$emit('toggle-alert-box', 'BMI updated');
+            }
+        });
+
+        EventBus.$on('reset-breathing-extras', function (value) {
+            if (value == 1) {
+                _this.note.detail.O2_rate = null;
             }
         });
     },
@@ -4027,6 +4378,39 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 checked: this.note.detail.isolation_room,
                 label: "Isolation room"
             }];
+        },
+        estimatedHeightTemplate: function estimatedHeightTemplate() {
+            var template = '<input type="checkbox" ';
+            template += 'name="estimated_height" ';
+            template += this.note.detail.estimated_height != 0 ? 'checked' : '';
+            template += '/> <span class="estimated" data-target="estimated_height">estimated</span>';
+            return template;
+        },
+        estimatedWeightTemplate: function estimatedWeightTemplate() {
+            var template = '<input type="checkbox" ';
+            template += 'name="estimated_weight" ';
+            template += this.note.detail.estimated_weight != 0 ? 'checked' : '';
+            template += '/> <span class="estimated" data-target="estimated_weight">estimated</span>';
+            return template;
+        },
+        autoCalculateBMI: function autoCalculateBMI() {
+            if (this.note.detail.height_cm == null || this.note.detail.weight_kg == null) {
+                return null;
+            }
+
+            var BMI = (this.note.detail.weight_kg / Math.pow(this.note.detail.height_cm / 100, 2)).toFixed(2);
+            return BMI == '0.00' ? null : BMI;
+        },
+        O2RateRearAddon: function O2RateRearAddon() {
+            switch (this.note.detail.breathing) {
+                case 2:
+                case 3:
+                    return 'L/min';
+                case 4:
+                    return 'FiO<sub>2</sub>';
+                default:
+                    return '';
+            }
         }
     },
     methods: {
@@ -4057,6 +4441,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             EventBus.$emit('set-comorbid_pacemaker_implant', value);
             EventBus.$emit('set-comorbid_chronic_arthritis', value);
             EventBus.$emit('set-comorbid_TB', value);
+        },
+        setCurrentMedications: function setCurrentMedications(mode) {
+            EventBus.$emit('set-current_medications', this.store.current_medications_helper, mode);
+            EventBus.$emit('set-current_medications_helper', '');
+            this.$refs.current_medications_helper.$el.children[0].children[0].children[1].focus();
         }
     }
 
@@ -4064,7 +4453,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     // window.location.href
     // window.location.hostname
     // window.location.pathname
+
+
+    // handle estimated_height and estimated_weight
+});$(function () {
+    $('span.estimated').click(function () {
+        $('input[name=' + $(this).attr('data-target') + ']').click();
+    });
+
+    $('span.estimated').mouseover(function () {
+        $(this).css({ 'cursor': 'pointer', 'font-style': 'italic' });
+    });
+
+    $('span.estimated').mouseout(function () {
+        $(this).css({ 'cursor': '', 'font-style': '' });
+    });
+
+    $('input[name^=estimated_]').click(function () {
+        EventBus.$emit('autosave', $(this).attr('name'), $(this).prop('checked'));
+    });
 });
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(1)))
 
 /***/ }),
 /* 197 */
@@ -4968,11 +5377,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.showReset = true;
 
-            // if (this.value == this.triggerValue) {
-            //     this.showExtra = true
-            // }
-
-            this.showExtra = this.isTriggerExtra(this.value);
+            if (this.hasDefaultSlot) {
+                this.showExtra = this.isTriggerExtra(this.value);
+            } else {
+                this.showExtra = false;
+            }
         }
 
         if (this.needSync !== undefined) {
@@ -4996,7 +5405,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         // check if has content in default slot.
         hasDefaultSlot: function hasDefaultSlot() {
-            return !!this.$slots.default;
+            // return !!this.$slots.default
+            return this.$slots.default === undefined ? false : true;
         },
 
         // extract label action emit event name.
@@ -5801,11 +6211,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 if (mode == 'put') {
                     _this.userInput = value;
                 } else {
-                    if (_this.userInput == '') {
-                        _this.userInput += value;
-                    } else {
-                        _this.userInput += '\n' + value;
+                    if (_this.userInput != null) {
+                        _this.userInput += '\n';
                     }
+                    _this.userInput += value;
                 }
                 _this.dirty = true;
                 _this.autosave();
@@ -5972,7 +6381,10 @@ var render = function() {
         _vm.label != undefined
           ? _c(
               "label",
-              { staticClass: "control-label", attrs: { for: _vm.field } },
+              {
+                staticClass: "control-label topped",
+                attrs: { for: _vm.field }
+              },
               [_vm._v("\n                " + _vm._s(_vm.label) + "\n        ")]
             )
           : _vm._e(),
@@ -6046,11 +6458,485 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(220)
+}
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(220)
+var __vue_script__ = __webpack_require__(222)
 /* template */
-var __vue_template__ = __webpack_require__(221)
+var __vue_template__ = __webpack_require__(223)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/inputs/InputTextAddon.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-c122ff30", Component.options)
+  } else {
+    hotAPI.reload("data-v-c122ff30", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 220 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(221);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(3)("4f90b41b", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-c122ff30\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./InputTextAddon.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-c122ff30\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./InputTextAddon.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 221 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.add-margin-bottom {\n    margin-bottom: 3px;\n}\n.invalid-input {\n    color: #fff;\n    background:#d9534f;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 222 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* WEBPACK VAR INJECTION */(function($) {var _props;
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: (_props = {
+        // field name on database.
+        field: {
+            type: String,
+            required: false
+        },
+        label: {
+            type: String,
+            required: false
+        },
+        labelDescription: {
+            type: String,
+            required: false
+        },
+        placeholder: {
+            type: String,
+            required: false
+        },
+        // define Bootstrap grid class in mobile-tablet-desktop order
+        grid: {
+            type: String,
+            required: false
+        },
+        // initial value.
+        value: {
+            type: [String, Number],
+            required: false
+        },
+        // allow user type-in or not, Just mention this option.
+        readonly: {
+            type: String,
+            required: false
+        },
+        // define Bootstrap form-group has-feedback which size of form-group should use.
+        size: {
+            type: String,
+            required: false
+        },
+        // need to sync value with database on render or not ['needSync' or undefined].
+        needSync: {
+            type: String,
+            required: false
+        }
+    }, _defineProperty(_props, 'placeholder', {
+        type: String,
+        required: false
+    }), _defineProperty(_props, 'frontAddon', {
+        type: String,
+        required: false
+    }), _defineProperty(_props, 'rearAddon', {
+        type: String,
+        required: false
+    }), _defineProperty(_props, 'emitOnUpdate', {
+
+        required: false
+    }), _defineProperty(_props, 'setterEvent', {
+        type: String,
+        required: false
+    }), _defineProperty(_props, 'storeData', {
+        type: String,
+        required: false
+    }), _defineProperty(_props, 'pattern', {
+        type: String,
+        required: false
+    }), _defineProperty(_props, 'invalidText', {
+        type: String,
+        required: false
+    }), _props),
+    data: function data() {
+        return {
+            userInput: null,
+            lastSave: null,
+            // frontAddonHtml: '',
+            // rearAddonHtml: '',
+            inputClass: 'form-control'
+        };
+    },
+    mounted: function mounted() {
+        var _this = this;
+
+        // init label tooltip if available.
+        if (this.labelDescription !== undefined) {
+            $('a[title="' + this.labelDescription + '"]').tooltip();
+        }
+
+        if (this.setterEvent !== undefined) {
+            EventBus.$on(this.setterEvent, function (value) {
+                if (value != _this.userInput) {
+                    _this.userInput = value;
+                    _this.autosave();
+                }
+            });
+        }
+
+        // if (this.rearAddon !== undefined) {
+        //     this.rearAddonHtml = this.rearAddon
+        // }
+
+        // if (this.frontAddon !== undefined) {
+        //     this.frontAddonHtml = this.frontAddon
+        // }
+
+        // if (this.setterRearAddon !== undefined) {
+        //     EventBus.$on(this.setterRearAddon, (html) => {
+        //         this.rearAddonHtml = html
+        //     })
+        // }
+
+        // if (this.setterFrontAddon !== undefined) {
+        //     EventBus.$on(this.setterFrontAddon, (html) => {
+        //         this.frontAddonHtml = html
+        //     })   
+        // }
+
+        if (this.needSync !== undefined) {
+            var url = this.needSync + '/' + this.field;
+            axios.get(url).then(function (response) {
+                _this.userInput = response.data;
+            }).catch(function (error) {
+                _this.userInput = 'error';
+            });
+        }
+
+        if (this.value === undefined) {
+            this.lastSave = this.userInput = null;
+        } else {
+            this.lastSave = this.userInput = this.value;
+        }
+
+        if (this.frontAddon !== undefined && this.frontAddon.search('data-toggle="tooltip"') >= 0) {
+            setTimeout(function () {
+                $('span.input-group-addon a[data-toggle=tooltip]').tooltip();
+            }, 100);
+        } else {
+            if (this.rearAddon !== undefined && this.rearAddon.search('data-toggle="tooltip"') >= 0) {
+                setTimeout(function () {
+                    $('span.input-group-addon a[data-toggle=tooltip]').tooltip();
+                }, 100);
+            }
+        }
+
+        if (this.pattern !== undefined) {
+            $(this.inputDom).tooltip({
+                placement: "bottom",
+                trigger: "hover",
+                delay: { "show": 100, "hide": 500 }
+            });
+        }
+    },
+
+    methods: {
+        autosave: function autosave() {
+            var _this2 = this;
+
+            if (this.readonly != '' && this.userInput != this.lastSave) {
+                EventBus.$emit('autosave', this.field, this.userInput);
+                this.lastSave = this.userInput;
+
+                if (this.storeData !== undefined) {
+                    EventBus.$emit(this.storeData, this.field, this.userInput);
+                }
+
+                if (this.emitOnUpdateEvents !== null) {
+                    this.emitOnUpdateEvents.forEach(function (event) {
+                        EventBus.$emit(event, _this2.userInput);
+                    });
+                }
+            }
+        },
+        isValidate: function isValidate() {
+            if (this.pattern === undefined || this.userInput == null || this.userInput == '') {
+                return true;
+            }
+            if (this.regex.test(this.userInput)) {
+                $(this.inputDom).attr('data-original-title', '');
+                $(this.inputDom).tooltip('hide');
+                this.inputClass = 'form-control';
+                return true;
+            } else {
+                return false;
+            }
+        },
+        onblur: function onblur() {
+            if (this.isValidate()) {
+                this.autosave();
+            } else {
+                $(this.inputDom).attr('data-original-title', this.invalidTextComputed);
+                $(this.inputDom).tooltip('show');
+                this.inputClass = 'form-control invalid-input';
+            }
+        }
+    },
+    computed: {
+        hasLabel: function hasLabel() {
+            return !(this.label === undefined);
+        },
+        componentSize: function componentSize() {
+            if (this.size == 'normal') {
+                return 'form-group add-margin-bottom';
+            }
+            return 'form-group-sm add-margin-bottom';
+        },
+        componentGrid: function componentGrid() {
+            if (this.grid === undefined) {
+                return '';
+            }
+            var grid = this.grid.split('-');
+            return 'col-xs-' + grid[0] + ' col-sm-' + grid[1] + ' col-md-' + grid[2];
+        },
+        emitOnUpdateEvents: function emitOnUpdateEvents() {
+            if (this.emitOnUpdate !== undefined) {
+                // return JSON.parse(this.emitOnUpdate)
+                if (typeof this.emitOnUpdate == 'string') {
+                    // return JSON.parse(this.emitOnUpdate)
+                    return this.emitOnUpdate.split(",");
+                }
+                return this.emitOnUpdate;
+            }
+            return null;
+        },
+        regex: function regex() {
+            if (this.pattern !== null) {
+                return new RegExp(this.pattern);
+            }
+            return null;
+        },
+        inputDom: function inputDom() {
+            return this.field !== undefined ? '#' + this.field : '';
+        },
+        invalidTextComputed: function invalidTextComputed() {
+            var defaultText = 'Invalid format. Data cannot be saved.';
+            return this.invalidText === undefined ? defaultText : this.invalidText;
+        }
+    }
+});
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(1)))
+
+/***/ }),
+/* 223 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { class: _vm.componentGrid }, [
+    _c("div", { class: _vm.componentSize }, [
+      _vm.hasLabel
+        ? _c(
+            "label",
+            { staticClass: "control-label topped", attrs: { for: _vm.field } },
+            [
+              _c("span", { domProps: { innerHTML: _vm._s(_vm.label) } }),
+              _vm._v(" "),
+              _vm.labelDescription !== undefined
+                ? _c(
+                    "a",
+                    {
+                      attrs: {
+                        role: "button",
+                        "data-toggle": "tooltip",
+                        title: _vm.labelDescription
+                      }
+                    },
+                    [_c("i", { staticClass: "fa fa-info-circle" })]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.labelDescription !== undefined
+                ? _c("span", [_vm._v(":")])
+                : _vm._e()
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c("div", { staticClass: "input-group" }, [
+        _vm.frontAddon !== undefined
+          ? _c("span", {
+              staticClass: "input-group-addon",
+              domProps: { innerHTML: _vm._s(_vm.frontAddon) }
+            })
+          : _vm._e(),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.userInput,
+              expression: "userInput"
+            }
+          ],
+          class: _vm.inputClass,
+          attrs: {
+            type: "text",
+            readonly: _vm.readonly,
+            placeholder: _vm.placeholder,
+            name: _vm.field,
+            id: _vm.field
+          },
+          domProps: { value: _vm.userInput },
+          on: {
+            blur: function($event) {
+              _vm.onblur()
+            },
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.userInput = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _vm.rearAddon !== undefined
+          ? _c("span", {
+              staticClass: "input-group-addon",
+              domProps: { innerHTML: _vm._s(_vm.rearAddon) }
+            })
+          : _vm._e()
+      ])
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-c122ff30", module.exports)
+  }
+}
+
+/***/ }),
+/* 224 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(225)
+/* template */
+var __vue_template__ = __webpack_require__(226)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -6089,7 +6975,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 220 */
+/* 225 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6160,6 +7046,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             type: String,
             required: false
         },
+        setterEvent: {
+            type: String,
+            required: false
+        },
         storeData: {
             type: String,
             required: false
@@ -6180,14 +7070,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         var _this = this;
 
         // initial data
-        if (this.value === undefined || this.value === null) this.lastData = this.userInput = '';else this.lastData = this.userInput = this.value;
+        if (this.value === undefined || this.value === null) {
+            this.lastData = this.userInput = '';
+        } else {
+            this.lastData = this.userInput = this.value;
+        }
 
-        // listen to event to trigger event
-        // if (this.interfaceEvent !== undefined) {
-        //     EventBus.$on(this.interfaceEvent, () => {
-        //         this.emitUpdate()
-        //     })
-        // }
+        if (this.setterEvent !== undefined) {
+            EventBus.$on(this.setterEvent, function (value) {
+                _this.userInput = value;
+            });
+        }
 
         // initial autocomplete instance
         $('#' + this.id).autocomplete({
@@ -6291,7 +7184,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(1)))
 
 /***/ }),
-/* 221 */
+/* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -6367,15 +7260,15 @@ if (false) {
 }
 
 /***/ }),
-/* 222 */
+/* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(223)
+var __vue_script__ = __webpack_require__(228)
 /* template */
-var __vue_template__ = __webpack_require__(224)
+var __vue_template__ = __webpack_require__(229)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -6414,7 +7307,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 223 */
+/* 228 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6467,7 +7360,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 224 */
+/* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -6511,19 +7404,19 @@ if (false) {
 }
 
 /***/ }),
-/* 225 */
+/* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(226)
+  __webpack_require__(231)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(228)
+var __vue_script__ = __webpack_require__(233)
 /* template */
-var __vue_template__ = __webpack_require__(229)
+var __vue_template__ = __webpack_require__(234)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -6562,13 +7455,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 226 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(227);
+var content = __webpack_require__(232);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -6588,7 +7481,7 @@ if(false) {
 }
 
 /***/ }),
-/* 227 */
+/* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)(false);
@@ -6602,7 +7495,7 @@ exports.push([module.i, "\n#modal-body-child-pugh {\n    font-size: 12pt;\n}\n#m
 
 
 /***/ }),
-/* 228 */
+/* 233 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6711,7 +7604,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(1)))
 
 /***/ }),
-/* 229 */
+/* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -6988,7 +7881,7 @@ if (false) {
 }
 
 /***/ }),
-/* 230 */
+/* 235 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -8296,9 +9189,11 @@ var render = function() {
           { staticClass: "row" },
           [
             _c("input-suggestion", {
+              ref: "current_medications_helper",
               attrs: {
                 "target-id": "current_medications_helper",
                 "store-data": "store-data",
+                setterEvent: "set-current_medications_helper",
                 grid: "8-8-4",
                 "service-url": "autocomplete/drug",
                 placeholder: "search drug using generic, trade or synonym name"
@@ -8307,7 +9202,7 @@ var render = function() {
             _vm._v(" "),
             _c("button-app", {
               attrs: {
-                action: "append-current-medications",
+                action: "append-current_medications",
                 label: "Append",
                 status: "draft",
                 size: "sm"
@@ -8316,7 +9211,7 @@ var render = function() {
             _vm._v(" "),
             _c("button-app", {
               attrs: {
-                action: "put-current-medications",
+                action: "put-current_medications",
                 label: "Put",
                 status: "draft",
                 size: "sm"
@@ -8327,11 +9222,577 @@ var render = function() {
               attrs: {
                 field: "current_medications",
                 value: _vm.note.detail.current_medications,
-                "setter-event": "set-current-medications",
+                "setter-event": "set-current_medications",
                 "max-chars": "1000",
                 grid: "12-12-12"
               }
             })
+          ],
+          1
+        )
+      ]),
+      _vm._v(" "),
+      _c(
+        "panel",
+        { attrs: { heading: "Allergy/Adverse event (Drug, Food, Chemical)" } },
+        [
+          _c(
+            "div",
+            { staticClass: "row" },
+            [
+              _c("input-textarea", {
+                attrs: {
+                  field: "allergy",
+                  value: _vm.note.detail.allergy,
+                  grid: "12-12-12"
+                }
+              })
+            ],
+            1
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _c("panel", { attrs: { heading: "Review of systems" } }, [
+        _c(
+          "div",
+          { staticClass: "row" },
+          [
+            _c("input-textarea", {
+              attrs: {
+                field: "general_symptoms",
+                value: _vm.note.detail.general_symptoms,
+                label: "General symptoms :",
+                grid: "12-12-12"
+              }
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-xs-12" }, [
+              _c("hr", { staticClass: "line" })
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "col-xs-12 col-md-6" },
+              [
+                _c(
+                  "div",
+                  { staticClass: "col-xs-12" },
+                  [
+                    _c("input-radio", {
+                      attrs: {
+                        field: "review_system_hair_and_skin",
+                        value: _vm.note.detail.review_system_hair_and_skin,
+                        label: "Hair and Skin :",
+                        options: _vm.reviewSystemPhysicalExamOptions
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("input-textarea", {
+                  attrs: {
+                    field: "review_system_hair_and_skin_description",
+                    value:
+                      _vm.note.detail.review_system_hair_and_skin_description,
+                    placeholder: "description",
+                    "max-chars": "1000",
+                    grid: "12-12-12"
+                  }
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-12" }, [
+                  _c("hr", { staticClass: "line" })
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "col-xs-12" },
+                  [
+                    _c("input-radio", {
+                      attrs: {
+                        field: "review_system_head",
+                        value: _vm.note.detail.review_system_head,
+                        label: "Head :",
+                        options: _vm.reviewSystemPhysicalExamOptions
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("input-textarea", {
+                  attrs: {
+                    field: "review_system_head_description",
+                    value: _vm.note.detail.review_system_head_description,
+                    placeholder: "description",
+                    "max-chars": "1000",
+                    grid: "12-12-12"
+                  }
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-12" }, [
+                  _c("hr", { staticClass: "line" })
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "col-xs-12" },
+                  [
+                    _c("input-radio", {
+                      attrs: {
+                        field: "review_system_eye_ENT",
+                        value: _vm.note.detail.review_system_eye_ENT,
+                        label: "Eye/ENT :",
+                        options: _vm.reviewSystemPhysicalExamOptions
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("input-textarea", {
+                  attrs: {
+                    field: "review_system_eye_ENT_description",
+                    value: _vm.note.detail.review_system_eye_ENT_description,
+                    placeholder: "description",
+                    "max-chars": "1000",
+                    grid: "12-12-12"
+                  }
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-12" }, [
+                  _c("hr", { staticClass: "line" })
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "col-xs-12" },
+                  [
+                    _c("input-radio", {
+                      attrs: {
+                        field: "review_system_breast",
+                        value: _vm.note.detail.review_system_breast,
+                        label: "Breast :",
+                        options: _vm.reviewSystemPhysicalExamOptions
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("input-textarea", {
+                  attrs: {
+                    field: "review_system_breast_description",
+                    value: _vm.note.detail.review_system_breast_description,
+                    placeholder: "description",
+                    "max-chars": "1000",
+                    grid: "12-12-12"
+                  }
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-12" }, [
+                  _c("hr", { staticClass: "line" })
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "col-xs-12" },
+                  [
+                    _c("input-radio", {
+                      attrs: {
+                        field: "review_system_CVS",
+                        value: _vm.note.detail.review_system_CVS,
+                        label: "CVS :",
+                        options: _vm.reviewSystemPhysicalExamOptions
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("input-textarea", {
+                  attrs: {
+                    field: "review_system_CVS_description",
+                    value: _vm.note.detail.review_system_CVS_description,
+                    placeholder: "description",
+                    "max-chars": "1000",
+                    grid: "12-12-12"
+                  }
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-12" }, [
+                  _c("hr", { staticClass: "line" })
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "col-xs-12" },
+                  [
+                    _c("input-radio", {
+                      attrs: {
+                        field: "review_system_RS",
+                        value: _vm.note.detail.review_system_RS,
+                        label: "RS :",
+                        options: _vm.reviewSystemPhysicalExamOptions
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("input-textarea", {
+                  attrs: {
+                    field: "review_system_RS_description",
+                    value: _vm.note.detail.review_system_RS_description,
+                    placeholder: "description",
+                    "max-chars": "1000",
+                    grid: "12-12-12"
+                  }
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-12" }, [
+                  _c("hr", { staticClass: "line" })
+                ])
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "col-xs-12 col-md-6" },
+              [
+                _c(
+                  "div",
+                  { staticClass: "col-xs-12" },
+                  [
+                    _c("input-radio", {
+                      attrs: {
+                        field: "review_system_GI",
+                        value: _vm.note.detail.review_system_GI,
+                        label: "GI :",
+                        options: _vm.reviewSystemPhysicalExamOptions
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("input-textarea", {
+                  attrs: {
+                    field: "review_system_GI_description",
+                    value: _vm.note.detail.review_system_GI_description,
+                    placeholder: "description",
+                    "max-chars": "1000",
+                    grid: "12-12-12"
+                  }
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-12" }, [
+                  _c("hr", { staticClass: "line" })
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "col-xs-12" },
+                  [
+                    _c("input-radio", {
+                      attrs: {
+                        field: "review_system_GU",
+                        value: _vm.note.detail.review_system_GU,
+                        label: "GU :",
+                        options: _vm.reviewSystemPhysicalExamOptions
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("input-textarea", {
+                  attrs: {
+                    field: "review_system_GU_description",
+                    value: _vm.note.detail.review_system_GU_description,
+                    placeholder: "description",
+                    "max-chars": "1000",
+                    grid: "12-12-12"
+                  }
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-12" }, [
+                  _c("hr", { staticClass: "line" })
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "col-xs-12" },
+                  [
+                    _c("input-radio", {
+                      attrs: {
+                        field: "review_system_musculoskeletal",
+                        value: _vm.note.detail.review_system_musculoskeletal,
+                        label: "Musculoskeletal :",
+                        options: _vm.reviewSystemPhysicalExamOptions
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("input-textarea", {
+                  attrs: {
+                    field: "review_system_musculoskeletal_description",
+                    value:
+                      _vm.note.detail.review_system_musculoskeletal_description,
+                    placeholder: "description",
+                    "max-chars": "1000",
+                    grid: "12-12-12"
+                  }
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-12" }, [
+                  _c("hr", { staticClass: "line" })
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "col-xs-12" },
+                  [
+                    _c("input-radio", {
+                      attrs: {
+                        field: "review_system_nervous_system",
+                        value: _vm.note.detail.review_system_nervous_system,
+                        label: "Nervous system :",
+                        options: _vm.reviewSystemPhysicalExamOptions
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("input-textarea", {
+                  attrs: {
+                    field: "review_system_nervous_system_description",
+                    value:
+                      _vm.note.detail.review_system_nervous_system_description,
+                    placeholder: "description",
+                    "max-chars": "1000",
+                    grid: "12-12-12"
+                  }
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-12" }, [
+                  _c("hr", { staticClass: "line" })
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "col-xs-12" },
+                  [
+                    _c("input-radio", {
+                      attrs: {
+                        field: "review_system_psychological_symptoms",
+                        value:
+                          _vm.note.detail.review_system_psychological_symptoms,
+                        label: "Psychological symptoms :",
+                        options: _vm.reviewSystemPhysicalExamOptions
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("input-textarea", {
+                  attrs: {
+                    field: "review_system_psychological_symptoms_description",
+                    value:
+                      _vm.note.detail
+                        .review_system_psychological_symptoms_description,
+                    placeholder: "description",
+                    "max-chars": "1000",
+                    grid: "12-12-12"
+                  }
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-12" }, [
+                  _c("hr", { staticClass: "line" })
+                ])
+              ],
+              1
+            )
+          ],
+          1
+        )
+      ]),
+      _vm._v(" "),
+      _c("panel", { attrs: { heading: "Vital signs" } }, [
+        _c(
+          "div",
+          { staticClass: "row" },
+          [
+            _c("input-text-addon", {
+              attrs: {
+                field: "temperature_celsius",
+                value: _vm.note.detail.temperature_celsius,
+                label: "Temperature :",
+                pattern: "^((([234]\\d{1})?([.]?\\d?)?)|50([.]?0*)?)$",
+                "invalid-text":
+                  "Data could not be saved. Accept range [20, 50], Integer or 1 point decimal only",
+                "rear-addon": "&deg;C",
+                placeholder: "Integer or 1 point decimal only",
+                grid: "12-6-3"
+              }
+            }),
+            _vm._v(" "),
+            _c("input-text-addon", {
+              attrs: {
+                field: "pulse_rate_per_min",
+                value: _vm.note.detail.pulse_rate_per_min,
+                label: "Pulse :",
+                pattern: "^([23456789]\\d|[1][01]\\d|120)$",
+                "invalid-text":
+                  "Data could not be saved. Accept range [20, 120], Integer only",
+                "rear-addon": "/min",
+                placeholder: "Integer only",
+                grid: "12-6-3"
+              }
+            }),
+            _vm._v(" "),
+            _c("input-text-addon", {
+              attrs: {
+                field: "respiratory_rate_per_min",
+                value: _vm.note.detail.respiratory_rate_per_min,
+                label: "Respiratory rate :",
+                pattern: "^([1]\\d|[23]\\d|40)$",
+                "invalid-text":
+                  "Data could not be saved. Accept range [10, 40], Integer only",
+                "rear-addon": "/min",
+                placeholder: "Integer only",
+                grid: "12-6-3"
+              }
+            }),
+            _vm._v(" "),
+            _c("input-text-addon", {
+              attrs: {
+                field: "BP",
+                value: _vm.note.detail.BP,
+                label: "Blood presure :",
+                "rear-addon": "mmHg",
+                placeholder: "SBP/DBP",
+                pattern: "^([89]\\d|1[123]\\d|140)\\/([5678]\\d|90)$",
+                "invalid-text":
+                  "Data could not be saved. Accept range [80, 140]/[50, 90], in SBP/DBP format",
+                grid: "12-6-3"
+              }
+            }),
+            _vm._v(" "),
+            _c("input-text-addon", {
+              attrs: {
+                field: "height_cm",
+                value: _vm.note.detail.height_cm,
+                label: "Height :",
+                "front-addon": _vm.estimatedHeightTemplate,
+                "rear-addon": "cm",
+                "emit-on-update": "BMI-updates",
+                placeholder: "Integer or 1 point decimal only",
+                "store-data": "note-store-data",
+                pattern:
+                  "^([5-9]\\d([.]?\\d)?|[1]\\d{2}([.]?\\d)?|[2][0-7]\\d([.]?\\d)?|280([.]?0*)?)$",
+                "invalid-text":
+                  "Data could not be saved. Accept range [50, 280], Integer or 1 point decimal only",
+                grid: "12-6-3"
+              }
+            }),
+            _vm._v(" "),
+            _c("input-text-addon", {
+              attrs: {
+                field: "weight_kg",
+                value: _vm.note.detail.weight_kg,
+                label: "Weight :",
+                "front-addon": _vm.estimatedWeightTemplate,
+                "rear-addon": "kg",
+                "emit-on-update": "BMI-updates",
+                placeholder: "Integer or 1 point decimal only",
+                "store-data": "note-store-data",
+                pattern:
+                  "^([2-9]\\d([.]?\\d)?|[1-5]\\d{2}([.]?\\d)?|600([.]?0*)?)$",
+                "invalid-text":
+                  "Data could not be saved. Accept range [20, 600], Integer or 1 point decimal only",
+                grid: "12-6-3"
+              }
+            }),
+            _vm._v(" "),
+            _c("input-text-addon", {
+              ref: "BMI",
+              attrs: {
+                value: _vm.autoCalculateBMI,
+                label: "BMI ",
+                "label-description": "Auto calculate",
+                "rear-addon": "kg/m<sup>2</sup>",
+                grid: "12-6-3",
+                "setter-event": "update-BMI",
+                readonly: ""
+              }
+            }),
+            _vm._v(" "),
+            _c("input-text-addon", {
+              attrs: {
+                field: "SpO2",
+                value: _vm.note.detail.SpO2,
+                label: "SpO<sub>2</sub> ",
+                "label-description": "as indicated",
+                pattern: "^([3-9]\\d|100)$",
+                "invalid-text":
+                  "Data could not be saved. Accept range [30, 100], Integer only",
+                "rear-addon": "%",
+                grid: "12-6-3"
+              }
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-xs-12 col-md-6" }, [
+              _c(
+                "div",
+                { staticClass: "material-box" },
+                [
+                  _c(
+                    "input-radio",
+                    {
+                      attrs: {
+                        field: "breathing",
+                        label: "Breathing :",
+                        value: _vm.note.detail.breathing,
+                        options:
+                          '[\n                            {"label": "Room air", "value": 1},\n                            {"label": "O<sub>2</sub>-Canula", "value": 2},\n                            {"label": "O<sub>2</sub>-Mask with bag", "value": 3},\n                            {"label": "O<sub>2</sub>-On ventilator", "value": 4}\n                        ]',
+                        "trigger-value": "[2,3,4]",
+                        "store-data": "note-store-data",
+                        "emit-on-update": "reset-breathing-extras"
+                      }
+                    },
+                    [
+                      _c(
+                        "div",
+                        { staticClass: "form-inline" },
+                        [
+                          _c("input-text-addon", {
+                            attrs: {
+                              field: "O2_rate",
+                              value: _vm.note.detail.O2_rate,
+                              "front-addon": "O<sub>2</sub> rate",
+                              "rear-addon": _vm.O2RateRearAddon,
+                              pattern: "^((\\d{1,2})([.]\\d)?)$",
+                              "invalid-text":
+                                "Data could not be saved. Accept range [0, 99.9], Integer or 1 point decimal only"
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    ]
+                  )
+                ],
+                1
+              )
+            ])
           ],
           1
         )
@@ -8351,15 +9812,15 @@ if (false) {
 }
 
 /***/ }),
-/* 231 */
+/* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(232)
+var __vue_script__ = __webpack_require__(237)
 /* template */
-var __vue_template__ = __webpack_require__(233)
+var __vue_template__ = __webpack_require__(238)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -8398,7 +9859,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 232 */
+/* 237 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8462,7 +9923,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 233 */
+/* 238 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -8525,494 +9986,6 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-2a949d7f", module.exports)
-  }
-}
-
-/***/ }),
-/* 234 */,
-/* 235 */,
-/* 236 */,
-/* 237 */,
-/* 238 */,
-/* 239 */,
-/* 240 */,
-/* 241 */,
-/* 242 */,
-/* 243 */,
-/* 244 */,
-/* 245 */,
-/* 246 */,
-/* 247 */,
-/* 248 */,
-/* 249 */,
-/* 250 */,
-/* 251 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(252)
-}
-var normalizeComponent = __webpack_require__(0)
-/* script */
-var __vue_script__ = __webpack_require__(254)
-/* template */
-var __vue_template__ = __webpack_require__(255)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/inputs/InputTextAddon.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-c122ff30", Component.options)
-  } else {
-    hotAPI.reload("data-v-c122ff30", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 252 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(253);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(3)("4f90b41b", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-c122ff30\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./InputTextAddon.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-c122ff30\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./InputTextAddon.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 253 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(2)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n.add-margin-bottom {\n    margin-bottom: 3px;\n}\n.invalid-input {\n    color: #fff;\n    background:#d9534f;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 254 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* WEBPACK VAR INJECTION */(function($) {var _props;
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    props: (_props = {
-        // field name on database.
-        field: {
-            type: String,
-            required: false
-        },
-        label: {
-            type: String,
-            required: false
-        },
-        labelDescription: {
-            type: String,
-            required: false
-        },
-        placeholder: {
-            type: String,
-            required: false
-        },
-        // define Bootstrap grid class in mobile-tablet-desktop order
-        grid: {
-            type: String,
-            required: false
-        },
-        // initial value.
-        value: {
-            type: [String, Number],
-            required: false
-        },
-        // allow user type-in or not, Just mention this option.
-        readonly: {
-            type: String,
-            required: false
-        },
-        // define Bootstrap form-group has-feedback which size of form-group should use.
-        size: {
-            type: String,
-            required: false
-        },
-        // need to sync value with database on render or not ['needSync' or undefined].
-        needSync: {
-            type: String,
-            required: false
-        }
-    }, _defineProperty(_props, 'placeholder', {
-        type: String,
-        required: false
-    }), _defineProperty(_props, 'frontAddon', {
-        type: String,
-        required: false
-    }), _defineProperty(_props, 'rearAddon', {
-        type: String,
-        required: false
-    }), _defineProperty(_props, 'emitOnUpdate', {
-
-        required: false
-    }), _defineProperty(_props, 'setterEvent', {
-        type: String,
-        required: false
-    }), _defineProperty(_props, 'setterFrontAddon', {
-        type: String,
-        required: false
-    }), _defineProperty(_props, 'setterRearAddon', {
-        type: String,
-        required: false
-    }), _defineProperty(_props, 'pattern', {
-        type: String,
-        required: false
-    }), _defineProperty(_props, 'invalidText', {
-        type: String,
-        required: false
-    }), _props),
-    data: function data() {
-        return {
-            userInput: '',
-            lastSave: '',
-            frontAddonHtml: '',
-            rearAddonHtml: '',
-            inputClass: 'form-control'
-        };
-    },
-    mounted: function mounted() {
-        var _this = this;
-
-        // init label tooltip if available.
-        if (this.labelDescription !== undefined) {
-            $('a[title="' + this.labelDescription + '"]').tooltip();
-        }
-
-        if (this.setterEvent !== undefined) {
-            EventBus.$on(this.setterEvent, function (value) {
-                if (value != _this.userInput) {
-                    _this.userInput = value;
-                    _this.autosave();
-                }
-            });
-        }
-
-        if (this.rearAddon !== undefined) {
-            this.rearAddonHtml = this.rearAddon;
-        }
-
-        if (this.frontAddon !== undefined) {
-            this.frontAddonHtml = this.frontAddon;
-        }
-
-        if (this.setterRearAddon !== undefined) {
-            EventBus.$on(this.setterRearAddon, function (html) {
-                _this.rearAddonHtml = html;
-            });
-        }
-
-        if (this.setterFrontAddon !== undefined) {
-            EventBus.$on(this.setterFrontAddon, function (html) {
-                _this.frontAddonHtml = html;
-            });
-        }
-
-        if (this.needSync !== undefined) {
-            var url = this.needSync + '/' + this.field;
-            axios.get(url).then(function (response) {
-                _this.userInput = response.data;
-            }).catch(function (error) {
-                _this.userInput = 'error';
-            });
-        }
-
-        if (this.value === undefined) this.lastSave = this.userInput = '';else this.lastSave = this.userInput = this.value;
-
-        if (this.frontAddon !== undefined && this.frontAddon.search('data-toggle="tooltip"') >= 0) {
-            setTimeout(function () {
-                $('span.input-group-addon a[data-toggle=tooltip]').tooltip();
-            }, 100);
-        } else {
-            if (this.rearAddon !== undefined && this.rearAddon.search('data-toggle="tooltip"') >= 0) {
-                setTimeout(function () {
-                    $('span.input-group-addon a[data-toggle=tooltip]').tooltip();
-                }, 100);
-            }
-        }
-
-        if (this.pattern !== undefined) {
-            $(this.inputDom).tooltip({
-                placement: "bottom",
-                trigger: "hover",
-                delay: { "show": 100, "hide": 500 }
-            });
-        }
-    },
-
-    methods: {
-        autosave: function autosave() {
-            if (this.readonly != '' && this.userInput != this.lastSave) {
-                EventBus.$emit('autosave', this.field, this.userInput);
-                this.lastSave = this.userInput;
-            }
-        },
-        isValidate: function isValidate() {
-            if (this.pattern !== undefined) {
-                if (this.userInput.match(this.regex) !== null) {
-                    $(this.inputDom).attr('data-original-title', '');
-                    $(this.inputDom).tooltip('hide');
-                    this.inputClass = 'form-control';
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-            return true;
-        },
-        oninput: function oninput() {
-            var _this2 = this;
-
-            if (this.emitOnUpdateEvents !== null) {
-                this.emitOnUpdateEvents.forEach(function (event) {
-                    EventBus.$emit(event, _this2.userInput);
-                });
-            }
-        },
-        onblur: function onblur() {
-            if (this.isValidate()) {
-                this.autosave();
-            } else {
-                $(this.inputDom).attr('data-original-title', this.invalidTextComputed);
-                $(this.inputDom).tooltip('show');
-                this.inputClass = 'form-control invalid-input';
-            }
-        }
-    },
-    computed: {
-        hasLabel: function hasLabel() {
-            return !(this.label === undefined);
-        },
-        componentSize: function componentSize() {
-            if (this.size == 'normal') {
-                return 'form-group add-margin-bottom';
-            }
-            return 'form-group-sm add-margin-bottom';
-        },
-        componentGrid: function componentGrid() {
-            if (this.grid === undefined) {
-                return '';
-            }
-            var grid = this.grid.split('-');
-            return 'col-xs-' + grid[0] + ' col-sm-' + grid[1] + ' col-md-' + grid[2];
-        },
-        emitOnUpdateEvents: function emitOnUpdateEvents() {
-            if (this.emitOnUpdate !== undefined) {
-                return JSON.parse(this.emitOnUpdate);
-            }
-            return null;
-        },
-        regex: function regex() {
-            if (this.pattern !== null) {
-                return new RegExp(this.pattern);
-            }
-            return null;
-        },
-        inputDom: function inputDom() {
-            return this.field !== undefined ? '#' + this.field : '';
-        },
-        invalidTextComputed: function invalidTextComputed() {
-            var defaultText = 'Invalid format. Data cannot be saved.';
-            return this.invalidText === undefined ? defaultText : this.invalidText;
-        }
-    }
-});
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(1)))
-
-/***/ }),
-/* 255 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { class: _vm.componentGrid }, [
-    _c("div", { class: _vm.componentSize }, [
-      _vm.hasLabel
-        ? _c(
-            "label",
-            { staticClass: "control-label", attrs: { for: _vm.field } },
-            [
-              _c("span", { domProps: { innerHTML: _vm._s(_vm.label) } }),
-              _vm._v(" "),
-              _vm.labelDescription !== undefined
-                ? _c(
-                    "a",
-                    {
-                      attrs: {
-                        role: "button",
-                        "data-toggle": "tooltip",
-                        title: _vm.labelDescription
-                      }
-                    },
-                    [_c("i", { staticClass: "fa fa-info-circle" })]
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              _vm.labelDescription !== undefined
-                ? _c("span", [_vm._v(":")])
-                : _vm._e()
-            ]
-          )
-        : _vm._e(),
-      _vm._v(" "),
-      _c("div", { staticClass: "input-group" }, [
-        _vm.frontAddon !== undefined
-          ? _c("span", {
-              staticClass: "input-group-addon",
-              domProps: { innerHTML: _vm._s(_vm.frontAddonHtml) }
-            })
-          : _vm._e(),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.userInput,
-              expression: "userInput"
-            }
-          ],
-          class: _vm.inputClass,
-          attrs: {
-            type: "text",
-            readonly: _vm.readonly,
-            placeholder: _vm.placeholder,
-            name: _vm.field,
-            id: _vm.field
-          },
-          domProps: { value: _vm.userInput },
-          on: {
-            input: [
-              function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.userInput = $event.target.value
-              },
-              function($event) {
-                _vm.oninput()
-              }
-            ],
-            blur: function($event) {
-              _vm.onblur()
-            }
-          }
-        }),
-        _vm._v(" "),
-        _vm.rearAddon !== undefined
-          ? _c("span", {
-              staticClass: "input-group-addon",
-              domProps: { innerHTML: _vm._s(_vm.rearAddonHtml) }
-            })
-          : _vm._e()
-      ])
-    ])
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-c122ff30", module.exports)
   }
 }
 

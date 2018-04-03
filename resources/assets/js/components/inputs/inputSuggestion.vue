@@ -64,6 +64,10 @@
                 type: String,
                 required: false  
             },
+            setterEvent: {
+                type: String,
+                required: false
+            },
             storeData: {
                 type: String,
                 required: false
@@ -82,17 +86,18 @@
         },
         mounted () {
             // initial data
-            if (this.value === undefined || this.value === null)
+            if (this.value === undefined || this.value === null) {
                 this.lastData = this.userInput = ''
-            else
+            }
+            else {
                 this.lastData = this.userInput = this.value
+            }
 
-            // listen to event to trigger event
-            // if (this.interfaceEvent !== undefined) {
-            //     EventBus.$on(this.interfaceEvent, () => {
-            //         this.emitUpdate()
-            //     })
-            // }
+            if (this.setterEvent !== undefined) {
+                EventBus.$on(this.setterEvent, (value) => {
+                    this.userInput = value
+                })
+            }
 
             // initial autocomplete instance
             $('#' + this.id).autocomplete({
@@ -169,7 +174,6 @@
                     if ( !this.saved ) {
                         this.autosave()
                     }
-                    
                 }, 1000)
             }
         },

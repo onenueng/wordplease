@@ -215,6 +215,13 @@ class MedicineAdmissionNote extends Model
                 'smoke_description' => null,
             ]
         ],
+
+        'breathing' => [
+            'resetTriggerValues' => [1],
+            'fields' => [
+                'O2_rate' => null,
+            ]
+        ],
     ];
 
     public function header()

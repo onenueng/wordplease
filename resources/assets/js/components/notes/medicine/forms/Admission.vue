@@ -788,22 +788,24 @@
     <panel heading="Current medications">
         <div class="row">
             <input-suggestion
+                ref="current_medications_helper"
                 target-id="current_medications_helper"
                 store-data="store-data"
+                setterEvent="set-current_medications_helper"
                 grid="8-8-4"
                 service-url="autocomplete/drug"
                 placeholder="search drug using generic, trade or synonym name">
             </input-suggestion><!-- drug search helper -->
 
             <button-app
-                action="append-current-medications"
+                action="append-current_medications"
                 label="Append"
                 status="draft"
                 size="sm">
             </button-app><!-- med append button -->
 
             <button-app
-                action="put-current-medications"
+                action="put-current_medications"
                 label="Put"
                 status="draft"
                 size="sm">
@@ -812,12 +814,341 @@
             <input-textarea
                 field="current_medications"
                 :value="note.detail.current_medications"
-                setter-event="set-current-medications"
+                setter-event="set-current_medications"
                 max-chars="1000"
                 grid="12-12-12">
             </input-textarea><!-- current medications -->
         </div><!-- wrap with row -->
     </panel><!-- panel Current medications -->
+    <panel heading="Allergy/Adverse event (Drug, Food, Chemical)">
+        <div class="row">
+            <input-textarea
+                field="allergy"
+                :value="note.detail.allergy"
+                grid="12-12-12">
+            </input-textarea><!-- allergy -->
+        </div><!-- wrap with row -->
+    </panel><!-- Panel allergy -->
+    <panel heading="Review of systems">
+        <div class="row">
+            <input-textarea
+                field="general_symptoms"
+                :value="note.detail.general_symptoms"
+                label="General symptoms :"
+                grid="12-12-12">
+            </input-textarea><!-- General symptoms -->
+            <div class="col-xs-12"><hr class="line" /></div>
+
+            <div class="col-xs-12 col-md-6">
+                <div class="col-xs-12">
+                    <input-radio
+                        field="review_system_hair_and_skin"
+                        :value="note.detail.review_system_hair_and_skin"
+                        label="Hair and Skin :"
+                        :options="reviewSystemPhysicalExamOptions">
+                    </input-radio>
+                </div><!-- review_system_hair_and_skin -->
+                <input-textarea
+                    field="review_system_hair_and_skin_description"
+                    :value="note.detail.review_system_hair_and_skin_description"
+                    placeholder="description"
+                    max-chars="1000"
+                    grid="12-12-12">
+                </input-textarea><!-- review_system_hair_and_skin_description -->
+                <div class="col-xs-12"><hr class="line" /></div>
+
+                <div class="col-xs-12">
+                    <input-radio
+                        field="review_system_head"
+                        :value="note.detail.review_system_head"
+                        label="Head :"
+                        :options="reviewSystemPhysicalExamOptions">
+                    </input-radio>
+                </div><!-- review_system_head -->
+                <input-textarea
+                    field="review_system_head_description"
+                    :value="note.detail.review_system_head_description"
+                    placeholder="description"
+                    max-chars="1000"
+                    grid="12-12-12">
+                </input-textarea><!-- review_system_head_description -->
+                <div class="col-xs-12"><hr class="line" /></div>
+
+                <div class="col-xs-12">
+                    <input-radio
+                        field="review_system_eye_ENT"
+                        :value="note.detail.review_system_eye_ENT"
+                        label="Eye/ENT :"
+                        :options="reviewSystemPhysicalExamOptions">
+                    </input-radio>
+                </div><!-- review_system_eye_ENT -->
+                <input-textarea
+                    field="review_system_eye_ENT_description"
+                    :value="note.detail.review_system_eye_ENT_description"
+                    placeholder="description"
+                    max-chars="1000"
+                    grid="12-12-12">
+                </input-textarea><!-- review_system_eye_ENT_description -->
+                <div class="col-xs-12"><hr class="line" /></div>
+
+                <div class="col-xs-12">
+                    <input-radio
+                        field="review_system_breast"
+                        :value="note.detail.review_system_breast"
+                        label="Breast :"
+                        :options="reviewSystemPhysicalExamOptions">
+                    </input-radio>
+                </div><!-- review_system_breast -->
+                <input-textarea
+                    field="review_system_breast_description"
+                    :value="note.detail.review_system_breast_description"
+                    placeholder="description"
+                    max-chars="1000"
+                    grid="12-12-12">
+                </input-textarea><!-- review_system_breast_description -->
+                <div class="col-xs-12"><hr class="line" /></div>
+
+                <div class="col-xs-12">
+                    <input-radio
+                        field="review_system_CVS"
+                        :value="note.detail.review_system_CVS"
+                        label="CVS :"
+                        :options="reviewSystemPhysicalExamOptions">
+                    </input-radio>
+                </div><!-- review_system_CVS -->
+                <input-textarea
+                    field="review_system_CVS_description"
+                    :value="note.detail.review_system_CVS_description"
+                    placeholder="description"
+                    max-chars="1000"
+                    grid="12-12-12">
+                </input-textarea><!-- review_system_CVS_description -->
+                <div class="col-xs-12"><hr class="line" /></div>
+
+                <div class="col-xs-12">
+                    <input-radio
+                        field="review_system_RS"
+                        :value="note.detail.review_system_RS"
+                        label="RS :"
+                        :options="reviewSystemPhysicalExamOptions">
+                    </input-radio>
+                </div><!-- review_system_RS -->
+                <input-textarea
+                    field="review_system_RS_description"
+                    :value="note.detail.review_system_RS_description"
+                    placeholder="description"
+                    max-chars="1000"
+                    grid="12-12-12">
+                </input-textarea><!-- review_system_RS_description -->
+                <div class="col-xs-12"><hr class="line" /></div>
+            </div>
+
+            <div class="col-xs-12 col-md-6">
+                <div class="col-xs-12">
+                    <input-radio
+                        field="review_system_GI"
+                        :value="note.detail.review_system_GI"
+                        label="GI :"
+                        :options="reviewSystemPhysicalExamOptions">
+                    </input-radio>
+                </div><!-- review_system_GI -->
+                <input-textarea
+                    field="review_system_GI_description"
+                    :value="note.detail.review_system_GI_description"
+                    placeholder="description"
+                    max-chars="1000"
+                    grid="12-12-12">
+                </input-textarea><!-- review_system_GI_description -->
+                <div class="col-xs-12"><hr class="line" /></div>
+
+                <div class="col-xs-12">
+                    <input-radio
+                        field="review_system_GU"
+                        :value="note.detail.review_system_GU"
+                        label="GU :"
+                        :options="reviewSystemPhysicalExamOptions">
+                    </input-radio>
+                </div><!-- review_system_GU -->
+                <input-textarea
+                    field="review_system_GU_description"
+                    :value="note.detail.review_system_GU_description"
+                    placeholder="description"
+                    max-chars="1000"
+                    grid="12-12-12">
+                </input-textarea><!-- review_system_GU_description -->
+                <div class="col-xs-12"><hr class="line" /></div>
+
+                <div class="col-xs-12">
+                    <input-radio
+                        field="review_system_musculoskeletal"
+                        :value="note.detail.review_system_musculoskeletal"
+                        label="Musculoskeletal :"
+                        :options="reviewSystemPhysicalExamOptions">
+                    </input-radio>
+                </div><!-- review_system_musculoskeletal -->
+                <input-textarea
+                    field="review_system_musculoskeletal_description"
+                    :value="note.detail.review_system_musculoskeletal_description"
+                    placeholder="description"
+                    max-chars="1000"
+                    grid="12-12-12">
+                </input-textarea><!-- review_system_musculoskeletal_description -->
+                <div class="col-xs-12"><hr class="line" /></div>
+
+                <div class="col-xs-12">
+                    <input-radio
+                        field="review_system_nervous_system"
+                        :value="note.detail.review_system_nervous_system"
+                        label="Nervous system :"
+                        :options="reviewSystemPhysicalExamOptions">
+                    </input-radio>
+                </div><!-- review_system_nervous_system -->
+                <input-textarea
+                    field="review_system_nervous_system_description"
+                    :value="note.detail.review_system_nervous_system_description"
+                    placeholder="description"
+                    max-chars="1000"
+                    grid="12-12-12">
+                </input-textarea><!-- review_system_nervous_system_description -->
+                <div class="col-xs-12"><hr class="line" /></div>
+
+                <div class="col-xs-12">
+                    <input-radio
+                        field="review_system_psychological_symptoms"
+                        :value="note.detail.review_system_psychological_symptoms"
+                        label="Psychological symptoms :"
+                        :options="reviewSystemPhysicalExamOptions">
+                    </input-radio>
+                </div><!-- review_system_psychological_symptoms -->
+                <input-textarea
+                    field="review_system_psychological_symptoms_description"
+                    :value="note.detail.review_system_psychological_symptoms_description"
+                    placeholder="description"
+                    max-chars="1000"
+                    grid="12-12-12">
+                </input-textarea><!-- review_system_psychological_symptoms_description -->
+                <div class="col-xs-12"><hr class="line" /></div>
+            </div>
+        </div><!-- wrap with row -->
+    </panel><!-- Review of systems -->
+    <panel heading="Vital signs">
+        <div class="row">
+            <input-text-addon
+                field="temperature_celsius"
+                :value="note.detail.temperature_celsius"
+                label="Temperature :"
+                pattern="^((([234]\d{1})?([.]?\d?)?)|50([.]?0*)?)$"
+                invalid-text="Data could not be saved. Accept range [20, 50], Integer or 1 point decimal only"
+                rear-addon="&deg;C"
+                placeholder="Integer or 1 point decimal only"
+                grid="12-6-3">
+            </input-text-addon><!-- Temperature valid xx.y[20, 50] -->
+            <input-text-addon
+                field="pulse_rate_per_min"
+                :value="note.detail.pulse_rate_per_min"
+                label="Pulse :"
+                pattern="^([23456789]\d|[1][01]\d|120)$"
+                invalid-text="Data could not be saved. Accept range [20, 120], Integer only"
+                rear-addon="/min"
+                placeholder="Integer only"
+                grid="12-6-3">
+            </input-text-addon><!-- Pulse -->
+            <input-text-addon
+                field="respiratory_rate_per_min"
+                :value="note.detail.respiratory_rate_per_min"
+                label="Respiratory rate :"
+                pattern="^([1]\d|[23]\d|40)$"
+                invalid-text="Data could not be saved. Accept range [10, 40], Integer only"
+                rear-addon="/min"
+                placeholder="Integer only"
+                grid="12-6-3">
+            </input-text-addon><!-- Respiratory rate -->
+            <input-text-addon
+                field="BP"
+                :value="note.detail.BP"
+                label="Blood presure :"
+                rear-addon="mmHg"
+                placeholder="SBP/DBP"
+                pattern="^([89]\d|1[123]\d|140)\/([5678]\d|90)$"
+                invalid-text="Data could not be saved. Accept range [80, 140]/[50, 90], in SBP/DBP format"
+                grid="12-6-3">
+            </input-text-addon><!-- BP -->
+            <input-text-addon
+                field="height_cm"
+                :value="note.detail.height_cm"
+                label="Height :"
+                :front-addon="estimatedHeightTemplate"
+                rear-addon="cm"
+                emit-on-update="BMI-updates"
+                placeholder="Integer or 1 point decimal only"
+                store-data="note-store-data"
+                pattern="^([5-9]\d([.]?\d)?|[1]\d{2}([.]?\d)?|[2][0-7]\d([.]?\d)?|280([.]?0*)?)$"
+                invalid-text="Data could not be saved. Accept range [50, 280], Integer or 1 point decimal only"
+                grid="12-6-3">
+            </input-text-addon><!-- height_cm -->
+            <input-text-addon
+                field="weight_kg"
+                :value="note.detail.weight_kg"
+                label="Weight :"
+                :front-addon="estimatedWeightTemplate"
+                rear-addon="kg"
+                emit-on-update="BMI-updates"
+                placeholder="Integer or 1 point decimal only"
+                store-data="note-store-data"
+                pattern="^([2-9]\d([.]?\d)?|[1-5]\d{2}([.]?\d)?|600([.]?0*)?)$"
+                invalid-text="Data could not be saved. Accept range [20, 600], Integer or 1 point decimal only"
+                grid="12-6-3">
+            </input-text-addon><!-- weight_kg -->
+            <input-text-addon
+                :value="autoCalculateBMI"
+                label="BMI "
+                ref="BMI"
+                label-description="Auto calculate"
+                rear-addon="kg/m<sup>2</sup>"
+                grid="12-6-3"
+                setter-event="update-BMI"
+                readonly>
+            </input-text-addon><!-- BMI -->
+            <input-text-addon
+                field="SpO2"
+                :value="note.detail.SpO2"
+                label='SpO<sub>2</sub> '
+                label-description="as indicated"
+                pattern="^([3-9]\d|100)$"
+                invalid-text="Data could not be saved. Accept range [30, 100], Integer only"
+                rear-addon="%"
+                grid="12-6-3">
+            </input-text-addon><!-- SpO2 -->
+            <div class="col-xs-12 col-md-6">
+                <div class="material-box">
+                    <input-radio
+                        field="breathing"
+                        label="Breathing :"
+                        :value="note.detail.breathing"
+                        options='[
+                            {"label": "Room air", "value": 1},
+                            {"label": "O<sub>2</sub>-Canula", "value": 2},
+                            {"label": "O<sub>2</sub>-Mask with bag", "value": 3},
+                            {"label": "O<sub>2</sub>-On ventilator", "value": 4}
+                        ]'
+                        trigger-value="[2,3,4]"
+                        store-data="note-store-data"
+                        emit-on-update="reset-breathing-extras">
+                        <div class="form-inline">
+                            <input-text-addon
+                                field="O2_rate"
+                                :value="note.detail.O2_rate"
+                                front-addon="O<sub>2</sub> rate"
+                                :rear-addon="O2RateRearAddon"
+                                pattern="^((\d{1,2})([.]\d)?)$"
+                                invalid-text="Data could not be saved. Accept range [0, 99.9], Integer or 1 point decimal only">
+                            </input-text-addon>
+                        </div>
+                    </input-radio>
+                </div>
+            </div>
+        </div><!-- wrap with row -->
+    </panel><!-- Vital signs -->
 </div>
 </template>
 
@@ -876,18 +1207,17 @@
                 title: "Click to learn more about Child-Pugh's Score"
             }
 
+            this.reviewSystemPhysicalExamOptions = [
+                { label: "Normal", value: 1 },
+                { label: "Abnormal", value: 2 }
+            ]
         },
         mounted () {
-            // this.note = JSON.parse(this.serializedNote)
-
             EventBus.$on('comorbid-negative-all', () => { this.setComorbidAll(0) })
 
             EventBus.$on('comorbid-no-data-all', () => { this.setComorbidAll(255) })
 
-            EventBus.$on('store-data', (field, value) => {
-                console.log(value)
-                this.store[field] = value
-            })
+            EventBus.$on('store-data', (field, value) => { this.store[field] = value })
 
             EventBus.$on('note-store-data', (field, value) => { this.note.detail[field] = value })
 
@@ -1088,6 +1418,23 @@
             EventBus.$on('reset-cigarette_smoking-extras', (value) => {
                 if ( value == 0 ) {
                     this.note.detail.smoke_description = null
+                }
+            })
+
+            EventBus.$on('append-current_medications', () => { this.setCurrentMedications('append') })
+
+            EventBus.$on('put-current_medications', () => { this.setCurrentMedications('put') })
+
+            EventBus.$on('BMI-updates', () => {
+                EventBus.$emit('update-BMI', this.autoCalculateBMI)
+                if ( this.autoCalculateBMI !== null ) {
+                    EventBus.$emit('toggle-alert-box', 'BMI updated')
+                }
+            })
+
+            EventBus.$on('reset-breathing-extras', (value) => {
+                if ( value == 1 ) {
+                    this.note.detail.O2_rate = null
                 }
             })
         },
@@ -1420,6 +1767,39 @@
                         label: "Isolation room"
                     }
                 ]
+            },
+            estimatedHeightTemplate () {
+                let template  = '<input type="checkbox" '
+                    template += 'name="estimated_height" '
+                    template += this.note.detail.estimated_height != 0 ? 'checked' : ''
+                    template += '/> <span class="estimated" data-target="estimated_height">estimated</span>'
+                return template
+            },
+            estimatedWeightTemplate () {
+                let template  = '<input type="checkbox" '
+                    template += 'name="estimated_weight" '
+                    template += this.note.detail.estimated_weight != 0 ? 'checked' : ''
+                    template += '/> <span class="estimated" data-target="estimated_weight">estimated</span>'
+                return template
+            },
+            autoCalculateBMI () {
+                if ( this.note.detail.height_cm == null || this.note.detail.weight_kg == null ) {
+                    return null
+                }
+
+                let BMI = (this.note.detail.weight_kg / Math.pow((this.note.detail.height_cm / 100), 2)).toFixed(2)
+                return BMI == '0.00' ? null : BMI
+            },
+            O2RateRearAddon () {
+                switch (this.note.detail.breathing)  {
+                    case 2:
+                    case 3:
+                        return 'L/min'
+                    case 4:
+                        return 'FiO<sub>2</sub>'
+                    default:
+                        return ''
+                }
             }
         },
         methods : {
@@ -1450,6 +1830,11 @@
                 EventBus.$emit('set-comorbid_pacemaker_implant', value)
                 EventBus.$emit('set-comorbid_chronic_arthritis', value)
                 EventBus.$emit('set-comorbid_TB', value)
+            },
+            setCurrentMedications (mode) {
+                EventBus.$emit('set-current_medications', this.store.current_medications_helper, mode)
+                EventBus.$emit('set-current_medications_helper', '')
+                this.$refs.current_medications_helper.$el.children[0].children[0].children[1].focus()
             }
         }
 
@@ -1459,4 +1844,23 @@
         // window.location.hostname
         // window.location.pathname
     }
+
+    // handle estimated_height and estimated_weight
+    $(() => {
+        $('span.estimated').click( function() {
+            $('input[name=' + $(this).attr('data-target') + ']').click()
+        })
+
+        $('span.estimated').mouseover( function() {
+            $(this).css({'cursor': 'pointer', 'font-style': 'italic'})
+        })
+
+        $('span.estimated').mouseout( function() {
+            $(this).css({'cursor': '', 'font-style': ''})
+        })
+
+        $('input[name^=estimated_]').click( function () {
+            EventBus.$emit('autosave', $(this).attr('name'), $(this).prop('checked'))
+        })
+    })
 </script>

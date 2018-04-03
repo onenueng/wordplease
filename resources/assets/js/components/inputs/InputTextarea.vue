@@ -1,7 +1,7 @@
 <template>
     <div :class="getGrid()">
         <div class="form-group-sm">
-            <label  class="control-label"
+            <label  class="control-label topped"
                     v-if="label != undefined"
                     :for="field">
                     {{ label }}
@@ -92,11 +92,10 @@
                     if (mode == 'put') {
                         this.userInput = value;
                     } else {
-                        if (this.userInput == '') {
-                            this.userInput += (value)
-                        } else {
-                            this.userInput += ('\n' + value)
+                        if ( this.userInput != null ) {
+                            this.userInput += '\n'
                         }
+                        this.userInput += value
                     }
                     this.dirty = true
                     this.autosave()

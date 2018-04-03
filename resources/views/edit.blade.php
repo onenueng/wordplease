@@ -1039,7 +1039,7 @@
                     ["label" => "GU :","field" => "review_system_GU"],
                     ["label" => "Musculoskeletal :","field" => "review_system_musculoskeletal"],
                     ["label" => "Nervous system :","field" => "review_system_nervous_system"],
-                    ["label" => "Psychological symptoms :","field" => "review_system_psychological_symptoms"]
+                    ["label" => "Psychological symptoms :","field" => "review_system_psychological_symptoms"],
                 ];
             ?>
             <panel heading="Review of systems"><!-- Review of systems -->

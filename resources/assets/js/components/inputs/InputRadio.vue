@@ -214,12 +214,11 @@
 
                 this.showReset = true
 
-                // if (this.value == this.triggerValue) {
-                //     this.showExtra = true
-                // }
-
-                this.showExtra = this.isTriggerExtra(this.value)
-
+                if (this.hasDefaultSlot) {
+                    this.showExtra = this.isTriggerExtra(this.value)
+                } else {
+                    this.showExtra = false
+                }
             }
 
             if (this.needSync !== undefined) {
@@ -243,7 +242,8 @@
 
             // check if has content in default slot.
             hasDefaultSlot() {
-                return !!this.$slots.default
+                // return !!this.$slots.default
+                return this.$slots.default === undefined ? false : true
             },
             // extract label action emit event name.
             labelActionEmitEventName() {

@@ -6403,7 +6403,7 @@ var render = function() {
             readonly: _vm.readonly,
             name: _vm.field,
             id: _vm.field,
-            maxlength: _vm.maxChars,
+            maxlength: _vm.getMaxChars,
             placeholder: _vm.placeholderNew,
             rows: "1"
           },

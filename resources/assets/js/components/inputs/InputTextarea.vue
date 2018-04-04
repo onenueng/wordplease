@@ -10,7 +10,7 @@
                         :readonly="readonly"
                         :name="field"
                         :id="field"
-                        :maxlength="maxChars"
+                        :maxlength="getMaxChars"
                         :placeholder="placeholderNew"
                         v-model="userInput"
                         @input="oninput()"
@@ -174,7 +174,7 @@
                 }
 
 
-                if (this.showCharsRemaining) {
+                if ( this.showCharsRemaining ) {
                     this.charsRemaining = this.getMaxChars - this.userInput.length
                 }
 

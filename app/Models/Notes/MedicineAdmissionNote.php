@@ -245,7 +245,7 @@ class MedicineAdmissionNote extends Model
 
     public function autosave($field, $value)
     {
-        if ( array_search($field, $this->selectItemFields) !== false ) {
+        if ( array_search($field, $this->selectItemFields) !== false && $value !== null ) {
             $this->$field = $this->getSelectItemValue($field, $value);
         } else {
             $this->$field = $value;
@@ -260,7 +260,7 @@ class MedicineAdmissionNote extends Model
     protected function resetExtrasIfNeeded($field, $value)
     {
         if ( array_key_exists($field, $this->fieldsWithExtras)
-             && in_array($value, $this->fieldsWithExtras[$field]['resetTriggerValues']) 
+             && in_array($value, $this->fieldsWithExtras[$field]['resetTriggerValues'])
              // $value != $this->fieldsWithExtras[$field]['noneTriggerValue']
            ) {
             foreach ( $this->fieldsWithExtras[$field]['fields'] as $key => $value ) {

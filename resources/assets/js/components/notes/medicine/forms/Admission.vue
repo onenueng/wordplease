@@ -1145,10 +1145,310 @@
                             </input-text-addon>
                         </div>
                     </input-radio>
-                </div>
+                </div><!-- breathing -->
+                <div class="material-box">
+                    <input-radio
+                        field="mental_evaluation"
+                        :value="note.detail.mental_evaluation"
+                        label="Mental evaluation :"
+                        options='[
+                            {"label": "Awake", "value": 1},
+                            {"label": "Drowsy", "value": 2},
+                            {"label": "Stuporous", "value": 3},
+                            {"label": "Unconscious", "value": 4}
+                        ]'>
+                    </input-radio>
+                    <input-check-group
+                        label="Mental orientation :"
+                        :checks="mentalOrientationChecks">
+                    </input-check-group>
+                </div><!-- Mental evaluation -->
             </div>
+            <div class="col-xs-12 col-md-6">
+                <div class="material-box">
+                    <input-radio
+                        field="level_of_consciousness"
+                        :value="note.detail.level_of_consciousness"
+                        label="Level of consciousness :"
+                        options='[
+                            {"label": "Appropriate", "value": 1},
+                            {"label": "Retardation", "value": 2},
+                            {"label": "Depressed", "value": 3},
+                            {"label": "Psychotic", "value": 4}
+                        ]'>
+                    </input-radio>
+                    <div class="form-inline">
+                        <input-text
+                            placeholder="Glassglow coma score:Auto Calculate"
+                            :value="autoCalculateGCS"
+                            readonly
+                            setter-event="update-GCS">
+                        </input-text>
+                    </div>
+                    <div class="form-inline">
+                        <input-select
+                            field="GCS_E"
+                            :value="note.detail.GCS_E_text"
+                            size="normal"
+                            not-allow-other
+                            placeholder="select GCS - E"
+                            store-data="note-store-data"
+                            emit-on-update="GCS-updates">
+                        </input-select>
+                    </div>
+                    <div class="form-inline">
+                        <input-select
+                            field="GCS_V"
+                            :value="note.detail.GCS_V_text"
+                            size="normal"
+                            not-allow-other
+                            placeholder="select GCS - V"
+                            store-data="note-store-data"
+                            emit-on-update="GCS-updates">
+                        </input-select>
+                    </div>
+                    <div class="form-inline">
+                        <input-select
+                            field="GCS_M"
+                            :value="note.detail.GCS_M_text"
+                            size="normal"
+                            not-allow-other
+                            placeholder="select GCS - M"
+                            store-data="note-store-data"
+                            emit-on-update="GCS-updates">
+                        </input-select>
+                    </div>
+                </div>
+            </div><!-- Level of consciousness -->
         </div><!-- wrap with row -->
     </panel><!-- Vital signs -->
+    <panel heading="Physical examinations">
+        <div class="row">
+            <input-textarea
+                field="general_appearance"
+                :value="note.detail.general_appearance"
+                label="General appearance :"
+                placeholder="Specify important findings"
+                max-chars="2000"
+                grid="12-12-12">
+            </input-textarea><!-- General appearance -->
+
+            <div class="col-xs-12"><hr class="line" /></div>
+            
+            <div class="col-xs-12 col-md-6">
+                <div class="col-xs-12">
+                    <input-radio
+                        field="physical_exam_skin"
+                        :value="note.detail.physical_exam_skin"
+                        label="Skin :"
+                        :options="reviewSystemPhysicalExamOptions">
+                    </input-radio>
+                </div><!-- exam skin -->
+                <input-textarea
+                    field="physical_exam_skin_description"
+                    :value="note.detail.physical_exam_skin_description"
+                    placeholder="description"
+                    max-chars="2000"
+                    grid="12-12-12">
+                </input-textarea>
+                <div class="col-xs-12"><hr class="line" /></div>
+                <div class="col-xs-12">
+                    <input-radio
+                        field="physical_exam_head"
+                        :value="note.detail.physical_exam_head"
+                        label="Head :"
+                        :options="reviewSystemPhysicalExamOptions">
+                    </input-radio>
+                </div><!-- exam head -->
+                <input-textarea
+                    field="physical_exam_head_description"
+                    :value="note.detail.physical_exam_head_description"
+                    placeholder="description"
+                    max-chars="2000"
+                    grid="12-12-12">
+                </input-textarea>
+                <div class="col-xs-12"><hr class="line" /></div>
+                <div class="col-xs-12">
+                    <input-radio
+                        field="physical_exam_eye_ENT"
+                        :value="note.detail.physical_exam_eye_ENT"
+                        label="Eye/ENT :"
+                        :options="reviewSystemPhysicalExamOptions">
+                    </input-radio>
+                </div><!-- exam eye_ENT -->
+                <input-textarea
+                    field="physical_exam_eye_ENT_description"
+                    :value="note.detail.physical_exam_eye_ENT_description"
+                    placeholder="description"
+                    max-chars="2000"
+                    grid="12-12-12">
+                </input-textarea>
+                <div class="col-xs-12"><hr class="line" /></div>
+                <div class="col-xs-12">
+                    <input-radio
+                        field="physical_exam_neck"
+                        :value="note.detail.physical_exam_neck"
+                        label="Neck :"
+                        :options="reviewSystemPhysicalExamOptions">
+                    </input-radio>
+                </div><!-- exam neck -->
+                <input-textarea
+                    field="physical_exam_neck_description"
+                    :value="note.detail.physical_exam_neck_description"
+                    placeholder="description"
+                    max-chars="2000"
+                    grid="12-12-12">
+                </input-textarea>
+                <div class="col-xs-12"><hr class="line" /></div>
+                <div class="col-xs-12">
+                    <input-radio
+                        field="physical_exam_heart"
+                        :value="note.detail.physical_exam_heart"
+                        label="Heart :"
+                        :options="reviewSystemPhysicalExamOptions">
+                    </input-radio>
+                </div><!-- exam heart -->
+                <input-textarea
+                    field="physical_exam_heart_description"
+                    :value="note.detail.physical_exam_heart_description"
+                    placeholder="description"
+                    max-chars="2000"
+                    grid="12-12-12">
+                </input-textarea>
+                <div class="col-xs-12"><hr class="line" /></div>
+                <div class="col-xs-12">
+                    <input-radio
+                        field="physical_exam_lung"
+                        :value="note.detail.physical_exam_lung"
+                        label="Lung :"
+                        :options="reviewSystemPhysicalExamOptions">
+                    </input-radio>
+                </div><!-- exam lung -->
+                <input-textarea
+                    field="physical_exam_lung_description"
+                    :value="note.detail.physical_exam_lung_description"
+                    placeholder="description"
+                    max-chars="2000"
+                    grid="12-12-12">
+                </input-textarea>
+                <div class="col-xs-12"><hr class="line" /></div>
+                <div class="col-xs-12">
+                    <input-radio
+                        field="physical_exam_abdomen"
+                        :value="note.detail.physical_exam_abdomen"
+                        label="Abdomen :"
+                        :options="reviewSystemPhysicalExamOptions">
+                    </input-radio>
+                </div><!-- exam abdomen -->
+                <input-textarea
+                    field="physical_exam_abdomen_description"
+                    :value="note.detail.physical_exam_abdomen_description"
+                    placeholder="description"
+                    max-chars="2000"
+                    grid="12-12-12">
+                </input-textarea>
+                <div class="col-xs-12"><hr class="line" /></div>
+            </div><!-- exam skin, head, eye_ENT, neck, heart, lung, abdomen -->
+            <div class="col-xs-12 col-md-6">
+                <div class="col-xs-12">
+                    <input-radio
+                        field="physical_exam_nervous_system"
+                        :value="note.detail.physical_exam_nervous_system"
+                        label="Nervous system :"
+                        :options="reviewSystemPhysicalExamOptions">
+                    </input-radio>
+                </div><!-- exam nervous_system -->
+                <input-textarea
+                    field="physical_exam_nervous_system_description"
+                    :value="note.detail.physical_exam_nervous_system_description"
+                    placeholder="description"
+                    max-chars="2000"
+                    grid="12-12-12">
+                </input-textarea>
+                <div class="col-xs-12"><hr class="line" /></div>
+                <div class="col-xs-12">
+                    <input-radio
+                        field="physical_exam_extremities"
+                        :value="note.detail.physical_exam_extremities"
+                        label="Extremities :"
+                        :options="reviewSystemPhysicalExamOptions">
+                    </input-radio>
+                </div><!-- exam extremities -->
+                <input-textarea
+                    field="physical_exam_extremities_description"
+                    :value="note.detail.physical_exam_extremities_description"
+                    placeholder="description"
+                    max-chars="2000"
+                    grid="12-12-12">
+                </input-textarea>
+                <div class="col-xs-12"><hr class="line" /></div>
+                <div class="col-xs-12">
+                    <input-radio
+                        field="physical_exam_lymph_nodes"
+                        :value="note.detail.physical_exam_lymph_nodes"
+                        label="Lymph nodes :"
+                        :options="reviewSystemPhysicalExamOptions">
+                    </input-radio>
+                </div><!-- exam lymph_nodes -->
+                <input-textarea
+                    field="physical_exam_lymph_nodes_description"
+                    :value="note.detail.physical_exam_lymph_nodes_description"
+                    placeholder="description"
+                    max-chars="2000"
+                    grid="12-12-12">
+                </input-textarea>
+                <div class="col-xs-12"><hr class="line" /></div>
+                <div class="col-xs-12">
+                    <input-radio
+                        field="physical_exam_breasts"
+                        :value="note.detail.physical_exam_breasts"
+                        label="Breasts :"
+                        :options="reviewSystemPhysicalExamOptions">
+                    </input-radio>
+                </div><!-- exam breasts -->
+                <input-textarea
+                    field="physical_exam_breasts_description"
+                    :value="note.detail.physical_exam_breasts_description"
+                    placeholder="description"
+                    max-chars="2000"
+                    grid="12-12-12">
+                </input-textarea>
+                <div class="col-xs-12"><hr class="line" /></div>
+                <div class="col-xs-12">
+                    <input-radio
+                        field="physical_exam_genitalia"
+                        :value="note.detail.physical_exam_genitalia"
+                        label="Genitalia :"
+                        :options="reviewSystemPhysicalExamOptions">
+                    </input-radio>
+                </div><!-- exam genitalia -->
+                <input-textarea
+                    field="physical_exam_genitalia_description"
+                    :value="note.detail.physical_exam_genitalia_description"
+                    placeholder="description"
+                    max-chars="2000"
+                    grid="12-12-12">
+                </input-textarea>
+                <div class="col-xs-12"><hr class="line" /></div>
+                <div class="col-xs-12">
+                    <input-radio
+                        field="physical_exam_rectal_examination"
+                        :value="note.detail.physical_exam_rectal_examination"
+                        label="Rectal examination :"
+                        :options="reviewSystemPhysicalExamOptions">
+                    </input-radio>
+                </div><!-- exam rectal_examination -->
+                <input-textarea
+                    field="physical_exam_rectal_examination_description"
+                    :value="note.detail.physical_exam_rectal_examination_description"
+                    placeholder="description"
+                    max-chars="2000"
+                    grid="12-12-12">
+                </input-textarea>
+                <div class="col-xs-12"><hr class="line" /></div>
+            </div><!-- exam nervous_system, extremities, lymph_nodes, breasts, genitalia, rectal_examination -->
+        </div><!-- wrap with row -->
+    </panel><!-- Physical examinations -->
 </div>
 </template>
 
@@ -1433,9 +1733,13 @@
             })
 
             EventBus.$on('reset-breathing-extras', (value) => {
-                if ( value == 1 ) {
+                if ( value == 1 || value == null ) {
                     this.note.detail.O2_rate = null
                 }
+            })
+
+            EventBus.$on('GCS-updates', () => {
+                EventBus.$emit('update-GCS', this.autoCalculateGCS)
             })
         },
         computed : {
@@ -1800,6 +2104,68 @@
                     default:
                         return ''
                 }
+            },
+            mentalOrientationChecks () {
+                return [
+                    {
+                        field: "mental_orientation_to_time",
+                        checked: this.note.detail.mental_orientation_to_time,
+                        label: "to Time"
+                    },
+                    {
+                        field: "mental_orientation_to_place",
+                        checked: this.note.detail.mental_orientation_to_place,
+                        label: "to Place"
+                    },
+                    {
+                        field: "mental_orientation_to_person",
+                        checked: this.note.detail.mental_orientation_to_person,
+                        label: "to Person"
+                    },
+                ]
+            },
+            autoCalculateGCS () {
+                let E, V, M
+                if ( typeof this.note.detail.GCS_E == 'number'
+                     && typeof this.note.detail.GCS_V == 'number'
+                     && typeof this.note.detail.GCS_M == 'number'
+                   ) {
+                    E = this.note.detail.GCS_E
+                    V = this.note.detail.GCS_V
+                    M = this.note.detail.GCS_M
+                } else {
+                    let value
+                    value = String(this.note.detail.GCS_E)
+                    E = value !== null
+                        ? parseInt(((value.split(' ')[0]).replace('[','')).replace(']',''))
+                        : null
+                    value = String(this.note.detail.GCS_V)
+                    V = value !== null
+                        ? parseInt(((value.split(' ')[0]).replace('[','')).replace(']',''))
+                        : null
+                    value = String(this.note.detail.GCS_M)
+                    M = value !== null
+                        ? parseInt(((value.split(' ')[0]).replace('[','')).replace(']',''))
+                        : null
+                }
+
+                let gcsLabel
+                if ($.isNumeric(E) && $.isNumeric(V) && $.isNumeric(M)) {
+                    let sum = E + V + M
+                    if (sum < 9) {
+                        gcsLabel = 'Severe [GCS < 9]'
+                        EventBus.$emit('toggle-alert-box', gcsLabel, 'danger')
+                    } else if (sum < 13) {
+                        gcsLabel = 'Moderate [9 <= GCS < 13]'
+                        EventBus.$emit('toggle-alert-box', gcsLabel, 'warning')
+                    } else {
+                        gcsLabel = 'Minor [13 <= GCS <= 15]'
+                        EventBus.$emit('toggle-alert-box', gcsLabel)
+                    }
+                } else {
+                    gcsLabel = null
+                }
+                return gcsLabel
             }
         },
         methods : {

@@ -86,6 +86,10 @@
             emitOnUpdate: {
                 type: String,
                 required: false  
+            },
+            storeData: {
+                type: String,
+                required: false
             }
         },
         data () {
@@ -148,6 +152,10 @@
                     EventBus.$emit('autosave', this.field, this.userInput)
                     this.lastData = this.userInput
 
+                    if ( this.storeData !== undefined ) {
+                        EventBus.$emit(this.storeData, this.field, this.userInput)
+                    }
+                    
                     if ( this.emitOnUpdate !== undefined ) {
                         EventBus.$emit(this.emitOnUpdate, this.userInput)
                     }

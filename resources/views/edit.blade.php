@@ -1227,7 +1227,6 @@
                                     {"field": "mental_orientation_to_place", "label": "to Place"},
                                     {"field": "mental_orientation_to_person", "label": "to Person"}
                                 ]'>
-                                
                             </input-check-group>
                         </div>
                     </div>

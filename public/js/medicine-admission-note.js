@@ -3821,6 +3821,306 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -4109,9 +4409,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         });
 
         EventBus.$on('reset-breathing-extras', function (value) {
-            if (value == 1) {
+            if (value == 1 || value == null) {
                 _this.note.detail.O2_rate = null;
             }
+        });
+
+        EventBus.$on('GCS-updates', function () {
+            EventBus.$emit('update-GCS', _this.autoCalculateGCS);
         });
     },
 
@@ -4411,6 +4715,57 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 default:
                     return '';
             }
+        },
+        mentalOrientationChecks: function mentalOrientationChecks() {
+            return [{
+                field: "mental_orientation_to_time",
+                checked: this.note.detail.mental_orientation_to_time,
+                label: "to Time"
+            }, {
+                field: "mental_orientation_to_place",
+                checked: this.note.detail.mental_orientation_to_place,
+                label: "to Place"
+            }, {
+                field: "mental_orientation_to_person",
+                checked: this.note.detail.mental_orientation_to_person,
+                label: "to Person"
+            }];
+        },
+        autoCalculateGCS: function autoCalculateGCS() {
+            var E = void 0,
+                V = void 0,
+                M = void 0;
+            if (typeof this.note.detail.GCS_E == 'number' && typeof this.note.detail.GCS_V == 'number' && typeof this.note.detail.GCS_M == 'number') {
+                E = this.note.detail.GCS_E;
+                V = this.note.detail.GCS_V;
+                M = this.note.detail.GCS_M;
+            } else {
+                var value = void 0;
+                value = String(this.note.detail.GCS_E);
+                E = value !== null ? parseInt(value.split(' ')[0].replace('[', '').replace(']', '')) : null;
+                value = String(this.note.detail.GCS_V);
+                V = value !== null ? parseInt(value.split(' ')[0].replace('[', '').replace(']', '')) : null;
+                value = String(this.note.detail.GCS_M);
+                M = value !== null ? parseInt(value.split(' ')[0].replace('[', '').replace(']', '')) : null;
+            }
+
+            var gcsLabel = void 0;
+            if ($.isNumeric(E) && $.isNumeric(V) && $.isNumeric(M)) {
+                var sum = E + V + M;
+                if (sum < 9) {
+                    gcsLabel = 'Severe [GCS < 9]';
+                    EventBus.$emit('toggle-alert-box', gcsLabel, 'danger');
+                } else if (sum < 13) {
+                    gcsLabel = 'Moderate [9 <= GCS < 13]';
+                    EventBus.$emit('toggle-alert-box', gcsLabel, 'warning');
+                } else {
+                    gcsLabel = 'Minor [13 <= GCS <= 15]';
+                    EventBus.$emit('toggle-alert-box', gcsLabel);
+                }
+            } else {
+                gcsLabel = null;
+            }
+            return gcsLabel;
         }
     },
     methods: {
@@ -5770,6 +6125,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         emitOnUpdate: {
             type: String,
             required: false
+        },
+        storeData: {
+            type: String,
+            required: false
         }
     },
     data: function data() {
@@ -5831,6 +6190,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (this.field !== undefined && this.userInput != this.lastData) {
                 EventBus.$emit('autosave', this.field, this.userInput);
                 this.lastData = this.userInput;
+
+                if (this.storeData !== undefined) {
+                    EventBus.$emit(this.storeData, this.field, this.userInput);
+                }
 
                 if (this.emitOnUpdate !== undefined) {
                     EventBus.$emit(this.emitOnUpdate, this.userInput);
@@ -9791,8 +10154,557 @@ var render = function() {
                   )
                 ],
                 1
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "material-box" },
+                [
+                  _c("input-radio", {
+                    attrs: {
+                      field: "mental_evaluation",
+                      value: _vm.note.detail.mental_evaluation,
+                      label: "Mental evaluation :",
+                      options:
+                        '[\n                            {"label": "Awake", "value": 1},\n                            {"label": "Drowsy", "value": 2},\n                            {"label": "Stuporous", "value": 3},\n                            {"label": "Unconscious", "value": 4}\n                        ]'
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("input-check-group", {
+                    attrs: {
+                      label: "Mental orientation :",
+                      checks: _vm.mentalOrientationChecks
+                    }
+                  })
+                ],
+                1
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-xs-12 col-md-6" }, [
+              _c(
+                "div",
+                { staticClass: "material-box" },
+                [
+                  _c("input-radio", {
+                    attrs: {
+                      field: "level_of_consciousness",
+                      value: _vm.note.detail.level_of_consciousness,
+                      label: "Level of consciousness :",
+                      options:
+                        '[\n                            {"label": "Appropriate", "value": 1},\n                            {"label": "Retardation", "value": 2},\n                            {"label": "Depressed", "value": 3},\n                            {"label": "Psychotic", "value": 4}\n                        ]'
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "form-inline" },
+                    [
+                      _c("input-text", {
+                        attrs: {
+                          placeholder: "Glassglow coma score:Auto Calculate",
+                          value: _vm.autoCalculateGCS,
+                          readonly: "",
+                          "setter-event": "update-GCS"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "form-inline" },
+                    [
+                      _c("input-select", {
+                        attrs: {
+                          field: "GCS_E",
+                          value: _vm.note.detail.GCS_E_text,
+                          size: "normal",
+                          "not-allow-other": "",
+                          placeholder: "select GCS - E",
+                          "store-data": "note-store-data",
+                          "emit-on-update": "GCS-updates"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "form-inline" },
+                    [
+                      _c("input-select", {
+                        attrs: {
+                          field: "GCS_V",
+                          value: _vm.note.detail.GCS_V_text,
+                          size: "normal",
+                          "not-allow-other": "",
+                          placeholder: "select GCS - V",
+                          "store-data": "note-store-data",
+                          "emit-on-update": "GCS-updates"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "form-inline" },
+                    [
+                      _c("input-select", {
+                        attrs: {
+                          field: "GCS_M",
+                          value: _vm.note.detail.GCS_M_text,
+                          size: "normal",
+                          "not-allow-other": "",
+                          placeholder: "select GCS - M",
+                          "store-data": "note-store-data",
+                          "emit-on-update": "GCS-updates"
+                        }
+                      })
+                    ],
+                    1
+                  )
+                ],
+                1
               )
             ])
+          ],
+          1
+        )
+      ]),
+      _vm._v(" "),
+      _c("panel", { attrs: { heading: "Physical examinations" } }, [
+        _c(
+          "div",
+          { staticClass: "row" },
+          [
+            _c("input-textarea", {
+              attrs: {
+                field: "general_appearance",
+                value: _vm.note.detail.general_appearance,
+                label: "General appearance :",
+                placeholder: "Specify important findings",
+                "max-chars": "2000",
+                grid: "12-12-12"
+              }
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-xs-12" }, [
+              _c("hr", { staticClass: "line" })
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "col-xs-12 col-md-6" },
+              [
+                _c(
+                  "div",
+                  { staticClass: "col-xs-12" },
+                  [
+                    _c("input-radio", {
+                      attrs: {
+                        field: "physical_exam_skin",
+                        value: _vm.note.detail.physical_exam_skin,
+                        label: "Skin :",
+                        options: _vm.reviewSystemPhysicalExamOptions
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("input-textarea", {
+                  attrs: {
+                    field: "physical_exam_skin_description",
+                    value: _vm.note.detail.physical_exam_skin_description,
+                    placeholder: "description",
+                    "max-chars": "2000",
+                    grid: "12-12-12"
+                  }
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-12" }, [
+                  _c("hr", { staticClass: "line" })
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "col-xs-12" },
+                  [
+                    _c("input-radio", {
+                      attrs: {
+                        field: "physical_exam_head",
+                        value: _vm.note.detail.physical_exam_head,
+                        label: "Head :",
+                        options: _vm.reviewSystemPhysicalExamOptions
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("input-textarea", {
+                  attrs: {
+                    field: "physical_exam_head_description",
+                    value: _vm.note.detail.physical_exam_head_description,
+                    placeholder: "description",
+                    "max-chars": "2000",
+                    grid: "12-12-12"
+                  }
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-12" }, [
+                  _c("hr", { staticClass: "line" })
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "col-xs-12" },
+                  [
+                    _c("input-radio", {
+                      attrs: {
+                        field: "physical_exam_eye_ENT",
+                        value: _vm.note.detail.physical_exam_eye_ENT,
+                        label: "Eye/ENT :",
+                        options: _vm.reviewSystemPhysicalExamOptions
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("input-textarea", {
+                  attrs: {
+                    field: "physical_exam_eye_ENT_description",
+                    value: _vm.note.detail.physical_exam_eye_ENT_description,
+                    placeholder: "description",
+                    "max-chars": "2000",
+                    grid: "12-12-12"
+                  }
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-12" }, [
+                  _c("hr", { staticClass: "line" })
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "col-xs-12" },
+                  [
+                    _c("input-radio", {
+                      attrs: {
+                        field: "physical_exam_neck",
+                        value: _vm.note.detail.physical_exam_neck,
+                        label: "Neck :",
+                        options: _vm.reviewSystemPhysicalExamOptions
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("input-textarea", {
+                  attrs: {
+                    field: "physical_exam_neck_description",
+                    value: _vm.note.detail.physical_exam_neck_description,
+                    placeholder: "description",
+                    "max-chars": "2000",
+                    grid: "12-12-12"
+                  }
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-12" }, [
+                  _c("hr", { staticClass: "line" })
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "col-xs-12" },
+                  [
+                    _c("input-radio", {
+                      attrs: {
+                        field: "physical_exam_heart",
+                        value: _vm.note.detail.physical_exam_heart,
+                        label: "Heart :",
+                        options: _vm.reviewSystemPhysicalExamOptions
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("input-textarea", {
+                  attrs: {
+                    field: "physical_exam_heart_description",
+                    value: _vm.note.detail.physical_exam_heart_description,
+                    placeholder: "description",
+                    "max-chars": "2000",
+                    grid: "12-12-12"
+                  }
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-12" }, [
+                  _c("hr", { staticClass: "line" })
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "col-xs-12" },
+                  [
+                    _c("input-radio", {
+                      attrs: {
+                        field: "physical_exam_lung",
+                        value: _vm.note.detail.physical_exam_lung,
+                        label: "Lung :",
+                        options: _vm.reviewSystemPhysicalExamOptions
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("input-textarea", {
+                  attrs: {
+                    field: "physical_exam_lung_description",
+                    value: _vm.note.detail.physical_exam_lung_description,
+                    placeholder: "description",
+                    "max-chars": "2000",
+                    grid: "12-12-12"
+                  }
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-12" }, [
+                  _c("hr", { staticClass: "line" })
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "col-xs-12" },
+                  [
+                    _c("input-radio", {
+                      attrs: {
+                        field: "physical_exam_abdomen",
+                        value: _vm.note.detail.physical_exam_abdomen,
+                        label: "Abdomen :",
+                        options: _vm.reviewSystemPhysicalExamOptions
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("input-textarea", {
+                  attrs: {
+                    field: "physical_exam_abdomen_description",
+                    value: _vm.note.detail.physical_exam_abdomen_description,
+                    placeholder: "description",
+                    "max-chars": "2000",
+                    grid: "12-12-12"
+                  }
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-12" }, [
+                  _c("hr", { staticClass: "line" })
+                ])
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "col-xs-12 col-md-6" },
+              [
+                _c(
+                  "div",
+                  { staticClass: "col-xs-12" },
+                  [
+                    _c("input-radio", {
+                      attrs: {
+                        field: "physical_exam_nervous_system",
+                        value: _vm.note.detail.physical_exam_nervous_system,
+                        label: "Nervous system :",
+                        options: _vm.reviewSystemPhysicalExamOptions
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("input-textarea", {
+                  attrs: {
+                    field: "physical_exam_nervous_system_description",
+                    value:
+                      _vm.note.detail.physical_exam_nervous_system_description,
+                    placeholder: "description",
+                    "max-chars": "2000",
+                    grid: "12-12-12"
+                  }
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-12" }, [
+                  _c("hr", { staticClass: "line" })
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "col-xs-12" },
+                  [
+                    _c("input-radio", {
+                      attrs: {
+                        field: "physical_exam_extremities",
+                        value: _vm.note.detail.physical_exam_extremities,
+                        label: "Extremities :",
+                        options: _vm.reviewSystemPhysicalExamOptions
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("input-textarea", {
+                  attrs: {
+                    field: "physical_exam_extremities_description",
+                    value:
+                      _vm.note.detail.physical_exam_extremities_description,
+                    placeholder: "description",
+                    "max-chars": "2000",
+                    grid: "12-12-12"
+                  }
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-12" }, [
+                  _c("hr", { staticClass: "line" })
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "col-xs-12" },
+                  [
+                    _c("input-radio", {
+                      attrs: {
+                        field: "physical_exam_lymph_nodes",
+                        value: _vm.note.detail.physical_exam_lymph_nodes,
+                        label: "Lymph nodes :",
+                        options: _vm.reviewSystemPhysicalExamOptions
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("input-textarea", {
+                  attrs: {
+                    field: "physical_exam_lymph_nodes_description",
+                    value:
+                      _vm.note.detail.physical_exam_lymph_nodes_description,
+                    placeholder: "description",
+                    "max-chars": "2000",
+                    grid: "12-12-12"
+                  }
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-12" }, [
+                  _c("hr", { staticClass: "line" })
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "col-xs-12" },
+                  [
+                    _c("input-radio", {
+                      attrs: {
+                        field: "physical_exam_breasts",
+                        value: _vm.note.detail.physical_exam_breasts,
+                        label: "Breasts :",
+                        options: _vm.reviewSystemPhysicalExamOptions
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("input-textarea", {
+                  attrs: {
+                    field: "physical_exam_breasts_description",
+                    value: _vm.note.detail.physical_exam_breasts_description,
+                    placeholder: "description",
+                    "max-chars": "2000",
+                    grid: "12-12-12"
+                  }
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-12" }, [
+                  _c("hr", { staticClass: "line" })
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "col-xs-12" },
+                  [
+                    _c("input-radio", {
+                      attrs: {
+                        field: "physical_exam_genitalia",
+                        value: _vm.note.detail.physical_exam_genitalia,
+                        label: "Genitalia :",
+                        options: _vm.reviewSystemPhysicalExamOptions
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("input-textarea", {
+                  attrs: {
+                    field: "physical_exam_genitalia_description",
+                    value: _vm.note.detail.physical_exam_genitalia_description,
+                    placeholder: "description",
+                    "max-chars": "2000",
+                    grid: "12-12-12"
+                  }
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-12" }, [
+                  _c("hr", { staticClass: "line" })
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "col-xs-12" },
+                  [
+                    _c("input-radio", {
+                      attrs: {
+                        field: "physical_exam_rectal_examination",
+                        value: _vm.note.detail.physical_exam_rectal_examination,
+                        label: "Rectal examination :",
+                        options: _vm.reviewSystemPhysicalExamOptions
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("input-textarea", {
+                  attrs: {
+                    field: "physical_exam_rectal_examination_description",
+                    value:
+                      _vm.note.detail
+                        .physical_exam_rectal_examination_description,
+                    placeholder: "description",
+                    "max-chars": "2000",
+                    grid: "12-12-12"
+                  }
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-12" }, [
+                  _c("hr", { staticClass: "line" })
+                ])
+              ],
+              1
+            )
           ],
           1
         )

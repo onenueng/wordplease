@@ -27,6 +27,9 @@ class MedicineAdmissionNote extends Model
         'comorbid_CAD_specific',
         'comorbid_hyperlipidemia_specific',
         'comorbid_epilepsy_specific',
+        'GCS_E',
+        'GCS_V',
+        'GCS_M',
     ];
 
     protected $fieldsWithExtras = [

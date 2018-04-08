@@ -203,6 +203,44 @@ class CreateMedicineAdmissionNotesTable extends Migration
             $table->unsignedTinyInteger('SpO2')->nullable();
             $table->unsignedTinyInteger('breathing')->nullable();
             $table->decimal('O2_rate', 3, 1)->nullable();
+            
+            $table->unsignedTinyInteger('mental_evaluation')->nullable();
+            $table->boolean('mental_orientation_to_time')->default(false);
+            $table->boolean('mental_orientation_to_place')->default(false);
+            $table->boolean('mental_orientation_to_person')->default(false);
+
+            $table->unsignedTinyInteger('level_of_consciousness')->nullable();
+            $table->unsignedTinyInteger('GCS_E')->nullable();
+            $table->unsignedTinyInteger('GCS_V')->nullable();
+            $table->unsignedTinyInteger('GCS_M')->nullable();
+
+            $table->text('general_appearance')->nullable();
+            $table->unsignedTinyInteger('physical_exam_skin')->nullable();
+            $table->text('physical_exam_skin_description')->nullable();
+            $table->unsignedTinyInteger('physical_exam_head')->nullable();
+            $table->text('physical_exam_head_description')->nullable();
+            $table->unsignedTinyInteger('physical_exam_eye_ENT')->nullable();
+            $table->text('physical_exam_eye_ENT_description')->nullable();
+            $table->unsignedTinyInteger('physical_exam_neck')->nullable();
+            $table->text('physical_exam_neck_description')->nullable();
+            $table->unsignedTinyInteger('physical_exam_heart')->nullable();
+            $table->text('physical_exam_heart_description')->nullable();
+            $table->unsignedTinyInteger('physical_exam_lung')->nullable();
+            $table->text('physical_exam_lung_description')->nullable();
+            $table->unsignedTinyInteger('physical_exam_abdomen')->nullable();
+            $table->text('physical_exam_abdomen_description')->nullable();
+            $table->unsignedTinyInteger('physical_exam_nervous_system')->nullable();
+            $table->text('physical_exam_nervous_system_description')->nullable();
+            $table->unsignedTinyInteger('physical_exam_extremities')->nullable();
+            $table->text('physical_exam_extremities_description')->nullable();
+            $table->unsignedTinyInteger('physical_exam_lymph_nodes')->nullable();
+            $table->text('physical_exam_lymph_nodes_description')->nullable();
+            $table->unsignedTinyInteger('physical_exam_breasts')->nullable();
+            $table->text('physical_exam_breasts_description')->nullable();
+            $table->unsignedTinyInteger('physical_exam_genitalia')->nullable();
+            $table->text('physical_exam_genitalia_description')->nullable();
+            $table->unsignedTinyInteger('physical_exam_rectal_examination')->nullable();
+            $table->text('physical_exam_rectal_examination_description')->nullable();
         });
     }
 

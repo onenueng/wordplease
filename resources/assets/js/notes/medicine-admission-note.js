@@ -35,13 +35,9 @@ window.app = new Vue({
         /* *** *** */
         EventBus.$on('autosave', (field, value) => {
             this.autosaveIcon = 'show'
-            // axios.post('/note/autosave', { field: field, value: value })
             axios.post('/note/' + window.location.pathname.split("/")[2] + '/autosave', { field: field, value: value })
                  .then( (response) => {
                     console.log(response.data)
-
-                    // remove timeout later
-                    // setTimeout(() => { this.autosaveIcon = 'hide' }, 1000)
                     this.autosaveIcon = 'hide'
                  })
                  .catch( (error) => {

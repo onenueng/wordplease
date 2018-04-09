@@ -53,13 +53,29 @@
                                 this.notes = response.data
                                 this.showCreatableNotes = true
                             }).catch( (error) => {
-                                console.log(error)
                                 EventBus.$emit('anSearched', false)
+                                if (error.response) {
+                                    if ( error.response.status == 419 ) {
+                                        EventBus.$emit('show-common-dialog', 'error-419')
+                                    } else if ( error.response.status == 500 ) {
+                                        EventBus.$emit('show-common-dialog', 'error-500')
+                                    }
+                                }
+                                console.log(error)
+                                
                             })
                     }
                 }).catch( (error) => {
-                    console.log(error)
                     this.admission = null
+                    if (error.response) {
+                        if ( error.response.status == 419 ) {
+                            EventBus.$emit('show-common-dialog', 'error-419')
+                        } else if ( error.response.status == 500 ) {
+                            EventBus.$emit('show-common-dialog', 'error-500')
+                        }
+                    }
+                    console.log(error)
+                    
                 })
         },
         methods: {

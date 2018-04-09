@@ -438,11 +438,11 @@
                         :options="comorbidOptions"
                         :trigger-value="comorbidExtrasTriggerValue"
                         emit-on-update="reset-comorbid_other_autoimmune_disease-extras">
-                        
+
                         <input-check-group
                             :checks="otherAutoimmuneDiseaseChecks">
                         </input-check-group><!-- Other Autoimmune Disease specify Lung Liver Colon Breast Prostate Cervix Pancreas Brain  -->
-                        
+
                         <input-text
                             field="comorbid_other_autoimmune_disease_other"
                             :value="note.detail.comorbid_other_autoimmune_disease_other"
@@ -487,7 +487,7 @@
                         label-description="Coronary Artery Disease"
                         :trigger-value="comorbidExtrasTriggerValue"
                         emit-on-update="reset-comorbid_CAD-extras">
-                        
+
                         <div class="form-inline">
                             <input-select
                                 field="comorbid_CAD_specific"
@@ -520,7 +520,7 @@
                         :options="comorbidOptions"
                         :trigger-value="comorbidExtrasTriggerValue"
                         emit-on-update="reset-comorbid_hyperlipidemia-extras">
-                        
+
                         <div class="form-inline">
                             <input-select
                                 field="comorbid_hyperlipidemia_specific"
@@ -578,8 +578,8 @@
                         :options="comorbidOptions"
                         :trigger-value="comorbidExtrasTriggerValue"
                         emit-on-update="reset-comorbid_pacemaker_implant-extras">
-                        
-                        <input-radio 
+
+                        <input-radio
                             field="comorbid_pacemaker_implant_specific"
                             :value="note.detail.comorbid_pacemaker_implant_specific"
                             label="Specify :"
@@ -604,8 +604,8 @@
                         :options="comorbidOptions"
                         :trigger-value="comorbidExtrasTriggerValue"
                         emit-on-update="reset-comorbid_chronic_arthritis-extras">
-                        
-                        <input-check-group 
+
+                        <input-check-group
                             :checks="chronicArthritisSpecificChecks">
                         </input-check-group><!-- Chronic arthritis specify Lung Liver Colon Breast Prostate Cervix Pancreas Brain  -->
 
@@ -628,8 +628,8 @@
                         :options="comorbidOptions"
                         :trigger-value="comorbidExtrasTriggerValue"
                         emit-on-update="reset-comorbid_TB-extras">
-                        
-                        <input-check-group 
+
+                        <input-check-group
                             :checks="TBSpecificChecks">
                         </input-check-group><!-- TB specify  -->
 
@@ -643,7 +643,7 @@
                 </div><!-- comorbid TB -->
                 <div><hr class="line" /></div>
             </div><!-- CAD, COPD, Hyperlipidemia, HBV -->
-            
+
             <input-textarea
                 field="other_comorbid"
                 :value="note.detail.other_comorbid"
@@ -715,7 +715,7 @@
                         ]'
                         trigger-value="[1,2]"
                         emit-on-update="reset-alcohol-extras">
-                        
+
                         <input-textarea
                             field="alcohol_description"
                             :value="note.detail.alcohol_description"
@@ -738,7 +738,7 @@
                         ]'
                         trigger-value="[1,2]"
                         emit-on-update="reset-cigarette_smoking-extras">
-                        
+
                         <input-textarea
                             field="smoke_description"
                             :value="note.detail.smoke_description"
@@ -810,7 +810,7 @@
                 status="draft"
                 size="sm">
             </button-app><!-- med put button -->
-            
+
             <input-textarea
                 field="current_medications"
                 :value="note.detail.current_medications"
@@ -1234,7 +1234,7 @@
             </input-textarea><!-- General appearance -->
 
             <div class="col-xs-12"><hr class="line" /></div>
-            
+
             <div class="col-xs-12 col-md-6">
                 <div class="col-xs-12">
                     <input-radio
@@ -1449,6 +1449,47 @@
             </div><!-- exam nervous_system, extremities, lymph_nodes, breasts, genitalia, rectal_examination -->
         </div><!-- wrap with row -->
     </panel><!-- Physical examinations -->
+    <panel heading="Problem list, Discussion and Plan">
+        <div class="row">
+            <div class="col-xs-12 col-md-6" v-for="column in plans" :key="column.key">
+                <input-textarea
+                    v-for="plan in column.plans"
+                    :field="plan.field"
+                    :value="plan.value"
+                    :key="plan.field"
+                    :label="plan.label"
+                    :max-chars="plan.maxChars">
+                </input-textarea>
+            </div><!-- plans -->
+
+            <div class="col-xs-12 col-md-6">
+                <input-select
+                    field="CPG_special_group"
+                    :value="note.detail.CPG_special_group_text"
+                    label="Special group (accoring to CPG) :"
+                    not-allow-other>
+                </input-select>
+            </div>
+            <div class="col-xs-12 col-md-6">
+                <input-text
+                    field="estimated_length_of_stay"
+                    :value="note.detail.estimated_length_of_stay"
+                    label="Estimated dulation of hospitalization "
+                    label-description="enter approximate length of stay(days) or leave blank if cannot be presently determined">
+                </input-text>
+            </div>
+        </div><!-- wrap with row -->
+    </panel><!-- Problem list, Discussion and Plan -->
+    <panel heading="MD note">
+        <div class="row">
+            <input-textarea
+                field="MD_note"
+                :value="note.detail.MD_note"
+                max-chars="1000"
+                grid="12-12-12">
+            </input-textarea>
+        </div><!-- wrap with row -->
+    </panel><!-- MD Note -->
 </div>
 </template>
 
@@ -1510,6 +1551,55 @@
             this.reviewSystemPhysicalExamOptions = [
                 { label: "Normal", value: 1 },
                 { label: "Abnormal", value: 2 }
+            ]
+
+            this.plans = [
+                {
+                    key: "leftPlan",
+                    plans: [
+                        {
+                            label: "Problem list :",
+                            field: 'problem_list',
+                            value: this.note.detail.problem_list,
+                            maxChars: 1000
+                        },
+                        {
+                            label: "Discussion :",
+                            field: 'discussion',
+                            value: this.note.detail.discussion,
+                            maxChars: 2000
+                        },
+                        {
+                            label: "Provisional diagnosis :",
+                            field: 'provisional_diagnosis',
+                            value: this.note.detail.provisional_diagnosis,
+                            maxChars: 500
+                        }
+                    ]
+                },
+                {
+                    key: "rightPlan",
+                    plans: [
+                        {
+                            label: "Plan of investigation :",
+                            field: 'investigation_plan',
+                            value: this.note.detail.investigation_plan,
+                            maxChars: 1000
+                        },
+                        {
+                            label: "Plan of management :",
+                            field: 'management_plan',
+                            value: this.note.detail.management_plan,
+                            maxChars: 1000
+                        },
+                        {
+                            label: "Plan of consultation :",
+                            field: 'consultation_plan',
+                            value: this.note.detail.consultation_plan,
+                            maxChars: 1000
+                        }
+                    ]
+                }
             ]
         },
         mounted () {

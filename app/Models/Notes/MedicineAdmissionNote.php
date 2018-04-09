@@ -30,6 +30,7 @@ class MedicineAdmissionNote extends Model
         'GCS_E',
         'GCS_V',
         'GCS_M',
+        'CPG_special_group',
     ];
 
     protected $fieldsWithExtras = [

@@ -68,30 +68,9 @@ class NoteController extends Controller
         $note = \App\Models\Notes\Note::find($id);
 
         if ( $note && $gate->allows('edit-note', $note) ) {
-            // return $request->all();
             return NoteManager::autosave($note, $request->field, $request->value);
         }
 
         return ['saved' => false];
     }
-
-    // public function getData($id, $fieldName)
-    // {
-    //     $note = NoteManager::getCachedNote($id);
-    //     if ( $note->created_by != auth()->user()->id ) {
-    //         return null;
-    //     }
-
-    //     return NoteManager::getData($note, $fieldName);
-    // }
-
-    // public function getNote($id)
-    // {
-    //     $note = NoteManager::getCachedNote($id, 'refresh');
-    //     if ( $note->created_by != auth()->user()->id ) {
-    //         return null;
-    //     }
-
-    //     return $note;
-    // }
 }

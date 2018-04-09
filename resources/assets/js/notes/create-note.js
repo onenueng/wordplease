@@ -52,6 +52,14 @@ window.app = new Vue({
                     }
                  })
                  .catch((error) => {
+                    EventBus.$emit('toggle-modal-action')
+                    if (error.response) {
+                        if ( error.response.status == 419 ) {
+                            EventBus.$emit('show-common-dialog', 'error-419')
+                        } else if ( error.response.status == 500 ) {
+                            EventBus.$emit('show-common-dialog', 'error-500')
+                        }
+                    }
                     console.log(error)
                  })
         })

@@ -70,7 +70,7 @@
     import ButtonApp from '../buttons/ButtonApp.vue'
     import NavbarLeft from '../navbars/NavbarLeft.vue'
     import NavbarRight from '../navbars/NavbarRight.vue'
-    
+
     export default {
         components: {
             'alert': Alert,

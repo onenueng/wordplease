@@ -57,7 +57,7 @@
                 required: false
             },
             maxChars: {
-                type: String,
+                type: [String, Number],
                 required: false
             },
             setterEvent: {

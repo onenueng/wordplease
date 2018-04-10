@@ -132,3 +132,9 @@ disc_polar,2,pink,2
 disc_polar,3,mildly pale,3
 disc_polar,4,moderately pale,4
 disc_polar,5,markedly pale,5
+discharge,11,COMPLETE RECOVERY : WITH APPROVAL,1
+discharge,12,COMPLETE RECOVERY : AGAINST ADVICE,2
+discharge,13,COMPLETE RECOVERY : BY ESCAPE,3
+discharge,14,COMPLETE RECOVERY : BY TRANSFER,4
+discharge,21,DEAD : AUTOPSY,5
+discharge,21,DEAD : NO AUTOPSY,6

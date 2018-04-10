@@ -73,8 +73,8 @@ Route::get('select-refresh', function () {
     App\Models\Lists\SelectItem::whereNotNull('field_name')->delete();
     App\Models\Lists\SelectItem::loadData('select_items');
 
-    App\Models\Lists\Drug::whereNotNull('id')->delete();
-    App\Models\Lists\Drug::loadData('drugs');
+    // App\Models\Lists\Drug::whereNotNull('id')->delete();
+    // App\Models\Lists\Drug::loadData('drugs');
     return "done";
 });
 

@@ -1,5 +1,6 @@
 {
     "/js/medicine-admission-note.js": "/js/medicine-admission-note.js",
+    "/js/medicine-discharge-note.js": "/js/medicine-discharge-note.js",
     "/js/edit-note.js": "/js/edit-note.js",
     "/js/create-note.js": "/js/create-note.js",
     "/js/register.js": "/js/register.js",

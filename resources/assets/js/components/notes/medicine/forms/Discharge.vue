@@ -1,0 +1,171 @@
+<template>
+    <div class="container-fluid">
+        <panel heading='Admission data'>
+            <div class="row">
+                <input-text
+                    label="Admit :"
+                    field='datetime_admit'
+                    grid="12-6-3"
+                    :value="note.admission.datetime_admit_formated"
+                    readonly>
+                </input-text><!-- datetime_admit -->
+                <input-text
+                    label="Discharge :"
+                    field='datetime_discharge'
+                    grid="12-6-3"
+                    :value="note.admission.datetime_discharge_formated"
+                    readonly>
+                </input-text><!-- datetime_discharge -->
+                <input-text
+                    label="Length of stay :"
+                    field='lenght_of_stay'
+                    grid="12-6-3"
+                    :value="note.admission.lenght_of_stay"
+                    readonly>
+                </input-text><!-- datetime_discharge -->
+                <input-suggestion
+                    field="ward"
+                    label="Ward :"
+                    grid="12-6-3"
+                    min-chars="2"
+                    :value="note.ward_name">
+                </input-suggestion><!-- ward -->
+                <input-suggestion
+                    field="attending"
+                    label="Attending :"
+                    grid="12-6-3"
+                    min-chars="3"
+                    :value="note.attending_name">
+                </input-suggestion><!-- attending -->
+                <input-suggestion
+                    field="division"
+                    label="Specialty :"
+                    grid="12-6-3"
+                    min-chars="3"
+                    :value="note.division_name">
+                </input-suggestion><!-- division -->
+                <input-select
+                    field="admit_reason"
+                    label="Reason to admit :"
+                    placeholder="if other choice, type here"
+                    grid="12-6-3"
+                    :value="note.detail.admit_reason_text">
+                </input-select><!-- admit_reason -->
+            </div><!-- wrap content with row class -->
+        </panel><!-- Panel Admission Data -->
+        <panel heading="Treatments Description">
+            <div class="row">
+                <div v-for="topic in topics" :key="topic.field">
+                    <input-textarea
+                        :field="topic.field"
+                        :label="topic.label"
+                        grid="12-12-12"
+                        :value="topic.value"
+                        :max-chars="topic.maxChars">
+                    </input-textarea><!-- topic -->
+                    <div class="col-xs-12"><hr class="line" /></div><!-- separate line -->
+                </div><!-- topics -->
+                <input-select
+                    field="discharge"
+                    label="Discharge status :"
+                    placeholder="if other choice, type here"
+                    grid="12-12-12"
+                    :value="note.detail.discharge_text">
+                </input-select><!-- discharge -->
+            </div><!-- wrap content with row class -->
+        </panel><!-- Treatments Description -->
+    </div><!-- note content -->
+</template>
+
+<script>
+    import Panel from '../../../Panel.vue'
+    import InputText from '../../../inputs/InputText.vue'
+    import InputCheck from '../../../inputs/InputCheck.vue'
+    import InputRadio from '../../../inputs/InputRadio.vue'
+    import InputSelect from '../../../inputs/InputSelect.vue'
+    import InputTextarea from '../../../inputs/InputTextarea.vue'
+    import InputTextAddon from '../../../inputs/InputTextAddon.vue'
+    import InputSuggestion from '../../../inputs/InputSuggestion.vue'
+    import InputCheckGroup from '../../../inputs/InputCheckGroup.vue'
+
+    export default {
+        components: {
+            'panel': Panel,
+            'input-text' : InputText,
+            'input-check' : InputCheck,
+            'input-radio': InputRadio,
+            'input-select' : InputSelect,
+            'input-textarea' : InputTextarea,
+            'input-text-addon' : InputTextAddon,
+            'input-suggestion' : InputSuggestion,
+            'input-check-group' : InputCheckGroup
+        },
+        props: {
+            serializedNote: {
+                type: String,
+                required: true
+            }
+        },
+        data () {
+            return {
+                note: {},
+                store: {},
+                getDataUrl: "/note-data/" + window.location.pathname.split("/")[2]
+            }
+        },
+        created () {
+            this.note = JSON.parse(this.serializedNote)
+
+            this.topics = [
+                {
+                    field: 'principle_diagnosis', value: this.note.detail.principle_diagnosis,
+                    label: 'Principle diagnosis :', maxChars: 255
+                },
+                {
+                    field: 'comorbids', value: this.note.detail.comorbids,
+                    label: 'Comorbids :', maxChars: 2000
+                },
+                {
+                    field: 'complications', value: this.note.detail.complications,
+                    label: 'Complications :', maxChars: 2000
+                },
+                {
+                    field: 'external_causes', value: this.note.detail.external_causes,
+                    label: 'External causes :', maxChars: 2000
+                },
+                {
+                    field: 'other_diagnosis', value: this.note.detail.other_diagnosis,
+                    label: 'Other diagnosis :', maxChars: 255
+                },
+                {
+                    field: 'OR_procedures', value: this.note.detail.OR_procedures,
+                    label: 'OR procedures :', maxChars: 2000
+                },
+                {
+                    field: 'non_OR_procedures', value: this.note.detail.non_OR_procedures,
+                    label: 'Non OR procedures :', maxChars: 2000
+                },
+                {
+                    field: 'chief_complaint', value: this.note.detail.chief_complaint,
+                    label: 'Chief complaint :', maxChars: 255
+                },
+                {
+                    field: 'significant_findings', value: this.note.detail.significant_findings,
+                    label: 'Significant findings :', maxChars: 2000
+                },
+                {
+                    field: 'significant_procedured', value: this.note.detail.significant_procedured,
+                    label: 'Significant procedured :', maxChars: 2000
+                },
+                {
+                    field: 'hospital_course', value: this.note.detail.hospital_course,
+                    label: 'Hospital course :', maxChars: 2000
+                },
+                {
+                    field: 'condition_upon_discharge', value: this.note.detail.condition_upon_discharge,
+                    label: 'Condition upon discharge :', maxChars: 2000
+                }
+            ]
+        }
+    }
+</script>

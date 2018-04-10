@@ -12324,7 +12324,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 
 /***/ }),
 
-/***/ 244:
+/***/ 246:
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(29);
@@ -42807,7 +42807,7 @@ module.exports = Vue;
 /***/ 33:
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(jQuery) {/* flatpickr v4.4.2, @license MIT */
+/* WEBPACK VAR INJECTION */(function(jQuery) {/* flatpickr v4.4.3, @license MIT */
 (function (global, factory) {
      true ? module.exports = factory() :
     typeof define === 'function' && define.amd ? define(factory) :
@@ -43327,9 +43327,9 @@ module.exports = Vue;
         if (self.daysContainer !== undefined) {
           self.calendarContainer.style.visibility = "hidden";
           self.calendarContainer.style.display = "block";
-          var daysWidth = (self.calendarContainer.clientWidth + 1) * self.config.showMonths + "px";
-          self.daysContainer.style.width = daysWidth;
-          self.calendarContainer.style.width = daysWidth;
+          var daysWidth = (self.daysContainer.offsetWidth + 1) * self.config.showMonths;
+          self.daysContainer.style.width = daysWidth + "px";
+          self.calendarContainer.style.width = daysWidth + "px";
 
           if (self.weekWrapper !== undefined) {
             self.calendarContainer.style.width = daysWidth + self.weekWrapper.offsetWidth + "px";
@@ -43646,7 +43646,7 @@ module.exports = Vue;
           if (isDateInRange(date) && !isDateSelected(date)) dayElement.classList.add("inRange");
         }
 
-        if (self.weekNumbers && className !== "prevMonthDay" && dayNumber % 7 === 1) {
+        if (self.weekNumbers && self.config.showMonths === 1 && className !== "prevMonthDay" && dayNumber % 7 === 1) {
           self.weekNumbers.insertAdjacentHTML("beforeend", "<span class='flatpickr-day'>" + self.config.getWeek(date) + "</span>");
         }
 
@@ -43698,7 +43698,7 @@ module.exports = Vue;
         }
 
         clearNode(self.daysContainer);
-        if (self.weekNumbers && self.weekNumbers.firstChild) clearNode(self.weekNumbers);
+        if (self.weekNumbers) clearNode(self.weekNumbers);
         var frag = document.createDocumentFragment();
 
         for (var i = 0; i < self.config.showMonths; i++) {
@@ -44436,7 +44436,7 @@ module.exports = Vue;
         if (t === undefined) return;
         var target = t;
         var selectedDate = self.latestSelectedDateObj = new Date(target.dateObj.getTime());
-        var shouldChangeMonth = selectedDate.getMonth() !== self.currentMonth && self.config.mode !== "range";
+        var shouldChangeMonth = (selectedDate.getMonth() < self.currentMonth || selectedDate.getMonth() > self.currentMonth + self.config.showMonths - 1) && self.config.mode !== "range";
         self.selectedDateElem = target;
         if (self.config.mode === "single") self.selectedDates = [selectedDate];else if (self.config.mode === "multiple") {
           var selectedIndex = isDateSelected(selectedDate);
@@ -44458,6 +44458,7 @@ module.exports = Vue;
           triggerEvent("onMonthChange");
         }
 
+        updateNavigationCurrentMonth();
         buildDays();
         if (self.config.minDate && self.minDateHasTime && self.config.enableTime && compareDates(selectedDate, self.config.minDate) === 0) setHoursFromDate(self.config.minDate);
         updateValue();
@@ -44471,7 +44472,7 @@ module.exports = Vue;
           } else updateNavigationCurrentMonth();
         }
 
-        if (!shouldChangeMonth && self.config.mode !== "range") focusOnDay(target.$i, 0);else self.selectedDateElem && self.selectedDateElem.focus();
+        if (!shouldChangeMonth && self.config.mode !== "range" && self.config.showMonths === 1) focusOnDay(target.$i, 0);else self.selectedDateElem && self.selectedDateElem.focus();
         if (self.hourElement !== undefined) setTimeout(function () {
           return self.hourElement !== undefined && self.hourElement.select();
         }, 451);
@@ -46300,4 +46301,4 @@ module.exports = defaults;
 
 /***/ })
 
-},[244]);
+},[246]);

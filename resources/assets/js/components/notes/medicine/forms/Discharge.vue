@@ -85,7 +85,7 @@
             </div><!-- wrap with row -->
         </panel><!-- MD Note -->
         <panel heading="TEST">
-            <condition-upon-discharge></condition-upon-discharge>
+            <condition-upon-discharge :groups="testHelpers"></condition-upon-discharge>
         </panel>
     </div><!-- note content -->
 </template>
@@ -181,6 +181,33 @@
                     label: 'Condition upon discharge :', maxChars: 2000
                 }
             ]
+        },
+        mounted () {
+            EventBus.$on('store-data', (field, value) => { this.store[field] = value })
+        },
+        updated () {
+            console.log('updated')
+        },
+        computed: {
+            testHelpers () {
+                let baseClass = 'btn btn-default btn-sm'
+                return [
+                    { 
+                        name: 'a', choices: [
+                            {class: baseClass + (this.store['a'] == 'apple' ? 'active' : ''), name:'apple'},
+                            {class: baseClass + (this.store['a'] == 'samsung' ? 'active' : ''), name:'samsung'},
+                            {class: baseClass + (this.store['a'] == 'oppo' ? 'active' : ''), name:'oppo'}
+                        ]
+                    },
+                    { 
+                        name: 'b', choices: [
+                            {class: baseClass + (this.store['b'] == 'oracle' ? 'active' : ''), name:'oracle'},
+                            {class: baseClass + (this.store['b'] == 'mysql' ? 'active' : ''), name:'mysql'},
+                            {class: baseClass + (this.store['b'] == 'sql server' ? 'active' : ''), name:'sql server'}
+                        ]
+                    }
+                ]
+            }
         }
     }
 </script>

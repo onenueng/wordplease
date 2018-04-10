@@ -74,6 +74,19 @@
                 </input-select><!-- discharge -->
             </div><!-- wrap content with row class -->
         </panel><!-- Treatments Description -->
+        <panel heading="MD note">
+            <div class="row">
+                <input-textarea
+                    field="MD_note"
+                    :value="note.detail.MD_note"
+                    max-chars="1000"
+                    grid="12-12-12">
+                </input-textarea>
+            </div><!-- wrap with row -->
+        </panel><!-- MD Note -->
+        <panel heading="TEST">
+            <condition-upon-discharge></condition-upon-discharge>
+        </panel>
     </div><!-- note content -->
 </template>
 
@@ -87,6 +100,7 @@
     import InputTextAddon from '../../../inputs/InputTextAddon.vue'
     import InputSuggestion from '../../../inputs/InputSuggestion.vue'
     import InputCheckGroup from '../../../inputs/InputCheckGroup.vue'
+    import ConditionUponDischarge from '../../../helpers/medicine/ConditionUponDischarge.vue'
 
     export default {
         components: {
@@ -98,7 +112,8 @@
             'input-textarea' : InputTextarea,
             'input-text-addon' : InputTextAddon,
             'input-suggestion' : InputSuggestion,
-            'input-check-group' : InputCheckGroup
+            'input-check-group' : InputCheckGroup,
+            'condition-upon-discharge': ConditionUponDischarge
         },
         props: {
             serializedNote: {

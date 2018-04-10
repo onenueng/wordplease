@@ -5785,6 +5785,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__inputs_InputSuggestion_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__inputs_InputSuggestion_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__inputs_InputCheckGroup_vue__ = __webpack_require__(94);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__inputs_InputCheckGroup_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__inputs_InputCheckGroup_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__helpers_medicine_ConditionUponDischarge_vue__ = __webpack_require__(258);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__helpers_medicine_ConditionUponDischarge_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__helpers_medicine_ConditionUponDischarge_vue__);
 //
 //
 //
@@ -5864,6 +5866,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
@@ -5885,7 +5901,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         'input-textarea': __WEBPACK_IMPORTED_MODULE_5__inputs_InputTextarea_vue___default.a,
         'input-text-addon': __WEBPACK_IMPORTED_MODULE_6__inputs_InputTextAddon_vue___default.a,
         'input-suggestion': __WEBPACK_IMPORTED_MODULE_7__inputs_InputSuggestion_vue___default.a,
-        'input-check-group': __WEBPACK_IMPORTED_MODULE_8__inputs_InputCheckGroup_vue___default.a
+        'input-check-group': __WEBPACK_IMPORTED_MODULE_8__inputs_InputCheckGroup_vue___default.a,
+        'condition-upon-discharge': __WEBPACK_IMPORTED_MODULE_9__helpers_medicine_ConditionUponDischarge_vue___default.a
     },
     props: {
         serializedNote: {
@@ -6074,7 +6091,32 @@ var render = function() {
           ],
           2
         )
-      ])
+      ]),
+      _vm._v(" "),
+      _c("panel", { attrs: { heading: "MD note" } }, [
+        _c(
+          "div",
+          { staticClass: "row" },
+          [
+            _c("input-textarea", {
+              attrs: {
+                field: "MD_note",
+                value: _vm.note.detail.MD_note,
+                "max-chars": "1000",
+                grid: "12-12-12"
+              }
+            })
+          ],
+          1
+        )
+      ]),
+      _vm._v(" "),
+      _c(
+        "panel",
+        { attrs: { heading: "TEST" } },
+        [_c("condition-upon-discharge")],
+        1
+      )
     ],
     1
   )
@@ -6086,6 +6128,142 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-d46c3b36", module.exports)
+  }
+}
+
+/***/ }),
+/* 244 */,
+/* 245 */,
+/* 246 */,
+/* 247 */,
+/* 248 */,
+/* 249 */,
+/* 250 */,
+/* 251 */,
+/* 252 */,
+/* 253 */,
+/* 254 */,
+/* 255 */,
+/* 256 */,
+/* 257 */,
+/* 258 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = null
+/* template */
+var __vue_template__ = __webpack_require__(259)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\helpers\\medicine\\ConditionUponDischarge.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-4ab4af1e", Component.options)
+  } else {
+    hotAPI.reload("data-v-4ab4af1e", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 259 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm._m(0)
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "material-box clearfix" }, [
+      _c("div", { staticClass: "col-md-12 btn-group-in-well" }, [
+        _c("span", { staticClass: "fa fa-ellipsis-v" }),
+        _vm._v(" "),
+        _c("div", { staticClass: "btn-group", attrs: { role: "group" } }, [
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-default btn-sm btn-template active",
+              attrs: { type: "button", group: "condition_upon_DC_awareness" }
+            },
+            [_vm._v("รู้ตัวดี ถามตอบได้ปรกติ")]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-default btn-sm btn-template",
+              attrs: { type: "button", group: "condition_upon_DC_awareness" }
+            },
+            [_vm._v("ไม่รู้ตัว")]
+          )
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-12 btn-group-in-well" }, [
+        _c("span", { staticClass: "fa fa-ellipsis-v" }),
+        _vm._v(" "),
+        _c("div", { staticClass: "btn-group", attrs: { role: "group" } }, [
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-default btn-sm btn-template",
+              attrs: { type: "button", group: "condition_upon_DC_fever" }
+            },
+            [_vm._v("ไม่มีไข้")]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-default btn-sm btn-template active",
+              attrs: { type: "button", group: "condition_upon_DC_fever" }
+            },
+            [_vm._v("ยังมีไข้")]
+          )
+        ])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-4ab4af1e", module.exports)
   }
 }
 

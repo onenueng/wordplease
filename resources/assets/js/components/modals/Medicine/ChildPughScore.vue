@@ -1,13 +1,15 @@
 <template>
     <div class="modal fade" id="modal-child-pugh-score" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <div class="modal-header alert alert-default" id="modal-sms-box-header">
+                <div class="modal-header alert alert-default">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <p class="modal-title"><span class="fa fa-comment-o" aria-hidden="true"></span> Child-Pugh's Score</p>
                 </div>
                 
-                <div class="modal-body" id="modal-body-child-pugh" style="max-height: calc(100vh - 30vh); overflow-y: auto;">
+                <div class="modal-body"
+                    id="modal-body-child-pugh"
+                    style="max-height: calc(100vh - 30vh); overflow-y: auto;">
                     <p>The score employs five clinical measures of liver disease. Each measure is scored 1-3, with 3 indicating most severe derangement.</p>
                     <table cellpadding="3" cellspacing="0" border="1" style="border-collapse:collapse">
                         <tr style="background-color:#aad">

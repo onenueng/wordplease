@@ -57,6 +57,10 @@
             setterEvent: {
                 type: String,
                 required: false
+            },
+            noSave: {
+                type: String,
+                required: false  
             }
         },
         data () {
@@ -97,26 +101,18 @@
         methods: {
             // handle check event.
             check() {
-                // this.thisChecked = (this.thisChecked == '') ? 'checked' : ''
                 this.checkValue = !this.checkValue
 
                 this.autosave()
 
                 if (this.emitOnUpdate !== undefined) {
                     (this.emitEvents).forEach((event) => {
-                        // [name][mode 1:checked 2:unchecked][value]
-                        // if (event[1] == this.thisChecked) {
-                        //     EventBus.$emit(event[0], event[2])
-                        // }
-                        // if (event[1] == this.isChecked) {
-                        //     EventBus.$emit(event[0], event[2])
-                        // }
                         EventBus.$emit(event, this.checkValue)
                     })
                 }
             },
             autosave() {
-                if (this.field !== undefined) {
+                if ( this.field !== undefined && this.noSave === undefined ) {
                     EventBus.$emit('autosave', this.field, this.checkValue)
                 }
             }
@@ -124,7 +120,6 @@
         computed: {
             emitEvents() {
                 if (typeof this.emitOnUpdate == 'string') {
-                    // return JSON.parse(this.emitOnUpdate)
                     return (this.emitOnUpdate).split(",")
                 }
                 return this.emitOnUpdate

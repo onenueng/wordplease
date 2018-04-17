@@ -1,10 +1,24 @@
 <template>
     <div :class="getGrid()">
         <div class="form-group-sm">
-            <label  class="control-label topped"
-                    v-if="label != undefined"
-                    :for="field">
-                    {{ label }}
+            <label class="control-label topped"
+                   v-if="label != undefined"
+                   :for="field">
+                <span v-html="label"></span>
+                <a  v-if="labelAction !== undefined"
+                    role="button"
+                    @click="emitLabelActionEvent()"
+                    data-toggle="tooltip"
+                    :title="labelActionTitle">
+                    <i :class="labelActionIcon"></i>
+                </a>
+                <a  v-if="labelDescription !== undefined"
+                    role="button"
+                    data-toggle="tooltip"
+                    :title="labelDescription">
+                    <i class="fa fa-info-circle"></i>
+                </a>
+                <span v-if="labelDescription !== undefined">:</span>
             </label>
             <textarea   :class="controlClass"
                         :readonly="readonly"
@@ -35,6 +49,16 @@
             },
             label: {
                 type: String,
+                required: false
+            },
+            // tooltip for label.
+            labelDescription: {
+                type: String,
+                required: false
+            },
+            // string in form of json {"emit": "", "icon": "", "title": "" }.
+            labelAction: {
+                type: [String, Object],
                 required: false
             },
             // define Bootstrap grid class in mobile-tablet-desktop order
@@ -134,6 +158,11 @@
 
             // seem like Vue delay update so, we delay autosize process to take effect
             setTimeout(() => { autosize.update($(this.domRef)) }, 100)
+
+            // init label action icon tooltip if available.
+            if (this.labelAction !== undefined) {
+                $('a[title="' + this.labelActionTitle + '"]').tooltip()
+            }
         },
         methods: {
             getGrid() {
@@ -216,6 +245,9 @@
                 if(this.userInput !== null && this.userInput.length == this.getMaxChars) {
                     this.toggleStatus('danger')
                 }
+            },
+            emitLabelActionEvent() {
+                EventBus.$emit(this.labelActionEmitEventName)
             }
         },
         computed: {
@@ -237,6 +269,33 @@
                     return this.getMaxChars + ' chars max'
                 }
 
+            },
+            // extract label action emit event name.
+            labelActionEmitEventName() {
+                if (this.labelAction !== undefined) {
+                    return typeof this.labelAction == 'string' 
+                           ? JSON.parse(this.labelAction).emit
+                           : this.labelAction.emit
+                }
+                return ''
+            },
+            // extract label action icon.
+            labelActionIcon() {
+                if (this.labelAction !== undefined) {
+                    return 'fa fa-' + (typeof this.labelAction == 'string'
+                                       ? JSON.parse(this.labelAction).icon
+                                       : this.labelAction.icon)
+                }
+                return ''
+            },
+            // extract label action icon title.
+            labelActionTitle() {
+                if (this.labelAction !== undefined) {
+                    return typeof this.labelAction == 'string'
+                           ? JSON.parse(this.labelAction).title
+                           : this.labelAction.title
+                }
+                return ''
             }
         }
     }

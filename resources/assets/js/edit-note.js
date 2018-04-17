@@ -17,7 +17,8 @@ Vue.component('input-radio', require('./components/InputRadio.vue'))
 Vue.component('input-check', require('./components/InputCheck.vue'))
 Vue.component('input-check-group', require('./components/InputCheckGroup.vue'))
 Vue.component('input-text-addon', require('./components/InputTextAddon.vue'))
-
+Vue.component('loggable', require('./components/inputs/InputLoggable.vue'))
+Vue.component('non-operation-list', require('./components/helpers/medicine/NonOperationList.vue'))
 Vue.component('modal-document', require('./components/ModalDocument.vue'))
 
 

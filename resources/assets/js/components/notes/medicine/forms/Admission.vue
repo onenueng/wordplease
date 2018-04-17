@@ -2,6 +2,10 @@
 
 <div class="container-fluid"><!-- note content -->
     <modal-child-pugh-score-detail></modal-child-pugh-score-detail>
+    <general-symptoms-helper
+        v-if="showGeneralSymptomsHelper"
+        setter-event="set-general_symptoms">
+    </general-symptoms-helper>
     <panel heading='Admission data'><!-- Panel Admission Data -->
         <div class="row"><!-- wrap content with row class -->
             <input-text
@@ -835,7 +839,10 @@
                 field="general_symptoms"
                 :value="note.detail.general_symptoms"
                 label="General symptoms :"
-                grid="12-12-12">
+                grid="12-12-12"
+                max-chars="1000"
+                label-action='{"emit": "toggle-general-symptoms-helper", "icon": "h-square", "title": "Open helper" }'
+                setter-event="set-general_symptoms">
             </input-textarea><!-- General symptoms -->
             <div class="col-xs-12"><hr class="line" /></div>
 
@@ -1503,20 +1510,22 @@
     import InputTextAddon from '../../../inputs/InputTextAddon.vue'
     import InputSuggestion from '../../../inputs/InputSuggestion.vue'
     import InputCheckGroup from '../../../inputs/InputCheckGroup.vue'
-    import ChildPughScore from '../../../modals/Medicine/ChildPughScore.vue'
+    import ChildPughScore from '../../../modals/medicine/ChildPughScore.vue'
+    import GeneralSymptomsHelper from '../../../helpers/medicine/GeneralSymptoms.vue'
 
     export default {
         components: {
             'panel': Panel,
             'input-text' : InputText,
             'input-check' : InputCheck,
-            'input-radio': InputRadio,
+            'input-radio' : InputRadio,
             'input-select' : InputSelect,
             'input-textarea' : InputTextarea,
             'input-text-addon' : InputTextAddon,
             'input-suggestion' : InputSuggestion,
             'input-check-group' : InputCheckGroup,
-            'modal-child-pugh-score-detail' : ChildPughScore
+            'modal-child-pugh-score-detail' : ChildPughScore,
+            'general-symptoms-helper' : GeneralSymptomsHelper
         },
         props: {
             serializedNote: {
@@ -1528,6 +1537,7 @@
             return {
                 note: {},
                 store: {},
+                showGeneralSymptomsHelper: false,
                 getDataUrl: "/note-data/" + window.location.pathname.split("/")[2]
             }
         },
@@ -1830,6 +1840,15 @@
 
             EventBus.$on('GCS-updates', () => {
                 EventBus.$emit('update-GCS', this.autoCalculateGCS)
+            })
+
+            EventBus.$on('toggle-general-symptoms-helper', () => {
+                if (this.showGeneralSymptomsHelper) {
+                    $('#modal-general-symptoms-helper').modal('hide')
+                    setTimeout(() => { this.showGeneralSymptomsHelper = false }, 1000);
+                } else {
+                    this.showGeneralSymptomsHelper = true
+                }
             })
         },
         computed : {

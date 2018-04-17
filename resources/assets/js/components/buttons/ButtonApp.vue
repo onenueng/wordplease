@@ -10,7 +10,7 @@
     export default {
         props: {
             action: {
-                type: String,
+                type: [String, Object],
                 required: true
             },
             label: {
@@ -33,13 +33,22 @@
             }
         },
         mounted() {
-            this.id = Date.now() + '-' + this.action
+            if ( typeof this.action == 'string' ) {
+                this.id = Date.now() + '-' + this.action
+            } else {
+                this.id = Date.now() + '-' + this.action.event
+            }
+
         },
         methods: {
             click(e) {
-                EventBus.$emit(this.action);
+                if ( typeof this.action == 'string' ) {
+                    EventBus.$emit(this.action)
+                } else {
+                    EventBus.$emit(this.action.event, this.action.value)
+                }
 
-                var element, circle, d, x, y;
+                var element, circle, d, x, y
 
                 element = $('#' + this.id)
 

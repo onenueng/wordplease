@@ -11,7 +11,8 @@
             :checked="check.checked"
             :emit-on-update="check.emitOnUpdate"
             :setter-event="check.setterEvent"
-            :need-sync="needSync">
+            :need-sync="needSync"
+            :no-save="check.noSave">
         </input-check>
     </div>
 </template>

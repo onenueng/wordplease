@@ -1,5 +1,9 @@
 <template>
     <div class="container-fluid">
+        <condition-upon-discharge-helper
+            v-if="showConditionUponDischargeHelper"
+            setter-event="set-condition_upon_discharge">
+        </condition-upon-discharge-helper>
         <panel heading='Admission data'>
             <div class="row">
                 <input-text
@@ -65,6 +69,16 @@
                     </input-textarea><!-- topic -->
                     <div class="col-xs-12"><hr class="line" /></div><!-- separate line -->
                 </div><!-- topics -->
+                <input-textarea
+                    field="condition_upon_discharge"
+                    label="Condition upon discharge :"
+                    grid="12-12-12"
+                    :value="note.detail.condition_upon_discharge"
+                    label-action='{"emit": "toggle-condition-upon-discharge-helper", "icon": "h-square", "title": "Open helper" }'
+                    max-chars="2000"
+                    setter-event="set-condition_upon_discharge">
+                </input-textarea>
+                <div class="col-xs-12"><hr class="line" /></div><!-- separate line -->
                 <input-select
                     field="discharge"
                     label="Discharge status :"
@@ -72,6 +86,7 @@
                     grid="12-12-12"
                     :value="note.detail.discharge_text">
                 </input-select><!-- discharge -->
+                <div class="col-xs-12"><hr class="line" /></div><!-- separate line -->
             </div><!-- wrap content with row class -->
         </panel><!-- Treatments Description -->
         <panel heading="MD note">
@@ -84,9 +99,6 @@
                 </input-textarea>
             </div><!-- wrap with row -->
         </panel><!-- MD Note -->
-        <panel heading="TEST">
-            <condition-upon-discharge :groups="testHelpers"></condition-upon-discharge>
-        </panel>
     </div><!-- note content -->
 </template>
 
@@ -100,20 +112,20 @@
     import InputTextAddon from '../../../inputs/InputTextAddon.vue'
     import InputSuggestion from '../../../inputs/InputSuggestion.vue'
     import InputCheckGroup from '../../../inputs/InputCheckGroup.vue'
-    import ConditionUponDischarge from '../../../helpers/medicine/ConditionUponDischarge.vue'
+    import ConditionUponDischargeHelper from '../../../helpers/medicine/ConditionUponDischarge.vue'
 
     export default {
         components: {
-            'panel': Panel,
+            'panel' : Panel,
             'input-text' : InputText,
+            'input-radio' : InputRadio,
             'input-check' : InputCheck,
-            'input-radio': InputRadio,
             'input-select' : InputSelect,
             'input-textarea' : InputTextarea,
             'input-text-addon' : InputTextAddon,
             'input-suggestion' : InputSuggestion,
             'input-check-group' : InputCheckGroup,
-            'condition-upon-discharge': ConditionUponDischarge
+            'condition-upon-discharge-helper': ConditionUponDischargeHelper
         },
         props: {
             serializedNote: {
@@ -125,7 +137,8 @@
             return {
                 note: {},
                 store: {},
-                getDataUrl: "/note-data/" + window.location.pathname.split("/")[2]
+                getDataUrl: "/note-data/" + window.location.pathname.split("/")[2],
+                showConditionUponDischargeHelper: false
             }
         },
         created () {
@@ -175,39 +188,18 @@
                 {
                     field: 'hospital_course', value: this.note.detail.hospital_course,
                     label: 'Hospital course :', maxChars: 2000
-                },
-                {
-                    field: 'condition_upon_discharge', value: this.note.detail.condition_upon_discharge,
-                    label: 'Condition upon discharge :', maxChars: 2000
                 }
             ]
         },
         mounted () {
-            EventBus.$on('store-data', (field, value) => { this.store[field] = value })
-        },
-        updated () {
-            console.log('updated')
-        },
-        computed: {
-            testHelpers () {
-                let baseClass = 'btn btn-default btn-sm'
-                return [
-                    { 
-                        name: 'a', choices: [
-                            {class: baseClass + (this.store['a'] == 'apple' ? 'active' : ''), name:'apple'},
-                            {class: baseClass + (this.store['a'] == 'samsung' ? 'active' : ''), name:'samsung'},
-                            {class: baseClass + (this.store['a'] == 'oppo' ? 'active' : ''), name:'oppo'}
-                        ]
-                    },
-                    { 
-                        name: 'b', choices: [
-                            {class: baseClass + (this.store['b'] == 'oracle' ? 'active' : ''), name:'oracle'},
-                            {class: baseClass + (this.store['b'] == 'mysql' ? 'active' : ''), name:'mysql'},
-                            {class: baseClass + (this.store['b'] == 'sql server' ? 'active' : ''), name:'sql server'}
-                        ]
-                    }
-                ]
-            }
+            EventBus.$on('toggle-condition-upon-discharge-helper', () => {
+                if (this.showConditionUponDischargeHelper) {
+                    $('#modal-condition-upon-discharge-helper').modal('hide')
+                    setTimeout(() => { this.showConditionUponDischargeHelper = false }, 1000);
+                } else {
+                    this.showConditionUponDischargeHelper = true
+                }
+            })
         }
     }
 </script>

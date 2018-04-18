@@ -19,6 +19,7 @@ Vue.component('input-check-group', require('./components/InputCheckGroup.vue'))
 Vue.component('input-text-addon', require('./components/InputTextAddon.vue'))
 Vue.component('loggable', require('./components/inputs/InputLoggable.vue'))
 Vue.component('non-operation-list', require('./components/helpers/medicine/NonOperationList.vue'))
+Vue.component('investigation-list', require('./components/helpers/medicine/InvestigationList.vue'))
 Vue.component('modal-document', require('./components/ModalDocument.vue'))
 
 

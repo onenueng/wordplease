@@ -1,6 +1,6 @@
 <template>
     <div class="material-box">
-        <label><i>{{ label }}</i></label>
+        <label><i>Quote :</i></label>
         <blockquote @mousemove="onselect"
                     @mousedown="dragging = true"
                     @mouseup="mouseup"
@@ -12,7 +12,7 @@
                     <div class="form-group-sm">
                         <textarea class="form-control"
                                   v-model="change.old"
-                                  readonly 
+                                  readonly
                                   rows="1">
                         </textarea>
                     </div>
@@ -102,7 +102,7 @@
             updateQuote () {
                 let newQuote = this.tmpQuote
                 this.changes.forEach((item, index) => {
-                    newQuote = newQuote.replace( item.old, '<del>' + item.old + '</del>')      
+                    newQuote = newQuote.replace( item.old, '<del>' + item.old + '</del>')
                 })
                 this.quote = newQuote
             }
@@ -119,11 +119,20 @@
                     this.changes.splice(index, 1)
                 }
                 this.updateQuote()
+                this.currentChange = 0
             })
 
             EventBus.$on('new-' + this.field + '-change', () => {
                 this.changes.push( { old: null, new: null } )
                 this.currentChange = this.changes.length - 1
+            })
+
+            EventBus.$on('set-' + this.field + '-change', (text) => {
+                if ( this.changes[this.currentChange].new == null || this.changes[this.currentChange].new == '' ) {
+                    this.changes[this.currentChange].new = text
+                } else {
+                    this.changes[this.currentChange].new += ('\n' + text)
+                }
             })
 
             autosize($('textarea'))

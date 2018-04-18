@@ -1,12 +1,25 @@
 <template>
-    <div class="row">
-        <div class="col-xs-6 col-sm-4 col-md-3" v-for="check in checks" :key="check.field">
-            <div class="form-group-sm">
-                <input-check
-                    :label="check.label"
-                    :field="check.field"
-                    no-save>
-                </input-check>
+    <div class="material-box">
+        <div class="row">
+            <div class="col-xs-12">
+                <label><i>Non-operation helper :</i></label>
+            </div>
+            <div class="col-xs-6 col-sm-4 col-md-3" v-for="check in checks" :key="check.field">
+                <div class="form-group-sm">
+                    <input-check
+                        :label="check.label"
+                        :field="check.field"
+                        no-save>
+                    </input-check>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <button-app
+                    action="append-non-operation-helper"
+                    status="info"
+                    label="Append"
+                    size="lg">
+                </button-app>
             </div>
         </div>
     </div>
@@ -25,22 +38,22 @@
                     { label: 'bronchoscope', field: 'non_operation_list-bronchoscope' },
                     { label: 'CAPD', field: 'non_operation_list-CAPD' },
                     { label: 'CBI', field: 'non_operation_list-CBI' },
-                    { label: 'change tracheotomy', field: 'non_operation_list-change_tracheotomy' },
-                    { label: 'Cpap/Bipap', field: 'non_operation_list-Cpap-Bipap' },
+                    { label: 'change tracheotomy', field: 'non_operation_list-change tracheotomy' },
+                    { label: 'Cpap/Bipap', field: 'non_operation_list-Cpap/Bipap' },
                     { label: 'CPR', field: 'non_operation_list-CPR' },
-                    { label: 'cryopre/factor VIII', field: 'non_operation_list-cryopre-factor_VIII' },
+                    { label: 'cryopre/factor VIII', field: 'non_operation_list-cryopre/factor VIII' },
                     { label: 'Debridement', field: 'non_operation_list-Debridement' },
                     { label: 'Dressing', field: 'non_operation_list-Dressing' },
                     { label: 'EGD c biop', field: 'non_operation_list-EGD c biop' },
                     { label: 'ERCP c stent c dilat', field: 'non_operation_list-ERCP c stent c dilat' },
-                    { label: 'EET on venti>96', field: 'non_operation_list-EET_on_venti_greater_96' },
-                    { label: 'EET on venti<96', field: 'non_operation_list-EET_on_venti_lesser_96' },
+                    { label: 'EET on venti>96', field: 'non_operation_list-EET_on_venti>96' },
+                    { label: 'EET on venti<96', field: 'non_operation_list-EET_on_venti<96' },
                     { label: 'Extract tooth', field: 'non_operation_list-Extract_tooth' },
                     { label: 'Feeding', field: 'non_operation_list-Feeding' },
                     { label: 'FFP', field: 'non_operation_list-FFP' },
                     { label: 'Filling tooth', field: 'non_operation_list-Filling tooth' },
-                    { label: "Foley'cath", field: 'non_operation_list-Foley_cath' },
-                    { label: 'Harvest stem cell', field: 'non_operation_list-Harvest_stem_cell' },
+                    { label: "Foley'cath", field: "non_operation_list-Foley'cath" },
+                    { label: 'Harvest stem cell', field: 'non_operation_list-Harvest stem cell' },
                     { label: 'HD', field: 'non_operation_list-HD' },
                     { label: 'holter monitor', field: 'non_operation_list-holter monitor' },
                     { label: 'Hypothermia', field: 'non_operation_list-Hypothermia' },
@@ -62,7 +75,6 @@
                     { label: 'pleurodesis+tetra', field: 'non_operation_list-pleurodesis+tetra' },
                     { label: 'PRC', field: 'non_operation_list-PRC' },
                     { label: 'rehabi', field: 'non_operation_list-rehabi' },
-
                     { label: 'Rituximab', field: 'non_operation_list-Rituximab' },
                     { label: 'RT', field: 'non_operation_list-RT' },
                     { label: 'rtPA', field: 'non_operation_list-rtPA' },
@@ -76,6 +88,18 @@
                     { label: 'U/S doppler', field: 'non_operation_list-U/S doppler' }
                 ]
             }
+        },
+        mounted () {
+            EventBus.$on('append-non-operation-helper', () => {
+                let appendText = ''
+                $('[id^=non_operation_list]').each( (index, item) => {
+                    if ( $(item).prop('checked') ) {
+                        appendText += $(item).prop('id').replace('non_operation_list-', '') + '\n'
+                    }
+                })
+                EventBus.$emit('set-non_operation-change', appendText)
+                console.log(appendText)
+            })
         }
     }
 </script>

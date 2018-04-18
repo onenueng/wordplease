@@ -11185,7 +11185,7 @@ module.exports = function(module) {
 var utils = __webpack_require__(10);
 var bind = __webpack_require__(104);
 var Axios = __webpack_require__(116);
-var defaults = __webpack_require__(52);
+var defaults = __webpack_require__(56);
 
 /**
  * Create an instance of Axios
@@ -11270,7 +11270,7 @@ function isSlowBuffer (obj) {
 "use strict";
 
 
-var defaults = __webpack_require__(52);
+var defaults = __webpack_require__(56);
 var utils = __webpack_require__(10);
 var InterceptorManager = __webpack_require__(125);
 var dispatchRequest = __webpack_require__(126);
@@ -11812,7 +11812,7 @@ module.exports = InterceptorManager;
 var utils = __webpack_require__(10);
 var transformData = __webpack_require__(127);
 var isCancel = __webpack_require__(108);
-var defaults = __webpack_require__(52);
+var defaults = __webpack_require__(56);
 
 /**
  * Throws a `Cancel` if cancellation has been requested.
@@ -12126,7 +12126,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
                          (typeof global !== "undefined" && global.clearImmediate) ||
                          (this && this.clearImmediate);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(50)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(54)))
 
 /***/ }),
 
@@ -12320,11 +12320,11 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(50), __webpack_require__(105)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(54), __webpack_require__(105)))
 
 /***/ }),
 
-/***/ 262:
+/***/ 265:
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(29);
@@ -29441,7 +29441,7 @@ module.exports = __webpack_require__(35);
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(50), __webpack_require__(113)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(54), __webpack_require__(113)(module)))
 
 /***/ }),
 
@@ -42800,14 +42800,14 @@ Vue.compile = compileToFunctions;
 
 module.exports = Vue;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(50), __webpack_require__(132).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(54), __webpack_require__(132).setImmediate))
 
 /***/ }),
 
 /***/ 33:
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(jQuery) {/* flatpickr v4.4.3, @license MIT */
+/* WEBPACK VAR INJECTION */(function(jQuery) {/* flatpickr v4.4.2, @license MIT */
 (function (global, factory) {
      true ? module.exports = factory() :
     typeof define === 'function' && define.amd ? define(factory) :
@@ -43327,9 +43327,9 @@ module.exports = Vue;
         if (self.daysContainer !== undefined) {
           self.calendarContainer.style.visibility = "hidden";
           self.calendarContainer.style.display = "block";
-          var daysWidth = (self.daysContainer.offsetWidth + 1) * self.config.showMonths;
-          self.daysContainer.style.width = daysWidth + "px";
-          self.calendarContainer.style.width = daysWidth + "px";
+          var daysWidth = (self.calendarContainer.clientWidth + 1) * self.config.showMonths + "px";
+          self.daysContainer.style.width = daysWidth;
+          self.calendarContainer.style.width = daysWidth;
 
           if (self.weekWrapper !== undefined) {
             self.calendarContainer.style.width = daysWidth + self.weekWrapper.offsetWidth + "px";
@@ -43646,7 +43646,7 @@ module.exports = Vue;
           if (isDateInRange(date) && !isDateSelected(date)) dayElement.classList.add("inRange");
         }
 
-        if (self.weekNumbers && self.config.showMonths === 1 && className !== "prevMonthDay" && dayNumber % 7 === 1) {
+        if (self.weekNumbers && className !== "prevMonthDay" && dayNumber % 7 === 1) {
           self.weekNumbers.insertAdjacentHTML("beforeend", "<span class='flatpickr-day'>" + self.config.getWeek(date) + "</span>");
         }
 
@@ -43698,7 +43698,7 @@ module.exports = Vue;
         }
 
         clearNode(self.daysContainer);
-        if (self.weekNumbers) clearNode(self.weekNumbers);
+        if (self.weekNumbers && self.weekNumbers.firstChild) clearNode(self.weekNumbers);
         var frag = document.createDocumentFragment();
 
         for (var i = 0; i < self.config.showMonths; i++) {
@@ -44436,7 +44436,7 @@ module.exports = Vue;
         if (t === undefined) return;
         var target = t;
         var selectedDate = self.latestSelectedDateObj = new Date(target.dateObj.getTime());
-        var shouldChangeMonth = (selectedDate.getMonth() < self.currentMonth || selectedDate.getMonth() > self.currentMonth + self.config.showMonths - 1) && self.config.mode !== "range";
+        var shouldChangeMonth = selectedDate.getMonth() !== self.currentMonth && self.config.mode !== "range";
         self.selectedDateElem = target;
         if (self.config.mode === "single") self.selectedDates = [selectedDate];else if (self.config.mode === "multiple") {
           var selectedIndex = isDateSelected(selectedDate);
@@ -44458,7 +44458,6 @@ module.exports = Vue;
           triggerEvent("onMonthChange");
         }
 
-        updateNavigationCurrentMonth();
         buildDays();
         if (self.config.minDate && self.minDateHasTime && self.config.enableTime && compareDates(selectedDate, self.config.minDate) === 0) setHoursFromDate(self.config.minDate);
         updateValue();
@@ -44472,7 +44471,7 @@ module.exports = Vue;
           } else updateNavigationCurrentMonth();
         }
 
-        if (!shouldChangeMonth && self.config.mode !== "range" && self.config.showMonths === 1) focusOnDay(target.$i, 0);else self.selectedDateElem && self.selectedDateElem.focus();
+        if (!shouldChangeMonth && self.config.mode !== "range") focusOnDay(target.$i, 0);else self.selectedDateElem && self.selectedDateElem.focus();
         if (self.hourElement !== undefined) setTimeout(function () {
           return self.hourElement !== undefined && self.hourElement.select();
         }, 451);
@@ -46172,7 +46171,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ 50:
+/***/ 54:
 /***/ (function(module, exports) {
 
 var g;
@@ -46200,7 +46199,7 @@ module.exports = g;
 
 /***/ }),
 
-/***/ 52:
+/***/ 56:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46301,4 +46300,4 @@ module.exports = defaults;
 
 /***/ })
 
-},[262]);
+},[265]);

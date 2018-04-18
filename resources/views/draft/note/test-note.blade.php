@@ -1,6 +1,9 @@
 @extends('draft.layout.edit-master')
 
 @section('content')
+<panel heading="TEST">
+    <input-rows></input-rows>
+</panel>
 <panel heading="Principle diagnosis">
     <loggable
         field="principle_diagnosis"

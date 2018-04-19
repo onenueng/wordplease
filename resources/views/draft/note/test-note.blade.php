@@ -1,6 +1,10 @@
 @extends('draft.layout.edit-master')
 
 @section('content')
+<div></div>
+<input-rows></input-rows>
+</div>
+
 <panel heading="TEST">
     <input-rows></input-rows>
 </panel>
@@ -55,4 +59,5 @@
     </loggable>
     <investigation-list></investigation-list>
 </panel>
+
 @endsection

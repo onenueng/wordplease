@@ -53,12 +53,7 @@
     </div>
 </template>
 <script>
-    import ButtonApp from '../buttons/ButtonApp.vue'
-
     export default {
-        components: {
-            'button-app' : ButtonApp
-        },
         props: {
             field: {
                 type: String,

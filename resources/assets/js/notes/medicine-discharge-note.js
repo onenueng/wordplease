@@ -7,7 +7,7 @@ Vue.component('note', require('../components/notes/medicine/forms/Discharge.vue'
 Vue.component('page-navbar', require('../components/navbars/EditNote.vue'))
 Vue.component('modal-dialog', require('../components/modals/Dialog.vue'))
 Vue.component('alert-box', require('../components/alerts/AlertBox.vue'))
-Vue.component('button-app', require('../components/ButtonApp.vue'))
+Vue.component('button-app', require('../components/buttons/ButtonApp.vue'))
 
 window.app = new Vue({
     el: '#app',

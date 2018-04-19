@@ -59,6 +59,7 @@
         </panel><!-- Panel Admission Data -->
         <panel heading="Treatments Description">
             <div class="row">
+                <input-rows field="hello-world" :row-limit="5" :items="[{value:'apple'}, {value:'banana'}, {value: 'cinemon'}]"></input-rows>
                 <div v-for="topic in topics" :key="topic.field">
                     <input-textarea
                         :field="topic.field"
@@ -104,6 +105,7 @@
 
 <script>
     import Panel from '../../../Panel.vue'
+    import InputRows from '../../../inputs/InputRows.vue'
     import InputText from '../../../inputs/InputText.vue'
     import InputCheck from '../../../inputs/InputCheck.vue'
     import InputRadio from '../../../inputs/InputRadio.vue'
@@ -117,6 +119,7 @@
     export default {
         components: {
             'panel' : Panel,
+            'input-rows' : InputRows,
             'input-text' : InputText,
             'input-radio' : InputRadio,
             'input-check' : InputCheck,

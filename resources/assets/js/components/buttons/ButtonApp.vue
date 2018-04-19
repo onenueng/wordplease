@@ -10,7 +10,7 @@
     export default {
         props: {
             action: {
-                type: [String, Object],
+                type: [String, Object, Function],
                 required: true
             },
             label: {
@@ -38,7 +38,6 @@
             } else {
                 this.id = Date.now() + '-' + this.action.event
             }
-
         },
         methods: {
             click(e) {

@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="col-xs-12"><label class="label-control topped">Principle diagnosis :</label></div>
-        <draggable :list="list" @start="drag=true" @end="drag=false" :options="{ handle:'.move-icon' }">
+        <draggable :list="list" @start="drag=true" @end="drag=false" :options="{ handle:'.drag-icon', group: groupName }">
             <div class="form-group-sm" v-for="(item, index) in list" :key="field + '-item-' + index">
                 <div class="col-xs-12 col-sm-8 col-md-10" style="padding-right: 2px;">
                     <textarea class="form-control"
@@ -15,7 +15,9 @@
                             @focus="currentRow = index"></textarea>
                 </div>
                 <div class="col-xs-12 col-sm-4 col-md-2" style="padding-top: 4px; background: #ffffd3!important;">
-                    <span v-if="list.length > 1" class="badge move-icon" style="cursor: move;"><i class="fa fa-arrows"></i></span>
+                    <span v-if="list.length > 1" class="badge drag-icon">
+                        <i class="fa fa-align-justify"></i>
+                    </span>
                     <button-app
                         :action="'add-' + field"
                         status="info"
@@ -47,6 +49,11 @@
             field: {
                 type: String,
                 required: true
+            },
+            groupName: {
+                type: String,
+                required: false,
+                default: this.field  
             },
             rowLimit: {
                 type: Number,
@@ -106,3 +113,10 @@
         }
     }
 </script>
+
+<style>
+    .drag-icon {
+        cursor: move;
+        cursor: -webkit-grabbing;
+    }
+</style>

@@ -59,7 +59,16 @@
         </panel><!-- Panel Admission Data -->
         <panel heading="Treatments Description">
             <div class="row">
-                <input-rows field="hello-world" :row-limit="5" :items="[{value:'apple'}, {value:'banana'}, {value: 'cinemon'}]"></input-rows>
+                <input-rows field="hello-world"
+                            group-name='dx'
+                            :row-limit="5"
+                            :items="[{value:'apple'}, {value:'banana'}, {value: 'cinemon'}]">
+                </input-rows>
+                <input-rows field="hello-vue"
+                            group-name='dx'
+                            :row-limit="5"
+                            :items="[{value:'appleX'}, {value:'bananaY'}, {value: 'cinemonZ'}]">
+                </input-rows>
                 <div v-for="topic in topics" :key="topic.field">
                     <input-textarea
                         :field="topic.field"

@@ -1,22 +1,34 @@
 <template>
     <div>
-        <div class="col-xs-12"><label class="label-control topped">Principle diagnosis :</label></div>
-        <draggable :list="list" @start="drag=true" @end="drag=false" :options="{ handle:'.drag-icon', group: groupName }">
+        <div class="col-xs-12" v-if="label !== undefined">
+            <label class="label-control topped">{{ label }} <span class="text-danger" v-if="list.length == rowLimit">You have reached limit rows</span></label>
+
+        </div>
+        <!-- @end="drag=false" -->
+        <draggable
+            :list="list"
+            @start="onStart"
+            @change="onChange"
+            @add="onAdd"
+            @remove="onRemove"
+            @sort="onSort"
+            @end="onEnd"
+            :options="draggableOptions">
             <div class="form-group-sm" v-for="(item, index) in list" :key="field + '-item-' + index">
                 <div class="col-xs-12 col-sm-8 col-md-10" style="padding-right: 2px;">
-                    <textarea class="form-control"
+                    <textarea :class="controlClass(index+1)"
                             :id="field + '-' + (index+1)"
                             v-model="item.value"
                             rows="1"
-                            @input="onkeypressed"
+                            @input="onKeyPressed"
                             @keydown.enter.prevent="onEnterKeyPressed"
                             @keydown.page-down.prevent="onPageDownKeyPressed"
                             @keydown.page-up.prevent="onPageUpKeyPressed"
                             @focus="currentRow = index"></textarea>
                 </div>
-                <div class="col-xs-12 col-sm-4 col-md-2" style="padding-top: 4px; background: #ffffd3!important;">
+                <div class="col-xs-12 col-sm-4 col-md-2" style="padding-top: 4px; background: #ffffd3!important;" v-if="rowLimit > 1 || list.length > 1">
                     <span v-if="list.length > 1" class="badge drag-icon">
-                        <i class="fa fa-align-justify"></i>
+                        <span>{{ index + 1 }}</span>
                     </span>
                     <button-app
                         :action="'add-' + field"
@@ -35,7 +47,6 @@
                 </div>
             </div>
         </draggable>
-        <div class="col-xs-12" v-if="list.length == rowLimit"><p class="text-danger">You have reached limit rows</p></div>
     </div>
 </template>
 
@@ -50,10 +61,14 @@
                 type: String,
                 required: true
             },
+            label: {
+                type: String,
+                required: false
+            },
             groupName: {
                 type: String,
                 required: false,
-                default: this.field  
+                default: this.field
             },
             rowLimit: {
                 type: Number,
@@ -69,7 +84,12 @@
         data () {
             return {
                 currentRow: 0,
-                list: this.items
+                list: this.items,
+                draggableOptions: {
+                    handle:'.drag-icon',
+                    group: this.groupName,
+                    onRemove: function (evt) { EventBus.$emit('hello-vue-drag') }
+                }
             }
         },
         methods: {
@@ -89,15 +109,36 @@
                     document.getElementById(this.field + '-' + (this.currentRow)).focus()
                 }
             },
-            onkeypressed () {
+            onKeyPressed () {
                 // defined on mounted
+            },
+            onStart () {
+                console.log(this.field + ': i am Start')
+            },
+            onEnd () {
+                console.log(this.field + ': i am end')
+            },
+            onChange () {
+                console.log(this.field + ': i am Change')
+            },
+            onAdd () {
+                console.log(this.field + ': i am Add')
+            },
+            onRemove () {
+                console.log(this.field + ': i am Remove')
+            },
+            onSort () {
+                console.log(this.field + ': i am Sort')
             },
             autosave () {
                 console.log(this.list)
+            },
+            controlClass (index) {
+                return (index) <= this.rowLimit ? 'form-control':'form-control overFlow'
             }
         },
         mounted () {
-            this.onkeypressed = _.debounce(() => { this.autosave() }, 5000)
+            this.onKeyPressed = _.debounce(() => { this.autosave() }, 5000)
 
             EventBus.$on('add-' + this.field, () => { this.onEnterKeyPressed() })
 
@@ -118,5 +159,9 @@
     .drag-icon {
         cursor: move;
         cursor: -webkit-grabbing;
+    }
+
+    .overFlow {
+        background:#d9534f;
     }
 </style>

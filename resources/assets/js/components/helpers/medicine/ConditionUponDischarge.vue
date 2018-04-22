@@ -49,22 +49,21 @@
                 putEvent: null,
                 helper: {},
                 conditionUponDischarge: [  // helper specific
-                    { name: 'a_awareness', choices: [ 'รู้ตัวดี ถามตอบได้ปรกติ', 'ไม่รู้ตัว' ] },
-                    { name: 'b_fever', choices: [ 'ไม่มีไข้', 'ยังมีไข้' ] },
-                    { name: 'c_eating', choices: [ 'กินอาหารได้ตามปกติ', 'ยังกินได้น้อย' ] },
-                    { name: 'd_diarrhea', choices: [ 'ไม่ท้องเสีย', 'ท้องเสียลดลง' ] },
-                    { name: 'e_vomit', choices: [ 'ไม่อาเจียน', 'อาเจียนน้อยลง' ] },
-                    { name: 'f_pain', choices: [ 'ไม่ปวดท้อง', 'ปวดท้องลดลง' ] },
-                    { name: 'g_tired', choices: [ 'ไม่เหนื่อย', 'เหนื่อยลดลง', 'ยังเหนื่อยอยู่' ] },
-                    { name: 'h_swelling', choices: [ 'ไม่บวม', 'บวมลดลง', 'ยังบวมอยู่' ] },
-                    { name: 'i_weak', choices: [ 'แขนขามีแรงดี', 'แขนขาขวาอ่อนแรง', 'แขนขาซ้ายอ่อนแรง', 'แขนขาทั้งสองข้างอ่อนแรง','ไม่มีแรง' ] }
+                    { name: 'row_1', choices: [ 'รู้ตัวดี ถามตอบได้ปรกติ', 'ไม่รู้ตัว' ] },
+                    { name: 'row_2', choices: [ 'ไม่มีไข้', 'ยังมีไข้' ] },
+                    { name: 'row_3', choices: [ 'กินอาหารได้ตามปกติ', 'ยังกินได้น้อย' ] },
+                    { name: 'row_4', choices: [ 'ไม่ท้องเสีย', 'ท้องเสียลดลง' ] },
+                    { name: 'row_5', choices: [ 'ไม่อาเจียน', 'อาเจียนน้อยลง' ] },
+                    { name: 'row_6', choices: [ 'ไม่ปวดท้อง', 'ปวดท้องลดลง' ] },
+                    { name: 'row_7', choices: [ 'ไม่เหนื่อย', 'เหนื่อยลดลง', 'ยังเหนื่อยอยู่' ] },
+                    { name: 'row_8', choices: [ 'ไม่บวม', 'บวมลดลง', 'ยังบวมอยู่' ] },
+                    { name: 'row_9', choices: [ 'แขนขามีแรงดี', 'แขนขาขวาอ่อนแรง', 'แขนขาซ้ายอ่อนแรง', 'แขนขาทั้งสองข้างอ่อนแรง','ไม่มีแรง' ] }
                 ],
                 mobilityTree: {  // helper specific
-                    name: 'j_0_mobility',
-                    choices: ['เดินได้', 'เดินได้เมื่อช่วยพยุง', 'นอนติดเตียง ลุกไม่ได้'],
+                    name: 'row_10_0', choices: ['เดินได้', 'เดินได้เมื่อช่วยพยุง', 'นอนติดเตียง ลุกไม่ได้'],
                     children: [
-                        { name: 'j_1_mobility', choices: ['ไม่มีแผลกดทับ', 'มีแผลกดทับที่ sacral grade ...'] },
-                        { name: 'j_2_mobility', choices: ['รู้ตัวดี', 'ไม่รู้ตัว', 'ลืมตา ทำตามคำสั่ง', 'ลืมตา ไม่ทำตามคำสั่ง'] }
+                        { name: 'row_10_1', choices: ['ไม่มีแผลกดทับ', 'มีแผลกดทับที่ sacral grade ...'] },
+                        { name: 'row_10_2', choices: ['รู้ตัวดี', 'ไม่รู้ตัว', 'ลืมตา ทำตามคำสั่ง', 'ลืมตา ไม่ทำตามคำสั่ง'] }
                     ]
                 }
             }
@@ -92,13 +91,13 @@
 
             EventBus.$on('store-helper', (topic, group, value) => {
                 this.helper[group] = value
-                if ( group == 'j_0_mobility' ) { // helper specific
+                if ( group == 'row_10_0' ) { // helper specific
                     if ( value == 'นอนติดเตียง ลุกไม่ได้' ) {
-                        EventBus.$emit('j_0_mobility', true)
+                        EventBus.$emit('row_10_0', true)
                     } else {
-                        EventBus.$emit('j_0_mobility', false)
-                        delete this.helper.j_1_mobility
-                        delete this.helper.j_2_mobility
+                        EventBus.$emit('row_10_0', false)
+                        delete this.helper.row_10_1
+                        delete this.helper.row_10_2
                     }
                 }
             })

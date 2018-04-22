@@ -116,10 +116,11 @@
                     if (mode == 'put') {
                         this.userInput = value;
                     } else {
-                        if ( this.userInput != null ) {
-                            this.userInput += '\n'
+                        if ( this.userInput === null || this.userInput === '' ) {
+                            this.userInput = value
+                        } else {
+                            this.userInput += ('\n' + value)
                         }
-                        this.userInput += value
                     }
                     this.dirty = true
                     this.autosave()

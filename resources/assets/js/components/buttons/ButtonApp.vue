@@ -2,6 +2,7 @@
     <button :id="id"
             @click="click"
             v-html="label"
+            :tabindex="tapStop"
             :class="style + status + (size == undefined ? '' : (' btn-' + size))">
     </button>
 </template>
@@ -24,7 +25,11 @@
             size: {
                 type: String,
                 required: false
-            }
+            },
+            noTapStop: {
+                type: String,
+                required: false
+            },
         },
         data() {
             return {
@@ -32,7 +37,7 @@
                 id: ''
             }
         },
-        mounted() {
+        mounted () {
             if ( typeof this.action == 'string' ) {
                 this.id = Date.now() + '-' + this.action
             } else {
@@ -66,6 +71,11 @@
                 y = e.pageY - element.offset().top - circle.height()/2
 
                 circle.css({top: y+'px', left: x+'px'}).addClass("animate")
+            }
+        },
+        computed : {
+            tapStop () {
+                return this.noTapStop === undefined ? null : -1
             }
         }
     }

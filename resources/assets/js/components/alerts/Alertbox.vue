@@ -1,5 +1,4 @@
 <template>
-    <!-- <transition name="slide-fade"> -->
     <transition name="custom-classes-transition"
                 enter-active-class="animated bounceIn"
                 leave-active-class="animated bounceOut">

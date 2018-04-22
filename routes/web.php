@@ -187,3 +187,10 @@ Route::get('/ward-list', function () {
 
     return 'done';
 });
+
+Route::get('/icd10', function () {
+    $xml=simplexml_load_file(storage_path('app/xml/icd10cm_index_A_2018.xml'));
+    $json = json_encode($xml);
+    $array = json_decode($json,TRUE);
+    return $array;
+});

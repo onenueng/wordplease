@@ -1,32 +1,33 @@
 <template>
     <div>
         <div class="col-xs-12" v-if="label !== undefined">
-            <label class="label-control topped">{{ label }} <span class="text-danger" v-if="list.length == rowLimit">You have reached limit rows</span></label>
-
+            <label :class="'label-control topped '  + ((list.length > rowLimit) ? 'animated pulse infinite' : '')">{{ label }} 
+                <span class="text-danger" v-if="list.length == rowLimit">Row Limit Exceeded</span>
+                <span class="text-danger" v-if="list.length > rowLimit">Please manage rows or lose those exceeded the limit</span>
+            </label>
         </div>
-        <!-- @end="drag=false" -->
+        <!-- @start="onStart" @change="onChange" @add="onAdd" @remove="onRemove" @end="onEnd" -->
         <draggable
             :list="list"
-            @start="onStart"
-            @change="onChange"
-            @add="onAdd"
-            @remove="onRemove"
-            @sort="onSort"
-            @end="onEnd"
+            @sort="autosave"
             :options="draggableOptions">
-            <div class="form-group-sm" v-for="(item, index) in list" :key="field + '-item-' + index">
-                <div class="col-xs-12 col-sm-8 col-md-10" style="padding-right: 2px;">
-                    <textarea :class="controlClass(index+1)"
-                            :id="field + '-' + (index+1)"
-                            v-model="item.value"
-                            rows="1"
-                            @input="onKeyPressed"
-                            @keydown.enter.prevent="onEnterKeyPressed"
-                            @keydown.page-down.prevent="onPageDownKeyPressed"
-                            @keydown.page-up.prevent="onPageUpKeyPressed"
-                            @focus="currentRow = index"></textarea>
+            <div class="form-group-sm"
+                 v-for="(item, index) in list" :key="field + '-item-' + index">
+                <div class="col-xs-12 col-sm-8 col-md-10"
+                     style="padding-right: 2px;">
+                    <textarea :class="'form-control' + ((index+1) <= rowLimit ? '': ' overFlow')"
+                              :id="field + '-' + (index+1)"
+                              v-model="item.value"
+                              rows="1"
+                              @input="onKeyPressed"
+                              @keydown.enter.prevent="onEnterKeyPressed"
+                              @keydown.down.prevent="onDownKeyPressed"
+                              @keydown.up.prevent="onUpKeyPressed"
+                              @focus="currentRow = index"></textarea>
                 </div>
-                <div class="col-xs-12 col-sm-4 col-md-2" style="padding-top: 4px; background: #ffffd3!important;" v-if="rowLimit > 1 || list.length > 1">
+                <div class="col-xs-12 col-sm-4 col-md-2"
+                     style="padding-top: 4px; background: #ffffd3!important;"
+                     v-if="rowLimit > 1 || list.length > 1">
                     <span v-if="list.length > 1" class="badge drag-icon">
                         <span>{{ index + 1 }}</span>
                     </span>
@@ -35,6 +36,7 @@
                         status="info"
                         label="<span class='fa fa-plus'></span>"
                         size="xs"
+                        no-tap-stop
                         v-if="list.length < rowLimit">
                     </button-app>
                     <button-app
@@ -42,6 +44,7 @@
                         status="danger"
                         label="<span class='fa fa-trash-o'></span>"
                         size="xs"
+                        no-tap-stop
                         v-if="list.length > 1">
                     </button-app>
                 </div>
@@ -87,8 +90,7 @@
                 list: this.items,
                 draggableOptions: {
                     handle:'.drag-icon',
-                    group: this.groupName,
-                    onRemove: function (evt) { EventBus.$emit('hello-vue-drag') }
+                    group: this.groupName
                 }
             }
         },
@@ -99,12 +101,12 @@
                     setTimeout(() => { document.getElementById(this.field + '-' + this.list.length).focus() }, 100)
                 }
             },
-            onPageDownKeyPressed () {
+            onDownKeyPressed () {
                 if ( (this.currentRow+1) < this.list.length ) {
                     document.getElementById(this.field + '-' + (this.currentRow + 2)).focus()
                 }
             },
-            onPageUpKeyPressed () {
+            onUpKeyPressed () {
                 if ( this.currentRow != 0 ) {
                     document.getElementById(this.field + '-' + (this.currentRow)).focus()
                 }
@@ -112,29 +114,8 @@
             onKeyPressed () {
                 // defined on mounted
             },
-            onStart () {
-                console.log(this.field + ': i am Start')
-            },
-            onEnd () {
-                console.log(this.field + ': i am end')
-            },
-            onChange () {
-                console.log(this.field + ': i am Change')
-            },
-            onAdd () {
-                console.log(this.field + ': i am Add')
-            },
-            onRemove () {
-                console.log(this.field + ': i am Remove')
-            },
-            onSort () {
-                console.log(this.field + ': i am Sort')
-            },
             autosave () {
                 console.log(this.list)
-            },
-            controlClass (index) {
-                return (index) <= this.rowLimit ? 'form-control':'form-control overFlow'
             }
         },
         mounted () {

@@ -9,6 +9,7 @@ use App\Models\Lists\Insurance;
 use App\Traits\AutoIdInsertable;
 use App\Traits\DatetimeHandleable;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Lists\AdmissionDiagnosis;
 
 class Admission extends Model implements AutoId
 {
@@ -129,6 +130,45 @@ class Admission extends Model implements AutoId
     {
         $this->lenght_of_stay = $this->getLenghtOfStay();
         $this->datetime_admit_formated = $this->datetime_admit->format('d M Y H:i');
-        $this->datetime_discharge_formated = $this->datetime_discharge->format('d M Y H:i'); 
+        $this->datetime_discharge_formated = $this->datetime_discharge->format('d M Y H:i');
+        $this->comorbids = $this->diagnosis()->comorbid()->select('name as value')->get();
+        // $comorbids = $this->diagnosis()->comorbid()->select('name as value')->get();
+        // if ( count($comorbids) > 0 ) {
+        //     $this->$comorbids = $comorbids;
+        // }
+    }
+
+    public function diagnosis()
+    {
+        return $this->hasMany(AdmissionDiagnosis::class);
+    }
+
+    public function autosave($field, $value)
+    {
+        switch ($field) {
+            case 'comorbids':
+                return $this->putDiagnosis('comorbid', $value);
+            case 'complications':
+                return $this->putDiagnosis('complication', $value);
+            case 'principle_diagnosis':
+                return $this->putDiagnosis('principle', $value);
+            default :
+                return $field;
+        }
+        return $value;
+    }
+
+    protected function putDiagnosis($tag, $list)
+    {
+        AdmissionDiagnosis::where(['admission_id' => $this->id, 'tag' => $tag])->delete();
+        foreach ( $list as $index => $item ) {
+            $admissionDiagnosis = AdmissionDiagnosis::create([
+                'tag' => $tag,
+                'order' => ($index + 1),
+                'name' => $item['value'],
+                'admission_id' => $this->id,
+            ]);
+        }
+        return true;
     }
 }

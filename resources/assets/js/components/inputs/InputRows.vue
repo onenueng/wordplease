@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="col-xs-12" v-if="label !== undefined">
-            <label :class="'label-control topped '  + ((list.length > rowLimit) ? 'animated pulse infinite' : '')">{{ label }} 
+            <label :class="'label-control topped '  + ((list.length > rowLimit) ? 'animated pulse infinite' : '')">{{ label }}
                 <span class="text-danger" v-if="list.length == rowLimit">Row Limit Exceeded</span>
                 <span class="text-danger" v-if="list.length > rowLimit">Please manage rows or lose those exceeded the limit</span>
             </label>
@@ -115,7 +115,7 @@
                 // defined on mounted
             },
             autosave () {
-                console.log(this.list)
+                EventBus.$emit('autosave', this.field, this.list)
             }
         },
         mounted () {

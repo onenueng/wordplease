@@ -66,6 +66,7 @@
                 <input-rows field="comorbids"
                             label="Comorbids :"
                             group-name='dx'
+                            :items="note.admission.comorbids"
                             :row-limit="50">
                 </input-rows>
                 <input-rows field="complications"

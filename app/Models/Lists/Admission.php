@@ -132,10 +132,10 @@ class Admission extends Model implements AutoId
         $this->datetime_admit_formated = $this->datetime_admit->format('d M Y H:i');
         $this->datetime_discharge_formated = $this->datetime_discharge->format('d M Y H:i');
         $this->comorbids = $this->diagnosis()->comorbid()->select('name as value')->get();
-        // $comorbids = $this->diagnosis()->comorbid()->select('name as value')->get();
-        // if ( count($comorbids) > 0 ) {
-        //     $this->$comorbids = $comorbids;
-        // }
+        $this->complications = $this->diagnosis()->complication()->select('name as value')->get();
+        $this->other_diagnosis = $this->diagnosis()->other()->select('name as value')->get();
+        $this->external_causes = $this->diagnosis()->external()->select('name as value')->get();
+        $this->principle_diagnosis = $this->diagnosis()->principle()->select('name as value')->get();
     }
 
     public function diagnosis()
@@ -150,6 +150,10 @@ class Admission extends Model implements AutoId
                 return $this->putDiagnosis('comorbid', $value);
             case 'complications':
                 return $this->putDiagnosis('complication', $value);
+            case 'external_causes':
+                return $this->putDiagnosis('external', $value);
+            case 'other_diagnosis':
+                return $this->putDiagnosis('other', $value);
             case 'principle_diagnosis':
                 return $this->putDiagnosis('principle', $value);
             default :
@@ -162,12 +166,14 @@ class Admission extends Model implements AutoId
     {
         AdmissionDiagnosis::where(['admission_id' => $this->id, 'tag' => $tag])->delete();
         foreach ( $list as $index => $item ) {
-            $admissionDiagnosis = AdmissionDiagnosis::create([
-                'tag' => $tag,
-                'order' => ($index + 1),
-                'name' => $item['value'],
-                'admission_id' => $this->id,
-            ]);
+            if ( $item['value'] !== null ) {
+                $admissionDiagnosis = AdmissionDiagnosis::create([
+                    'tag' => $tag,
+                    'order' => ($index + 1),
+                    'name' => $item['value'],
+                    'admission_id' => $this->id,
+                ]);
+            }
         }
         return true;
     }

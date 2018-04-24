@@ -21,8 +21,28 @@ class AdmissionDiagnosis extends Model
         return $this->belongsTo(Admission::class);
     }
 
+    public function scopePrinciple($query)
+    {
+        return $query->where('tag', 'principle')->orderBy('order');
+    }
+
     public function scopeComorbid($query)
     {
-        return $query->select(['name', 'admission_id'])->where('tag', 'comorbid')->orderBy('order');
+        return $query->where('tag', 'comorbid')->orderBy('order');
+    }
+
+    public function scopeComplication($query)
+    {
+        return $query->where('tag', 'complication')->orderBy('order');
+    }
+
+    public function scopeExternal($query)
+    {
+        return $query->where('tag', 'external')->orderBy('order');
+    }
+
+    public function scopeOther($query)
+    {
+        return $query->where('tag', 'other')->orderBy('order');
     }
 }

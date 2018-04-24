@@ -1891,7 +1891,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, "\n.drag-icon {\n    cursor: move;\n    cursor: -webkit-grabbing;\n}\n.overFlow {\n    background:#d9534f;\n}\n", ""]);
+exports.push([module.i, "\n.drag-icon {\n    cursor: move;\n    cursor: -webkit-grabbing;\n}\n.overFlow {\n    background:#d9534f;\n}\n.duplicate {\n    background:#f0ad4e;\n}\n", ""]);
 
 // exports
 
@@ -1995,7 +1995,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             currentRow: 0,
-            list: this.items,
+            list: this.items.length == 0 ? [{ value: null }] : this.items,
             draggableOptions: {
                 handle: '.drag-icon',
                 group: this.groupName
@@ -2004,6 +2004,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     methods: {
+        isDuplicate: function isDuplicate(index, value) {
+
+            var rowCount = this.list.length;
+            for (var i = 0; i < rowCount; i++) {
+                if (i != index && this.list[i].value == value) {
+                    // console.log(i + ' => ' + index + ' : ' +  + ' => ' + )
+                    return true;
+                }
+            }
+            return false;
+        },
         onEnterKeyPressed: function onEnterKeyPressed() {
             var _this = this;
 
@@ -2028,7 +2039,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             // defined on mounted
         },
         autosave: function autosave() {
-            EventBus.$emit('autosave', this.field, this.list);
+            if (this.list.length > this.rowLimit) {
+                EventBus.$emit('autosave', this.field, this.list.slice(0, this.rowLimit));
+            } else {
+                EventBus.$emit('autosave', this.field, this.list);
+            }
         }
     },
     mounted: function mounted() {
@@ -2044,6 +2059,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         EventBus.$on('delete-' + this.field, function (index) {
             _this2.list.splice(index, 1);
+            _this2.autosave();
         });
     },
     updated: function updated() {
@@ -4091,7 +4107,8 @@ var render = function() {
                     ],
                     class:
                       "form-control" +
-                      (index + 1 <= _vm.rowLimit ? "" : " overFlow"),
+                      (index + 1 <= _vm.rowLimit ? "" : " overFlow") +
+                      (_vm.isDuplicate(index, item.value) ? " duplicate" : ""),
                     attrs: { id: _vm.field + "-" + (index + 1), rows: "1" },
                     domProps: { value: item.value },
                     on: {

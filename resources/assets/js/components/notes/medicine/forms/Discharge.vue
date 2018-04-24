@@ -59,20 +59,12 @@
         </panel><!-- Panel Admission Data -->
         <panel heading="Treatments Description">
             <div class="row">
-                <input-rows field="principle_diagnosis"
-                            label="Principle diagnosis :"
-                            group-name='dx'>
-                </input-rows>
-                <input-rows field="comorbids"
-                            label="Comorbids :"
-                            group-name='dx'
-                            :items="note.admission.comorbids"
-                            :row-limit="50">
-                </input-rows>
-                <input-rows field="complications"
-                            label="Complications :"
-                            group-name='dx'
-                            :row-limit="50">
+                <input-rows v-for="tag in diagnosisTags" :key="tag.field"
+                            :field="tag.field"
+                            :label="tag.label"
+                            :group-name='tag.groupName'
+                            :items="tag.items"
+                            :row-limit="tag.rowLimit">
                 </input-rows>
                 <div v-for="topic in topics" :key="topic.field">
                     <input-textarea
@@ -160,28 +152,44 @@
         },
         created () {
             this.note = JSON.parse(this.serializedNote)
-
+            this.diagnosisTags = [
+                {
+                    field: 'principle_diagnosis',
+                    label: 'Principle dagnosis :',
+                    groupName: 'diagnosis',
+                    items: this.note.admission.principle_diagnosis,
+                    rowLimit: 1
+                },
+                {
+                    field: 'comorbids',
+                    label: 'Comorbids :',
+                    groupName: 'diagnosis',
+                    items: this.note.admission.comorbids,
+                    rowLimit: 50
+                },
+                {
+                    field: 'complications',
+                    label: 'Complications :',
+                    groupName: 'diagnosis',
+                    items: this.note.admission.complications,
+                    rowLimit: 50
+                },
+                {
+                    field: 'external_causes',
+                    label: 'External causes :',
+                    groupName: 'diagnosis',
+                    items: this.note.admission.external_causes,
+                    rowLimit: 50
+                },
+                {
+                    field: 'other_diagnosis',
+                    label: 'Other diagnosis :',
+                    groupName: 'diagnosis',
+                    items: this.note.admission.other_diagnosis,
+                    rowLimit: 50
+                }
+            ]
             this.topics = [
-                {
-                    field: 'principle_diagnosis', value: this.note.detail.principle_diagnosis,
-                    label: 'Principle diagnosis :', maxChars: 255
-                },
-                {
-                    field: 'comorbids', value: this.note.detail.comorbids,
-                    label: 'Comorbids :', maxChars: 2000
-                },
-                {
-                    field: 'complications', value: this.note.detail.complications,
-                    label: 'Complications :', maxChars: 2000
-                },
-                {
-                    field: 'external_causes', value: this.note.detail.external_causes,
-                    label: 'External causes :', maxChars: 2000
-                },
-                {
-                    field: 'other_diagnosis', value: this.note.detail.other_diagnosis,
-                    label: 'Other diagnosis :', maxChars: 255
-                },
                 {
                     field: 'OR_procedures', value: this.note.detail.OR_procedures,
                     label: 'OR procedures :', maxChars: 2000

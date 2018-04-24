@@ -2527,7 +2527,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, "\n.drag-icon {\n    cursor: move;\n    cursor: -webkit-grabbing;\n}\n.overFlow {\n    background:#d9534f;\n}\n", ""]);
+exports.push([module.i, "\n.drag-icon {\n    cursor: move;\n    cursor: -webkit-grabbing;\n}\n.overFlow {\n    background:#d9534f;\n}\n.duplicate {\n    background:#f0ad4e;\n}\n", ""]);
 
 // exports
 
@@ -2631,7 +2631,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             currentRow: 0,
-            list: this.items,
+            list: this.items.length == 0 ? [{ value: null }] : this.items,
             draggableOptions: {
                 handle: '.drag-icon',
                 group: this.groupName
@@ -2640,6 +2640,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     methods: {
+        isDuplicate: function isDuplicate(index, value) {
+
+            var rowCount = this.list.length;
+            for (var i = 0; i < rowCount; i++) {
+                if (i != index && this.list[i].value == value) {
+                    // console.log(i + ' => ' + index + ' : ' +  + ' => ' + )
+                    return true;
+                }
+            }
+            return false;
+        },
         onEnterKeyPressed: function onEnterKeyPressed() {
             var _this = this;
 
@@ -2664,7 +2675,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             // defined on mounted
         },
         autosave: function autosave() {
-            EventBus.$emit('autosave', this.field, this.list);
+            if (this.list.length > this.rowLimit) {
+                EventBus.$emit('autosave', this.field, this.list.slice(0, this.rowLimit));
+            } else {
+                EventBus.$emit('autosave', this.field, this.list);
+            }
         }
     },
     mounted: function mounted() {
@@ -2680,6 +2695,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         EventBus.$on('delete-' + this.field, function (index) {
             _this2.list.splice(index, 1);
+            _this2.autosave();
         });
     },
     updated: function updated() {
@@ -4727,7 +4743,8 @@ var render = function() {
                     ],
                     class:
                       "form-control" +
-                      (index + 1 <= _vm.rowLimit ? "" : " overFlow"),
+                      (index + 1 <= _vm.rowLimit ? "" : " overFlow") +
+                      (_vm.isDuplicate(index, item.value) ? " duplicate" : ""),
                     attrs: { id: _vm.field + "-" + (index + 1), rows: "1" },
                     domProps: { value: item.value },
                     on: {
@@ -8589,14 +8606,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -8640,23 +8649,38 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     created: function created() {
         this.note = JSON.parse(this.serializedNote);
-
+        this.diagnosisTags = [{
+            field: 'principle_diagnosis',
+            label: 'Principle dagnosis :',
+            groupName: 'diagnosis',
+            items: this.note.admission.principle_diagnosis,
+            rowLimit: 1
+        }, {
+            field: 'comorbids',
+            label: 'Comorbids :',
+            groupName: 'diagnosis',
+            items: this.note.admission.comorbids,
+            rowLimit: 50
+        }, {
+            field: 'complications',
+            label: 'Complications :',
+            groupName: 'diagnosis',
+            items: this.note.admission.complications,
+            rowLimit: 50
+        }, {
+            field: 'external_causes',
+            label: 'External causes :',
+            groupName: 'diagnosis',
+            items: this.note.admission.external_causes,
+            rowLimit: 50
+        }, {
+            field: 'other_diagnosis',
+            label: 'Other diagnosis :',
+            groupName: 'diagnosis',
+            items: this.note.admission.other_diagnosis,
+            rowLimit: 50
+        }];
         this.topics = [{
-            field: 'principle_diagnosis', value: this.note.detail.principle_diagnosis,
-            label: 'Principle diagnosis :', maxChars: 255
-        }, {
-            field: 'comorbids', value: this.note.detail.comorbids,
-            label: 'Comorbids :', maxChars: 2000
-        }, {
-            field: 'complications', value: this.note.detail.complications,
-            label: 'Complications :', maxChars: 2000
-        }, {
-            field: 'external_causes', value: this.note.detail.external_causes,
-            label: 'External causes :', maxChars: 2000
-        }, {
-            field: 'other_diagnosis', value: this.note.detail.other_diagnosis,
-            label: 'Other diagnosis :', maxChars: 255
-        }, {
             field: 'OR_procedures', value: this.note.detail.OR_procedures,
             label: 'OR procedures :', maxChars: 2000
         }, {
@@ -9259,31 +9283,17 @@ var render = function() {
           "div",
           { staticClass: "row" },
           [
-            _c("input-rows", {
-              attrs: {
-                field: "principle_diagnosis",
-                label: "Principle diagnosis :",
-                "group-name": "dx"
-              }
-            }),
-            _vm._v(" "),
-            _c("input-rows", {
-              attrs: {
-                field: "comorbids",
-                label: "Comorbids :",
-                "group-name": "dx",
-                items: _vm.note.admission.comorbids,
-                "row-limit": 50
-              }
-            }),
-            _vm._v(" "),
-            _c("input-rows", {
-              attrs: {
-                field: "complications",
-                label: "Complications :",
-                "group-name": "dx",
-                "row-limit": 50
-              }
+            _vm._l(_vm.diagnosisTags, function(tag) {
+              return _c("input-rows", {
+                key: tag.field,
+                attrs: {
+                  field: tag.field,
+                  label: tag.label,
+                  "group-name": tag.groupName,
+                  items: tag.items,
+                  "row-limit": tag.rowLimit
+                }
+              })
             }),
             _vm._v(" "),
             _vm._l(_vm.topics, function(topic) {

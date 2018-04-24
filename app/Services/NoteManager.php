@@ -151,6 +151,8 @@ class NoteManager
                 return ['saved' => $note->autosave($field, $value)];
             case 'comorbids' :
             case 'complications' :
+            case 'external_causes' :
+            case 'other_diagnosis' :
             case 'principle_diagnosis':
                 return ['saved' => $note->admission->autosave($field, $value)];
             default:

@@ -15,7 +15,7 @@
                  v-for="(item, index) in list" :key="field + '-item-' + index">
                 <div class="col-xs-12 col-sm-8 col-md-10"
                      style="padding-right: 2px;">
-                    <textarea :class="'form-control' + ((index+1) <= rowLimit ? '': ' overFlow')"
+                    <textarea :class="'form-control' + ((index+1) <= rowLimit ? '': ' overFlow') + (isDuplicate(index, item.value) ? ' duplicate' : '')"
                               :id="field + '-' + (index+1)"
                               v-model="item.value"
                               rows="1"
@@ -87,7 +87,7 @@
         data () {
             return {
                 currentRow: 0,
-                list: this.items,
+                list: this.items.length == 0 ? [{ value: null }] : this.items,
                 draggableOptions: {
                     handle:'.drag-icon',
                     group: this.groupName
@@ -95,6 +95,17 @@
             }
         },
         methods: {
+            isDuplicate (index, value) {
+
+                let rowCount = this.list.length
+                for (let i = 0; i < rowCount; i++) {
+                    if (i != index && this.list[i].value == value ) {
+                        // console.log(i + ' => ' + index + ' : ' +  + ' => ' + )
+                        return true
+                    }
+                }
+                return false
+            },
             onEnterKeyPressed () {
                 if ( this.list.length < (this.rowLimit) ) {
                     this.list.push({ value: null })
@@ -115,7 +126,11 @@
                 // defined on mounted
             },
             autosave () {
-                EventBus.$emit('autosave', this.field, this.list)
+                if ( this.list.length > this.rowLimit ) {
+                    EventBus.$emit('autosave', this.field, this.list.slice(0, this.rowLimit))
+                } else {
+                    EventBus.$emit('autosave', this.field, this.list)
+                }
             }
         },
         mounted () {
@@ -125,6 +140,7 @@
 
             EventBus.$on('delete-' + this.field, (index) => {
                 this.list.splice(index, 1)
+                this.autosave()
             })
         },
         updated () {
@@ -144,5 +160,9 @@
 
     .overFlow {
         background:#d9534f;
+    }
+
+    .duplicate {
+        background:#f0ad4e;
     }
 </style>

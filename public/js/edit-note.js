@@ -2007,9 +2007,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         isDuplicate: function isDuplicate(index, value) {
 
             var rowCount = this.list.length;
+            // let firstFound = -1
             for (var i = 0; i < rowCount; i++) {
                 if (i != index && this.list[i].value == value) {
-                    // console.log(i + ' => ' + index + ' : ' +  + ' => ' + )
+                    // console.log(i + ' => ' + index + ' : ' + this.list[i].value + ' => ' + value + ' : ' + firstFound )
+                    // if ( firstFound == -1 ) {
+                    //     firstFound = i
+                    // } else if ( index > firstFound ) {
+                    //     return true
+                    // }
+                    console.log(i + ' => ' + index + ' : ' + this.list[i].value + ' => ' + value);
                     return true;
                 }
             }
@@ -2039,11 +2046,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             // defined on mounted
         },
         autosave: function autosave() {
+            var newList = void 0;
             if (this.list.length > this.rowLimit) {
-                EventBus.$emit('autosave', this.field, this.list.slice(0, this.rowLimit));
+                newList = this.list.slice(0, this.rowLimit);
+                // EventBus.$emit('autosave', this.field, this.list.slice(0, this.rowLimit))
             } else {
-                EventBus.$emit('autosave', this.field, this.list);
+                newList = this.list.slice();
+                // EventBus.$emit('autosave', this.field, this.list)
             }
+            EventBus.$emit('autosave', this.field, newList);
         }
     },
     mounted: function mounted() {

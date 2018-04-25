@@ -98,9 +98,16 @@
             isDuplicate (index, value) {
 
                 let rowCount = this.list.length
+                // let firstFound = -1
                 for (let i = 0; i < rowCount; i++) {
-                    if (i != index && this.list[i].value == value ) {
-                        // console.log(i + ' => ' + index + ' : ' +  + ' => ' + )
+                    if ( i != index && this.list[i].value == value ) {
+                        // console.log(i + ' => ' + index + ' : ' + this.list[i].value + ' => ' + value + ' : ' + firstFound )
+                        // if ( firstFound == -1 ) {
+                        //     firstFound = i
+                        // } else if ( index > firstFound ) {
+                        //     return true
+                        // }
+                        console.log(i + ' => ' + index + ' : ' + this.list[i].value + ' => ' + value)
                         return true
                     }
                 }
@@ -126,11 +133,15 @@
                 // defined on mounted
             },
             autosave () {
+                let newList
                 if ( this.list.length > this.rowLimit ) {
-                    EventBus.$emit('autosave', this.field, this.list.slice(0, this.rowLimit))
+                    newList = this.list.slice(0, this.rowLimit)
+                    // EventBus.$emit('autosave', this.field, this.list.slice(0, this.rowLimit))
                 } else {
-                    EventBus.$emit('autosave', this.field, this.list)
+                    newList = this.list.slice()
+                    // EventBus.$emit('autosave', this.field, this.list)
                 }
+                EventBus.$emit('autosave', this.field, newList)
             }
         },
         mounted () {

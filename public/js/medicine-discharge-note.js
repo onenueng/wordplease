@@ -2595,6 +2595,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2615,6 +2616,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             required: false,
             default: this.field
         },
+        groupAllowDuplicate: {
+            type: Boolean,
+            required: false,
+            default: false
+        },
         rowLimit: {
             type: Number,
             required: false,
@@ -2624,47 +2630,103 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             type: Array,
             required: false,
             default: function _default() {
-                return [{ value: null }];
+                return [{ value: null, duplicate: false }];
             }
         }
     },
     data: function data() {
         return {
             currentRow: 0,
-            list: this.items.length == 0 ? [{ value: null }] : this.items,
+            list: this.items.length == 0 ? [{ value: null, duplicate: false }] : this.initList(),
             draggableOptions: {
                 handle: '.drag-icon',
                 group: this.groupName
-            }
+            },
+            groupCheckDuplicateValue: null,
+            lastSaveList: []
         };
     },
 
-    methods: {
-        isDuplicate: function isDuplicate(index, value) {
+    computed: {
+        hasSiblings: function hasSiblings() {
+            return !this.groupAllowDuplicate && this.groupName != this.field;
+        }
+    },
+    mounted: function mounted() {
+        var _this = this;
 
+        this.onKeyPressed = _.debounce(function () {
+            _this.autosave();
+        }, 5000);
+
+        EventBus.$on('add-' + this.field, function () {
+            _this.onEnterKeyPressed();
+        });
+
+        EventBus.$on('delete-' + this.field, function (index) {
+            _this.list.splice(index, 1);
+            _this.autosave();
+        });
+
+        this.list.forEach(function (item) {
+            _this.lastSaveList.push({ value: item.value, duplicate: item.duplicate });
+        });
+
+        if (this.hasSiblings) {
+            EventBus.$on(this.groupName + '-check-duplicate', function (field, value) {
+                if (_this.field != field) {
+                    _this.groupCheckDuplicateValue = value;
+                    _this.list.forEach(function (item, index) {
+                        item.duplicate = item.value == value;
+                        if (item.duplicate) {
+                            _this.onKeyPressed();
+                        }
+                    });
+                }
+            });
+        }
+    },
+    updated: function updated() {
+        var _this2 = this;
+
+        this.list.forEach(function (item, index) {
+            if (item.value != null) {
+                item.duplicate = _this2.isDuplicate(index, item.value) || item.value == _this2.groupCheckDuplicateValue;
+            }
+            autosize(document.getElementById(_this2.field + '-' + (index + 1)));
+            autosize.update(document.getElementById(_this2.field + '-' + (index + 1)));
+        });
+
+        var value = this.list[this.currentRow].value;
+        if (this.hasSiblings && value != '' && value != null) {
+            EventBus.$emit(this.groupName + '-check-duplicate', this.field, value);
+        }
+    },
+
+    methods: {
+        initList: function initList() {
+            var newList = [];
+            this.items.forEach(function (item) {
+                newList.push({ value: item.value, duplicate: false });
+            });
+            return newList;
+        },
+        isDuplicate: function isDuplicate(index, value) {
             var rowCount = this.list.length;
-            // let firstFound = -1
             for (var i = 0; i < rowCount; i++) {
                 if (i != index && this.list[i].value == value) {
-                    // console.log(i + ' => ' + index + ' : ' + this.list[i].value + ' => ' + value + ' : ' + firstFound )
-                    // if ( firstFound == -1 ) {
-                    //     firstFound = i
-                    // } else if ( index > firstFound ) {
-                    //     return true
-                    // }
-                    console.log(i + ' => ' + index + ' : ' + this.list[i].value + ' => ' + value);
                     return true;
                 }
             }
             return false;
         },
         onEnterKeyPressed: function onEnterKeyPressed() {
-            var _this = this;
+            var _this3 = this;
 
             if (this.list.length < this.rowLimit) {
-                this.list.push({ value: null });
+                this.list.push({ value: null, duplicate: false });
                 setTimeout(function () {
-                    document.getElementById(_this.field + '-' + _this.list.length).focus();
+                    document.getElementById(_this3.field + '-' + _this3.list.length).focus();
                 }, 100);
             }
         },
@@ -2682,40 +2744,43 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             // defined on mounted
         },
         autosave: function autosave() {
+            var _this4 = this;
+
             var newList = void 0;
             if (this.list.length > this.rowLimit) {
                 newList = this.list.slice(0, this.rowLimit);
-                // EventBus.$emit('autosave', this.field, this.list.slice(0, this.rowLimit))
             } else {
                 newList = this.list.slice();
-                // EventBus.$emit('autosave', this.field, this.list)
             }
-            EventBus.$emit('autosave', this.field, newList);
+
+            var listCount = newList.length;
+            for (var index = 0; index < listCount; index++) {
+                if (newList[index].duplicate) {
+                    newList.splice(index, 1);
+                }
+            }
+
+            if (this.dirtyList(newList)) {
+                EventBus.$emit('autosave', this.field, newList);
+                this.lastSaveList = [];
+                newList.forEach(function (item) {
+                    _this4.lastSaveList.push(item);
+                });
+            }
+        },
+        dirtyList: function dirtyList(list) {
+            if (this.lastSaveList.length != list.length) {
+                return true;
+            }
+
+            var lastSaveListCount = this.lastSaveList.length;
+            for (var index = 0; index < lastSaveListCount; index++) {
+                if (list[index].value != this.lastSaveList[index].value) {
+                    return true;
+                }
+            }
+            return false;
         }
-    },
-    mounted: function mounted() {
-        var _this2 = this;
-
-        this.onKeyPressed = _.debounce(function () {
-            _this2.autosave();
-        }, 5000);
-
-        EventBus.$on('add-' + this.field, function () {
-            _this2.onEnterKeyPressed();
-        });
-
-        EventBus.$on('delete-' + this.field, function (index) {
-            _this2.list.splice(index, 1);
-            _this2.autosave();
-        });
-    },
-    updated: function updated() {
-        var _this3 = this;
-
-        this.list.forEach(function (item, index) {
-            autosize(document.getElementById(_this3.field + '-' + (index + 1)));
-            autosize.update(document.getElementById(_this3.field + '-' + (index + 1)));
-        });
     }
 });
 
@@ -4755,7 +4820,7 @@ var render = function() {
                     class:
                       "form-control" +
                       (index + 1 <= _vm.rowLimit ? "" : " overFlow") +
-                      (_vm.isDuplicate(index, item.value) ? " duplicate" : ""),
+                      (item.duplicate ? " duplicate" : ""),
                     attrs: { id: _vm.field + "-" + (index + 1), rows: "1" },
                     domProps: { value: item.value },
                     on: {

@@ -15,7 +15,7 @@
                  v-for="(item, index) in list" :key="field + '-item-' + index">
                 <div class="col-xs-12 col-sm-8 col-md-10"
                      style="padding-right: 2px;">
-                    <textarea :class="'form-control' + ((index+1) <= rowLimit ? '': ' overFlow') + (isDuplicate(index, item.value) ? ' duplicate' : '')"
+                    <textarea :class="'form-control' + ((index+1) <= rowLimit ? '': ' overFlow') + (item.duplicate ? ' duplicate' : '')"
                               :id="field + '-' + (index+1)"
                               v-model="item.value"
                               rows="1"
@@ -47,6 +47,7 @@
                         no-tap-stop
                         v-if="list.length > 1">
                     </button-app>
+
                 </div>
             </div>
         </draggable>
@@ -73,6 +74,11 @@
                 required: false,
                 default: this.field
             },
+            groupAllowDuplicate: {
+                type: Boolean,
+                required: false,
+                default: false
+            },
             rowLimit: {
                 type: Number,
                 required: false,
@@ -81,33 +87,80 @@
             items: {
                 type: Array,
                 required: false,
-                default: () => { return [{ value: null }] }
+                default: () => { return [{ value: null, duplicate: false }] }
             }
         },
         data () {
             return {
                 currentRow: 0,
-                list: this.items.length == 0 ? [{ value: null }] : this.items,
+                list: this.items.length == 0 ? [{ value: null, duplicate: false }] : this.initList(),
                 draggableOptions: {
                     handle:'.drag-icon',
                     group: this.groupName
+                },
+                groupCheckDuplicateValue: null,
+                lastSaveList: []
+            }
+        },
+        computed: {
+            hasSiblings () {
+                return !this.groupAllowDuplicate && this.groupName != this.field
+            }
+        },
+        mounted () {
+            this.onKeyPressed = _.debounce(() => { this.autosave() }, 5000)
+
+            EventBus.$on('add-' + this.field, () => { this.onEnterKeyPressed() })
+
+            EventBus.$on('delete-' + this.field, (index) => {
+                this.list.splice(index, 1)
+                this.autosave()
+            })
+
+            this.list.forEach((item) => {
+                this.lastSaveList.push({ value: item.value, duplicate: item.duplicate })
+            })
+
+            if ( this.hasSiblings ) {
+                EventBus.$on( this.groupName + '-check-duplicate', (field, value) => {
+                    if ( this.field != field ) {
+                        this.groupCheckDuplicateValue = value
+                        this.list.forEach((item, index) => {
+                            item.duplicate = (item.value == value)
+                            if ( item.duplicate ) {
+                                this.onKeyPressed()
+                            }
+                        })
+                    }
+                })
+            }
+        },
+        updated () {
+            this.list.forEach((item, index) => {
+                if ( item.value != null ) {
+                    item.duplicate = this.isDuplicate(index, item.value) || (item.value == this.groupCheckDuplicateValue)
                 }
+                autosize(document.getElementById(this.field + '-' + (index+1)))
+                autosize.update(document.getElementById(this.field + '-' + (index+1)))
+            })
+
+            let value = this.list[this.currentRow].value
+            if ( this.hasSiblings && (value != '') && (value != null) ) {
+                EventBus.$emit( this.groupName + '-check-duplicate', this.field, value )
             }
         },
         methods: {
+            initList () {
+                let newList = []
+                this.items.forEach( (item) => {
+                    newList.push({ value: item.value, duplicate: false })
+                })
+                return newList
+            },
             isDuplicate (index, value) {
-
                 let rowCount = this.list.length
-                // let firstFound = -1
                 for (let i = 0; i < rowCount; i++) {
                     if ( i != index && this.list[i].value == value ) {
-                        // console.log(i + ' => ' + index + ' : ' + this.list[i].value + ' => ' + value + ' : ' + firstFound )
-                        // if ( firstFound == -1 ) {
-                        //     firstFound = i
-                        // } else if ( index > firstFound ) {
-                        //     return true
-                        // }
-                        console.log(i + ' => ' + index + ' : ' + this.list[i].value + ' => ' + value)
                         return true
                     }
                 }
@@ -115,7 +168,7 @@
             },
             onEnterKeyPressed () {
                 if ( this.list.length < (this.rowLimit) ) {
-                    this.list.push({ value: null })
+                    this.list.push({ value: null, duplicate: false })
                     setTimeout(() => { document.getElementById(this.field + '-' + this.list.length).focus() }, 100)
                 }
             },
@@ -136,29 +189,38 @@
                 let newList
                 if ( this.list.length > this.rowLimit ) {
                     newList = this.list.slice(0, this.rowLimit)
-                    // EventBus.$emit('autosave', this.field, this.list.slice(0, this.rowLimit))
                 } else {
                     newList = this.list.slice()
-                    // EventBus.$emit('autosave', this.field, this.list)
                 }
-                EventBus.$emit('autosave', this.field, newList)
+
+                let listCount = newList.length
+                for ( let index = 0; index < listCount; index++ ) {
+                    if ( newList[index].duplicate ) {
+                        newList.splice(index, 1)
+                    }
+                }
+
+                if ( this.dirtyList(newList) ) {
+                    EventBus.$emit('autosave', this.field, newList)
+                    this.lastSaveList = []
+                    newList.forEach((item) => {
+                        this.lastSaveList.push(item)
+                    })
+                }
+            },
+            dirtyList (list) {
+                if ( this.lastSaveList.length != list.length ) {
+                    return true
+                }
+
+                let lastSaveListCount = this.lastSaveList.length
+                for (let index = 0; index < lastSaveListCount; index++) {
+                    if (list[index].value != this.lastSaveList[index].value) {
+                        return true
+                    }
+                }
+                return false
             }
-        },
-        mounted () {
-            this.onKeyPressed = _.debounce(() => { this.autosave() }, 5000)
-
-            EventBus.$on('add-' + this.field, () => { this.onEnterKeyPressed() })
-
-            EventBus.$on('delete-' + this.field, (index) => {
-                this.list.splice(index, 1)
-                this.autosave()
-            })
-        },
-        updated () {
-            this.list.forEach((item, index) => {
-                autosize(document.getElementById(this.field + '-' + (index+1)))
-                autosize.update(document.getElementById(this.field + '-' + (index+1)))
-            })
         }
     }
 </script>

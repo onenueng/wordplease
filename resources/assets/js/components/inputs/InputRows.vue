@@ -47,7 +47,6 @@
                         no-tap-stop
                         v-if="list.length > 1">
                     </button-app>
-
                 </div>
             </div>
         </draggable>
@@ -105,6 +104,13 @@
         computed: {
             hasSiblings () {
                 return !this.groupAllowDuplicate && this.groupName != this.field
+            },
+            isThereDuplicate () {
+                let duplicated = false
+                this.list.forEach((item) => {
+                    duplicated = duplicated && item.duplicate
+                })
+                return duplicated
             }
         },
         mounted () {
@@ -113,6 +119,7 @@
             EventBus.$on('add-' + this.field, () => { this.onEnterKeyPressed() })
 
             EventBus.$on('delete-' + this.field, (index) => {
+                // EventBus.$emit( this.groupName + '-check-duplicate', this.field, this.list[index].value, true )
                 this.list.splice(index, 1)
                 this.autosave()
             })
@@ -122,15 +129,28 @@
             })
 
             if ( this.hasSiblings ) {
-                EventBus.$on( this.groupName + '-check-duplicate', (field, value) => {
+                EventBus.$on( this.groupName + '-check-duplicate', (field, value, isDelete = false) => {
                     if ( this.field != field ) {
-                        this.groupCheckDuplicateValue = value
-                        this.list.forEach((item, index) => {
-                            item.duplicate = (item.value == value)
-                            if ( item.duplicate ) {
-                                this.onKeyPressed()
+                        if ( !isDelete ) {
+                            this.groupCheckDuplicateValue = value
+                            this.list.forEach((item, index) => {
+                                item.duplicate = (item.value == value)
+                                if ( item.duplicate ) {
+                                    this.onKeyPressed()
+                                }
+                            })
+                        } else {
+                            if ( this.groupCheckDuplicateValue == value ) {
+                                this.groupCheckDuplicateValue = null
+                                value = null
                             }
-                        })
+                            this.list.forEach((item) => {
+                                item.duplicate = (item.value == value)
+                                if ( item.duplicate ) {
+                                    this.onKeyPressed()
+                                }
+                            })
+                        }
                     }
                 })
             }

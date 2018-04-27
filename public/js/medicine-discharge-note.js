@@ -2595,7 +2595,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2650,6 +2649,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     computed: {
         hasSiblings: function hasSiblings() {
             return !this.groupAllowDuplicate && this.groupName != this.field;
+        },
+        isThereDuplicate: function isThereDuplicate() {
+            var duplicated = false;
+            this.list.forEach(function (item) {
+                duplicated = duplicated && item.duplicate;
+            });
+            return duplicated;
         }
     },
     mounted: function mounted() {
@@ -2664,6 +2670,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         });
 
         EventBus.$on('delete-' + this.field, function (index) {
+            // EventBus.$emit( this.groupName + '-check-duplicate', this.field, this.list[index].value, true )
             _this.list.splice(index, 1);
             _this.autosave();
         });
@@ -2674,14 +2681,29 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         if (this.hasSiblings) {
             EventBus.$on(this.groupName + '-check-duplicate', function (field, value) {
+                var isDelete = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
                 if (_this.field != field) {
-                    _this.groupCheckDuplicateValue = value;
-                    _this.list.forEach(function (item, index) {
-                        item.duplicate = item.value == value;
-                        if (item.duplicate) {
-                            _this.onKeyPressed();
+                    if (!isDelete) {
+                        _this.groupCheckDuplicateValue = value;
+                        _this.list.forEach(function (item, index) {
+                            item.duplicate = item.value == value;
+                            if (item.duplicate) {
+                                _this.onKeyPressed();
+                            }
+                        });
+                    } else {
+                        if (_this.groupCheckDuplicateValue == value) {
+                            _this.groupCheckDuplicateValue = null;
+                            value = null;
                         }
-                    });
+                        _this.list.forEach(function (item) {
+                            item.duplicate = item.value == value;
+                            if (item.duplicate) {
+                                _this.onKeyPressed();
+                            }
+                        });
+                    }
                 }
             });
         }

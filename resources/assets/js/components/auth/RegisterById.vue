@@ -14,9 +14,8 @@
             id="orgId"
             type="text"
             class="form-control"
-            @input="idUpdate()"
-            @focus="idFocus()"
-            @blur="idUpdate()"
+            @input="idUpdate"
+            @focus="idFocus"
             v-model="userInput"
             :disabled="idInputDisable"
             autocomplete="off" />

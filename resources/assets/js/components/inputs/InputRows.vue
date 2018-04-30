@@ -15,11 +15,13 @@
                  v-for="(item, index) in list" :key="field + '-item-' + index">
                 <div class="col-xs-12 col-sm-8 col-md-10"
                      style="padding-right: 2px;">
+                    <!-- @input="onKeyPressed" -->
                     <textarea :class="'form-control' + ((index+1) <= rowLimit ? '': ' overFlow') + (item.duplicate ? ' duplicate' : '')"
                               :id="field + '-' + (index+1)"
                               v-model="item.value"
                               rows="1"
-                              @input="onKeyPressed"
+                              
+                              @blur="autosave"
                               @keydown.enter.prevent="onEnterKeyPressed"
                               @keydown.down.prevent="onDownKeyPressed"
                               @keydown.up.prevent="onUpKeyPressed"
@@ -98,7 +100,8 @@
                     group: this.groupName
                 },
                 groupCheckDuplicateValue: null,
-                lastSaveList: []
+                lastSaveList: [],
+                updatedFiredFromDeleted: false
             }
         },
         computed: {
@@ -119,7 +122,7 @@
             EventBus.$on('add-' + this.field, () => { this.onEnterKeyPressed() })
 
             EventBus.$on('delete-' + this.field, (index) => {
-                // EventBus.$emit( this.groupName + '-check-duplicate', this.field, this.list[index].value, true )
+                this.updatedFiredFromDeleted = true
                 this.list.splice(index, 1)
                 this.autosave()
             })
@@ -131,43 +134,56 @@
             if ( this.hasSiblings ) {
                 EventBus.$on( this.groupName + '-check-duplicate', (field, value, isDelete = false) => {
                     if ( this.field != field ) {
-                        if ( !isDelete ) {
-                            this.groupCheckDuplicateValue = value
-                            this.list.forEach((item, index) => {
-                                item.duplicate = (item.value == value)
-                                if ( item.duplicate ) {
-                                    this.onKeyPressed()
-                                }
-                            })
-                        } else {
-                            if ( this.groupCheckDuplicateValue == value ) {
-                                this.groupCheckDuplicateValue = null
-                                value = null
+                        this.groupCheckDuplicateValue = value
+                        this.list.forEach((item) => {
+                            item.duplicate = (item.value == value)
+                            if ( item.duplicate ) {
+                                this.onKeyPressed()
                             }
-                            this.list.forEach((item) => {
-                                item.duplicate = (item.value == value)
-                                if ( item.duplicate ) {
-                                    this.onKeyPressed()
-                                }
-                            })
-                        }
+                        })
+                        // if ( !isDelete ) {
+                        //     this.groupCheckDuplicateValue = value
+                        //     this.list.forEach((item, index) => {
+                        //         item.duplicate = (item.value == value)
+                        //         if ( item.duplicate ) {
+                        //             this.onKeyPressed()
+                        //         }
+                        //     })
+                        // } else {
+                        //     if ( this.groupCheckDuplicateValue == value ) {
+                        //         this.groupCheckDuplicateValue = null
+                        //         value = null
+                        //     }
+                        //     this.list.forEach((item) => {
+                        //         item.duplicate = (item.value == value)
+                        //         if ( item.duplicate ) {
+                        //             this.onKeyPressed()
+                        //         }
+                        //     })
+                        // }
                     }
                 })
             }
         },
         updated () {
-            this.list.forEach((item, index) => {
-                if ( item.value != null ) {
-                    item.duplicate = this.isDuplicate(index, item.value) || (item.value == this.groupCheckDuplicateValue)
-                }
-                autosize(document.getElementById(this.field + '-' + (index+1)))
-                autosize.update(document.getElementById(this.field + '-' + (index+1)))
-            })
+            if ( !this.updatedFiredFromDeleted ) {
+                this.list.forEach((item, index) => {
+                    if ( item.value != null && item.value != '' ) {
+                        item.duplicate = this.isDuplicate(index, item.value) || (item.value == this.groupCheckDuplicateValue)
+                    }
+                    autosize(document.getElementById(this.field + '-' + (index+1)))
+                    autosize.update(document.getElementById(this.field + '-' + (index+1)))
+                })
 
-            let value = this.list[this.currentRow].value
-            if ( this.hasSiblings && (value != '') && (value != null) ) {
-                EventBus.$emit( this.groupName + '-check-duplicate', this.field, value )
+                let value = this.list[this.currentRow].value
+                if ( this.hasSiblings && (value != '') && (value != null) ) {
+                    EventBus.$emit( this.groupName + '-check-duplicate', this.field, value )
+                }
+            } else {
+                this.updatedFiredFromDeleted = false
             }
+
+            // console.log(this.field + ' => ' + this.groupCheckDuplicateValue)
         },
         methods: {
             initList () {
@@ -215,18 +231,19 @@
 
                 let listCount = newList.length
                 for ( let index = 0; index < listCount; index++ ) {
-                    if ( newList[index].duplicate ) {
+                    if ( newList[index] !== undefined && newList[index].duplicate ) {
                         newList.splice(index, 1)
                     }
                 }
 
-                if ( this.dirtyList(newList) ) {
-                    EventBus.$emit('autosave', this.field, newList)
-                    this.lastSaveList = []
-                    newList.forEach((item) => {
-                        this.lastSaveList.push(item)
-                    })
-                }
+                EventBus.$emit('autosave', this.field, newList)
+                // if ( this.dirtyList(newList) ) {
+                //     EventBus.$emit('autosave', this.field, newList)
+                //     this.lastSaveList = []
+                //     newList.forEach((item) => {
+                //         this.lastSaveList.push({ value: item.value, duplicate: false })
+                //     })
+                // }
             },
             dirtyList (list) {
                 if ( this.lastSaveList.length != list.length ) {

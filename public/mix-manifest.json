@@ -1,12 +1,12 @@
 {
-    "/js/medicine-discharge-note.js": "/js/medicine-discharge-note.js",
-    "/js/edit-note.js": "/js/edit-note.js",
-    "/js/medicine-admission-note.js": "/js/medicine-admission-note.js",
-    "/js/create-note.js": "/js/create-note.js",
-    "/js/register.js": "/js/register.js",
-    "/js/login.js": "/js/login.js",
-    "/js/vendor.js": "/js/vendor.js",
-    "/js/app.js": "/js/app.js",
-    "/css/app.css": "/css/app.css",
-    "/js/manifest.js": "/js/manifest.js"
+    "/js/medicine-discharge-note.js": "/js/medicine-discharge-note.js?id=0d94e26dcc9e58e4d013",
+    "/js/edit-note.js": "/js/edit-note.js?id=241a0fb02534c62a4982",
+    "/js/medicine-admission-note.js": "/js/medicine-admission-note.js?id=21b576749b6725ca281e",
+    "/js/create-note.js": "/js/create-note.js?id=34a1f626d7a1f6cc8dbd",
+    "/js/register.js": "/js/register.js?id=a4436657dc54aff56595",
+    "/js/login.js": "/js/login.js?id=b6071630aedb48b9269a",
+    "/js/vendor.js": "/js/vendor.js?id=3f1cfc45bc15b999e252",
+    "/js/app.js": "/js/app.js?id=4cfe220782c4304c47b0",
+    "/css/app.css": "/css/app.css?id=2179636a4b823f6b3d33",
+    "/js/manifest.js": "/js/manifest.js?id=282933a9e853c22e58d9"
 }

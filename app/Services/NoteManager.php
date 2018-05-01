@@ -148,15 +148,15 @@ class NoteManager
             case 'ward':
             case 'division':
             case 'attending':
-                return ['saved' => $note->autosave($field, $value)];
+                return [ $field => $note->autosave($field, $value) ];
             case 'comorbids' :
             case 'complications' :
             case 'external_causes' :
             case 'other_diagnosis' :
             case 'principle_diagnosis':
-                return ['saved' => $note->admission->autosave($field, $value)];
+                return [ $field => $note->admission->autosave($field, $value) ];
             default:
-                return ['saved' => $note->detail->autosave($field, $value)];
+                return [ $field => $note->detail->autosave($field, $value) ];
         }
     }
 }

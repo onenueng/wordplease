@@ -139,8 +139,6 @@
                     })
                 }
             })
-
-
         },
         methods: {
             hasId() {
@@ -160,13 +158,7 @@
                 return false
             },
             preventPressedEnterToSubmit () {
-                this.alertContent = 'Please complete the form then click Login'
-                this.alert = true
-                setTimeout( () => {
-                    this.alert = false
-                }, 5000);
-                this.loginButtonLabel = 'Login'
-                this.whileLogginIn = false
+                EventBus.$emit('login-click')
             }
         }
     }

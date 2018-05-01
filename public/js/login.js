@@ -962,15 +962,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return false;
         },
         preventPressedEnterToSubmit: function preventPressedEnterToSubmit() {
-            var _this2 = this;
-
-            this.alertContent = 'Please complete the form then click Login';
-            this.alert = true;
-            setTimeout(function () {
-                _this2.alert = false;
-            }, 5000);
-            this.loginButtonLabel = 'Login';
-            this.whileLogginIn = false;
+            EventBus.$emit('login-click');
         }
     }
 });

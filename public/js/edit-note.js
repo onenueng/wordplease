@@ -1959,8 +1959,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2008,7 +2006,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 group: this.groupName
             },
             groupCheckDuplicateValue: null,
-            lastSaveList: [],
+            lastSaveList: this.items.length == 0 ? [{ value: null, duplicate: false }] : this.initList(),
             updatedFiredFromDeleted: false
         };
     },
@@ -2038,46 +2036,46 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         EventBus.$on('delete-' + this.field, function (index) {
             _this.updatedFiredFromDeleted = true;
+            var value = _this.list[index].value;
             _this.list.splice(index, 1);
-            _this.autosave();
-        });
-
-        this.list.forEach(function (item) {
-            _this.lastSaveList.push({ value: item.value, duplicate: item.duplicate });
+            _this.onKeyPressed();
+            if (_this.hasSiblings) {
+                EventBus.$emit(_this.groupName + '-item-deleted', _this.field, value);
+            }
         });
 
         if (this.hasSiblings) {
+            EventBus.$on(this.groupName + '-item-deleted', function (field, value) {
+                if (_this.field != field) {
+                    console.log('hello from ' + _this.field + ' grp dup value => ' + _this.groupCheckDuplicateValue);
+                    if (_this.groupCheckDuplicateValue == value) {
+                        _this.groupCheckDuplicateValue = null;
+                        _this.list.forEach(function (item) {
+                            if (item.duplicate && item.value == value) {
+                                item.duplicate = false;
+                                _this.onKeyPressed();
+                            }
+                        });
+                    }
+                }
+            });
+
             EventBus.$on(this.groupName + '-check-duplicate', function (field, value) {
                 var isDelete = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
 
                 if (_this.field != field) {
                     _this.groupCheckDuplicateValue = value;
                     _this.list.forEach(function (item) {
-                        item.duplicate = item.value == value;
-                        if (item.duplicate) {
+                        if (item.duplicate && item.value != value) {
+                            item.duplicate = false;
                             _this.onKeyPressed();
+                        } else {
+                            item.duplicate = item.value == value;
+                            if (item.duplicate) {
+                                _this.onKeyPressed();
+                            }
                         }
                     });
-                    // if ( !isDelete ) {
-                    //     this.groupCheckDuplicateValue = value
-                    //     this.list.forEach((item, index) => {
-                    //         item.duplicate = (item.value == value)
-                    //         if ( item.duplicate ) {
-                    //             this.onKeyPressed()
-                    //         }
-                    //     })
-                    // } else {
-                    //     if ( this.groupCheckDuplicateValue == value ) {
-                    //         this.groupCheckDuplicateValue = null
-                    //         value = null
-                    //     }
-                    //     this.list.forEach((item) => {
-                    //         item.duplicate = (item.value == value)
-                    //         if ( item.duplicate ) {
-                    //             this.onKeyPressed()
-                    //         }
-                    //     })
-                    // }
                 }
             });
         }
@@ -2094,15 +2092,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 autosize.update(document.getElementById(_this2.field + '-' + (index + 1)));
             });
 
-            var value = this.list[this.currentRow].value;
-            if (this.hasSiblings && value != '' && value != null) {
-                EventBus.$emit(this.groupName + '-check-duplicate', this.field, value);
+            if (this.list[this.currentRow] !== undefined) {
+                var value = this.list[this.currentRow].value;
+                if (this.hasSiblings && value != '' && value != null) {
+                    EventBus.$emit(this.groupName + '-check-duplicate', this.field, value);
+                }
             }
         } else {
             this.updatedFiredFromDeleted = false;
         }
-
-        // console.log(this.field + ' => ' + this.groupCheckDuplicateValue)
     },
 
     methods: {
@@ -2146,6 +2144,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             // defined on mounted
         },
         autosave: function autosave() {
+            var _this4 = this;
+
             var newList = void 0;
             if (this.list.length > this.rowLimit) {
                 newList = this.list.slice(0, this.rowLimit);
@@ -2160,14 +2160,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }
             }
 
-            EventBus.$emit('autosave', this.field, newList);
-            // if ( this.dirtyList(newList) ) {
-            //     EventBus.$emit('autosave', this.field, newList)
-            //     this.lastSaveList = []
-            //     newList.forEach((item) => {
-            //         this.lastSaveList.push({ value: item.value, duplicate: false })
-            //     })
-            // }
+            if (this.dirtyList(newList)) {
+                EventBus.$emit('autosave', this.field, newList);
+                this.lastSaveList = [];
+                newList.forEach(function (item) {
+                    _this4.lastSaveList.push({ value: item.value, duplicate: false });
+                });
+            } else {
+                console.log(this.field + ' list is clean');
+            }
         },
         dirtyList: function dirtyList(list) {
             if (this.lastSaveList.length != list.length) {
@@ -4225,7 +4226,7 @@ var render = function() {
                     attrs: { id: _vm.field + "-" + (index + 1), rows: "1" },
                     domProps: { value: item.value },
                     on: {
-                      blur: _vm.autosave,
+                      blur: _vm.onKeyPressed,
                       keydown: [
                         function($event) {
                           if (

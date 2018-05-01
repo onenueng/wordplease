@@ -10,6 +10,7 @@ use App\Traits\AutoIdInsertable;
 use App\Traits\DatetimeHandleable;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Lists\AdmissionDiagnosis;
+use App\Models\Lists\AdmissionProcedure;
 
 class Admission extends Model implements AutoId
 {
@@ -136,11 +137,18 @@ class Admission extends Model implements AutoId
         $this->other_diagnosis = $this->diagnosis()->other()->select('name as value')->get();
         $this->external_causes = $this->diagnosis()->external()->select('name as value')->get();
         $this->principle_diagnosis = $this->diagnosis()->principle()->select('name as value')->get();
+        $this->OR_procedures = $this->procedures()->OR()->select('name as value')->get();
+        $this->non_OR_procedures = $this->procedures()->NonOR()->select('name as value')->get();
     }
 
     public function diagnosis()
     {
         return $this->hasMany(AdmissionDiagnosis::class);
+    }
+
+    public function procedures()
+    {
+        return $this->hasMany(AdmissionProcedure::class);
     }
 
     public function autosave($field, $value)
@@ -156,6 +164,10 @@ class Admission extends Model implements AutoId
                 return $this->putDiagnosis('other', $value);
             case 'principle_diagnosis':
                 return $this->putDiagnosis('principle', $value);
+            case 'OR_procedures':
+                return $this->putProcedures('OR', $value);
+            case 'non_OR_procedures':
+                return $this->putProcedures('non OR', $value);
             default :
                 return $field;
         }
@@ -168,6 +180,22 @@ class Admission extends Model implements AutoId
         foreach ( $list as $index => $item ) {
             if ( $item['value'] !== null ) {
                 $admissionDiagnosis = AdmissionDiagnosis::create([
+                    'tag' => $tag,
+                    'order' => ($index + 1),
+                    'name' => $item['value'],
+                    'admission_id' => $this->id,
+                ]);
+            }
+        }
+        return true;
+    }
+
+    protected function putProcedures($tag, $list)
+    {
+        AdmissionProcedure::where(['admission_id' => $this->id, 'tag' => $tag])->delete();
+        foreach ( $list as $index => $item ) {
+            if ( $item['value'] !== null ) {
+                $admissionProcedure = AdmissionProcedure::create([
                     'tag' => $tag,
                     'order' => ($index + 1),
                     'name' => $item['value'],

@@ -66,6 +66,15 @@
                             :items="tag.items"
                             :row-limit="tag.rowLimit">
                 </input-rows>
+                <div class="col-xs-12"><hr class="line" /></div><!-- separate line -->
+                <input-rows v-for="tag in procedureTags" :key="tag.field"
+                            :field="tag.field"
+                            :label="tag.label"
+                            :group-name='tag.groupName'
+                            :items="tag.items"
+                            :row-limit="tag.rowLimit">
+                </input-rows>
+                <div class="col-xs-12"><hr class="line" /></div><!-- separate line -->
                 <div v-for="topic in topics" :key="topic.field">
                     <input-textarea
                         :field="topic.field"
@@ -89,7 +98,7 @@
                 <input-select
                     field="discharge"
                     label="Discharge status :"
-                    placeholder="if other choice, type here"
+                    not-allow-other                    
                     grid="12-12-12"
                     :value="note.detail.discharge_text">
                 </input-select><!-- discharge -->
@@ -165,39 +174,47 @@
                     label: 'Comorbids :',
                     groupName: 'diagnosis',
                     items: this.note.admission.comorbids,
-                    rowLimit: 50
+                    rowLimit: 5
                 },
                 {
                     field: 'complications',
                     label: 'Complications :',
                     groupName: 'diagnosis',
                     items: this.note.admission.complications,
-                    rowLimit: 50
+                    rowLimit: 5
                 },
                 {
                     field: 'external_causes',
                     label: 'External causes :',
                     groupName: 'diagnosis',
                     items: this.note.admission.external_causes,
-                    rowLimit: 50
+                    rowLimit: 5
                 },
                 {
                     field: 'other_diagnosis',
                     label: 'Other diagnosis :',
                     groupName: 'diagnosis',
                     items: this.note.admission.other_diagnosis,
-                    rowLimit: 50
+                    rowLimit: 5
+                }
+            ]
+            this.procedureTags = [
+                {
+                    field: 'OR_procedures',
+                    label: 'OR procedures :',
+                    groupName: 'procedures',
+                    items: this.note.admission.OR_procedures,
+                    rowLimit: 5
+                },
+                {
+                    field: 'non_OR_procedures',
+                    label: 'Non OR procedure :',
+                    groupName: 'procedures',
+                    items: this.note.admission.non_OR_procedures,
+                    rowLimit: 5
                 }
             ]
             this.topics = [
-                {
-                    field: 'OR_procedures', value: this.note.detail.OR_procedures,
-                    label: 'OR procedures :', maxChars: 2000
-                },
-                {
-                    field: 'non_OR_procedures', value: this.note.detail.non_OR_procedures,
-                    label: 'Non OR procedures :', maxChars: 2000
-                },
                 {
                     field: 'chief_complaint', value: this.note.detail.chief_complaint,
                     label: 'Chief complaint :', maxChars: 255

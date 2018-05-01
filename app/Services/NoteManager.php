@@ -150,9 +150,11 @@ class NoteManager
             case 'attending':
                 return [ $field => $note->autosave($field, $value) ];
             case 'comorbids' :
+            case 'OR_procedures' :
             case 'complications' :
             case 'external_causes' :
             case 'other_diagnosis' :
+            case 'non_OR_procedures' :
             case 'principle_diagnosis':
                 return [ $field => $note->admission->autosave($field, $value) ];
             default:

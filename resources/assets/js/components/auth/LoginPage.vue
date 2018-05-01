@@ -13,7 +13,7 @@
                     <h1>Login : </h1>
                 </div>
                 <div class="material-box-topic">
-                    <form action="login" method="POST">
+                    <form action="login" method="POST" @keydown.enter.prevent="preventPressedEnterToSubmit">
                         <div class="form-group">
                             <input type="text"
                                    name="org_id"
@@ -139,6 +139,8 @@
                     })
                 }
             })
+
+
         },
         methods: {
             hasId() {
@@ -156,6 +158,15 @@
                 }
                 this.passwordHelpText = 'Password is required.'
                 return false
+            },
+            preventPressedEnterToSubmit () {
+                this.alertContent = 'Please complete the form then click Login'
+                this.alert = true
+                setTimeout( () => {
+                    this.alert = false
+                }, 5000);
+                this.loginButtonLabel = 'Login'
+                this.whileLogginIn = false
             }
         }
     }

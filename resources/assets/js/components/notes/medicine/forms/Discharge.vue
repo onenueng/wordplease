@@ -57,7 +57,7 @@
                 </input-select><!-- admit_reason -->
             </div><!-- wrap content with row class -->
         </panel><!-- Panel Admission Data -->
-        <panel heading="Treatments Description">
+        <panel heading="Diagnosis">
             <div class="row">
                 <input-rows v-for="tag in diagnosisTags" :key="tag.field"
                             :field="tag.field"
@@ -66,7 +66,10 @@
                             :items="tag.items"
                             :row-limit="tag.rowLimit">
                 </input-rows>
-                <div class="col-xs-12"><hr class="line" /></div><!-- separate line -->
+            </div>
+        </panel><!-- Panel Diagnosis -->
+        <panel heading="Procedures">
+            <div class="row">
                 <input-rows v-for="tag in procedureTags" :key="tag.field"
                             :field="tag.field"
                             :label="tag.label"
@@ -74,7 +77,10 @@
                             :items="tag.items"
                             :row-limit="tag.rowLimit">
                 </input-rows>
-                <div class="col-xs-12"><hr class="line" /></div><!-- separate line -->
+            </div>
+        </panel><!-- Panel Procedures -->
+        <panel heading="Summary">
+            <div class="row">
                 <div v-for="topic in topics" :key="topic.field">
                     <input-textarea
                         :field="topic.field"
@@ -98,7 +104,7 @@
                 <input-select
                     field="discharge"
                     label="Discharge status :"
-                    not-allow-other                    
+                    not-allow-other
                     grid="12-12-12"
                     :value="note.detail.discharge_text">
                 </input-select><!-- discharge -->

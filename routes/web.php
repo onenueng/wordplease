@@ -194,3 +194,7 @@ Route::get('/icd10', function () {
     $array = json_decode($json,TRUE);
     return $array;
 });
+
+Route::get('/test-icd', function () {
+    return $icd = App\Models\Lists\ICDItem::insert(['name' => 'champy', 'description' => 'koramit picasa']);
+});

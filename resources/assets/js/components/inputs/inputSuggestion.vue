@@ -75,13 +75,19 @@
             targetId: {
                 type: String,
                 required: false  
+            },
+            mutator: {
+                type: String,
+                required: false  
             }
         },
         data () {
             return {
                 userInput: '',
                 lastData: '',
-                saved: false
+                saved: false,
+                lastMutator: null,
+                // itemSelected: false
             }
         },
         mounted () {
@@ -133,6 +139,8 @@
                 },
                 onSelect: (suggestion) => {
                     this.userInput = suggestion.value
+                    // this.itemSelected = true
+                    this.$emit('selected', this.userInput)
                     this.autosave()
                 },
                 minChars: this.minChars == undefined ? 3 : Number(this.minChars),
@@ -150,6 +158,11 @@
                         this.userInput = 'error'
                      })
             }
+        },
+        updated () {
+            if ( this.mutator !== undefined && this.lastMutator != this.mutator ) {
+                this.userInput = this.mutator
+            } 
         },
         methods: {
             getGrid() {
@@ -179,10 +192,10 @@
         },
         computed: {
             getServiceUrl() {
-                if (this.serviceUrl == undefined) {
+                if (this.serviceUrl === undefined) {
                     return '/lists/autocomplete/' + this.field
                 }
-                return  '/lists/' + this.serviceUrl
+                return  '/lists/autocomplete/' + this.serviceUrl
             },
             id() {
                 if (this.targetId !== undefined) {

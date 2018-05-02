@@ -13,7 +13,14 @@
             :options="draggableOptions">
             <div class="form-group-sm"
                  v-for="(item, index) in list" :key="field + '-item-' + index">
-                <div class="col-xs-12 col-sm-8 col-md-10"
+
+                <div class="col-xs-12 col-sm-8 col-md-4"
+                     style="padding-right: 2px;">
+                    <textarea :class="'form-control' + ((index+1) <= rowLimit ? '': ' overFlow') + (item.duplicate ? ' duplicate' : '')"
+                              rows="1" v-html="item.value" disabled></textarea>
+                </div>
+
+                <div class="col-xs-12 col-sm-8 col-md-4"
                      style="padding-right: 2px;">
                     <textarea :class="'form-control' + ((index+1) <= rowLimit ? '': ' overFlow') + (item.duplicate ? ' duplicate' : '')"
                               :id="field + '-' + (index+1)"
@@ -25,6 +32,14 @@
                               @keydown.up.prevent="onUpKeyPressed"
                               @focus="currentRow = index"></textarea>
                 </div>
+
+                <input-suggestion
+                    field="ICD"
+                    grid="12-6-2"
+                    min-chars="2"
+                    value="">
+                </input-suggestion><!-- icd -->
+
                 <div class="col-xs-12 col-sm-4 col-md-2"
                      style="padding-top: 4px; background: #ffffd3!important;"
                      v-if="rowLimit > 1 || list.length > 1">
@@ -55,9 +70,11 @@
 
 <script>
     import draggable from 'vuedraggable'
+    import InputSuggestion from '../inputs/InputSuggestion.vue'
     export default {
         components: {
-            draggable
+            draggable,
+            'input-suggestion': InputSuggestion
         },
         props: {
             field: {

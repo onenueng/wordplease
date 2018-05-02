@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Lists\AttendingStaff;
 use App\Models\Lists\SelectItem;
 use App\Models\Lists\Division;
+use App\Models\Lists\ICDItem;
 use Illuminate\Http\Request;
 use App\Models\Lists\Drug;
 use App\Models\Lists\Ward;
@@ -47,6 +48,9 @@ class ListController extends Controller
                 break;
             case 'drug':
                 $data = Drug::getList($request->input('query'));
+                break;
+            case 'ICD':
+                $data = ICDItem::getList($request->input('query'));
                 break;
         }
 

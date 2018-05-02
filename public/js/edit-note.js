@@ -2079,6 +2079,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }
             });
         }
+
+        autosize(document.getElementsByTagName('textarea'));
     },
     updated: function updated() {
         var _this2 = this;
@@ -4380,9 +4382,338 @@ if (false) {
 /* 88 */,
 /* 89 */,
 /* 90 */,
-/* 91 */,
-/* 92 */,
-/* 93 */,
+/* 91 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(92)
+/* template */
+var __vue_template__ = __webpack_require__(93)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\inputs\\InputSuggestion.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-59671ff2", Component.options)
+  } else {
+    hotAPI.reload("data-v-59671ff2", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 92 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* WEBPACK VAR INJECTION */(function($) {//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: {
+        // field name on database.
+        field: {
+            type: String,
+            required: false
+        },
+        label: {
+            type: String,
+            required: false
+        },
+        placeholder: {
+            type: String,
+            required: false
+        },
+        // define Bootstrap grid class in mobile-tablet-desktop order
+        grid: {
+            type: String,
+            required: false
+        },
+        // initial value.
+        value: {
+            type: String,
+            required: false
+        },
+        // need to sync value with database on render or not ['needSync' or undefined].
+        needSync: {
+            type: String,
+            required: false
+        },
+        // endpoint to get options.
+        serviceUrl: {
+            type: String,
+            required: false
+        },
+        // min chars to trigger suggestions.
+        minChars: {
+            type: String,
+            required: false
+        },
+        setterEvent: {
+            type: String,
+            required: false
+        },
+        storeData: {
+            type: String,
+            required: false
+        },
+        targetId: {
+            type: String,
+            required: false
+        }
+    },
+    data: function data() {
+        return {
+            userInput: '',
+            lastData: '',
+            saved: false
+        };
+    },
+    mounted: function mounted() {
+        var _this = this;
+
+        // initial data
+        if (this.value === undefined || this.value === null) {
+            this.lastData = this.userInput = '';
+        } else {
+            this.lastData = this.userInput = this.value;
+        }
+
+        if (this.setterEvent !== undefined) {
+            EventBus.$on(this.setterEvent, function (value) {
+                _this.userInput = value;
+            });
+        }
+
+        // initial autocomplete instance
+        $('#' + this.id).autocomplete({
+            // setup sservice endpoint
+            serviceUrl: this.getServiceUrl,
+            // format suggestions
+            beforeRender: function beforeRender(container, suggestions) {
+                for (var i = 0; i < container.children().length; i++) {
+                    var strHTML = container.children().eq(i).html();
+                    // custom format if there is not aleardy formatted
+                    if (strHTML.search('<strong>') < 0 && strHTML.search(_this.userInput[0]) >= 0) {
+                        var strHTMLNew = '';
+                        var lastPos = 0; // last sub string position
+                        for (var j = 0; j < _this.userInput.length; j++) {
+                            for (var k = lastPos; k < strHTML.length; k++) {
+                                // apply strong element to highlight matched character
+                                if (strHTML[k] == _this.userInput[j]) {
+                                    strHTMLNew += '<strong>' + _this.userInput[j] + '</strong>';
+                                    lastPos = k + 1;
+                                    break;
+                                } else {
+                                    strHTMLNew += strHTML[k];
+                                }
+                            }
+                        }
+                        // concat remain string
+                        for (var _k = lastPos; _k < strHTML.length; _k++) {
+                            strHTMLNew += strHTML[_k];
+                        }
+                        container.children().eq(i).html(strHTMLNew);
+                    }
+                }
+            },
+            onSelect: function onSelect(suggestion) {
+                _this.userInput = suggestion.value;
+                _this.autosave();
+            },
+            minChars: this.minChars == undefined ? 3 : Number(this.minChars),
+            maxHeight: 240
+        });
+
+        if (this.needSync !== undefined) {
+            // let url = '/note-data/' + window.location.pathname.split("/")[2] + '/' + this.field
+            var url = this.needSync + '/' + this.field;
+            axios.get(url).then(function (response) {
+                _this.userInput = response.data;
+            }).catch(function (error) {
+                _this.userInput = 'error';
+            });
+        }
+    },
+
+    methods: {
+        getGrid: function getGrid() {
+            if (this.grid == undefined) {
+                return 'col-xs-12';
+            }
+            var grid = this.grid.split('-');
+            return 'col-xs-' + grid[0] + ' col-sm-' + grid[1] + ' col-md-' + grid[2];
+        },
+        autosave: function autosave() {
+            if (this.field !== undefined && this.userInput != this.lastData) {
+                EventBus.$emit('autosave', this.field, this.userInput);
+                this.lastData = this.userInput;
+                this.saved = true;
+            }
+        },
+        tryAutosave: function tryAutosave() {
+            var _this2 = this;
+
+            if (this.storeData !== undefined) {
+                EventBus.$emit(this.storeData, this.id, this.userInput);
+            }
+            setTimeout(function () {
+                if (!_this2.saved) {
+                    _this2.autosave();
+                }
+            }, 1000);
+        }
+    },
+    computed: {
+        getServiceUrl: function getServiceUrl() {
+            if (this.serviceUrl == undefined) {
+                return '/lists/autocomplete/' + this.field;
+            }
+            return '/lists/' + this.serviceUrl;
+        },
+        id: function id() {
+            if (this.targetId !== undefined) {
+                return this.targetId;
+            }
+
+            if (this.field !== undefined) {
+                return this.field;
+            }
+
+            return Date.now() + this.serviceUrl.replace(new RegExp('/', 'g'), '');
+        }
+    }
+});
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(1)))
+
+/***/ }),
+/* 93 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { class: _vm.getGrid() }, [
+    _c("div", { staticClass: "form-group-sm" }, [
+      _vm.label !== undefined
+        ? _c(
+            "label",
+            { staticClass: "control-label topped", attrs: { for: _vm.id } },
+            [_vm._v("\n            " + _vm._s(_vm.label) + "\n        ")]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c("div", { staticClass: "input-group" }, [
+        _vm._m(0),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.userInput,
+              expression: "userInput"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: {
+            type: "text",
+            name: _vm.field,
+            id: _vm.id,
+            placeholder: _vm.placeholder
+          },
+          domProps: { value: _vm.userInput },
+          on: {
+            focus: function($event) {
+              _vm.saved = false
+            },
+            blur: function($event) {
+              _vm.tryAutosave()
+            },
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.userInput = $event.target.value
+            }
+          }
+        })
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "input-group-addon" }, [
+      _c("i", { staticClass: "fa fa-lightbulb-o" })
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-59671ff2", module.exports)
+  }
+}
+
+/***/ }),
 /* 94 */,
 /* 95 */,
 /* 96 */,
@@ -4463,6 +4794,7 @@ Vue.component('non-operation-list', __webpack_require__(197));
 Vue.component('investigation-list', __webpack_require__(200));
 Vue.component('input-rows', __webpack_require__(55));
 Vue.component('modal-document', __webpack_require__(203));
+Vue.component('review-discharge', __webpack_require__(207));
 
 window.app = new Vue({
     el: '#app',
@@ -9236,6 +9568,718 @@ if (false) {
     require("vue-hot-reload-api")      .rerender("data-v-117b5dfe", module.exports)
   }
 }
+
+/***/ }),
+/* 207 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(292)
+}
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(291)
+/* template */
+var __vue_template__ = __webpack_require__(208)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\forms\\ReviewDischarge.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-c761e594", Component.options)
+  } else {
+    hotAPI.reload("data-v-c761e594", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 208 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _vm.label !== undefined
+        ? _c("div", { staticClass: "col-xs-12" }, [
+            _c(
+              "label",
+              {
+                class:
+                  "label-control topped " +
+                  (_vm.list.length > _vm.rowLimit
+                    ? "animated pulse infinite"
+                    : "")
+              },
+              [
+                _vm._v(_vm._s(_vm.label) + "\n            "),
+                _vm.list.length == _vm.rowLimit
+                  ? _c("span", { staticClass: "text-danger" }, [
+                      _vm._v("Row Limit Exceeded")
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.list.length > _vm.rowLimit
+                  ? _c("span", { staticClass: "text-danger" }, [
+                      _vm._v(
+                        "Please manage rows or lose those exceeded the limit"
+                      )
+                    ])
+                  : _vm._e()
+              ]
+            )
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "draggable",
+        {
+          attrs: { list: _vm.list, options: _vm.draggableOptions },
+          on: { sort: _vm.autosave }
+        },
+        _vm._l(_vm.list, function(item, index) {
+          return _c(
+            "div",
+            { key: _vm.field + "-item-" + index, staticClass: "form-group-sm" },
+            [
+              _c(
+                "div",
+                {
+                  staticClass: "col-xs-12 col-sm-8 col-md-4",
+                  staticStyle: { "padding-right": "2px" }
+                },
+                [
+                  _c("textarea", {
+                    class:
+                      "form-control" +
+                      (index + 1 <= _vm.rowLimit ? "" : " overFlow") +
+                      (item.duplicate ? " duplicate" : ""),
+                    attrs: { rows: "1", disabled: "" },
+                    domProps: { innerHTML: _vm._s(item.value) }
+                  })
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "col-xs-12 col-sm-8 col-md-4",
+                  staticStyle: { "padding-right": "2px" }
+                },
+                [
+                  _c("textarea", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: item.value,
+                        expression: "item.value"
+                      }
+                    ],
+                    class:
+                      "form-control" +
+                      (index + 1 <= _vm.rowLimit ? "" : " overFlow") +
+                      (item.duplicate ? " duplicate" : ""),
+                    attrs: { id: _vm.field + "-" + (index + 1), rows: "1" },
+                    domProps: { value: item.value },
+                    on: {
+                      blur: _vm.onKeyPressed,
+                      keydown: [
+                        function($event) {
+                          if (
+                            !("button" in $event) &&
+                            _vm._k(
+                              $event.keyCode,
+                              "enter",
+                              13,
+                              $event.key,
+                              "Enter"
+                            )
+                          ) {
+                            return null
+                          }
+                          $event.preventDefault()
+                          return _vm.onEnterKeyPressed($event)
+                        },
+                        function($event) {
+                          if (
+                            !("button" in $event) &&
+                            _vm._k($event.keyCode, "down", 40, $event.key, [
+                              "Down",
+                              "ArrowDown"
+                            ])
+                          ) {
+                            return null
+                          }
+                          $event.preventDefault()
+                          return _vm.onDownKeyPressed($event)
+                        },
+                        function($event) {
+                          if (
+                            !("button" in $event) &&
+                            _vm._k($event.keyCode, "up", 38, $event.key, [
+                              "Up",
+                              "ArrowUp"
+                            ])
+                          ) {
+                            return null
+                          }
+                          $event.preventDefault()
+                          return _vm.onUpKeyPressed($event)
+                        }
+                      ],
+                      focus: function($event) {
+                        _vm.currentRow = index
+                      },
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(item, "value", $event.target.value)
+                      }
+                    }
+                  })
+                ]
+              ),
+              _vm._v(" "),
+              _c("input-suggestion", {
+                attrs: {
+                  field: "ICD",
+                  grid: "12-6-2",
+                  "min-chars": "2",
+                  value: ""
+                }
+              }),
+              _vm._v(" "),
+              _vm.rowLimit > 1 || _vm.list.length > 1
+                ? _c(
+                    "div",
+                    {
+                      staticClass: "col-xs-12 col-sm-4 col-md-2",
+                      staticStyle: {
+                        "padding-top": "4px",
+                        background: "#ffffd3!important"
+                      }
+                    },
+                    [
+                      _vm.list.length > 1
+                        ? _c("span", { staticClass: "badge drag-icon" }, [
+                            _c("span", [_vm._v(_vm._s(index + 1))])
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.list.length < _vm.rowLimit
+                        ? _c("button-app", {
+                            attrs: {
+                              action: "add-" + _vm.field,
+                              status: "info",
+                              label: "<span class='fa fa-plus'></span>",
+                              size: "xs",
+                              "no-tap-stop": ""
+                            }
+                          })
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.list.length > 1
+                        ? _c("button-app", {
+                            attrs: {
+                              action: {
+                                event: "delete-" + _vm.field,
+                                value: index
+                              },
+                              status: "danger",
+                              label: "<span class='fa fa-trash-o'></span>",
+                              size: "xs",
+                              "no-tap-stop": ""
+                            }
+                          })
+                        : _vm._e()
+                    ],
+                    1
+                  )
+                : _vm._e()
+            ],
+            1
+          )
+        })
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-c761e594", module.exports)
+  }
+}
+
+/***/ }),
+/* 209 */,
+/* 210 */,
+/* 211 */,
+/* 212 */,
+/* 213 */,
+/* 214 */,
+/* 215 */,
+/* 216 */,
+/* 217 */,
+/* 218 */,
+/* 219 */,
+/* 220 */,
+/* 221 */,
+/* 222 */,
+/* 223 */,
+/* 224 */,
+/* 225 */,
+/* 226 */,
+/* 227 */,
+/* 228 */,
+/* 229 */,
+/* 230 */,
+/* 231 */,
+/* 232 */,
+/* 233 */,
+/* 234 */,
+/* 235 */,
+/* 236 */,
+/* 237 */,
+/* 238 */,
+/* 239 */,
+/* 240 */,
+/* 241 */,
+/* 242 */,
+/* 243 */,
+/* 244 */,
+/* 245 */,
+/* 246 */,
+/* 247 */,
+/* 248 */,
+/* 249 */,
+/* 250 */,
+/* 251 */,
+/* 252 */,
+/* 253 */,
+/* 254 */,
+/* 255 */,
+/* 256 */,
+/* 257 */,
+/* 258 */,
+/* 259 */,
+/* 260 */,
+/* 261 */,
+/* 262 */,
+/* 263 */,
+/* 264 */,
+/* 265 */,
+/* 266 */,
+/* 267 */,
+/* 268 */,
+/* 269 */,
+/* 270 */,
+/* 271 */,
+/* 272 */,
+/* 273 */,
+/* 274 */,
+/* 275 */,
+/* 276 */,
+/* 277 */,
+/* 278 */,
+/* 279 */,
+/* 280 */,
+/* 281 */,
+/* 282 */,
+/* 283 */,
+/* 284 */,
+/* 285 */,
+/* 286 */,
+/* 287 */,
+/* 288 */,
+/* 289 */,
+/* 290 */,
+/* 291 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuedraggable__ = __webpack_require__(59);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuedraggable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vuedraggable__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__inputs_InputSuggestion_vue__ = __webpack_require__(91);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__inputs_InputSuggestion_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__inputs_InputSuggestion_vue__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    components: {
+        draggable: __WEBPACK_IMPORTED_MODULE_0_vuedraggable___default.a,
+        'input-suggestion': __WEBPACK_IMPORTED_MODULE_1__inputs_InputSuggestion_vue___default.a
+    },
+    props: {
+        field: {
+            type: String,
+            required: true
+        },
+        label: {
+            type: String,
+            required: false
+        },
+        groupName: {
+            type: String,
+            required: false,
+            default: this.field
+        },
+        groupAllowDuplicate: {
+            type: Boolean,
+            required: false,
+            default: false
+        },
+        rowLimit: {
+            type: Number,
+            required: false,
+            default: 1
+        },
+        items: {
+            type: Array,
+            required: false,
+            default: function _default() {
+                return [{ value: null, duplicate: false }];
+            }
+        }
+    },
+    data: function data() {
+        return {
+            currentRow: 0,
+            list: this.items.length == 0 ? [{ value: null, duplicate: false }] : this.initList(),
+            draggableOptions: {
+                handle: '.drag-icon',
+                group: this.groupName
+            },
+            groupCheckDuplicateValue: null,
+            lastSaveList: this.items.length == 0 ? [{ value: null, duplicate: false }] : this.initList(),
+            updatedFiredFromDeleted: false
+        };
+    },
+
+    computed: {
+        hasSiblings: function hasSiblings() {
+            return !this.groupAllowDuplicate && this.groupName != this.field;
+        },
+        isThereDuplicate: function isThereDuplicate() {
+            var duplicated = false;
+            this.list.forEach(function (item) {
+                duplicated = duplicated && item.duplicate;
+            });
+            return duplicated;
+        }
+    },
+    mounted: function mounted() {
+        var _this = this;
+
+        this.onKeyPressed = _.debounce(function () {
+            _this.autosave();
+        }, 5000);
+
+        EventBus.$on('add-' + this.field, function () {
+            _this.onEnterKeyPressed();
+        });
+
+        EventBus.$on('delete-' + this.field, function (index) {
+            _this.updatedFiredFromDeleted = true;
+            var value = _this.list[index].value;
+            _this.list.splice(index, 1);
+            _this.onKeyPressed();
+            if (_this.hasSiblings) {
+                EventBus.$emit(_this.groupName + '-item-deleted', _this.field, value);
+            }
+        });
+
+        if (this.hasSiblings) {
+            EventBus.$on(this.groupName + '-item-deleted', function (field, value) {
+                if (_this.field != field) {
+                    console.log('hello from ' + _this.field + ' grp dup value => ' + _this.groupCheckDuplicateValue);
+                    if (_this.groupCheckDuplicateValue == value) {
+                        _this.groupCheckDuplicateValue = null;
+                        _this.list.forEach(function (item) {
+                            if (item.duplicate && item.value == value) {
+                                item.duplicate = false;
+                                _this.onKeyPressed();
+                            }
+                        });
+                    }
+                }
+            });
+
+            EventBus.$on(this.groupName + '-check-duplicate', function (field, value) {
+                var isDelete = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+                if (_this.field != field) {
+                    _this.groupCheckDuplicateValue = value;
+                    _this.list.forEach(function (item) {
+                        if (item.duplicate && item.value != value) {
+                            item.duplicate = false;
+                            _this.onKeyPressed();
+                        } else {
+                            item.duplicate = item.value == value;
+                            if (item.duplicate) {
+                                _this.onKeyPressed();
+                            }
+                        }
+                    });
+                }
+            });
+        }
+
+        autosize(document.getElementsByTagName('textarea'));
+    },
+    updated: function updated() {
+        var _this2 = this;
+
+        if (!this.updatedFiredFromDeleted) {
+            this.list.forEach(function (item, index) {
+                if (item.value != null && item.value != '') {
+                    item.duplicate = _this2.isDuplicate(index, item.value) || item.value == _this2.groupCheckDuplicateValue;
+                }
+                autosize(document.getElementById(_this2.field + '-' + (index + 1)));
+                autosize.update(document.getElementById(_this2.field + '-' + (index + 1)));
+            });
+
+            if (this.list[this.currentRow] !== undefined) {
+                var value = this.list[this.currentRow].value;
+                if (this.hasSiblings && value != '' && value != null) {
+                    EventBus.$emit(this.groupName + '-check-duplicate', this.field, value);
+                }
+            }
+        } else {
+            this.updatedFiredFromDeleted = false;
+        }
+    },
+
+    methods: {
+        initList: function initList() {
+            var newList = [];
+            this.items.forEach(function (item) {
+                newList.push({ value: item.value, duplicate: false });
+            });
+            return newList;
+        },
+        isDuplicate: function isDuplicate(index, value) {
+            var rowCount = this.list.length;
+            for (var i = 0; i < rowCount; i++) {
+                if (i != index && this.list[i].value == value) {
+                    return true;
+                }
+            }
+            return false;
+        },
+        onEnterKeyPressed: function onEnterKeyPressed() {
+            var _this3 = this;
+
+            if (this.list.length < this.rowLimit) {
+                this.list.push({ value: null, duplicate: false });
+                setTimeout(function () {
+                    document.getElementById(_this3.field + '-' + _this3.list.length).focus();
+                }, 100);
+            }
+        },
+        onDownKeyPressed: function onDownKeyPressed() {
+            if (this.currentRow + 1 < this.list.length) {
+                document.getElementById(this.field + '-' + (this.currentRow + 2)).focus();
+            }
+        },
+        onUpKeyPressed: function onUpKeyPressed() {
+            if (this.currentRow != 0) {
+                document.getElementById(this.field + '-' + this.currentRow).focus();
+            }
+        },
+        onKeyPressed: function onKeyPressed() {
+            // defined on mounted
+        },
+        autosave: function autosave() {
+            var _this4 = this;
+
+            var newList = void 0;
+            if (this.list.length > this.rowLimit) {
+                newList = this.list.slice(0, this.rowLimit);
+            } else {
+                newList = this.list.slice();
+            }
+
+            var listCount = newList.length;
+            for (var index = 0; index < listCount; index++) {
+                if (newList[index] !== undefined && newList[index].duplicate) {
+                    newList.splice(index, 1);
+                }
+            }
+
+            if (this.dirtyList(newList)) {
+                EventBus.$emit('autosave', this.field, newList);
+                this.lastSaveList = [];
+                newList.forEach(function (item) {
+                    _this4.lastSaveList.push({ value: item.value, duplicate: false });
+                });
+            } else {
+                console.log(this.field + ' list is clean');
+            }
+        },
+        dirtyList: function dirtyList(list) {
+            if (this.lastSaveList.length != list.length) {
+                return true;
+            }
+
+            var lastSaveListCount = this.lastSaveList.length;
+            for (var index = 0; index < lastSaveListCount; index++) {
+                if (list[index].value != this.lastSaveList[index].value) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+});
+
+/***/ }),
+/* 292 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(293);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(3)("e61aaeae", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-c761e594\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ReviewDischarge.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-c761e594\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ReviewDischarge.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 293 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.drag-icon {\n    cursor: move;\n    cursor: -webkit-grabbing;\n}\n.overFlow {\n    background:#d9534f;\n}\n.duplicate {\n    background:#f0ad4e;\n}\n", ""]);
+
+// exports
+
 
 /***/ })
 ],[140]);

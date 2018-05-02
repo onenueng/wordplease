@@ -22,6 +22,7 @@ Vue.component('non-operation-list', require('./components/helpers/medicine/NonOp
 Vue.component('investigation-list', require('./components/helpers/medicine/InvestigationList.vue'))
 Vue.component('input-rows', require('./components/inputs/InputRows.vue'))
 Vue.component('modal-document', require('./components/ModalDocument.vue'))
+Vue.component('review-discharge', require('./components/forms/ReviewDischarge.vue'))
 
 
 window.app = new Vue({

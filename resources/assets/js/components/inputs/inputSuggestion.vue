@@ -33,16 +33,16 @@
             },
             label: {
                 type: String,
-                required: false  
+                required: false
             },
             placeholder: {
                 type: String,
-                required: false  
+                required: false
             },
             // define Bootstrap grid class in mobile-tablet-desktop order
             grid: {
                 type: String,
-                required: false  
+                required: false
             },
             // initial value.
             value: {
@@ -57,12 +57,12 @@
             // endpoint to get options.
             serviceUrl: {
                 type: String,
-                required: false  
+                required: false
             },
             // min chars to trigger suggestions.
             minChars: {
                 type: String,
-                required: false  
+                required: false
             },
             setterEvent: {
                 type: String,
@@ -74,11 +74,11 @@
             },
             targetId: {
                 type: String,
-                required: false  
+                required: false
             },
             mutator: {
                 type: String,
-                required: false  
+                required: false
             }
         },
         data () {
@@ -140,7 +140,7 @@
                 onSelect: (suggestion) => {
                     this.userInput = suggestion.value
                     // this.itemSelected = true
-                    this.$emit('selected', this.userInput)
+                    this.$emit('selected', suggestion)
                     this.autosave()
                 },
                 minChars: this.minChars == undefined ? 3 : Number(this.minChars),
@@ -162,7 +162,8 @@
         updated () {
             if ( this.mutator !== undefined && this.lastMutator != this.mutator ) {
                 this.userInput = this.mutator
-            } 
+                this.lastMutator = this.mutator
+            }
         },
         methods: {
             getGrid() {
@@ -201,14 +202,13 @@
                 if (this.targetId !== undefined) {
                     return this.targetId
                 }
-                
+
                 if (this.field !== undefined) {
                     return this.field
                 }
-                
+
                 return Date.now() + this.serviceUrl.replace(new RegExp('/', 'g'), '')
             }
         }
     }
 </script>
-

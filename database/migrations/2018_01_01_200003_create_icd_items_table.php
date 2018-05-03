@@ -14,10 +14,10 @@ class CreateIcdItemsTable extends Migration
     public function up()
     {
         Schema::create('icd_items', function (Blueprint $table) {
-            $table->integer('id')->unsinged();
+            // $table->integer('id')->unsinged();
+            $table->string('id', 20);
             $table->primary('id');
-            $table->string('name', 20)->unique();
-            $table->string('description')->unique();
+            $table->string('name')->unique();
             $table->timestamps();
         });
     }

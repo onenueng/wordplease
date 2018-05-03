@@ -196,5 +196,6 @@ Route::get('/icd10', function () {
 });
 
 Route::get('/test-icd', function () {
-    return $icd = App\Models\Lists\ICDItem::insert(['name' => 'champy', 'description' => 'koramit picasa']);
+    $icd = App\Models\Lists\ICDItem::create(['id' => 'shame', 'name' => 'nalinee premas']);
+    return App\Models\Lists\ICDItem::find('shame');
 });

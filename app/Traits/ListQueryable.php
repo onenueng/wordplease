@@ -24,7 +24,7 @@ trait ListQueryable
     {
         return ['name'];
     }
-    
+
     /**
      * Get list of list.
      *
@@ -43,9 +43,15 @@ trait ListQueryable
          * Search keyword partial match like '%keyword%'
          */
         $pattern = '%' . $keyWord . '%';
-        $query = static::select(static::selectFields());
+        $selectFields = static::selectFields();
+        if ( gettype($selectFields) == 'string' ) {
+            $query = static::selectRaw($selectFields);
+        } else {
+            $query = static::select($selectFields);
+            // $query = static::select(static::selectFields());
+        }
         foreach (static::whereFields() as $field) {
-            $query = $query->orWhere($field, 'like', $pattern); 
+            $query = $query->orWhere($field, 'like', $pattern);
         }
 
         $partialMatched = $query->limit($rowsLimit)->get()->toArray();
@@ -54,14 +60,20 @@ trait ListQueryable
         if (count($partialMatched) >= $rowsLimit) {
             return $partialMatched;
         }
-        
+
         /**
          * Search keyword in letters order match like '%k%e%y%w%o%r%d%'
          */
         $pattern = static::getSearchPattern($keyWord);
-        $query = static::select(static::selectFields());
+        if (gettype($selectFields) == 'string') {
+            $query = static::selectRaw($selectFields);
+        } else {
+            $query = static::select($selectFields);
+            // $query = static::select(static::selectFields());
+        }
+        // $query = static::select(static::selectFields());
         foreach (static::whereFields() as $field) {
-            $query = $query->orWhere($field, 'like', $pattern); 
+            $query = $query->orWhere($field, 'like', $pattern);
         }
 
         $letterOrderMatched = $query->limit($rowsLimit)->get()->toArray();
@@ -99,7 +111,7 @@ trait ListQueryable
                 return $partialMatched;
             }
         }
-        
+
         return $partialMatched;
     }
 

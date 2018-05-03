@@ -17,7 +17,7 @@
                 <div class="col-xs-12 col-sm-4 col-md-4"
                      style="padding-right: 2px;">
                     <textarea :class="'form-control' + ((index+1) <= rowLimit ? '': ' overFlow') + (item.duplicate ? ' duplicate' : '')"
-                              rows="1" v-html="item.value" disabled></textarea>
+                              rows="1" v-html="item.original" disabled></textarea>
                 </div>
 
                 <div class="col-xs-12 col-sm-4 col-md-4"
@@ -26,7 +26,7 @@
                               :id="field + '-' + (index+1)"
                               v-model="item.value"
                               rows="1"
-                              @blur="onKeyPressed"
+                              @blur="onblur"
                               @keydown.enter.prevent="onEnterKeyPressed"
                               @keydown.down.prevent="onDownKeyPressed"
                               @keydown.up.prevent="onUpKeyPressed"
@@ -39,7 +39,7 @@
                     placeholder="ICD code"
                     min-chars="2"
                     @selected="onselected"
-                    :mutator='icd'>
+                    :mutator="item.code">
                 </input-suggestion><!-- icd -->
 
                 <div class="col-xs-12 col-sm-2 col-md-2"
@@ -73,10 +73,12 @@
 <script>
     import draggable from 'vuedraggable'
     import InputSuggestion from '../inputs/InputSuggestion.vue'
+    import ButtonApp from '../buttons/ButtonApp.vue'
     export default {
         components: {
             draggable,
-            'input-suggestion': InputSuggestion
+            'input-suggestion': InputSuggestion,
+            'button-app': ButtonApp
         },
         props: {
             field: {
@@ -105,21 +107,22 @@
             items: {
                 type: Array,
                 required: false,
-                default: () => { return [{ value: null, duplicate: false }] }
+                default: () => { return [{ original: null, value: null, code: null, duplicate: false }] }
             }
         },
         data () {
             return {
                 currentRow: 0,
-                list: this.items.length == 0 ? [{ value: null, duplicate: false }] : this.initList(),
+                list: this.items.length == 0 ? [{ original: null, value: null, code: null, duplicate: false }] : this.initList(),
                 draggableOptions: {
                     handle:'.drag-icon',
                     group: this.groupName
                 },
                 groupCheckDuplicateValue: null,
-                lastSaveList: this.items.length == 0 ? [{ value: null, duplicate: false }] : this.initList(),
+                lastSaveList: this.items.length == 0 ? [{ original: null, value: null, code: null, duplicate: false }] : this.initList(),
                 updatedFiredFromDeleted: false,
-                icd: null
+                lastSaveICDCode: null,
+                lastSaveICDName: null
             }
         },
         computed: {
@@ -209,7 +212,7 @@
             initList () {
                 let newList = []
                 this.items.forEach( (item) => {
-                    newList.push({ value: item.value, duplicate: false })
+                    newList.push({ original: item.value, value: item.value, code: null, duplicate: false })
                 })
                 return newList
             },
@@ -224,7 +227,7 @@
             },
             onEnterKeyPressed () {
                 if ( this.list.length < (this.rowLimit) ) {
-                    this.list.push({ value: null, duplicate: false })
+                    this.list.push({ original: null, value: null, code: null, duplicate: false })
                     setTimeout(() => { document.getElementById(this.field + '-' + this.list.length).focus() }, 100)
                 }
             },
@@ -279,8 +282,16 @@
                 }
                 return false
             },
-            onselected (value) {
-                this.icd = value + ' hahaha'
+            onselected (suggestion) {
+                console.log(suggestion)
+                this.list[this.currentRow].code = suggestion.value.split(' | ')[0]
+                this.list[this.currentRow].value = suggestion.value.split(' | ')[1]
+                document.getElementById(this.field + '-' + (this.currentRow + 1)).focus()
+            },
+            onblur () {
+                // console.log('blur blur@' + this.currentRow)
+                console.log('save => name: ' + this.list[this.currentRow].value + ', id: ' + this.list[this.currentRow].code)
+                this.onKeyPressed()
             }
         }
     }

@@ -26,20 +26,23 @@
                               :id="field + '-' + (index+1)"
                               v-model="item.value"
                               rows="1"
-                              @blur="onblur"
+                              @blur="tryUpdateICD"
                               @keydown.enter.prevent="onEnterKeyPressed"
                               @keydown.down.prevent="onDownKeyPressed"
                               @keydown.up.prevent="onUpKeyPressed"
                               @focus="currentRow = index"></textarea>
                 </div>
 
+                <!-- @selected="onselected" :mutator="item.code" -->
                 <input-suggestion
                     service-url="ICD"
                     grid="12-2-2"
                     placeholder="ICD code"
                     min-chars="2"
+                    @focus="currentRow = index"
                     @selected="onselected"
-                    :mutator="item.code">
+                    @blur="tryUpdateICD"
+                    :suggestion-value-index="0">
                 </input-suggestion><!-- icd -->
 
                 <div class="col-xs-12 col-sm-2 col-md-2"
@@ -281,17 +284,15 @@
                     }
                 }
                 return false
+                return false
             },
             onselected (suggestion) {
-                console.log(suggestion)
                 this.list[this.currentRow].code = suggestion.value.split(' | ')[0]
                 this.list[this.currentRow].value = suggestion.value.split(' | ')[1]
                 document.getElementById(this.field + '-' + (this.currentRow + 1)).focus()
             },
-            onblur () {
-                // console.log('blur blur@' + this.currentRow)
-                console.log('save => name: ' + this.list[this.currentRow].value + ', id: ' + this.list[this.currentRow].code)
-                this.onKeyPressed()
+            tryUpdateICD () {
+                console.log('row: ' + this.currentRow + ', name: ' + this.list[this.currentRow].value + ' => code: ' + this.list[this.currentRow].code)
             }
         }
     }

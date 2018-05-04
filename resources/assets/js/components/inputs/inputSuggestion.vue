@@ -16,8 +16,8 @@
                         :id="id"
                         :placeholder="placeholder"
                         v-model="userInput"
-                        @focus="saved = false"
-                        @blur="tryAutosave()" />
+                        @focus="onfocus"
+                        @blur="onblur" />
             </div>
         </div>
     </div>
@@ -76,8 +76,8 @@
                 type: String,
                 required: false
             },
-            mutator: {
-                type: String,
+            suggestionValueIndex: {
+                type: Number,
                 required: false
             }
         },
@@ -85,9 +85,7 @@
             return {
                 userInput: '',
                 lastData: '',
-                saved: false,
-                lastMutator: null,
-                // itemSelected: false
+                saved: false
             }
         },
         mounted () {
@@ -138,10 +136,17 @@
                     }
                 },
                 onSelect: (suggestion) => {
-                    this.userInput = suggestion.value
+                    // this.userInput = suggestion.value
                     // this.itemSelected = true
                     this.$emit('selected', suggestion)
+
                     this.autosave()
+
+                    if ( this.suggestionValueIndex !== undefined ) {
+                        this.userInput = suggestion.value.split(' | ')[this.suggestionValueIndex]
+                    } else {
+                        this.userInput = suggestion.value
+                    }
                 },
                 minChars: this.minChars == undefined ? 3 : Number(this.minChars),
                 maxHeight: 240
@@ -159,12 +164,6 @@
                      })
             }
         },
-        updated () {
-            if ( this.mutator !== undefined && this.lastMutator != this.mutator ) {
-                this.userInput = this.mutator
-                this.lastMutator = this.mutator
-            }
-        },
         methods: {
             getGrid() {
                 if (this.grid == undefined) {
@@ -180,7 +179,8 @@
                     this.saved = true
                 }
             },
-            tryAutosave() {
+            onblur () {
+                this.$emit('blur')
                 if ( this.storeData !== undefined ) {
                     EventBus.$emit(this.storeData, this.id, this.userInput)
                 }
@@ -189,6 +189,10 @@
                         this.autosave()
                     }
                 }, 1000)
+            },
+            onfocus () {
+                this.$emit('focus')
+                this.saved = false
             }
         },
         computed: {

@@ -425,13 +425,13 @@ function applyToTag (styleElement, obj) {
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(16)
+  __webpack_require__(12)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(18)
+var __vue_script__ = __webpack_require__(14)
 /* template */
-var __vue_template__ = __webpack_require__(19)
+var __vue_template__ = __webpack_require__(15)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -1072,17 +1072,13 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 12 */,
-/* 13 */,
-/* 14 */,
-/* 15 */,
-/* 16 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(17);
+var content = __webpack_require__(13);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -1102,7 +1098,7 @@ if(false) {
 }
 
 /***/ }),
-/* 17 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)(false);
@@ -1116,7 +1112,7 @@ exports.push([module.i, "\nbutton {\n    overflow: hidden;\n    outline: none;\n
 
 
 /***/ }),
-/* 18 */
+/* 14 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1205,7 +1201,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(1)))
 
 /***/ }),
-/* 19 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -1233,6 +1229,10 @@ if (false) {
 }
 
 /***/ }),
+/* 16 */,
+/* 17 */,
+/* 18 */,
+/* 19 */,
 /* 20 */,
 /* 21 */,
 /* 22 */,
@@ -1813,8 +1813,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             type: String,
             required: false
         },
-        mutator: {
-            type: String,
+        suggestionValueIndex: {
+            type: Number,
             required: false
         }
     },
@@ -1822,9 +1822,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             userInput: '',
             lastData: '',
-            saved: false,
-            lastMutator: null
-            // itemSelected: false
+            saved: false
         };
     },
     mounted: function mounted() {
@@ -1876,10 +1874,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }
             },
             onSelect: function onSelect(suggestion) {
-                _this.userInput = suggestion.value;
+                // this.userInput = suggestion.value
                 // this.itemSelected = true
                 _this.$emit('selected', suggestion);
+
                 _this.autosave();
+
+                if (_this.suggestionValueIndex !== undefined) {
+                    _this.userInput = suggestion.value.split(' | ')[_this.suggestionValueIndex];
+                } else {
+                    _this.userInput = suggestion.value;
+                }
             },
             minChars: this.minChars == undefined ? 3 : Number(this.minChars),
             maxHeight: 240
@@ -1893,12 +1898,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).catch(function (error) {
                 _this.userInput = 'error';
             });
-        }
-    },
-    updated: function updated() {
-        if (this.mutator !== undefined && this.lastMutator != this.mutator) {
-            this.userInput = this.mutator;
-            this.lastMutator = this.mutator;
         }
     },
 
@@ -1917,9 +1916,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 this.saved = true;
             }
         },
-        tryAutosave: function tryAutosave() {
+        onblur: function onblur() {
             var _this2 = this;
 
+            this.$emit('blur');
             if (this.storeData !== undefined) {
                 EventBus.$emit(this.storeData, this.id, this.userInput);
             }
@@ -1928,6 +1928,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     _this2.autosave();
                 }
             }, 1000);
+        },
+        onfocus: function onfocus() {
+            this.$emit('focus');
+            this.saved = false;
         }
     },
     computed: {
@@ -1991,12 +1995,8 @@ var render = function() {
           },
           domProps: { value: _vm.userInput },
           on: {
-            focus: function($event) {
-              _vm.saved = false
-            },
-            blur: function($event) {
-              _vm.tryAutosave()
-            },
+            focus: _vm.onfocus,
+            blur: _vm.onblur,
             input: function($event) {
               if ($event.target.composing) {
                 return
@@ -9961,6 +9961,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 
@@ -10192,17 +10195,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }
             }
             return false;
+            return false;
         },
         onselected: function onselected(suggestion) {
-            console.log(suggestion);
             this.list[this.currentRow].code = suggestion.value.split(' | ')[0];
             this.list[this.currentRow].value = suggestion.value.split(' | ')[1];
             document.getElementById(this.field + '-' + (this.currentRow + 1)).focus();
         },
-        onblur: function onblur() {
-            // console.log('blur blur@' + this.currentRow)
-            console.log('save => name: ' + this.list[this.currentRow].value + ', id: ' + this.list[this.currentRow].code);
-            this.onKeyPressed();
+        tryUpdateICD: function tryUpdateICD() {
+            console.log('row: ' + this.currentRow + ', name: ' + this.list[this.currentRow].value + ' => code: ' + this.list[this.currentRow].code);
         }
     }
 });
@@ -10301,7 +10302,7 @@ var render = function() {
                     attrs: { id: _vm.field + "-" + (index + 1), rows: "1" },
                     domProps: { value: item.value },
                     on: {
-                      blur: _vm.onblur,
+                      blur: _vm.tryUpdateICD,
                       keydown: [
                         function($event) {
                           if (
@@ -10366,9 +10367,15 @@ var render = function() {
                   grid: "12-2-2",
                   placeholder: "ICD code",
                   "min-chars": "2",
-                  mutator: item.code
+                  "suggestion-value-index": 0
                 },
-                on: { selected: _vm.onselected }
+                on: {
+                  focus: function($event) {
+                    _vm.currentRow = index
+                  },
+                  selected: _vm.onselected,
+                  blur: _vm.tryUpdateICD
+                }
               }),
               _vm._v(" "),
               _vm.rowLimit > 1 || _vm.list.length > 1

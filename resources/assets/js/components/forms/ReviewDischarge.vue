@@ -39,6 +39,7 @@
                     grid="12-2-2"
                     placeholder="ICD code"
                     min-chars="2"
+                    :value="item.code"
                     @focus="currentRow = index"
                     @selected="onselected"
                     @blur="tryUpdateICD"
@@ -124,8 +125,7 @@
                 groupCheckDuplicateValue: null,
                 lastSaveList: this.items.length == 0 ? [{ original: null, value: null, code: null, duplicate: false }] : this.initList(),
                 updatedFiredFromDeleted: false,
-                lastSaveICDCode: null,
-                lastSaveICDName: null
+                ICDUpdatedItems: this.initICDUpdatedItems()
             }
         },
         computed: {
@@ -215,9 +215,18 @@
             initList () {
                 let newList = []
                 this.items.forEach( (item) => {
-                    newList.push({ original: item.value, value: item.value, code: null, duplicate: false })
+                    newList.push({ original: item.value, value: item.value, code: item.code, duplicate: false })
                 })
                 return newList
+            },
+            initICDUpdatedItems () {
+                let items = {}
+                this.items.forEach( (item) => {
+                    if ( item.code ) {
+                        items[item.code] = item.value
+                    }
+                })
+                return items
             },
             isDuplicate (index, value) {
                 let rowCount = this.list.length
@@ -284,7 +293,6 @@
                     }
                 }
                 return false
-                return false
             },
             onselected (suggestion) {
                 this.list[this.currentRow].code = suggestion.value.split(' | ')[0]
@@ -293,6 +301,11 @@
             },
             tryUpdateICD () {
                 console.log('row: ' + this.currentRow + ', name: ' + this.list[this.currentRow].value + ' => code: ' + this.list[this.currentRow].code)
+                // console.log(this.ICDUpdatedItems[this.list[this.currentRow].code])
+                // if ( !this.ICDUpdatedItems[this.list[this.currentRow].code] || this.list[this.currentRow].value != this.ICDUpdatedItems[this.list[this.currentRow].code] ) {
+                //     console.log('row: ' + this.currentRow + ', name: ' + this.list[this.currentRow].value + ' => code: ' + this.list[this.currentRow].code)
+                // }
+
             }
         }
     }

@@ -12356,7 +12356,7 @@ module.exports = __webpack_require__(35);
   var undefined;
 
   /** Used as the semantic version number. */
-  var VERSION = '4.17.10';
+  var VERSION = '4.17.5';
 
   /** Used as the size to enable large array optimizations. */
   var LARGE_ARRAY_SIZE = 200;
@@ -12780,14 +12780,6 @@ module.exports = __webpack_require__(35);
   /** Used to access faster Node.js helpers. */
   var nodeUtil = (function() {
     try {
-      // Use `util.types` for Node.js 10+.
-      var types = freeModule && freeModule.require && freeModule.require('util').types;
-
-      if (types) {
-        return types;
-      }
-
-      // Legacy `process.binding('util')` for Node.js < 10.
       return freeProcess && freeProcess.binding && freeProcess.binding('util');
     } catch (e) {}
   }());
@@ -42815,7 +42807,7 @@ module.exports = Vue;
 /***/ 33:
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(jQuery) {/* flatpickr v4.4.6, @license MIT */
+/* WEBPACK VAR INJECTION */(function(jQuery) {/* flatpickr v4.4.4, @license MIT */
 (function (global, factory) {
      true ? module.exports = factory() :
     typeof define === 'function' && define.amd ? define(factory) :
@@ -43250,9 +43242,7 @@ module.exports = Vue;
           args[_key - 1] = arguments[_key];
         }
 
-        var _loop = function _loop() {
-          var source = args[_i];
-
+        var _loop = function _loop(source) {
           if (source) {
             Object.keys(source).forEach(function (key) {
               return target[key] = source[key];
@@ -43261,25 +43251,13 @@ module.exports = Vue;
         };
 
         for (var _i = 0; _i < args.length; _i++) {
-          _loop();
+          var source = args[_i];
+
+          _loop(source);
         }
 
         return target;
       };
-    }
-
-    if (typeof window.requestAnimationFrame !== "function") {
-      var vendors = ["ms", "moz", "webkit", "o"];
-
-      for (var x = 0, length = vendors.length; x < length && !window.requestAnimationFrame; ++x) {
-        window.requestAnimationFrame = window[vendors[x] + "RequestAnimationFrame"];
-      }
-
-      if (typeof window.requestAnimationFrame !== "function") {
-        window.requestAnimationFrame = function (cb) {
-          return setTimeout(cb, 16);
-        };
-      }
     }
 
     var DEBOUNCED_CHANGE_MS = 300;
@@ -43362,20 +43340,19 @@ module.exports = Vue;
       }
 
       function setCalendarWidth() {
-        var config = self.config;
-        if (config.weekNumbers === false && config.showMonths === 1) return;else if (config.noCalendar !== true) {
-          window.requestAnimationFrame(function () {
-            self.calendarContainer.style.visibility = "hidden";
-            self.calendarContainer.style.display = "block";
+        if (self.daysContainer !== undefined) {
+          self.calendarContainer.style.visibility = "hidden";
+          self.calendarContainer.style.display = "block";
+          var daysWidth = (self.days.offsetWidth + 1) * self.config.showMonths;
+          self.daysContainer.style.width = daysWidth + "px";
+          self.calendarContainer.style.width = daysWidth + "px";
 
-            if (self.daysContainer !== undefined) {
-              var daysWidth = (self.days.offsetWidth + 1) * config.showMonths;
-              self.daysContainer.style.width = daysWidth + "px";
-              self.calendarContainer.style.width = daysWidth + (self.weekWrapper !== undefined ? self.weekWrapper.offsetWidth : 0) + "px";
-              self.calendarContainer.style.removeProperty("visibility");
-              self.calendarContainer.style.removeProperty("display");
-            }
-          });
+          if (self.weekWrapper !== undefined) {
+            self.calendarContainer.style.width = daysWidth + self.weekWrapper.offsetWidth + "px";
+          }
+
+          self.calendarContainer.style.removeProperty("visibility");
+          self.calendarContainer.style.removeProperty("display");
         }
       }
 
@@ -43455,8 +43432,9 @@ module.exports = Vue;
       function onYearInput(event) {
         var year = parseInt(event.target.value) + (event.delta || 0);
 
-        if (year / 1000 > 1 || event.key === "Enter" && !/[^\d]/.test(year.toString())) {
-          changeYear(year);
+        if (year.toString().length === 4 || event.key === "Enter") {
+          event.target.blur();
+          if (!/[^\d]/.test(year.toString())) changeYear(year);
         }
       }
 
@@ -43472,8 +43450,7 @@ module.exports = Vue;
         self._handlers.push({
           element: element,
           event: event,
-          handler: handler,
-          options: options
+          handler: handler
         });
       }
 
@@ -43509,7 +43486,8 @@ module.exports = Vue;
         bind(window.document.body, "keydown", onKeyDown);
         if (!self.config.static) bind(self._input, "keydown", onKeyDown);
         if (!self.config.inline && !self.config.static) bind(window, "resize", debouncedResize);
-        if (window.ontouchstart !== undefined) bind(window.document, "click", documentClick);else bind(window.document, "mousedown", onClick(documentClick));
+        if (window.ontouchstart !== undefined) bind(window.document, "touchstart", documentClick);
+        bind(window.document, "mousedown", onClick(documentClick));
         bind(window.document, "focus", documentClick, {
           capture: true
         });
@@ -44000,7 +43978,7 @@ module.exports = Vue;
 
         for (var i = self._handlers.length; i--;) {
           var h = self._handlers[i];
-          h.element.removeEventListener(h.event, h.handler, h.options);
+          h.element.removeEventListener(h.event, h.handler);
         }
 
         self._handlers = [];
@@ -44102,6 +44080,7 @@ module.exports = Vue;
       }
 
       function onKeyDown(e) {
+        e.stopPropagation();
         var isInput = e.target === self._input;
         var calendarElem = isCalendarElem(e.target);
         var allowInput = self.config.allowInput;
@@ -44140,7 +44119,7 @@ module.exports = Vue;
               if (!isTimeObj) {
                 e.preventDefault();
 
-                if (self.daysContainer !== undefined && (allowInput === false || isInView(document.activeElement))) {
+                if (self.daysContainer !== undefined && self.config.allowInput === false) {
                   var _delta = e.keyCode === 39 ? 1 : -1;
 
                   if (!e.ctrlKey) focusOnDay(undefined, _delta);else {
@@ -44172,17 +44151,12 @@ module.exports = Vue;
               break;
 
             case 9:
-              if (!isTimeObj) break;
-
               if (e.target === self.hourElement) {
                 e.preventDefault();
                 self.minuteElement.select();
               } else if (e.target === self.minuteElement && (self.secondElement || self.amPM)) {
                 e.preventDefault();
-                if (self.secondElement !== undefined) self.secondElement.focus();else if (self.amPM !== undefined) {
-                  e.preventDefault();
-                  self.amPM.focus();
-                }
+                if (self.secondElement !== undefined) self.secondElement.focus();else if (self.amPM !== undefined) self.amPM.focus();
               } else if (e.target === self.secondElement && self.amPM) {
                 e.preventDefault();
                 self.amPM.focus();
@@ -44193,27 +44167,34 @@ module.exports = Vue;
             default:
               break;
           }
-        }
 
-        if (self.amPM !== undefined && e.target === self.amPM) {
           switch (e.key) {
             case self.l10n.amPM[0].charAt(0):
             case self.l10n.amPM[0].charAt(0).toLowerCase():
-              self.amPM.textContent = self.l10n.amPM[0];
-              setHoursFromInputs();
-              updateValue();
+              if (self.amPM !== undefined && e.target === self.amPM) {
+                self.amPM.textContent = self.l10n.amPM[0];
+                setHoursFromInputs();
+                updateValue();
+              }
+
               break;
 
             case self.l10n.amPM[1].charAt(0):
             case self.l10n.amPM[1].charAt(0).toLowerCase():
-              self.amPM.textContent = self.l10n.amPM[1];
-              setHoursFromInputs();
-              updateValue();
+              if (self.amPM !== undefined && e.target === self.amPM) {
+                self.amPM.textContent = self.l10n.amPM[1];
+                setHoursFromInputs();
+                updateValue();
+              }
+
+              break;
+
+            default:
               break;
           }
-        }
 
-        triggerEvent("onKeyDown", e);
+          triggerEvent("onKeyDown", e);
+        }
       }
 
       function onMouseOver(elem) {
@@ -44222,11 +44203,14 @@ module.exports = Vue;
             initialDate = self.parseDate(self.selectedDates[0], undefined, true).getTime(),
             rangeStartDate = Math.min(hoverDate, self.selectedDates[0].getTime()),
             rangeEndDate = Math.max(hoverDate, self.selectedDates[0].getTime());
+        var months = self.daysContainer.children,
+            firstDay = months[0].children[0].dateObj.getTime(),
+            lastDay = months[months.length - 1].lastChild.dateObj.getTime();
         var containsDisabled = false;
         var minRange = 0,
             maxRange = 0;
 
-        for (var t = rangeStartDate; t < rangeEndDate; t += duration.DAY) {
+        for (var t = firstDay; t < lastDay; t += duration.DAY) {
           if (!isEnabled(new Date(t), true)) {
             containsDisabled = containsDisabled || t > rangeStartDate && t < rangeEndDate;
             if (t < initialDate && (!minRange || t > minRange)) minRange = t;else if (t > initialDate && (!maxRange || t < maxRange)) maxRange = t;
@@ -44286,7 +44270,7 @@ module.exports = Vue;
           }
 
           setTimeout(function () {
-            self.mobileInput !== undefined && self.mobileInput.focus();
+            self.mobileInput !== undefined && self.mobileInput.click();
           }, 0);
           triggerEvent("onOpen");
           return;
@@ -44312,11 +44296,9 @@ module.exports = Vue;
             updateValue();
           }
 
-          if (self.config.allowInput === false && (e === undefined || !self.timeContainer.contains(e.relatedTarget))) {
-            setTimeout(function () {
-              return self.hourElement.select();
-            }, 50);
-          }
+          setTimeout(function () {
+            return self.hourElement.select();
+          }, 50);
         }
       }
 
@@ -44368,14 +44350,13 @@ module.exports = Vue;
             self.config._disable = parseDateRules(dates);
           }
         });
-        var timeMode = userConfig.mode === "time";
 
-        if (!userConfig.dateFormat && (userConfig.enableTime || timeMode)) {
-          formats$$1.dateFormat = userConfig.noCalendar || timeMode ? "H:i" + (userConfig.enableSeconds ? ":S" : "") : flatpickr.defaultConfig.dateFormat + " H:i" + (userConfig.enableSeconds ? ":S" : "");
+        if (!userConfig.dateFormat && userConfig.enableTime) {
+          formats$$1.dateFormat = userConfig.noCalendar ? "H:i" + (userConfig.enableSeconds ? ":S" : "") : flatpickr.defaultConfig.dateFormat + " H:i" + (userConfig.enableSeconds ? ":S" : "");
         }
 
-        if (userConfig.altInput && (userConfig.enableTime || timeMode) && !userConfig.altFormat) {
-          formats$$1.altFormat = userConfig.noCalendar || timeMode ? "h:i" + (userConfig.enableSeconds ? ":S K" : " K") : flatpickr.defaultConfig.altFormat + (" h:i" + (userConfig.enableSeconds ? ":S" : "") + " K");
+        if (userConfig.altInput && userConfig.enableTime && !userConfig.altFormat) {
+          formats$$1.altFormat = userConfig.noCalendar ? "h:i" + (userConfig.enableSeconds ? ":S K" : " K") : flatpickr.defaultConfig.altFormat + (" h:i" + (userConfig.enableSeconds ? ":S" : "") + " K");
         }
 
         Object.defineProperty(self.config, "minDate", {
@@ -44409,12 +44390,6 @@ module.exports = Vue;
           },
           set: minMaxTimeSetter("max")
         });
-
-        if (userConfig.mode === "time") {
-          self.config.noCalendar = true;
-          self.config.enableTime = true;
-        }
-
         Object.assign(self.config, formats$$1, userConfig);
 
         for (var i = 0; i < boolOpts.length; i++) {
@@ -44427,7 +44402,10 @@ module.exports = Vue;
           }
         }
 
-        self.isMobile = !self.config.disableMobile && !self.config.inline && self.config.mode === "single" && !self.config.disable.length && !self.config.enable.length && !self.config.weekNumbers && /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        if (self.config.mode === "time") {
+          self.config.noCalendar = true;
+          self.config.enableTime = true;
+        }
 
         for (var _i2 = 0; _i2 < self.config.plugins.length; _i2++) {
           var pluginConf = self.config.plugins[_i2](self) || {};
@@ -44439,6 +44417,7 @@ module.exports = Vue;
           }
         }
 
+        self.isMobile = !self.config.disableMobile && !self.config.inline && self.config.mode === "single" && !self.config.disable.length && !self.config.enable.length && !self.config.weekNumbers && /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
         triggerEvent("onParseConfig");
       }
 
@@ -44457,17 +44436,15 @@ module.exports = Vue;
           return acc + child.offsetHeight;
         }, 0),
             calendarWidth = self.calendarContainer.offsetWidth,
-            configPos = self.config.position.split(" "),
-            configPosVertical = configPos[0],
-            configPosHorizontal = configPos.length > 1 ? configPos[1] : null,
+            configPos = self.config.position,
             inputBounds = positionElement.getBoundingClientRect(),
             distanceFromBottom = window.innerHeight - inputBounds.bottom,
-            showOnTop = configPosVertical === "above" || configPosVertical !== "below" && distanceFromBottom < calendarHeight && inputBounds.top > calendarHeight;
+            showOnTop = configPos === "above" || configPos !== "below" && distanceFromBottom < calendarHeight && inputBounds.top > calendarHeight;
         var top = window.pageYOffset + inputBounds.top + (!showOnTop ? positionElement.offsetHeight + 2 : -calendarHeight - 2);
         toggleClass(self.calendarContainer, "arrowTop", !showOnTop);
         toggleClass(self.calendarContainer, "arrowBottom", showOnTop);
         if (self.config.inline) return;
-        var left = window.pageXOffset + inputBounds.left - (configPosHorizontal != null && configPosHorizontal === "center" ? (calendarWidth - inputBounds.width) / 2 : 0);
+        var left = window.pageXOffset + inputBounds.left;
         var right = window.document.body.offsetWidth - inputBounds.right;
         var rightMost = left + calendarWidth > window.document.body.offsetWidth;
         toggleClass(self.calendarContainer, "rightMost", rightMost);
@@ -44587,7 +44564,6 @@ module.exports = Vue;
         });else if (inputDate instanceof Date || typeof inputDate === "number") dates = [self.parseDate(inputDate, format)];else if (typeof inputDate === "string") {
           switch (self.config.mode) {
             case "single":
-            case "time":
               dates = [self.parseDate(inputDate, format)];
               break;
 
@@ -44636,7 +44612,7 @@ module.exports = Vue;
       }
 
       function parseDateRules(arr) {
-        return arr.slice().map(function (rule) {
+        return arr.map(function (rule) {
           if (typeof rule === "string" || typeof rule === "number" || rule instanceof Date) {
             return self.parseDate(rule, undefined, true);
           } else if (rule && typeof rule === "object" && rule.from && rule.to) return {
@@ -44735,9 +44711,9 @@ module.exports = Vue;
         });
       }
 
-      function toggle(e) {
-        if (self.isOpen === true) return self.close();
-        self.open(e);
+      function toggle() {
+        if (self.isOpen) return self.close();
+        self.open();
       }
 
       function triggerEvent(event, data) {
@@ -44812,13 +44788,13 @@ module.exports = Vue;
       }
 
       function onMonthNavClick(e) {
-        e.preventDefault();
         var isPrevMonth = self.prevMonthNav.contains(e.target);
         var isNextMonth = self.nextMonthNav.contains(e.target);
 
         if (isPrevMonth || isNextMonth) {
           changeMonth(isPrevMonth ? -1 : 1);
         } else if (self.yearElements.indexOf(e.target) >= 0) {
+          e.preventDefault();
           e.target.select();
         } else if (e.target.classList.contains("arrowUp")) {
           self.changeYear(self.currentYear + 1);
@@ -44936,10 +44912,6 @@ module.exports = Vue;
       return new Date(this.getFullYear(), this.getMonth(), this.getDate() + (typeof days === "string" ? parseInt(days, 10) : days));
     };
 
-    if (typeof window !== "undefined") {
-      window.flatpickr = flatpickr;
-    }
-
     return flatpickr;
 
 })));
@@ -44952,7 +44924,7 @@ module.exports = Vue;
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
-	autosize 4.0.2
+	autosize 4.0.1
 	license: MIT
 	http://www.jacklmoore.com/autosize
 */
@@ -45113,7 +45085,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 			// The actual height not matching the style height (set via the resize method) indicates that 
 			// the max-height has been exceeded, in which case the overflow should be allowed.
-			if (actualHeight < styleHeight) {
+			if (actualHeight !== styleHeight) {
 				if (computed.overflowY === 'hidden') {
 					changeOverflow('scroll');
 					resize();

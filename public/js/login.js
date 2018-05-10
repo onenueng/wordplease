@@ -205,7 +205,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     props: {
         action: {
             type: [String, Object, Function],
-            required: true
+            required: false
         },
         label: {
             type: String,
@@ -226,24 +226,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     data: function data() {
         return {
-            style: "btn-app btn-app-",
             id: ''
         };
     },
     mounted: function mounted() {
-        if (typeof this.action == 'string') {
-            this.id = Date.now() + '-' + this.action;
-        } else {
-            this.id = Date.now() + '-' + this.action.event;
-        }
+        this.id = Date.now() + '-' + Math.floor(Math.random() * (1000 - 0 + 1)) + 0;
     },
 
     methods: {
         click: function click(e) {
-            if (typeof this.action == 'string') {
-                EventBus.$emit(this.action);
+            if (this.action === undefined) {
+                this.$emit('click');
+            } else if (typeof this.action == 'string') {
+                // EventBus.$emit(this.action)
+                this.$emit('click');
             } else {
-                EventBus.$emit(this.action.event, this.action.value);
+                // EventBus.$emit(this.action.event, this.action.value)
+                this.$emit('click', this.action.value);
             }
 
             var element, circle, d, x, y;
@@ -265,11 +264,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             circle.css({ top: y + 'px', left: x + 'px' }).addClass("animate");
         }
-    },
-    computed: {
-        tapStop: function tapStop() {
-            return this.noTapStop === undefined ? null : -1;
-        }
     }
 });
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(1)))
@@ -285,10 +279,10 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("button", {
     class:
-      _vm.style +
+      "btn-app btn-app-" +
       _vm.status +
       (_vm.size == undefined ? "" : " btn-" + _vm.size),
-    attrs: { id: _vm.id, tabindex: _vm.tapStop },
+    attrs: { id: _vm.id, tabindex: _vm.noTapStop === undefined ? null : -1 },
     domProps: { innerHTML: _vm._s(_vm.label) },
     on: { click: _vm.click }
   })
@@ -485,6 +479,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     break;
             }
         });
+    },
+
+    methods: {
+        closeDialog: function closeDialog() {
+            $('#modal-dialog').modal('hide');
+        }
     }
 });
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(1)))
@@ -618,9 +618,9 @@ var render = function() {
                   attrs: {
                     size: "lg",
                     label: _vm.buttonLabel,
-                    action: "toggle-modal-dialog",
                     status: "draft"
-                  }
+                  },
+                  on: { click: _vm.closeDialog }
                 })
               ],
               1
@@ -867,6 +867,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -896,15 +897,83 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
     mounted: function mounted() {
-        var _this = this;
+        // EventBus.$on('login-click', () => {
+        //     if ( this.hasId() && this.hasPassword() ) {
+        //         this.whileLogginIn = true
+        //         this.loginButtonLabel = 'Logging in <i class="fa fa-circle-o-notch fa-spin"></i>'
+        //         axios.post('/front-end-login', {
+        //             org_id: this.userInputOrgId,
+        //             password: this.userInputPassword
+        //         })
+        //         .then( (response) => {
+        //             if ( response.data.reply_code == 0 ) {
+        //                 $('#token').val(document.head.querySelector("[name=csrf-token]").content)
+        //                 $('#submitLogin').click()
+        //             } else {
+        //                 this.alertContent = response.data.reply_text
+        //                 this.alert = true
+        //                 setTimeout( () => {
+        //                     this.alert = false
+        //                 }, 5000);
+        //                 this.loginButtonLabel = 'Login'
+        //                 this.whileLogginIn = false
+        //             }
+        //         })
+        //         .catch( (error) => {
+        //             this.loginButtonLabel = 'Login'
+        //             this.whileLogginIn = false
+        //             if (error.response) {
+        //                 // The request was made and the server responded with a status code
+        //                 // that falls out of the range of 2xx
+        //                 if ( error.response.status == 419 ) {
+        //                     EventBus.$emit('show-common-dialog', 'error-419')
+        //                 } else if ( error.response.status == 500 ) {
+        //                     EventBus.$emit('show-common-dialog', 'error-500')
+        //                 }
+        //             } else if (error.request) {
+        //                 // The request was made but no response was received
+        //                 // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+        //                 // http.ClientRequest in node.js
+        //                 console.log(error.request)
+        //             } else {
+        //                 // Something happened in setting up the request that triggered an Error
+        //                 console.log('Error', error.message)
+        //             }
+        //             console.log(error.config)
+        //         })
+        //     }
+        // })
+    },
 
-        EventBus.$on('login-click', function () {
-            if (_this.hasId() && _this.hasPassword()) {
-                _this.whileLogginIn = true;
-                _this.loginButtonLabel = 'Logging in <i class="fa fa-circle-o-notch fa-spin"></i>';
+    methods: {
+        hasId: function hasId() {
+            if (this.userInputOrgId != '') {
+                this.orgIdHelpText = '';
+                return true;
+            }
+            this.orgIdHelpText = 'ID is required.';
+            return false;
+        },
+        hasPassword: function hasPassword() {
+            if (this.userInputPassword != '') {
+                this.passwordHelpText = '';
+                return true;
+            }
+            this.passwordHelpText = 'Password is required.';
+            return false;
+        },
+        preventPressedEnterToSubmit: function preventPressedEnterToSubmit() {
+            EventBus.$emit('login-click');
+        },
+        loginButtonClicked: function loginButtonClicked() {
+            var _this = this;
+
+            if (this.hasId() && this.hasPassword()) {
+                this.whileLogginIn = true;
+                this.loginButtonLabel = 'Logging in <i class="fa fa-circle-o-notch fa-spin"></i>';
                 axios.post('/front-end-login', {
-                    org_id: _this.userInputOrgId,
-                    password: _this.userInputPassword
+                    org_id: this.userInputOrgId,
+                    password: this.userInputPassword
                 }).then(function (response) {
                     if (response.data.reply_code == 0) {
                         $('#token').val(document.head.querySelector("[name=csrf-token]").content);
@@ -941,28 +1010,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     console.log(error.config);
                 });
             }
-        });
-    },
-
-    methods: {
-        hasId: function hasId() {
-            if (this.userInputOrgId != '') {
-                this.orgIdHelpText = '';
-                return true;
-            }
-            this.orgIdHelpText = 'ID is required.';
-            return false;
-        },
-        hasPassword: function hasPassword() {
-            if (this.userInputPassword != '') {
-                this.passwordHelpText = '';
-                return true;
-            }
-            this.passwordHelpText = 'Password is required.';
-            return false;
-        },
-        preventPressedEnterToSubmit: function preventPressedEnterToSubmit() {
-            EventBus.$emit('login-click');
         }
     }
 });
@@ -1127,7 +1174,8 @@ var render = function() {
                     label: _vm.loginButtonLabel,
                     action: "login-click",
                     status: "info"
-                  }
+                  },
+                  on: { click: _vm.loginButtonClicked }
                 }),
                 _vm._v(" "),
                 !_vm.whileLogginIn

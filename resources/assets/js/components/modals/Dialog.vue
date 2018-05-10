@@ -12,7 +12,7 @@
                     <button-app
                         size="lg"
                         :label="buttonLabel"
-                        action="toggle-modal-dialog"
+                        @click="closeDialog"
                         status="draft">
                     </button-app>
                 </div>
@@ -73,6 +73,11 @@
                         break
                 }
             })
+        },
+        methods: {
+            closeDialog () {
+                $('#modal-dialog').modal('hide')
+            }
         }
     }
 </script>

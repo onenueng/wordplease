@@ -2,8 +2,8 @@
     <button :id="id"
             @click="click"
             v-html="label"
-            :tabindex="tapStop"
-            :class="style + status + (size == undefined ? '' : (' btn-' + size))">
+            :tabindex="noTapStop === undefined ? null : -1"
+            :class="'btn-app btn-app-' + status + (size == undefined ? '' : (' btn-' + size))">
     </button>
 </template>
 
@@ -12,7 +12,7 @@
         props: {
             action: {
                 type: [String, Object, Function],
-                required: true
+                required: false
             },
             label: {
                 type: String,
@@ -33,23 +33,22 @@
         },
         data() {
             return {
-                style: "btn-app btn-app-",
                 id: ''
             }
         },
         mounted () {
-            if ( typeof this.action == 'string' ) {
-                this.id = Date.now() + '-' + this.action
-            } else {
-                this.id = Date.now() + '-' + this.action.event
-            }
+            this.id = Date.now() + '-' + Math.floor(Math.random() * (1000 - 0 + 1)) + 0
         },
         methods: {
             click(e) {
-                if ( typeof this.action == 'string' ) {
-                    EventBus.$emit(this.action)
+                if ( this.action === undefined ) {
+                    this.$emit('click')
+                } else if ( typeof this.action == 'string' ) {
+                    // EventBus.$emit(this.action)
+                    this.$emit('click')
                 } else {
-                    EventBus.$emit(this.action.event, this.action.value)
+                    // EventBus.$emit(this.action.event, this.action.value)
+                    this.$emit('click',  this.action.value)
                 }
 
                 var element, circle, d, x, y
@@ -71,11 +70,6 @@
                 y = e.pageY - element.offset().top - circle.height()/2
 
                 circle.css({top: y+'px', left: x+'px'}).addClass("animate")
-            }
-        },
-        computed : {
-            tapStop () {
-                return this.noTapStop === undefined ? null : -1
             }
         }
     }

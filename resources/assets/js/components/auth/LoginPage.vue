@@ -42,7 +42,8 @@
                         size="lg"
                         :label="loginButtonLabel"
                         action="login-click"
-                        status="info">
+                        status="info"
+                        @click="loginButtonClicked">
                     </button-app>
 
                     <a href="/register" v-if="!whileLogginIn">Or register a new one</a>
@@ -93,7 +94,74 @@
             }
         },
         mounted() {
-            EventBus.$on('login-click', () => {
+            // EventBus.$on('login-click', () => {
+            //     if ( this.hasId() && this.hasPassword() ) {
+            //         this.whileLogginIn = true
+            //         this.loginButtonLabel = 'Logging in <i class="fa fa-circle-o-notch fa-spin"></i>'
+            //         axios.post('/front-end-login', {
+            //             org_id: this.userInputOrgId,
+            //             password: this.userInputPassword
+            //         })
+            //         .then( (response) => {
+            //             if ( response.data.reply_code == 0 ) {
+            //                 $('#token').val(document.head.querySelector("[name=csrf-token]").content)
+            //                 $('#submitLogin').click()
+            //             } else {
+            //                 this.alertContent = response.data.reply_text
+            //                 this.alert = true
+            //                 setTimeout( () => {
+            //                     this.alert = false
+            //                 }, 5000);
+            //                 this.loginButtonLabel = 'Login'
+            //                 this.whileLogginIn = false
+            //             }
+            //         })
+            //         .catch( (error) => {
+            //             this.loginButtonLabel = 'Login'
+            //             this.whileLogginIn = false
+            //             if (error.response) {
+            //                 // The request was made and the server responded with a status code
+            //                 // that falls out of the range of 2xx
+            //                 if ( error.response.status == 419 ) {
+            //                     EventBus.$emit('show-common-dialog', 'error-419')
+            //                 } else if ( error.response.status == 500 ) {
+            //                     EventBus.$emit('show-common-dialog', 'error-500')
+            //                 }
+            //             } else if (error.request) {
+            //                 // The request was made but no response was received
+            //                 // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+            //                 // http.ClientRequest in node.js
+            //                 console.log(error.request)
+            //             } else {
+            //                 // Something happened in setting up the request that triggered an Error
+            //                 console.log('Error', error.message)
+            //             }
+            //             console.log(error.config)
+            //         })
+            //     }
+            // })
+        },
+        methods: {
+            hasId() {
+                if ( this.userInputOrgId != '' ) {
+                    this.orgIdHelpText = ''
+                    return true
+                }
+                this.orgIdHelpText = 'ID is required.'
+                return false
+            },
+            hasPassword() {
+                if ( this.userInputPassword != '' ) {
+                    this.passwordHelpText = ''
+                    return true
+                }
+                this.passwordHelpText = 'Password is required.'
+                return false
+            },
+            preventPressedEnterToSubmit () {
+                EventBus.$emit('login-click')
+            },
+            loginButtonClicked () {
                 if ( this.hasId() && this.hasPassword() ) {
                     this.whileLogginIn = true
                     this.loginButtonLabel = 'Logging in <i class="fa fa-circle-o-notch fa-spin"></i>'
@@ -138,27 +206,6 @@
                         console.log(error.config)
                     })
                 }
-            })
-        },
-        methods: {
-            hasId() {
-                if ( this.userInputOrgId != '' ) {
-                    this.orgIdHelpText = ''
-                    return true
-                }
-                this.orgIdHelpText = 'ID is required.'
-                return false
-            },
-            hasPassword() {
-                if ( this.userInputPassword != '' ) {
-                    this.passwordHelpText = ''
-                    return true
-                }
-                this.passwordHelpText = 'Password is required.'
-                return false
-            },
-            preventPressedEnterToSubmit () {
-                EventBus.$emit('login-click')
             }
         }
     }

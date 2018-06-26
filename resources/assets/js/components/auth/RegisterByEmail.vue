@@ -60,7 +60,8 @@
                 size="lg"
                 :label="labelRegisterButton"
                 action="email-register-click"
-                status="info">
+                status="info"
+                @click="registerButtonClicked">
             </button-app>
         </div>
     </transition>
@@ -143,6 +144,50 @@ export default {
                 this.passwordDivClass = 'form-group-sm has-error has-feedback'
                 this. passwordIconClass = 'fa fa-remove form-control-feedback'
                 this.passwordHelpText = 'password and password again not matched'
+            }
+        },
+
+        registerButtonClicked() {
+            this.idInputDisable = ''
+            this.labelRegisterButton = 'Registering <i class="fa fa-circle-o-notch fa-spin"></i>'
+            if ( this.allDataValid ) {
+                axios.post('/register', {
+                    mode: "email",
+                    user: {
+                        name: this.username,
+                        email: this.email,
+                        org_id: this.email,
+                        password: this.password,
+                        full_name: this.full_name,
+                        full_name_en: this.full_name_en
+                    }
+                })
+                .then( (response) => {
+                    window.location.href = response.data.href
+                    this.idInputDisable = null
+                    this.labelRegisterButton = 'Register'
+                })
+                .catch( (error) => {
+                    this.idInputDisable = null
+                    this.labelRegisterButton = 'Register'
+                    if (error.response) {
+                        // The request was made and the server responded with a status code
+                        // that falls out of the range of 2xx
+                        if ( error.response.status == 419 ) {
+                            EventBus.$emit('show-common-dialog', 'error-419')
+                        } else if ( error.response.status == 500 ) {
+                            EventBus.$emit('show-common-dialog', 'error-500')
+                        }
+                    } else if (error.request) {
+                        // The request was made but no response was received
+                        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                        // http.ClientRequest in node.js
+                        console.log(error.request)
+                    } else {
+                        // Something happened in setting up the request that triggered an Error
+                        console.log('Error', error.message)
+                    }
+                })
             }
         }
     },

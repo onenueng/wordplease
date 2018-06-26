@@ -1909,6 +1909,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -1986,6 +1987,49 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 this.passwordDivClass = 'form-group-sm has-error has-feedback';
                 this.passwordIconClass = 'fa fa-remove form-control-feedback';
                 this.passwordHelpText = 'password and password again not matched';
+            }
+        },
+        registerButtonClicked: function registerButtonClicked() {
+            var _this2 = this;
+
+            this.idInputDisable = '';
+            this.labelRegisterButton = 'Registering <i class="fa fa-circle-o-notch fa-spin"></i>';
+            if (this.allDataValid) {
+                axios.post('/register', {
+                    mode: "email",
+                    user: {
+                        name: this.username,
+                        email: this.email,
+                        org_id: this.email,
+                        password: this.password,
+                        full_name: this.full_name,
+                        full_name_en: this.full_name_en
+                    }
+                }).then(function (response) {
+                    window.location.href = response.data.href;
+                    _this2.idInputDisable = null;
+                    _this2.labelRegisterButton = 'Register';
+                }).catch(function (error) {
+                    _this2.idInputDisable = null;
+                    _this2.labelRegisterButton = 'Register';
+                    if (error.response) {
+                        // The request was made and the server responded with a status code
+                        // that falls out of the range of 2xx
+                        if (error.response.status == 419) {
+                            EventBus.$emit('show-common-dialog', 'error-419');
+                        } else if (error.response.status == 500) {
+                            EventBus.$emit('show-common-dialog', 'error-500');
+                        }
+                    } else if (error.request) {
+                        // The request was made but no response was received
+                        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                        // http.ClientRequest in node.js
+                        console.log(error.request);
+                    } else {
+                        // Something happened in setting up the request that triggered an Error
+                        console.log('Error', error.message);
+                    }
+                });
             }
         }
     },
@@ -2186,7 +2230,8 @@ var render = function() {
                     label: _vm.labelRegisterButton,
                     action: "email-register-click",
                     status: "info"
-                  }
+                  },
+                  on: { click: _vm.registerButtonClicked }
                 })
               ],
               1

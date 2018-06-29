@@ -79,6 +79,7 @@
                 :label="labelRegisterButton"
                 action="id-register-click"
                 status="info"
+                @click="registerButtonClicked"
                 >
             </button-app>
         </div>
@@ -127,43 +128,16 @@
         },
         computed: {
             regex() {
-                if ( this.pattern !== null ) {
-                    return new RegExp(this.pattern)
-                }
-                return null
+                return ( this.pattern !== null ) ? new RegExp(this.pattern) : null
+                // if ( this.pattern !== null ) {
+                //     return new RegExp(this.pattern)
+                // }
+                // return null
             }
-        },
-        mounted() {
-            EventBus.$on('id-register-click', () => {
-                this.idInputDisable = ''
-                this.labelRegisterButton = 'Registering <i class="fa fa-circle-o-notch fa-spin"></i>'
-                if ( this.isEmailValid && this.isUsernameValid && this.isNameEnValid ) {
-                    axios.post('/register', {
-                        mode: "id",
-                        user: {
-                            name: this.username,
-                            email: this.userData.email,
-                            org_id: this.userData.org_id,
-                            full_name: this.userData.name,
-                            full_name_en: this.userData.name_en
-                        }
-                    })
-                    .then( (response) => {
-                        window.location.href = response.data.href
-                        this.idInputDisable = null
-                        this.labelRegisterButton = 'Register'
-                    })
-                    .catch( (error) => {
-                        console.log(error)
-                        this.idInputDisable = null
-                        this.labelRegisterButton = 'Register'
-                    })
-                }
-            })
         },
         methods: {
             idUpdate() {
-                if ( this.isIdValid() ) {
+                if ( this.userInput.match(this.regex) !== null ) {
                     this.idStateText = null
                     this.idInputDisable = ''
                     this.showIdInputStateIcon = true
@@ -177,10 +151,11 @@
                 }
             },
             isIdValid() {
-                if ( this.userInput.match(this.regex) !== null ) {
-                    return true
-                }
-                return false
+                return ( this.userInput.match(this.regex) !== null )
+                // if ( this.userInput.match(this.regex) !== null ) {
+                //     return true
+                // }
+                // return false
             },
             idFocus() {
                 this.showIdInputStateIcon = false
@@ -210,6 +185,32 @@
                     this.idInputDisable = null
                     console.log(error)
                 })
+            },
+            registerButtonClicked() {
+                this.idInputDisable = ''
+                this.labelRegisterButton = 'Registering <i class="fa fa-circle-o-notch fa-spin"></i>'
+                if ( this.isEmailValid && this.isUsernameValid && this.isNameEnValid ) {
+                    axios.post('/register', {
+                        mode: "id",
+                        user: {
+                            name: this.username,
+                            email: this.userData.email,
+                            org_id: this.userData.org_id,
+                            full_name: this.userData.name,
+                            full_name_en: this.userData.name_en
+                        }
+                    })
+                    .then( (response) => {
+                        window.location.href = response.data.href
+                        this.idInputDisable = null
+                        this.labelRegisterButton = 'Register'
+                    })
+                    .catch( (error) => {
+                        console.log(error)
+                        this.idInputDisable = null
+                        this.labelRegisterButton = 'Register'
+                    })
+                }
             }
         }
     }

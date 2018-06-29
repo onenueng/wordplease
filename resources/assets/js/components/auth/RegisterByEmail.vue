@@ -99,33 +99,33 @@ export default {
         }
     },
     mounted() {
-        EventBus.$on('email-register-click', () => {
-            this.idInputDisable = ''
-            this.labelRegisterButton = 'Registering <i class="fa fa-circle-o-notch fa-spin"></i>'
-            if ( this.allDataValid ) {
-                axios.post('/register', {
-                    mode: "email",
-                    user: {
-                        name: this.username,
-                        email: this.email,
-                        org_id: this.email,
-                        password: this.password,
-                        full_name: this.full_name,
-                        full_name_en: this.full_name_en
-                    }
-                })
-                .then( (response) => {
-                    window.location.href = response.data.href
-                    this.idInputDisable = null
-                    this.labelRegisterButton = 'Register'
-                })
-                .catch( (error) => {
-                    console.log(error)
-                    this.idInputDisable = null
-                    this.labelRegisterButton = 'Register'
-                })
-            }
-        })
+        // EventBus.$on('email-register-click', () => {
+        //     this.idInputDisable = ''
+        //     this.labelRegisterButton = 'Registering <i class="fa fa-circle-o-notch fa-spin"></i>'
+        //     if ( this.allDataValid ) {
+        //         axios.post('/register', {
+        //             mode: "email",
+        //             user: {
+        //                 name: this.username,
+        //                 email: this.email,
+        //                 org_id: this.email,
+        //                 password: this.password,
+        //                 full_name: this.full_name,
+        //                 full_name_en: this.full_name_en
+        //             }
+        //         })
+        //         .then( (response) => {
+        //             window.location.href = response.data.href
+        //             this.idInputDisable = null
+        //             this.labelRegisterButton = 'Register'
+        //         })
+        //         .catch( (error) => {
+        //             console.log(error)
+        //             this.idInputDisable = null
+        //             this.labelRegisterButton = 'Register'
+        //         })
+        //     }
+        // })
 
         this.repasswordUpdated = _.debounce(() => {
             this.checkPasswordMatched()

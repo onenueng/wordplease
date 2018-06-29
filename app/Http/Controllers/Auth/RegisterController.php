@@ -94,7 +94,7 @@ class RegisterController extends Controller
     }
 
     /**
-     * For email registering, they can set the password but can use in a short period.
+     * For email registering, they can set the password but can use for a short period.
      * For id registering, they need organization's account for login to the app.
      * All account need an authorization before they can actually use the app.
      * Authorization can perform by pre-made .csv file and by the Admin.

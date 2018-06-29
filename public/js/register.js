@@ -1131,6 +1131,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -1173,44 +1174,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     computed: {
         regex: function regex() {
-            if (this.pattern !== null) {
-                return new RegExp(this.pattern);
-            }
-            return null;
+            return this.pattern !== null ? new RegExp(this.pattern) : null;
+            // if ( this.pattern !== null ) {
+            //     return new RegExp(this.pattern)
+            // }
+            // return null
         }
     },
-    mounted: function mounted() {
-        var _this = this;
-
-        EventBus.$on('id-register-click', function () {
-            _this.idInputDisable = '';
-            _this.labelRegisterButton = 'Registering <i class="fa fa-circle-o-notch fa-spin"></i>';
-            if (_this.isEmailValid && _this.isUsernameValid && _this.isNameEnValid) {
-                axios.post('/register', {
-                    mode: "id",
-                    user: {
-                        name: _this.username,
-                        email: _this.userData.email,
-                        org_id: _this.userData.org_id,
-                        full_name: _this.userData.name,
-                        full_name_en: _this.userData.name_en
-                    }
-                }).then(function (response) {
-                    window.location.href = response.data.href;
-                    _this.idInputDisable = null;
-                    _this.labelRegisterButton = 'Register';
-                }).catch(function (error) {
-                    console.log(error);
-                    _this.idInputDisable = null;
-                    _this.labelRegisterButton = 'Register';
-                });
-            }
-        });
-    },
-
     methods: {
         idUpdate: function idUpdate() {
-            if (this.isIdValid()) {
+            if (this.userInput.match(this.regex) !== null) {
                 this.idStateText = null;
                 this.idInputDisable = '';
                 this.showIdInputStateIcon = true;
@@ -1224,10 +1197,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
         },
         isIdValid: function isIdValid() {
-            if (this.userInput.match(this.regex) !== null) {
-                return true;
-            }
-            return false;
+            return this.userInput.match(this.regex) !== null;
+            // if ( this.userInput.match(this.regex) !== null ) {
+            //     return true
+            // }
+            // return false
         },
         idFocus: function idFocus() {
             this.showIdInputStateIcon = false;
@@ -1235,28 +1209,54 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.divIdInputClass = 'form-group-sm has-feedback';
         },
         checkId: function checkId() {
-            var _this2 = this;
+            var _this = this;
 
             axios.post('/register/check-id', {
                 org_id: this.userInput
             }).then(function (response) {
-                _this2.divIdInputClass = 'form-group-sm has-feedback has-' + response.data.state;
-                _this2.idInputStateIconClass = 'glyphicon form-control-feedback glyphicon-' + response.data.icon;
+                _this.divIdInputClass = 'form-group-sm has-feedback has-' + response.data.state;
+                _this.idInputStateIconClass = 'glyphicon form-control-feedback glyphicon-' + response.data.icon;
                 if (response.data.reply_code > 0) {
-                    _this2.idStateText = response.data.reply_text;
+                    _this.idStateText = response.data.reply_text;
                 } else {
-                    _this2.idStateText = null;
-                    _this2.userData = response.data;
-                    _this2.showUserData = true;
+                    _this.idStateText = null;
+                    _this.userData = response.data;
+                    _this.showUserData = true;
                 }
-                _this2.idInputDisable = null;
+                _this.idInputDisable = null;
             }).catch(function (error) {
-                _this2.divIdInputClass = 'form-group-sm has-feedback has-error';
-                _this2.idInputStateIconClass = 'glyphicon glyphicon-remove form-control-feedback';
-                _this2.idStateText = 'Whoops, someting went wrong. Please try again.';
-                _this2.idInputDisable = null;
+                _this.divIdInputClass = 'form-group-sm has-feedback has-error';
+                _this.idInputStateIconClass = 'glyphicon glyphicon-remove form-control-feedback';
+                _this.idStateText = 'Whoops, someting went wrong. Please try again.';
+                _this.idInputDisable = null;
                 console.log(error);
             });
+        },
+        registerButtonClicked: function registerButtonClicked() {
+            var _this2 = this;
+
+            this.idInputDisable = '';
+            this.labelRegisterButton = 'Registering <i class="fa fa-circle-o-notch fa-spin"></i>';
+            if (this.isEmailValid && this.isUsernameValid && this.isNameEnValid) {
+                axios.post('/register', {
+                    mode: "id",
+                    user: {
+                        name: this.username,
+                        email: this.userData.email,
+                        org_id: this.userData.org_id,
+                        full_name: this.userData.name,
+                        full_name_en: this.userData.name_en
+                    }
+                }).then(function (response) {
+                    window.location.href = response.data.href;
+                    _this2.idInputDisable = null;
+                    _this2.labelRegisterButton = 'Register';
+                }).catch(function (error) {
+                    console.log(error);
+                    _this2.idInputDisable = null;
+                    _this2.labelRegisterButton = 'Register';
+                });
+            }
         }
     }
 });
@@ -1758,7 +1758,8 @@ var render = function() {
                     label: _vm.labelRegisterButton,
                     action: "id-register-click",
                     status: "info"
-                  }
+                  },
+                  on: { click: _vm.registerButtonClicked }
                 })
               ],
               1
@@ -1943,31 +1944,33 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     mounted: function mounted() {
         var _this = this;
 
-        EventBus.$on('email-register-click', function () {
-            _this.idInputDisable = '';
-            _this.labelRegisterButton = 'Registering <i class="fa fa-circle-o-notch fa-spin"></i>';
-            if (_this.allDataValid) {
-                axios.post('/register', {
-                    mode: "email",
-                    user: {
-                        name: _this.username,
-                        email: _this.email,
-                        org_id: _this.email,
-                        password: _this.password,
-                        full_name: _this.full_name,
-                        full_name_en: _this.full_name_en
-                    }
-                }).then(function (response) {
-                    window.location.href = response.data.href;
-                    _this.idInputDisable = null;
-                    _this.labelRegisterButton = 'Register';
-                }).catch(function (error) {
-                    console.log(error);
-                    _this.idInputDisable = null;
-                    _this.labelRegisterButton = 'Register';
-                });
-            }
-        });
+        // EventBus.$on('email-register-click', () => {
+        //     this.idInputDisable = ''
+        //     this.labelRegisterButton = 'Registering <i class="fa fa-circle-o-notch fa-spin"></i>'
+        //     if ( this.allDataValid ) {
+        //         axios.post('/register', {
+        //             mode: "email",
+        //             user: {
+        //                 name: this.username,
+        //                 email: this.email,
+        //                 org_id: this.email,
+        //                 password: this.password,
+        //                 full_name: this.full_name,
+        //                 full_name_en: this.full_name_en
+        //             }
+        //         })
+        //         .then( (response) => {
+        //             window.location.href = response.data.href
+        //             this.idInputDisable = null
+        //             this.labelRegisterButton = 'Register'
+        //         })
+        //         .catch( (error) => {
+        //             console.log(error)
+        //             this.idInputDisable = null
+        //             this.labelRegisterButton = 'Register'
+        //         })
+        //     }
+        // })
 
         this.repasswordUpdated = _.debounce(function () {
             _this.checkPasswordMatched();

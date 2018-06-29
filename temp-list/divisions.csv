@@ -1,8 +1,9 @@
 id,name,name_eng,name_eng_short
-0,no data,no data,no data 
+0,no data,no data,no data
+1,System Admin,System Admin,System
 100,คณะแพทยศาสตร์ศิริราชพยาบาล,Faculty of Medicine Siriraj Hospital,Faculty
 200,ภาควิชาอายุรศาสตร์,Department of Medicine,Medicine
-201,การบริบาลผู้ป่วยนอก,Division of Ambulatory Medicine,Ambulatory 
+201,การบริบาลผู้ป่วยนอก,Division of Ambulatory Medicine,Ambulatory
 202,ความดันโลหิตสูง,Division of Hypertension,Hypertension
 203,เคมีบำบัด,Division of Oncology,Oncology
 204,ต่อมไร้ท่อและเมตะบอลิสม,Division of Endocrine & Metabolism,Endocrine

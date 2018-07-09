@@ -31,41 +31,49 @@ class DataLoader
         }
     }
 
-    public static function loadItems($model, $mode = 'insert')
+    public static function loadItems($fileName, $mode = 'insert')
     {
-        $isBreak = ($model != 'all');
+        $isBreak = ( $fileName != 'all' );
 
-        switch ($model) {
+        switch ($fileName) {
             case 'divisions':
-                static::insertItems('\App\Models\Lists\Division', $model, $mode);
+                $model = '\App\Models\Lists\Division';
+                static::insertItems($model, $fileName, $mode);
                 if ($isBreak) break;
 
             case 'roles':
-                static::insertItems('\App\Models\Lists\Role', $model, $mode);
+                $model = '\App\Models\Lists\Role';
+                static::insertItems($model, $fileName, $mode);
                 if ($isBreak) break;
 
             case 'permissions':
-                static::insertItems('\App\Permission', $model, $mode);
+                $model = '\App\Permission';
+                static::insertItems($model, $fileName, $mode);
                 if ($isBreak) break;
 
             case 'note_types':
-                static::insertItems('\App\Models\Lists\NoteType', $model, $mode);
+                $model = '\App\Models\Lists\NoteType';
+                static::insertItems($model, $fileName, $mode);
                 if ($isBreak) break;
 
             case 'attending_staffs':
-                static::insertItems('\App\Models\Lists\AttendingStaff', $model, $mode);
+                $model = '\App\Models\Lists\AttendingStaff';
+                static::insertItems($model, $fileName, $mode);
                 if ( $isBreak ) break;
 
             case 'wards':
-                static::insertItems('\App\Models\Lists\Ward', $model, $mode);
+                $model = '\App\Models\Lists\Ward';
+                static::insertItems($model, $fileName, $mode);
                 if ($isBreak) break;
 
             case 'select_items':
-                static::insertItems('\App\Models\Lists\SelectItem', $model, $mode);
+                $model = '\App\Models\Lists\SelectItem';
+                static::insertItems($model, $fileName, $mode);
                 if ($isBreak) break;
 
             case 'drugs':
-                static::insertItems('\App\Models\Lists\Drug', $model, $mode);
+                $model = '\App\Models\Lists\Drug';
+                static::insertItems($model, $fileName, $mode);
                 if ($isBreak) break;
 
             default:
@@ -73,7 +81,7 @@ class DataLoader
                 break;
         }
 
-        return 'done';
+        return $model::count();
     }
 
     public static function insertItems($model, $fileName, $mode)

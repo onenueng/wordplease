@@ -5,4 +5,6 @@ return [
     'MINI_HASH_LENGTH' => 7, // please review migration if changed, cannot change after go live
     'VERIFY_CODE_LENGTH' => 6, // length in digits
     'EMAIL_ACCOUNT_DEFAULT_LIFETIME' => 30, // days
+    'DEFAULT_USER_DIVISION_ID' => 100, //
+    'LISTS_CSV_PATH' => '/app/lists/',
 ];

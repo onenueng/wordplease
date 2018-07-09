@@ -14,17 +14,15 @@ class CreateAttendingStaffsTable extends Migration
     public function up()
     {
         Schema::create('attending_staffs', function (Blueprint $table) {
-            $table->smallInteger('id')->unsigned();
+            $table->unsignedSmallInteger('id');
             $table->primary('id');
             $table->string('name', 160)->unique();
-            $table->smallInteger('division_id')->unsigned()->default(100); // set default to Hospital.
+            $table->unsignedSmallInteger('division_id')->default(100); // set default to Hospital.
             $table->foreign('division_id')->references('id')->on('divisions');
             $table->string('licence_no', 10)->unique();
             $table->boolean('active')->default(1);
             $table->timestamps();
         });
-
-        // \App\Models\Lists\AttendingStaff::loadData('attending_staffs', 'create');
     }
 
     /**

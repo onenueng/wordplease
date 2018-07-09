@@ -14,13 +14,13 @@ class CreateAdmissionsTable extends Migration
     public function up()
     {
         Schema::create('admissions', function (Blueprint $table) {
-            $table->integer('id')->unsigned();
+            $table->unsignedInteger('id');
             $table->primary('id');
             $table->string('an');
             $table->string('mini_hash', 7)->index();
-            $table->integer('patient_id')->unsigned()->index();
+            $table->unsignedInteger('patient_id')->index();
             $table->foreign('patient_id')->references('id')->on('patients');
-            $table->smallInteger('insurance_id')->unsigned()->index();
+            $table->unsignedSmallInteger('insurance_id')->index();
             $table->foreign('insurance_id')->references('id')->on('insurances');
             $table->string('patient_name', 512);
             $table->dateTime('datetime_admit')->nullable();

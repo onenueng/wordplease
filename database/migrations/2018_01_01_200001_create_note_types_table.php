@@ -14,26 +14,24 @@ class CreateNoteTypesTable extends Migration
     public function up()
     {
         Schema::create('note_types', function (Blueprint $table) {
-            $table->tinyInteger('id')->unsigned();
+            $table->unsignedTinyInteger('id');
             $table->primary('id');
-            $table->tinyInteger('class')->unsigned(); // admission/discharge/service.
-            $table->smallInteger('division_id')->unsigned(); // relation on division.
+            $table->unsignedTinyInteger('class'); // admission/discharge/service.
+            $table->unsignedSmallInteger('division_id'); // relation on division.
             $table->foreign('division_id')->references('id')->on('divisions');
             $table->string('name', 80);
             $table->string('class_path', 80);
             $table->string('view_path', 80);
-            $table->tinyInteger('gender')->unsigned(); // 0 female/ 1 male/ 2 both
+            $table->unsignedTinyInteger('gender'); // 0 female/ 1 male/ 2 both
             $table->string('table_name', 80);
             $table->timestamps();
         });
 
-        // \App\Models\Lists\NoteType::loadData('note_types');
-
         Schema::create('note_type_user', function (Blueprint $table) {
-            $table->smallInteger('user_id')->unsigned()->index();
+            $table->unsignedMediumInteger('user_id')->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
-            $table->tinyInteger('note_type_id')->unsigned()->index();
+            $table->unsignedTinyInteger('note_type_id')->index();
             $table->foreign('note_type_id')->references('id')->on('note_types')->onDelete('cascade');
         });
     }

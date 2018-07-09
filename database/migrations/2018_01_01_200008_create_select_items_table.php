@@ -15,10 +15,10 @@ class CreateSelectItemsTable extends Migration
     {
         Schema::create('select_items', function (Blueprint $table) {
             $table->string('field_name', 80)->index();
-            $table->tinyInteger('value')->unsigned();
+            $table->unsignedTinyInteger('value');
             $table->string('label', 120)->index();
             $table->primary(['field_name', 'value', 'label']);
-            $table->tinyInteger('order')->unsigned();
+            $table->unsignedTinyInteger('order');
             $table->boolean('active')->default(true);
         });
     }

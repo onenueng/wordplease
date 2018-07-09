@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateWardsTable extends Migration
+class CreateDrugRegimensTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,13 @@ class CreateWardsTable extends Migration
      */
     public function up()
     {
-        Schema::create('wards', function (Blueprint $table) {
-            $table->smallInteger('id')->unsigned();
+        Schema::create('drug_regimens', function (Blueprint $table) {
+            $table->unsignedInteger('id');
             $table->primary('id');
+            $table->unsignedInteger('drug_id')->index();
+            $table->foreign('drug_id')->references('id')->on('drugs');
             $table->string('name', 90)->unique();
-            $table->string('name_short', 30)->nullable();
+            $table->unsignedInteger('frequency')->default(0);
             $table->boolean('active')->default(1);
             $table->timestamps();
         });
@@ -30,6 +32,6 @@ class CreateWardsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('wards');
+        Schema::dropIfExists('drug_regimens');
     }
 }

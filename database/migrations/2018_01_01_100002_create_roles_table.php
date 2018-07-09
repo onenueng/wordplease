@@ -14,14 +14,12 @@ class CreateRolesTable extends Migration
     public function up()
     {
         Schema::create('roles', function (Blueprint $table) {
-            $table->smallInteger('id')->unsigned();
+            $table->unsignedSmallInteger('id');
             $table->primary('id');
             $table->string('name', 120)->unique();
             $table->string('name_short', 30)->unique();
             $table->timestamps();
         });
-
-        \App\Models\Lists\Role::loadData('roles', 'create');
     }
 
     /**

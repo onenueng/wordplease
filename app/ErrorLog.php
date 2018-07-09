@@ -17,11 +17,11 @@ class Errorlog extends Model implements AutoId
      */
     protected $fillable = [
         'id',
-        'user_id',
-        'division_id',
-        'permission_id',
-        'valid_until',
-        'granted_by',
+        'file',
+        'code',
+        'type',
+        'line',
+        'message',
     ];
 
     // protected $aa = [

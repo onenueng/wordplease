@@ -14,7 +14,7 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->smallInteger('id')->unsigned();
+            $table->unsignedMediumInteger('id');
             $table->primary('id');
             $table->string('org_id'); // encrypt
             $table->string('name'); // encrypt
@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('email'); // encrypt
             $table->string('full_name', 512); // encrypt
             $table->string('full_name_en', 512); // encrypt
-            $table->smallInteger('division_id')->unsigned()->index()->default(100); // default Faculty
+            $table->unsignedSmallInteger('division_id')->index()->default(config('constant.DEFAULT_USER_DIVISION_ID')); // default Faculty
             $table->foreign('division_id')->references('id')->on('divisions');
             $table->string('pln')->nullable(); // encrypt professional license number
             $table->string('dashboard')->default('profile');

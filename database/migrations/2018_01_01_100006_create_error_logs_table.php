@@ -16,7 +16,13 @@ class CreateErrorLogsTable extends Migration
         Schema::create('error_logs', function (Blueprint $table) {
             $table->integer('id')->usigned();
             $table->primary('id');
-            
+            $table->string('type');
+            $table->string('file');
+            $table->unsignedSmallInteger('line');
+            $table->unsignedSmallInteger('code');
+            $table->string('message', 512);
+            $table->unsignedMediumInteger('witness_id');
+            $table->foreign('witness_id')->references('id')->on('users');
             $table->timestamps();
         });
     }

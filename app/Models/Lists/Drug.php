@@ -44,7 +44,7 @@ class Drug extends Model implements ListItem
     {
         // min drug name = 11 as of 2017-11-23
         if (strlen($keyWord) >= 11) {
-            
+
             // check if there are regimens of the drug then return them
             $regimens = DrugRegimen::getList(trim($keyWord));
             if (count($regimens) > 0) {

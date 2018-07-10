@@ -4,13 +4,24 @@ namespace App\Services;
 
 class DataLoader
 {
+    protected $collections = [
+        'Division' => [ 'model' => '\App\Models\Lists\Division', 'modeexitำป' => '','file_name' => 'divisions' ],
+        'Role' => [ 'model' => '\App\Models\Lists\Role', 'modeexitำป' => '','file_name' => 'roles' ],
+        'Permission' => ['model' => '\App\Permission', 'modeexitำป' => '','file_name' => 'permissions' ],
+        'NoteType' => ['model' => '\App\Models\Lists\NoteType', 'modeexitำป' => '','file_name' => 'note_types'],
+        'AttendingStaff' => ['model' => '\App\Models\Lists\AttendingStaff', 'modeexitำป' => '','file_name' => 'attending_staffs'],
+        'Ward' => ['model' => '\App\Models\Lists\Ward', 'modeexitำป' => '','file_name' => 'wards'],
+        'SelectItem' => ['model' => '\App\Models\Lists\SelectItem', 'modeexitำป' => '','file_name' => 'select_items'],
+        'Drug' => ['model' => '\App\Models\Lists\Drug', 'modeexitำป' => '','file_name' => 'drugs']
+    ];
+
     /**
      * Read file in storage/app/lists then return collection of assosiative array.
      *
      * @param string
      * @return array
      */
-    public static function loadCSV($fileName)
+    public function loadCSV($fileName)
     {
         $fileName = storage_path(config('constant.LISTS_CSV_PATH') . $fileName . '.csv');
         if (!file_exists($fileName) || !is_readable($fileName)) {
@@ -31,75 +42,38 @@ class DataLoader
         }
     }
 
-    public static function loadItems($fileName, $mode = 'insert')
+    protected function loadItems(array $config)
     {
-        $isBreak = ( $fileName != 'all' );
+        $items = $this->loadCSV($config['file_name']);
 
-        switch ($fileName) {
-            case 'divisions':
-                $model = '\App\Models\Lists\Division';
-                static::insertItems($model, $fileName, $mode);
-                if ($isBreak) break;
-
-            case 'roles':
-                $model = '\App\Models\Lists\Role';
-                static::insertItems($model, $fileName, $mode);
-                if ($isBreak) break;
-
-            case 'permissions':
-                $model = '\App\Permission';
-                static::insertItems($model, $fileName, $mode);
-                if ($isBreak) break;
-
-            case 'note_types':
-                $model = '\App\Models\Lists\NoteType';
-                static::insertItems($model, $fileName, $mode);
-                if ($isBreak) break;
-
-            case 'attending_staffs':
-                $model = '\App\Models\Lists\AttendingStaff';
-                static::insertItems($model, $fileName, $mode);
-                if ( $isBreak ) break;
-
-            case 'wards':
-                $model = '\App\Models\Lists\Ward';
-                static::insertItems($model, $fileName, $mode);
-                if ($isBreak) break;
-
-            case 'select_items':
-                $model = '\App\Models\Lists\SelectItem';
-                static::insertItems($model, $fileName, $mode);
-                if ($isBreak) break;
-
-            case 'drugs':
-                $model = '\App\Models\Lists\Drug';
-                static::insertItems($model, $fileName, $mode);
-                if ($isBreak) break;
-
-            default:
-                # code...
-                break;
+        if ($config['mode'] == 'insert') {
+            foreach ($items as $item) {
+                $config['model']::insert($item);
+            }
+        } else {
+            foreach ($items as $item) {
+                $config['model']::create($item);
+            }
         }
 
-        return $model::count();
+        return $config['model']::count();
     }
 
-    public static function insertItems($model, $fileName, $mode)
+    public function importItems($model, $mode = 'insert')
     {
-        $items = static::loadCSV($fileName);
-
-        if ( $mode == 'insert' ) {
-            foreach ( $items as $item ) {
-                $model::insert($item);
+        if ( $model != 'all' ) {
+            if ( !array_key_exists($model, $this->collections) ) {
+                return false;
             }
-
-            return true;
+            $this->collections[$model]['mode'] = $mode;
+            return $this->loadItems($this->collections[$model]);
         }
 
-        foreach ($items as $item) {
-            $model::create($item);
+        $count = 0;
+        foreach ( $this->collections as $config ) {
+            $config['mode'] = $mode;
+            $count += $this->loadItems($config);
         }
-
-        return true;
+        return $count;
     }
 }

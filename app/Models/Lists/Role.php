@@ -12,6 +12,8 @@ class Role extends Model implements AutoId, ListItem
 {
     use AutoIdInsertable, ListQueryable;
 
+    protected $dateFormat = 'Y-m-d H:i:s.u';
+    
     /**
      * The attributes that are mass assignable.
      *

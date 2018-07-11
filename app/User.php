@@ -17,6 +17,8 @@ class User extends Authenticatable implements AutoId
 {
     use Notifiable, AutoIdInsertable, DataCryptable;
 
+    protected $dateFormat = 'Y-m-d H:i:s.u';
+    
     /**
      * The attributes that are mass assignable.
      *

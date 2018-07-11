@@ -11,6 +11,8 @@ class Drug extends Model implements ListItem
 {
     use ListQueryable;
 
+    protected $dateFormat = 'Y-m-d H:i:s.u';
+    
     /**
      * The attributes that are mass assignable.
      *

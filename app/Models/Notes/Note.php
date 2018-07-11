@@ -17,6 +17,8 @@ class Note extends Model implements AutoId
 {
     use AutoIdInsertable, DataCryptable;
 
+    protected $dateFormat = 'Y-m-d H:i:s.u';
+    
     /**
      * The attributes that should be cast to native types.
      *

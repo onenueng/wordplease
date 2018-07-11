@@ -70,6 +70,7 @@ Route::get('draft/{group}/{page}', function ($group, $page) {
 });
 
 Route::get('select-refresh', function () {
+    \App\Permission::loadCSV();
     return "done";
 });
 

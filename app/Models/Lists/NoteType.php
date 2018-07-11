@@ -13,6 +13,8 @@ class NoteType extends Model implements AutoId
 {
     use AutoIdInsertable;
 
+    protected $dateFormat = 'Y-m-d H:i:s.u';
+    
     /**
      * The attributes that are mass assignable.
      *

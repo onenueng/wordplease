@@ -23,7 +23,7 @@ class CreateErrorLogsTable extends Migration
             $table->string('message', 512);
             $table->unsignedMediumInteger('witness_id');
             $table->foreign('witness_id')->references('id')->on('users');
-            $table->timestamps();
+            $table->timestamps(3);
         });
     }
 

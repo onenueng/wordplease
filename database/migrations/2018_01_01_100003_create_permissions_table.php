@@ -17,7 +17,7 @@ class CreatePermissionsTable extends Migration
             $table->unsignedSmallInteger('id');
             $table->primary('id');
             $table->string('name', 60)->unique();
-            $table->timestamps();
+            $table->timestamps(3);
         });
     }
 

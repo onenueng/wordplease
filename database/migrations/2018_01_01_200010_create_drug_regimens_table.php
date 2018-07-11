@@ -21,7 +21,7 @@ class CreateDrugRegimensTable extends Migration
             $table->string('name', 90)->unique();
             $table->unsignedInteger('frequency')->default(0);
             $table->boolean('active')->default(1);
-            $table->timestamps();
+            $table->timestamps(3);
         });
     }
 

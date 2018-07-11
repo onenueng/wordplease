@@ -19,7 +19,7 @@ class CreateDivisionsTable extends Migration
             $table->string('name', 120);
             $table->string('name_eng', 120);
             $table->string('name_eng_short', 60);
-            $table->timestamps();
+            $table->timestamps(3);
         });
     }
 

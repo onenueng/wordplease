@@ -8,14 +8,13 @@ use App\Models\Notes\Note;
 use App\Contracts\ListItem;
 use App\Traits\ListQueryable;
 use App\Models\Lists\NoteType;
-use App\Traits\DataImportable;
 use App\Traits\AutoIdInsertable;
 use App\Models\Lists\AttendingStaff;
 use Illuminate\Database\Eloquent\Model;
 
 class Division extends Model implements AutoId, ListItem
 {
-    use AutoIdInsertable, DataImportable, ListQueryable;
+    use AutoIdInsertable, ListQueryable;
 
     /**
      * The attributes that are mass assignable.

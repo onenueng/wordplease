@@ -24,7 +24,7 @@ class CreateNoteTypesTable extends Migration
             $table->string('view_path', 80);
             $table->unsignedTinyInteger('gender'); // 0 female/ 1 male/ 2 both
             $table->string('table_name', 80);
-            $table->timestamps();
+            $table->timestamps(3);
         });
 
         Schema::create('note_type_user', function (Blueprint $table) {

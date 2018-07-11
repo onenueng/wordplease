@@ -6,13 +6,12 @@ use App\User;
 use App\Models\Notes\Note;
 use App\Contracts\AutoId;
 use App\Models\Lists\Division;
-use App\Traits\DataImportable;
 use App\Traits\AutoIdInsertable;
 use Illuminate\Database\Eloquent\Model;
 
 class NoteType extends Model implements AutoId
 {
-    use AutoIdInsertable, DataImportable;
+    use AutoIdInsertable;
 
     /**
      * The attributes that are mass assignable.
@@ -60,7 +59,7 @@ class NoteType extends Model implements AutoId
 
     public function canRetitledTo()
     {
-        
+
         if ( $this->class > 2 ) { // class > 2 = service note. Not allow to retitle.
             return [];
         }
@@ -88,7 +87,7 @@ class NoteType extends Model implements AutoId
             return "The " . ($class == 1 ? 'admission':'discharge') . " note of this AN already exists";
         }
 
-        return '';        
+        return '';
     }
 
     public function getCreateDescription($an, $gender, $userId, $retitle = false)

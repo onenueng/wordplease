@@ -19,7 +19,7 @@ class CreateWardsTable extends Migration
             $table->string('name', 90)->unique();
             $table->string('name_short', 30)->nullable();
             $table->boolean('active')->default(1);
-            $table->timestamps();
+            $table->timestamps(3);
         });
     }
 

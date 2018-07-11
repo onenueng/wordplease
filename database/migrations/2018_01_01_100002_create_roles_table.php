@@ -18,7 +18,7 @@ class CreateRolesTable extends Migration
             $table->primary('id');
             $table->string('name', 120)->unique();
             $table->string('name_short', 30)->unique();
-            $table->timestamps();
+            $table->timestamps(3);
         });
     }
 

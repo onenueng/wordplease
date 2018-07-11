@@ -3,14 +3,13 @@
 namespace App\Models\Lists;
 
 use App\Contracts\ListItem;
-use App\Models\Lists\DrugRegimen;
-use App\Traits\DataImportable;
 use App\Traits\ListQueryable;
+use App\Models\Lists\DrugRegimen;
 use Illuminate\Database\Eloquent\Model;
 
 class Drug extends Model implements ListItem
 {
-    use DataImportable, ListQueryable;
+    use ListQueryable;
 
     /**
      * The attributes that are mass assignable.

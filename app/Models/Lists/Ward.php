@@ -6,14 +6,13 @@ use App\Contracts\AutoId;
 use App\Models\Notes\Note;
 use App\Contracts\ListItem;
 use App\Traits\ListQueryable;
-use App\Traits\DataImportable;
 use App\Traits\AutoIdInsertable;
 use App\Traits\RuntimeMaintainable;
 use Illuminate\Database\Eloquent\Model;
 
 class Ward extends Model implements AutoId, ListItem
 {
-    use AutoIdInsertable, DataImportable, RuntimeMaintainable, ListQueryable;
+    use AutoIdInsertable, RuntimeMaintainable, ListQueryable;
 
     /**
      * The attributes that are mass assignable.

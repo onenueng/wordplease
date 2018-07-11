@@ -3,11 +3,11 @@
 namespace App\Models\Lists;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Traits\DataImportable;
 
 class SelectItem extends Model
 {
-    use DataImportable;
+
+    public $timestamps = false;
 
     /**
      * The attributes that are mass assignable.

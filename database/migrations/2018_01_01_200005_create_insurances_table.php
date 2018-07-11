@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateIcdItemsTable extends Migration
+class CreateInsurancesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateIcdItemsTable extends Migration
      */
     public function up()
     {
-        Schema::create('icd_items', function (Blueprint $table) {
-            $table->string('id', 20);
+        Schema::create('insurances', function (Blueprint $table) {
+            $table->unsignedSmallInteger('id');
             $table->primary('id');
-            $table->string('name')->unique();
-            $table->timestamps();
+            $table->string('name', 120)->unique();
+            $table->timestamps(3);
         });
     }
 
@@ -28,6 +28,6 @@ class CreateIcdItemsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('icd_items');
+        Schema::dropIfExists('insurances');
     }
 }

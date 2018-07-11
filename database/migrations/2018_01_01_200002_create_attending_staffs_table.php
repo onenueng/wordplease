@@ -21,7 +21,7 @@ class CreateAttendingStaffsTable extends Migration
             $table->foreign('division_id')->references('id')->on('divisions');
             $table->string('licence_no', 10)->unique();
             $table->boolean('active')->default(1);
-            $table->timestamps();
+            $table->timestamps(3);
         });
     }
 

@@ -20,7 +20,7 @@ class CreateDrugsTable extends Migration
             $table->string('generic_name')->index();
             $table->string('trade_name')->index();
             $table->string('synonyms')->nullable()->index();
-            $table->timestamps();
+            $table->timestamps(3);
         });
     }
 

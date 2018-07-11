@@ -22,11 +22,11 @@ class CreateAuthorizesTable extends Migration
             $table->foreign('permission_id')->references('id')->on('permissions');
             $table->unsignedSmallInteger('division_id')->index();
             $table->foreign('division_id')->references('id')->on('divisions');
-            $table->date('effected_from')->nullable();
-            $table->date('valid_until')->nullable();
+            $table->datetime('effected_from', 3)->nullable();
+            $table->datetime('valid_until', 3)->nullable();
             $table->unsignedMediumInteger('granted_by')->index();
             $table->foreign('granted_by')->references('id')->on('users');
-            $table->timestamps();
+            $table->timestamps(3);
         });
     }
 

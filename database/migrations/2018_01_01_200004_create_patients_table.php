@@ -29,7 +29,7 @@ class CreatePatientsTable extends Migration
             $table->string('tel_no', 512)->nullable();
             $table->string('alternative_contact', 512)->nullable();
             $table->string('mini_hash', config('constant.MINI_HASH_LENGTH'))->index();
-            $table->timestamps();
+            $table->timestamps(3);
         });
     }
 

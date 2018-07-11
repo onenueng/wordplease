@@ -23,9 +23,9 @@ class CreateAdmissionsTable extends Migration
             $table->unsignedSmallInteger('insurance_id')->index();
             $table->foreign('insurance_id')->references('id')->on('insurances');
             $table->string('patient_name', 512);
-            $table->dateTime('datetime_admit')->nullable();
-            $table->dateTime('datetime_discharge')->nullable();
-            $table->timestamps();
+            $table->dateTime('datetime_admit', 3)->nullable();
+            $table->dateTime('datetime_discharge', 3)->nullable();
+            $table->timestamps(3);
         });
     }
 

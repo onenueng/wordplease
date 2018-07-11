@@ -30,10 +30,10 @@ class CreateUsersTable extends Migration
             $table->boolean('email_verified')->default(false);
             $table->boolean('line_verified')->default(false);
             $table->date('expiry_date')->nullable();
-            $table->timestamp('last_seen')->nullable();
+            $table->timestamp('last_seen', 3)->nullable();
             $table->string('mini_hash', config('constant.MINI_HASH_LENGTH'));
             $table->rememberToken();
-            $table->timestamps();
+            $table->timestamps(3);
         });
 
         // App\User::create([

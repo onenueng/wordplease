@@ -70,43 +70,6 @@ Route::get('draft/{group}/{page}', function ($group, $page) {
 });
 
 Route::get('select-refresh', function () {
-    App\Models\Lists\SelectItem::whereNotNull('field_name')->delete();
-    App\Models\Lists\SelectItem::loadData('select_items');
-
-    // App\Models\Lists\Drug::whereNotNull('id')->delete();
-    // App\Models\Lists\Drug::loadData('drugs');
-    return "done";
-});
-
-Route::get('init-data', function () {
-    App\Models\Lists\Drug::whereNotNull('id')->delete();
-    App\Models\Lists\Drug::loadData('drugs');
-
-    App\Models\Lists\Ward::whereNotNull('id')->delete();
-    App\Models\Lists\Ward::loadData('wards', 'create');
-
-    App\Models\Lists\AttendingStaff::whereNotNull('id')->delete();
-    App\Models\Lists\NoteType::whereNotNull('id')->delete();
-    App\Models\Lists\Division::whereNotNull('id')->delete();
-
-    App\Models\Lists\Division::loadData('divisions', 'create');
-    App\Models\Lists\NoteType::loadData('note_types');
-    App\Models\Lists\AttendingStaff::loadData('attending_staffs', 'create');
-
-    App\Models\Lists\SelectItem::whereNotNull('field_name')->delete();
-    App\Models\Lists\SelectItem::loadData('select_items');
-
-    App\User::create([
-                  'id' => 1,
-                 'pln' => null,
-                'name' => 'wordplease',
-               'email' => 'wordplease',
-              'org_id' => 'wordplease',
-            'password' => str_random(12),
-           'full_name' => 'เวิร์ดพลีส',
-        'full_name_en' => 'wordplease',
-    ]);
-
     return "done";
 });
 

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateErrorLogsTable extends Migration
+class CreateExceptionLogsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,16 @@ class CreateErrorLogsTable extends Migration
      */
     public function up()
     {
-        Schema::create('error_logs', function (Blueprint $table) {
-            $table->integer('id')->usigned();
+        Schema::create('exception_logs', function (Blueprint $table) {
+            $table->unsignedInteger('id');
             $table->primary('id');
+            $table->string('route');
             $table->string('type');
             $table->string('file');
             $table->unsignedSmallInteger('line');
             $table->unsignedSmallInteger('code');
             $table->string('message', 512);
-            $table->unsignedMediumInteger('witness_id');
+            $table->unsignedMediumInteger('witness_id')->nullable();
             $table->foreign('witness_id')->references('id')->on('users');
             $table->timestamps(3);
         });
@@ -34,6 +35,6 @@ class CreateErrorLogsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('error_logs');
+        Schema::dropIfExists('exception_logs');
     }
 }

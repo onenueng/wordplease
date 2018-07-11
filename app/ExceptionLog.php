@@ -6,7 +6,7 @@ use App\Contracts\AutoId;
 use App\Traits\AutoIdInsertable;
 use Illuminate\Database\Eloquent\Model;
 
-class Errorlog extends Model implements AutoId
+class ExceptionLog extends Model implements AutoId
 {
     use AutoIdInsertable;
 
@@ -17,20 +17,11 @@ class Errorlog extends Model implements AutoId
      */
     protected $fillable = [
         'id',
+        'route',
         'file',
         'code',
         'type',
         'line',
         'message',
     ];
-
-    // protected $aa = [
-    //         'type' => get_class($e),
-    //         'code' => $e->getCode(),
-    //         'message' => $e->getMessage(),
-    //         'line' => $e->getLine(),
-    //         'file' => $e->getfile()
-    //     ];
-
-
 }

@@ -8,5 +8,6 @@
     "/js/vendor.js": "/js/vendor.js",
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
+    "/js/input-textarea.js": "/js/input-textarea.js",
     "/js/manifest.js": "/js/manifest.js"
 }

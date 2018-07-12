@@ -55,17 +55,19 @@ class DataLoader
     {
         $items = $this->loadCSV($config['file_name']);
 
+        $model = $config['model'];
+        
         if ($config['mode'] == 'insert') {
             foreach ($items as $item) {
-                $config['model']::insert($item);
+                $model::insert($item);
             }
         } else {
             foreach ($items as $item) {
-                $config['model']::create($item);
+                $model::create($item);
             }
         }
 
-        return $config['model']::count();
+        return $model::count();
     }
 
     /**

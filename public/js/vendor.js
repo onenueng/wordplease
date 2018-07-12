@@ -12356,7 +12356,7 @@ module.exports = __webpack_require__(35);
   var undefined;
 
   /** Used as the semantic version number. */
-  var VERSION = '4.17.5';
+  var VERSION = '4.17.10';
 
   /** Used as the size to enable large array optimizations. */
   var LARGE_ARRAY_SIZE = 200;
@@ -12780,6 +12780,14 @@ module.exports = __webpack_require__(35);
   /** Used to access faster Node.js helpers. */
   var nodeUtil = (function() {
     try {
+      // Use `util.types` for Node.js 10+.
+      var types = freeModule && freeModule.require && freeModule.require('util').types;
+
+      if (types) {
+        return types;
+      }
+
+      // Legacy `process.binding('util')` for Node.js < 10.
       return freeProcess && freeProcess.binding && freeProcess.binding('util');
     } catch (e) {}
   }());
@@ -42807,7 +42815,7 @@ module.exports = Vue;
 /***/ 33:
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(jQuery) {/* flatpickr v4.4.4, @license MIT */
+/* WEBPACK VAR INJECTION */(function(jQuery) {/* flatpickr v4.5.1, @license MIT */
 (function (global, factory) {
      true ? module.exports = factory() :
     typeof define === 'function' && define.amd ? define(factory) :
@@ -43059,8 +43067,9 @@ module.exports = Vue;
           config = _ref2$config === void 0 ? defaults : _ref2$config,
           _ref2$l10n = _ref2.l10n,
           l10n = _ref2$l10n === void 0 ? english : _ref2$l10n;
-      return function (date, givenFormat, timeless) {
+      return function (date, givenFormat, timeless, customLocale) {
         if (date !== 0 && !date) return undefined;
+        var locale = customLocale || l10n;
         var parsedDate;
         var date_orig = date;
         if (date instanceof Date) parsedDate = new Date(date.getTime());else if (typeof date !== "string" && date.toFixed !== undefined) parsedDate = new Date(date);else if (typeof date === "string") {
@@ -43095,7 +43104,7 @@ module.exports = Vue;
               ops.forEach(function (_ref3) {
                 var fn = _ref3.fn,
                     val = _ref3.val;
-                return parsedDate = fn(parsedDate, val, l10n) || parsedDate;
+                return parsedDate = fn(parsedDate, val, locale) || parsedDate;
               });
             }
 
@@ -43103,7 +43112,7 @@ module.exports = Vue;
           }
         }
 
-        if (!(parsedDate instanceof Date)) {
+        if (!(parsedDate instanceof Date && !isNaN(parsedDate.getTime()))) {
           config.errorHandler(new Error("Invalid date provided: " + date_orig));
           return undefined;
         }
@@ -43242,7 +43251,9 @@ module.exports = Vue;
           args[_key - 1] = arguments[_key];
         }
 
-        var _loop = function _loop(source) {
+        var _loop = function _loop() {
+          var source = args[_i];
+
           if (source) {
             Object.keys(source).forEach(function (key) {
               return target[key] = source[key];
@@ -43251,9 +43262,7 @@ module.exports = Vue;
         };
 
         for (var _i = 0; _i < args.length; _i++) {
-          var source = args[_i];
-
-          _loop(source);
+          _loop();
         }
 
         return target;
@@ -43274,6 +43283,7 @@ module.exports = Vue;
       self._handlers = [];
       self._bind = bind;
       self._setHoursFromDate = setHoursFromDate;
+      self._positionCalendar = positionCalendar;
       self.changeMonth = changeMonth;
       self.changeYear = changeYear;
       self.clear = clear;
@@ -43340,34 +43350,36 @@ module.exports = Vue;
       }
 
       function setCalendarWidth() {
-        if (self.daysContainer !== undefined) {
-          self.calendarContainer.style.visibility = "hidden";
-          self.calendarContainer.style.display = "block";
-          var daysWidth = (self.days.offsetWidth + 1) * self.config.showMonths;
-          self.daysContainer.style.width = daysWidth + "px";
-          self.calendarContainer.style.width = daysWidth + "px";
+        var config = self.config;
+        if (config.weekNumbers === false && config.showMonths === 1) return;else if (config.noCalendar !== true) {
+          window.requestAnimationFrame(function () {
+            self.calendarContainer.style.visibility = "hidden";
+            self.calendarContainer.style.display = "block";
 
-          if (self.weekWrapper !== undefined) {
-            self.calendarContainer.style.width = daysWidth + self.weekWrapper.offsetWidth + "px";
-          }
-
-          self.calendarContainer.style.removeProperty("visibility");
-          self.calendarContainer.style.removeProperty("display");
+            if (self.daysContainer !== undefined) {
+              var daysWidth = (self.days.offsetWidth + 1) * config.showMonths;
+              self.daysContainer.style.width = daysWidth + "px";
+              self.calendarContainer.style.width = daysWidth + (self.weekWrapper !== undefined ? self.weekWrapper.offsetWidth : 0) + "px";
+              self.calendarContainer.style.removeProperty("visibility");
+              self.calendarContainer.style.removeProperty("display");
+            }
+          });
         }
       }
 
       function updateTime(e) {
         if (self.selectedDates.length === 0) return;
-        timeWrapper(e);
 
-        if (e.type !== "input") {
-          setHoursFromInputs();
-          updateValue();
-        } else {
-          setTimeout(function () {
-            setHoursFromInputs();
-            updateValue();
-          }, DEBOUNCED_CHANGE_MS);
+        if (e !== undefined && e.type !== "blur") {
+          timeWrapper(e);
+        }
+
+        var prevValue = self._input.value;
+        setHoursFromInputs();
+        updateValue();
+
+        if (self._input.value !== prevValue) {
+          self._debouncedChange();
         }
       }
 
@@ -43391,7 +43403,11 @@ module.exports = Vue;
         var hours = (parseInt(self.hourElement.value.slice(-2), 10) || 0) % 24,
             minutes = (parseInt(self.minuteElement.value, 10) || 0) % 60,
             seconds = self.secondElement !== undefined ? (parseInt(self.secondElement.value, 10) || 0) % 60 : 0;
-        if (self.amPM !== undefined) hours = ampm2military(hours, self.amPM.textContent);
+
+        if (self.amPM !== undefined) {
+          hours = ampm2military(hours, self.amPM.textContent);
+        }
+
         var limitMinHours = self.config.minTime !== undefined || self.config.minDate && self.minDateHasTime && self.latestSelectedDateObj && compareDates(self.latestSelectedDateObj, self.config.minDate, true) === 0;
         var limitMaxHours = self.config.maxTime !== undefined || self.config.maxDate && self.maxDateHasTime && self.latestSelectedDateObj && compareDates(self.latestSelectedDateObj, self.config.maxDate, true) === 0;
 
@@ -43417,6 +43433,30 @@ module.exports = Vue;
         if (date) setHours(date.getHours(), date.getMinutes(), date.getSeconds());
       }
 
+      function setDefaultHours() {
+        var hours = self.config.defaultHour;
+        var minutes = self.config.defaultMinute;
+        var seconds = self.config.defaultSeconds;
+
+        if (self.config.minDate !== undefined) {
+          var min_hr = self.config.minDate.getHours();
+          var min_minutes = self.config.minDate.getMinutes();
+          hours = Math.max(hours, min_hr);
+          if (hours === min_hr) minutes = Math.max(min_minutes, minutes);
+          if (hours === min_hr && minutes === min_minutes) seconds = self.config.minDate.getSeconds();
+        }
+
+        if (self.config.maxDate !== undefined) {
+          var max_hr = self.config.maxDate.getHours();
+          var max_minutes = self.config.maxDate.getMinutes();
+          hours = Math.min(hours, max_hr);
+          if (hours === max_hr) minutes = Math.min(max_minutes, minutes);
+          if (hours === max_hr && minutes === max_minutes) seconds = self.config.maxDate.getSeconds();
+        }
+
+        setHours(hours, minutes, seconds);
+      }
+
       function setHours(hours, minutes, seconds) {
         if (self.latestSelectedDateObj !== undefined) {
           self.latestSelectedDateObj.setHours(hours % 24, minutes, seconds || 0, 0);
@@ -43432,9 +43472,8 @@ module.exports = Vue;
       function onYearInput(event) {
         var year = parseInt(event.target.value) + (event.delta || 0);
 
-        if (year.toString().length === 4 || event.key === "Enter") {
-          event.target.blur();
-          if (!/[^\d]/.test(year.toString())) changeYear(year);
+        if (year / 1000 > 1 || event.key === "Enter" && !/[^\d]/.test(year.toString())) {
+          changeYear(year);
         }
       }
 
@@ -43450,7 +43489,8 @@ module.exports = Vue;
         self._handlers.push({
           element: element,
           event: event,
-          handler: handler
+          handler: handler,
+          options: options
         });
       }
 
@@ -43486,8 +43526,7 @@ module.exports = Vue;
         bind(window.document.body, "keydown", onKeyDown);
         if (!self.config.static) bind(self._input, "keydown", onKeyDown);
         if (!self.config.inline && !self.config.static) bind(window, "resize", debouncedResize);
-        if (window.ontouchstart !== undefined) bind(window.document, "touchstart", documentClick);
-        bind(window.document, "mousedown", onClick(documentClick));
+        if (window.ontouchstart !== undefined) bind(window.document, "click", documentClick);else bind(window.document, "mousedown", onClick(documentClick));
         bind(window.document, "focus", documentClick, {
           capture: true
         });
@@ -43508,11 +43547,11 @@ module.exports = Vue;
             return e.target.select();
           };
 
-          bind(self.timeContainer, ["input", "increment"], updateTime);
-          bind(self.timeContainer, "mousedown", onClick(timeIncrement));
-          bind(self.timeContainer, ["input", "increment"], self._debouncedChange, {
-            passive: true
+          bind(self.timeContainer, ["increment"], updateTime);
+          bind(self.timeContainer, "blur", updateTime, {
+            capture: true
           });
+          bind(self.timeContainer, "mousedown", onClick(timeIncrement));
           bind([self.hourElement, self.minuteElement], ["focus", "click"], selText);
           if (self.secondElement !== undefined) bind(self.secondElement, "focus", function () {
             return self.secondElement && self.secondElement.select();
@@ -43756,18 +43795,20 @@ module.exports = Vue;
 
         self.daysContainer.appendChild(frag);
         self.days = self.daysContainer.firstChild;
+
+        if (self.config.mode === "range" && self.selectedDates.length === 1) {
+          onMouseOver();
+        }
       }
 
       function buildMonth() {
         var container = createElement("div", "flatpickr-month");
         var monthNavFragment = window.document.createDocumentFragment();
         var monthElement = createElement("span", "cur-month");
-        monthElement.title = self.l10n.scrollTitle;
         var yearInput = createNumberInput("cur-year", {
           tabindex: "-1"
         });
         var yearElement = yearInput.childNodes[0];
-        yearElement.title = self.l10n.scrollTitle;
         yearElement.setAttribute("aria-label", self.l10n.yearAriaLabel);
         if (self.config.minDate) yearElement.setAttribute("data-min", self.config.minDate.getFullYear().toString());
 
@@ -43954,7 +43995,7 @@ module.exports = Vue;
         self.showTimeInput = false;
 
         if (self.config.enableTime === true) {
-          if (self.config.minDate !== undefined) setHoursFromDate(self.config.minDate);else setHours(self.config.defaultHour, self.config.defaultMinute, self.config.defaultSeconds);
+          setDefaultHours();
         }
 
         self.redraw();
@@ -43978,7 +44019,7 @@ module.exports = Vue;
 
         for (var i = self._handlers.length; i--;) {
           var h = self._handlers[i];
-          h.element.removeEventListener(h.event, h.handler);
+          h.element.removeEventListener(h.event, h.handler, h.options);
         }
 
         self._handlers = [];
@@ -43986,7 +44027,18 @@ module.exports = Vue;
         if (self.mobileInput) {
           if (self.mobileInput.parentNode) self.mobileInput.parentNode.removeChild(self.mobileInput);
           self.mobileInput = undefined;
-        } else if (self.calendarContainer && self.calendarContainer.parentNode) self.calendarContainer.parentNode.removeChild(self.calendarContainer);
+        } else if (self.calendarContainer && self.calendarContainer.parentNode) {
+          if (self.config.static && self.calendarContainer.parentNode) {
+            var wrapper = self.calendarContainer.parentNode;
+            wrapper.lastChild && wrapper.removeChild(wrapper.lastChild);
+
+            while (wrapper.firstChild) {
+              wrapper.parentNode.insertBefore(wrapper.firstChild, wrapper);
+            }
+
+            wrapper.parentNode.removeChild(wrapper);
+          } else self.calendarContainer.parentNode.removeChild(self.calendarContainer);
+        }
 
         if (self.altInput) {
           self.input.type = "text";
@@ -44080,9 +44132,7 @@ module.exports = Vue;
       }
 
       function onKeyDown(e) {
-        e.stopPropagation();
         var isInput = e.target === self._input;
-        var calendarElem = isCalendarElem(e.target);
         var allowInput = self.config.allowInput;
         var allowKeydown = self.isOpen && (!allowInput || !isInput);
         var allowInlineKeydown = self.config.inline && isInput && !allowInput;
@@ -44092,12 +44142,12 @@ module.exports = Vue;
             self.setDate(self._input.value, true, e.target === self.altInput ? self.config.altFormat : self.config.dateFormat);
             return e.target.blur();
           } else self.open();
-        } else if (calendarElem || allowKeydown || allowInlineKeydown) {
+        } else if (isCalendarElem(e.target) || allowKeydown || allowInlineKeydown) {
           var isTimeObj = !!self.timeContainer && self.timeContainer.contains(e.target);
 
           switch (e.keyCode) {
             case 13:
-              if (isTimeObj) updateValue();else selectDate(e);
+              if (isTimeObj) updateTime();else selectDate(e);
               break;
 
             case 27:
@@ -44119,7 +44169,7 @@ module.exports = Vue;
               if (!isTimeObj) {
                 e.preventDefault();
 
-                if (self.daysContainer !== undefined && self.config.allowInput === false) {
+                if (self.daysContainer !== undefined && (allowInput === false || isInView(document.activeElement))) {
                   var _delta = e.keyCode === 39 ? 1 : -1;
 
                   if (!e.ctrlKey) focusOnDay(undefined, _delta);else {
@@ -44151,15 +44201,19 @@ module.exports = Vue;
               break;
 
             case 9:
-              if (e.target === self.hourElement) {
-                e.preventDefault();
-                self.minuteElement.select();
-              } else if (e.target === self.minuteElement && (self.secondElement || self.amPM)) {
-                e.preventDefault();
-                if (self.secondElement !== undefined) self.secondElement.focus();else if (self.amPM !== undefined) self.amPM.focus();
-              } else if (e.target === self.secondElement && self.amPM) {
-                e.preventDefault();
-                self.amPM.focus();
+              if (!isTimeObj) break;
+              var elems = [self.hourElement, self.minuteElement, self.secondElement, self.amPM].filter(function (x) {
+                return x;
+              });
+              var i = elems.indexOf(e.target);
+
+              if (i !== -1) {
+                var target = elems[i + (e.shiftKey ? -1 : 1)];
+
+                if (target !== undefined) {
+                  e.preventDefault();
+                  target.focus();
+                }
               }
 
               break;
@@ -44167,50 +44221,41 @@ module.exports = Vue;
             default:
               break;
           }
+        }
 
+        if (self.amPM !== undefined && e.target === self.amPM) {
           switch (e.key) {
             case self.l10n.amPM[0].charAt(0):
             case self.l10n.amPM[0].charAt(0).toLowerCase():
-              if (self.amPM !== undefined && e.target === self.amPM) {
-                self.amPM.textContent = self.l10n.amPM[0];
-                setHoursFromInputs();
-                updateValue();
-              }
-
+              self.amPM.textContent = self.l10n.amPM[0];
+              setHoursFromInputs();
+              updateValue();
               break;
 
             case self.l10n.amPM[1].charAt(0):
             case self.l10n.amPM[1].charAt(0).toLowerCase():
-              if (self.amPM !== undefined && e.target === self.amPM) {
-                self.amPM.textContent = self.l10n.amPM[1];
-                setHoursFromInputs();
-                updateValue();
-              }
-
-              break;
-
-            default:
+              self.amPM.textContent = self.l10n.amPM[1];
+              setHoursFromInputs();
+              updateValue();
               break;
           }
-
-          triggerEvent("onKeyDown", e);
         }
+
+        triggerEvent("onKeyDown", e);
       }
 
       function onMouseOver(elem) {
-        if (self.selectedDates.length !== 1 || !elem.classList.contains("flatpickr-day") || elem.classList.contains("disabled")) return;
-        var hoverDate = elem.dateObj.getTime(),
+        if (self.selectedDates.length !== 1 || elem && (!elem.classList.contains("flatpickr-day") || elem.classList.contains("disabled"))) return;
+        var hoverDate = elem ? elem.dateObj.getTime() : self.days.firstElementChild.dateObj.getTime(),
             initialDate = self.parseDate(self.selectedDates[0], undefined, true).getTime(),
             rangeStartDate = Math.min(hoverDate, self.selectedDates[0].getTime()),
-            rangeEndDate = Math.max(hoverDate, self.selectedDates[0].getTime());
-        var months = self.daysContainer.children,
-            firstDay = months[0].children[0].dateObj.getTime(),
-            lastDay = months[months.length - 1].lastChild.dateObj.getTime();
+            rangeEndDate = Math.max(hoverDate, self.selectedDates[0].getTime()),
+            lastDate = self.daysContainer.lastChild.lastChild.dateObj.getTime();
         var containsDisabled = false;
         var minRange = 0,
             maxRange = 0;
 
-        for (var t = firstDay; t < lastDay; t += duration.DAY) {
+        for (var t = rangeStartDate; t < lastDate; t += duration.DAY) {
           if (!isEnabled(new Date(t), true)) {
             containsDisabled = containsDisabled || t > rangeStartDate && t < rangeEndDate;
             if (t < initialDate && (!minRange || t > minRange)) minRange = t;else if (t > initialDate && (!maxRange || t < maxRange)) maxRange = t;
@@ -44238,11 +44283,14 @@ module.exports = Vue;
             ["startRange", "inRange", "endRange", "notAllowed"].forEach(function (c) {
               dayElem.classList.remove(c);
             });
-            elem.classList.add(hoverDate < self.selectedDates[0].getTime() ? "startRange" : "endRange");
 
-            if (month.contains(elem) || !(m > 0 && prevMonth && prevMonth.lastChild.dateObj.getTime() >= timestamp)) {
-              if (initialDate < hoverDate && timestamp === initialDate) dayElem.classList.add("startRange");else if (initialDate > hoverDate && timestamp === initialDate) dayElem.classList.add("endRange");
-              if (timestamp >= minRange && (maxRange === 0 || timestamp <= maxRange) && isBetween(timestamp, initialDate, hoverDate)) dayElem.classList.add("inRange");
+            if (elem !== undefined) {
+              elem.classList.add(hoverDate < self.selectedDates[0].getTime() ? "startRange" : "endRange");
+
+              if (month.contains(elem) || !(m > 0 && prevMonth && prevMonth.lastChild.dateObj.getTime() >= timestamp)) {
+                if (initialDate < hoverDate && timestamp === initialDate) dayElem.classList.add("startRange");else if (initialDate > hoverDate && timestamp === initialDate) dayElem.classList.add("endRange");
+                if (timestamp >= minRange && (maxRange === 0 || timestamp <= maxRange) && isBetween(timestamp, initialDate, hoverDate)) dayElem.classList.add("inRange");
+              }
             }
           };
 
@@ -44260,7 +44308,7 @@ module.exports = Vue;
 
       function open(e, positionElement) {
         if (positionElement === void 0) {
-          positionElement = self._input;
+          positionElement = self._positionElement;
         }
 
         if (self.isMobile === true) {
@@ -44270,7 +44318,7 @@ module.exports = Vue;
           }
 
           setTimeout(function () {
-            self.mobileInput !== undefined && self.mobileInput.click();
+            self.mobileInput !== undefined && self.mobileInput.focus();
           }, 0);
           triggerEvent("onOpen");
           return;
@@ -44291,14 +44339,16 @@ module.exports = Vue;
 
         if (self.config.enableTime === true && self.config.noCalendar === true) {
           if (self.selectedDates.length === 0) {
-            self.setDate(self.config.minDate !== undefined ? new Date(self.config.minDate.getTime()) : new Date().setHours(self.config.defaultHour, self.config.defaultMinute, self.config.defaultSeconds, 0), false);
-            setHoursFromInputs();
+            self.setDate(self.config.minDate !== undefined ? new Date(self.config.minDate.getTime()) : new Date(), false);
+            setDefaultHours();
             updateValue();
           }
 
-          setTimeout(function () {
-            return self.hourElement.select();
-          }, 50);
+          if (self.config.allowInput === false && (e === undefined || !self.timeContainer.contains(e.relatedTarget))) {
+            setTimeout(function () {
+              return self.hourElement.select();
+            }, 50);
+          }
         }
       }
 
@@ -44350,13 +44400,14 @@ module.exports = Vue;
             self.config._disable = parseDateRules(dates);
           }
         });
+        var timeMode = userConfig.mode === "time";
 
-        if (!userConfig.dateFormat && userConfig.enableTime) {
-          formats$$1.dateFormat = userConfig.noCalendar ? "H:i" + (userConfig.enableSeconds ? ":S" : "") : flatpickr.defaultConfig.dateFormat + " H:i" + (userConfig.enableSeconds ? ":S" : "");
+        if (!userConfig.dateFormat && (userConfig.enableTime || timeMode)) {
+          formats$$1.dateFormat = userConfig.noCalendar || timeMode ? "H:i" + (userConfig.enableSeconds ? ":S" : "") : flatpickr.defaultConfig.dateFormat + " H:i" + (userConfig.enableSeconds ? ":S" : "");
         }
 
-        if (userConfig.altInput && userConfig.enableTime && !userConfig.altFormat) {
-          formats$$1.altFormat = userConfig.noCalendar ? "h:i" + (userConfig.enableSeconds ? ":S K" : " K") : flatpickr.defaultConfig.altFormat + (" h:i" + (userConfig.enableSeconds ? ":S" : "") + " K");
+        if (userConfig.altInput && (userConfig.enableTime || timeMode) && !userConfig.altFormat) {
+          formats$$1.altFormat = userConfig.noCalendar || timeMode ? "h:i" + (userConfig.enableSeconds ? ":S K" : " K") : flatpickr.defaultConfig.altFormat + (" h:i" + (userConfig.enableSeconds ? ":S" : "") + " K");
         }
 
         Object.defineProperty(self.config, "minDate", {
@@ -44390,6 +44441,12 @@ module.exports = Vue;
           },
           set: minMaxTimeSetter("max")
         });
+
+        if (userConfig.mode === "time") {
+          self.config.noCalendar = true;
+          self.config.enableTime = true;
+        }
+
         Object.assign(self.config, formats$$1, userConfig);
 
         for (var i = 0; i < boolOpts.length; i++) {
@@ -44402,10 +44459,7 @@ module.exports = Vue;
           }
         }
 
-        if (self.config.mode === "time") {
-          self.config.noCalendar = true;
-          self.config.enableTime = true;
-        }
+        self.isMobile = !self.config.disableMobile && !self.config.inline && self.config.mode === "single" && !self.config.disable.length && !self.config.enable.length && !self.config.weekNumbers && /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
         for (var _i2 = 0; _i2 < self.config.plugins.length; _i2++) {
           var pluginConf = self.config.plugins[_i2](self) || {};
@@ -44417,7 +44471,6 @@ module.exports = Vue;
           }
         }
 
-        self.isMobile = !self.config.disableMobile && !self.config.inline && self.config.mode === "single" && !self.config.disable.length && !self.config.enable.length && !self.config.weekNumbers && /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
         triggerEvent("onParseConfig");
       }
 
@@ -44426,6 +44479,10 @@ module.exports = Vue;
         self.l10n = Object.assign({}, flatpickr.l10ns.default, typeof self.config.locale === "object" ? self.config.locale : self.config.locale !== "default" ? flatpickr.l10ns[self.config.locale] : undefined);
         tokenRegex.K = "(" + self.l10n.amPM[0] + "|" + self.l10n.amPM[1] + "|" + self.l10n.amPM[0].toLowerCase() + "|" + self.l10n.amPM[1].toLowerCase() + ")";
         self.formatDate = createDateFormatter(self);
+        self.parseDate = createDateParser({
+          config: self.config,
+          l10n: self.l10n
+        });
       }
 
       function positionCalendar(customPositionElement) {
@@ -44436,15 +44493,17 @@ module.exports = Vue;
           return acc + child.offsetHeight;
         }, 0),
             calendarWidth = self.calendarContainer.offsetWidth,
-            configPos = self.config.position,
+            configPos = self.config.position.split(" "),
+            configPosVertical = configPos[0],
+            configPosHorizontal = configPos.length > 1 ? configPos[1] : null,
             inputBounds = positionElement.getBoundingClientRect(),
             distanceFromBottom = window.innerHeight - inputBounds.bottom,
-            showOnTop = configPos === "above" || configPos !== "below" && distanceFromBottom < calendarHeight && inputBounds.top > calendarHeight;
+            showOnTop = configPosVertical === "above" || configPosVertical !== "below" && distanceFromBottom < calendarHeight && inputBounds.top > calendarHeight;
         var top = window.pageYOffset + inputBounds.top + (!showOnTop ? positionElement.offsetHeight + 2 : -calendarHeight - 2);
         toggleClass(self.calendarContainer, "arrowTop", !showOnTop);
         toggleClass(self.calendarContainer, "arrowBottom", showOnTop);
         if (self.config.inline) return;
-        var left = window.pageXOffset + inputBounds.left;
+        var left = window.pageXOffset + inputBounds.left - (configPosHorizontal != null && configPosHorizontal === "center" ? (calendarWidth - inputBounds.width) / 2 : 0);
         var right = window.document.body.offsetWidth - inputBounds.right;
         var rightMost = left + calendarWidth > window.document.body.offsetWidth;
         toggleClass(self.calendarContainer, "rightMost", rightMost);
@@ -44512,18 +44571,10 @@ module.exports = Vue;
 
         updateNavigationCurrentMonth();
         buildDays();
-        if (self.config.minDate && self.minDateHasTime && self.config.enableTime && compareDates(selectedDate, self.config.minDate) === 0) setHoursFromDate(self.config.minDate);
         updateValue();
         if (self.config.enableTime) setTimeout(function () {
           return self.showTimeInput = true;
         }, 50);
-
-        if (self.config.mode === "range") {
-          if (self.selectedDates.length === 1) {
-            onMouseOver(target);
-          } else updateNavigationCurrentMonth();
-        }
-
         if (!shouldChangeMonth && self.config.mode !== "range" && self.config.showMonths === 1) focusOnDayElem(target);else self.selectedDateElem && self.selectedDateElem.focus();
         if (self.hourElement !== undefined) setTimeout(function () {
           return self.hourElement !== undefined && self.hourElement.select();
@@ -44564,6 +44615,7 @@ module.exports = Vue;
         });else if (inputDate instanceof Date || typeof inputDate === "number") dates = [self.parseDate(inputDate, format)];else if (typeof inputDate === "string") {
           switch (self.config.mode) {
             case "single":
+            case "time":
               dates = [self.parseDate(inputDate, format)];
               break;
 
@@ -44600,7 +44652,7 @@ module.exports = Vue;
           format = self.config.dateFormat;
         }
 
-        if (date !== 0 && !date) return self.clear(triggerChange);
+        if (date !== 0 && !date || date instanceof Array && date.length === 0) return self.clear(triggerChange);
         setSelectedDate(date, format);
         self.showTimeInput = self.selectedDates.length > 0;
         self.latestSelectedDateObj = self.selectedDates[0];
@@ -44612,7 +44664,7 @@ module.exports = Vue;
       }
 
       function parseDateRules(arr) {
-        return arr.map(function (rule) {
+        return arr.slice().map(function (rule) {
           if (typeof rule === "string" || typeof rule === "number" || rule instanceof Date) {
             return self.parseDate(rule, undefined, true);
           } else if (rule && typeof rule === "object" && rule.from && rule.to) return {
@@ -44629,7 +44681,7 @@ module.exports = Vue;
       function setupDates() {
         self.selectedDates = [];
         self.now = self.parseDate(self.config.now) || new Date();
-        var preloadedDate = self.config.defaultDate || self.input.value;
+        var preloadedDate = self.config.defaultDate || ((self.input.nodeName === "INPUT" || self.input.nodeName === "TEXTAREA") && self.input.placeholder && self.input.value === self.input.placeholder ? null : self.input.value);
         if (preloadedDate) setSelectedDate(preloadedDate, self.config.dateFormat);
         var initialDate = self.selectedDates.length > 0 ? self.selectedDates[0] : self.config.minDate && self.config.minDate.getTime() > self.now.getTime() ? self.config.minDate : self.config.maxDate && self.config.maxDate.getTime() < self.now.getTime() ? self.config.maxDate : self.now;
         self.currentYear = initialDate.getFullYear();
@@ -44672,7 +44724,7 @@ module.exports = Vue;
           self.altInput.required = self.input.required;
           self.altInput.tabIndex = self.input.tabIndex;
           self.altInput.type = "text";
-          self.input.type = "hidden";
+          self.input.setAttribute("type", "hidden");
           if (!self.config.static && self.input.parentNode) self.input.parentNode.insertBefore(self.altInput, self.input.nextSibling);
         }
 
@@ -44711,9 +44763,9 @@ module.exports = Vue;
         });
       }
 
-      function toggle() {
-        if (self.isOpen) return self.close();
-        self.open();
+      function toggle(e) {
+        if (self.isOpen === true) return self.close();
+        self.open(e);
       }
 
       function triggerEvent(event, data) {
@@ -44788,13 +44840,13 @@ module.exports = Vue;
       }
 
       function onMonthNavClick(e) {
+        e.preventDefault();
         var isPrevMonth = self.prevMonthNav.contains(e.target);
         var isNextMonth = self.nextMonthNav.contains(e.target);
 
         if (isPrevMonth || isNextMonth) {
           changeMonth(isPrevMonth ? -1 : 1);
         } else if (self.yearElements.indexOf(e.target) >= 0) {
-          e.preventDefault();
           e.target.select();
         } else if (e.target.classList.contains("arrowUp")) {
           self.changeYear(self.currentYear + 1);
@@ -44912,6 +44964,10 @@ module.exports = Vue;
       return new Date(this.getFullYear(), this.getMonth(), this.getDate() + (typeof days === "string" ? parseInt(days, 10) : days));
     };
 
+    if (typeof window !== "undefined") {
+      window.flatpickr = flatpickr;
+    }
+
     return flatpickr;
 
 })));
@@ -44924,7 +44980,7 @@ module.exports = Vue;
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
-	autosize 4.0.1
+	autosize 4.0.2
 	license: MIT
 	http://www.jacklmoore.com/autosize
 */
@@ -45085,7 +45141,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 			// The actual height not matching the style height (set via the resize method) indicates that 
 			// the max-height has been exceeded, in which case the overflow should be allowed.
-			if (actualHeight !== styleHeight) {
+			if (actualHeight < styleHeight) {
 				if (computed.overflowY === 'hidden') {
 					changeOverflow('scroll');
 					resize();
@@ -45221,7 +45277,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
-*  Ajax Autocomplete for jQuery, version 1.4.7
+*  Ajax Autocomplete for jQuery, version 1.4.8
 *  (c) 2017 Tomas Kirda
 *
 *  Ajax Autocomplete for jQuery is freely distributable under the terms of an MIT-style license.
@@ -45295,7 +45351,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         that.isLocal = false;
         that.suggestionsContainer = null;
         that.noSuggestionsContainer = null;
-        that.options = $.extend({}, Autocomplete.defaults, options);
+        that.options = $.extend(true, {}, Autocomplete.defaults, options);
         that.classes = {
             selected: 'autocomplete-selected',
             suggestion: 'autocomplete-suggestion'
@@ -45389,7 +45445,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 container;
 
             // Remove autocomplete attribute to prevent native suggestions:
-            that.element.setAttribute('autocomplete', 'off');
+            // as per
+            // https://developer.mozilla.org/en-US/docs/Web/Security/Securing_your_site/Turning_off_form_autocompletion
+            // some browsers e.g. Google Chrome ignore autocomplete=off but autocomplete=nope
+            // will provide the correct behaviour
+            that.element.setAttribute('autocomplete', 'nope');
 
             // html() deals with many types: htmlString or Element or Array or jQuery
             that.noSuggestionsContainer = $('<div class="autocomplete-no-suggestion"></div>')

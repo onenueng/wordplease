@@ -14,8 +14,8 @@
         "axios": "^0.16.2",
         "bootstrap": "^3.3.7",
         "bootstrap-sass": "^3.3.7",
-        "cross-env": "^5.1.4",
-        "flatpickr": "^4.4.6",
+        "cross-env": "^5.2.0",
+        "flatpickr": "^4.5.1",
         "jquery": "^3.3.1",
         "laravel-mix": "^1.7.2",
         "lodash": "^4.17.10",
@@ -24,7 +24,7 @@
         "vuedraggable": "^2.16.0"
     },
     "dependencies": {
-        "devbridge-autocomplete": "^1.4.7",
-        "npm": "^5.8.0"
+        "devbridge-autocomplete": "^1.4.8",
+        "npm": "^5.10.0"
     }
 }

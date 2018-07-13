@@ -5,12 +5,11 @@ namespace App\Http\Controllers\Auth;
 use App\Contracts\UserAPI;
 use Illuminate\Http\Request;
 use App\Traits\Authorizable;
-use App\Traits\DataImportable;
 use App\Http\Controllers\Controller;
 
 class RegisterController extends Controller
 {
-    use DataImportable, Authorizable;
+    use Authorizable;
 
     /**
      * Create a new controller instance.

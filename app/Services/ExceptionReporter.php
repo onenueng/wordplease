@@ -26,14 +26,18 @@ class ExceptionReporter
      */
     protected function log()
     {
-        return ExceptionLog::insert([
-            'route' => app('request')->path(),
-            'type' => get_class($this->exception),
-            'code' => $this->exception->getCode(),
-            'message' => $this->exception->getMessage(),
-            'line' => $this->exception->getLine(),
-            'file' => $this->exception->getfile()
-        ]);
+        try {
+            return ExceptionLog::insert([
+                'route' => app('request')->path(),
+                'type' => get_class($this->exception),
+                'code' => $this->exception->getCode(),
+                'message' => $this->exception->getMessage(),
+                'line' => $this->exception->getLine(),
+                'file' => $this->exception->getfile()
+            ]);
+        } catch (QueryException $e) {
+            return false;
+        }
     }
 
     /**
@@ -42,10 +46,6 @@ class ExceptionReporter
      */
     public function report()
     {
-        try {
-            $this->log();
-        } catch (Exception $e) {
-            return false;
-        }
+        $this->log();
     }
 }

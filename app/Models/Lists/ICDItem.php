@@ -15,7 +15,7 @@ class ICDItem extends Model implements ListItem
     // use AutoIdInsertable, ListQueryable;
     use ListQueryable;
 
-    protected $dateFormat = 'Y-m-d H:i:s.u';
+    // protected $dateFormat = 'Y-m-d H:i:s.u';
     
     protected $table = 'icd_items';
 

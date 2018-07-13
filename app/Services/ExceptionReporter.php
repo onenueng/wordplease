@@ -46,6 +46,6 @@ class ExceptionReporter
      */
     public function report()
     {
-        $this->log();
+        // $this->log();
     }
 }

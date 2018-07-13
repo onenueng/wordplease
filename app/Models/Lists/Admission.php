@@ -16,7 +16,7 @@ class Admission extends Model implements AutoId
 {
     use AutoIdInsertable, DataCryptable, DatetimeHandleable;
 
-    protected $dateFormat = 'Y-m-d H:i:s.u';
+    // protected $dateFormat = 'Y-m-d H:i:s.u';
     
     /**
      * The attributes that are mass assignable.

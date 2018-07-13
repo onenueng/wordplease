@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\User;
 use App\Contracts\UserAPI;
 use Illuminate\Http\Request;
 use App\Traits\Authorizable;
@@ -40,10 +41,8 @@ class RegisterController extends Controller
      */
     public function getUser(UserAPI $api, Request $request)
     {
-        // $org_id = app('request')->org_id;
-
         // check if the ID already exist
-        if ( \App\User::findByUniqueField('org_id', $request->org_id) != null ) {
+        if ( User::findByUniqueField('org_id', $request->org_id) != null ) {
             return [
                 'reply_code' => 99, 'reply_text' => 'this ID already taken.',
                 'state' => 'error', 'icon' => 'remove',
@@ -80,9 +79,9 @@ class RegisterController extends Controller
     {
         // handle field named 'username' exception
         if ( $request->field == 'username' ) {
-            $user = \App\User::findByUniqueField('name', $request->value);
+            $user = User::findByUniqueField('name', $request->value);
         } else {
-            $user = \App\User::findByUniqueField($request->field, $request->value);
+            $user = User::findByUniqueField($request->field, $request->value);
         }
 
         if ( $user == null ) {
@@ -104,13 +103,13 @@ class RegisterController extends Controller
     public function register(Request $request)
     {
         // register every requests
-        $newUser = \App\User::insert($request->user);
+        $newUser = User::insert($request->user);
 
         // try to load pre-made authorization form .csv file
         if ( $request->mode == 'id' ) {
-            $users = $this->loadCSV('id_users');
+            $users = (new \App\Services\Dataloader)->loadCSV('id_users');
         } elseif ($request->mode == 'email' ) {
-            $users = $this->loadCSV('email_users');;
+            $users = (new \App\Services\Dataloader)->loadCSV('email_users');;
         } else {
             $users = [];
         }

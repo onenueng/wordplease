@@ -32,7 +32,7 @@ mix.js('resources/assets/js/app.js', 'public/js')
    .js('resources/assets/js/notes/medicine-admission-note.js', 'public/js')
    .js('resources/assets/js/notes/medicine-discharge-note.js', 'public/js')
 
-   .js('resources/assets/js/sandbox/input-textarea.js', 'public/js')
+    .js('resources/assets/js/sandbox/vue-controlled-component.js', 'public/js')
 
    .sass('resources/assets/sass/app.scss', 'public/css');
 

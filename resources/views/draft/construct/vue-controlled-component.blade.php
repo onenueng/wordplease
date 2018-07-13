@@ -12,16 +12,20 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Textarea</title>
+    <title>Vue Controlled Component</title>
 
     <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
 </head>
 <body>
     <div id="app">
-        <input-textarea></input-textarea>  
+
+        <div><input-textarea></input-textarea></div>
+        <div><input-datetime></input-datetime></div>
+        <div><drawing-canvas></drawing-canvas></div>
+
     </div>
     <script src="{{ mix('/js/manifest.js') }}"></script>
     <script src="{{ mix('/js/vendor.js') }}"></script>
-    <script src="{{ mix('/js/input-textarea.js') }}"></script>
+    <script src="{{ mix('/js/vue-controlled-component.js') }}"></script>
 </body>
 </html>

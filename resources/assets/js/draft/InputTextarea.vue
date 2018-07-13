@@ -1,6 +1,5 @@
 <template>
-    <!-- <h1>hello</h1> -->
-    <textarea name="" id="" rows="1" ref="autosizeTextarea"></textarea>
+    <textarea rows="1" ref="autosizeTextarea"></textarea>
 </template>
 
 <script>

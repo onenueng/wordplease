@@ -1,6 +1,6 @@
 // Fonts ดูเหมือน fa ใน npm มันจะไม่ใช่ css+font ก็เลยต้องไป download แล้วก็มาใส่ไว้ใน node-modules เอง
-$fa-font-path: "~font-awesome/fonts" !default;
-@import '~font-awesome/scss/font-awesome.scss';
+$fa-font-path: "./vendor/font-awesome/fonts" !default;
+@import './vendor/font-awesome/scss/font-awesome.scss';
 
 // Variables
 @import "variables";

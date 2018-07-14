@@ -18,15 +18,26 @@
 </head>
 <body>
     <div id="app">
-        <div><input-datetime></input-datetime></div>
-        <div><drawing-canvas></drawing-canvas></div>
-        <div><input-textarea></input-textarea></div>
-        <div><button-app label="Me" size="lg" no-tap-stop status="draft"></button-app></div>
-        <div><button-app label="You" size="lg" status="primary"></button-app></div>
-        <div><button-app label="Me" size="lg" no-tap-stop status="draft"></button-app></div>
+        <login-page></login-page>
     </div>
     <script src="{{ mix('/js/manifest.js') }}"></script>
     <script src="{{ mix('/js/vendor.js') }}"></script>
-    <script src="{{ mix('/js/vue-controlled-component.js') }}"></script>
+    <script src="{{ mix('/js/vue-login.js') }}"></script>
+    <script>
+        const lastActiveSessionCheck = Date.now()
+        $(window).on("focus", (e) => {
+            let timeDiff = Date.now() - lastActiveSessionCheck
+            if ( (timeDiff) > (window.SESSION_LIFETIME) ) {
+                axios.get('/is-session-active')
+                     .then((response) => {
+                        if ( !response.data.active ) {
+                            console.log('show-common-dialog => error-419')
+                        }
+                     })
+            }
+        })
+
+        $('#page-loader').remove()
+    </script>
 </body>
 </html>

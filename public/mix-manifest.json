@@ -7,6 +7,7 @@
     "/js/login.js": "/js/login.js",
     "/js/vendor.js": "/js/vendor.js",
     "/js/vue-controlled-component.js": "/js/vue-controlled-component.js",
+    "/js/vue-login.js": "/js/vue-login.js",
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
     "/js/manifest.js": "/js/manifest.js"

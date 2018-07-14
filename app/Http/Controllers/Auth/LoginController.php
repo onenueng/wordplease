@@ -34,9 +34,10 @@ class LoginController extends Controller
         return view('user.login');
     }
 
-    public function login()
+    public function login(\Illuminate\Http\Request $request)
     {
-        $user = $this->attemptLogin();
+        $user = $this->attemptLogin($request);
+        
         if ( $user ) {
             auth()->login($user);
             return $this->sendLoginResponse();
@@ -46,9 +47,9 @@ class LoginController extends Controller
         return redirect()->back()->with('error', 'credential not matched');
     }
 
-    public function frontEndLogin()
+    public function frontEndLogin(\Illuminate\Http\Request $request)
     {
-        $user = $this->attemptLogin();
+        $user = $this->attemptLogin($request);
 
         if ( $user ) {
             return [
@@ -64,10 +65,8 @@ class LoginController extends Controller
         // return redirect()->back()->with('error', 'credential not matched');
     }
 
-    protected function attemptLogin()
+    protected function attemptLogin(\Illuminate\Http\Request $request)
     {
-        $request = app('request');
-
         $user = \App\User::findByUniqueField('org_id', $request->org_id);
         if ( $user == null ) {
             return null;

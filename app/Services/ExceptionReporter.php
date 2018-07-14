@@ -28,7 +28,7 @@ class ExceptionReporter
     {
         try {
             return ExceptionLog::insert([
-                'route' => app('request')->path(),
+                'route' => app('request')->method() . ' ' . app('request')->path(),
                 'type' => get_class($this->exception),
                 'code' => $this->exception->getCode(),
                 'message' => $this->exception->getMessage(),

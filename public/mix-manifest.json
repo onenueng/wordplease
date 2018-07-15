@@ -10,5 +10,6 @@
     "/js/vue-login.js": "/js/vue-login.js",
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
+    "/js/vue-svg-bg.js": "/js/vue-svg-bg.js",
     "/js/manifest.js": "/js/manifest.js"
 }

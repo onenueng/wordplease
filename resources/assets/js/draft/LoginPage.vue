@@ -102,7 +102,7 @@
                 alert: false,
                 alertContent: '',
                 alertAnimated: '',
-                caught: new ResponseErrorHandler()
+                caught: {}
             }
         },
         methods: {
@@ -135,7 +135,8 @@
                     .catch( (error) => {
                         this.loginButtonLabel = 'Login'
                         this.loggingIn = false
-                        this.caught.handle(error)
+                        this.caught = new ResponseErrorHandler(error)
+                        this.caught.handle()
                     })
                 }
             }

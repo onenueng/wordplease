@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="th-TH">
 <head>
+    {{-- favicon stuff --}}
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -12,33 +13,17 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Vue Controlled Component</title>
+    <title>@yield('title')</title>
 
     <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
 </head>
 <body>
     @include('partials.page-loader')
-    <div id="app">
-        <login-page></login-page>
-    </div>
+
+    <div id="app"></div>
+
     <script src="{{ mix('/js/manifest.js') }}"></script>
     <script src="{{ mix('/js/vendor.js') }}"></script>
-    <script src="{{ mix('/js/vue-login.js') }}"></script>
-    <script>
-        const lastActiveSessionCheck = Date.now()
-        $(window).on("focus", (e) => {
-            let timeDiff = Date.now() - lastActiveSessionCheck
-            if ( (timeDiff) > (window.SESSION_LIFETIME) ) {
-                axios.get('/is-session-active')
-                     .then((response) => {
-                        if ( !response.data.active ) {
-                            console.log('show-common-dialog => error-419')
-                        }
-                     })
-            }
-        })
-
-        document.getElementsByTagName("BODY")[0].removeChild(document.getElementById("page-loader"))
-    </script>
+    @yield('app-js')
 </body>
 </html>

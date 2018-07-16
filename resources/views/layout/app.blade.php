@@ -17,9 +17,9 @@
     <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
 </head>
 <body>
-    <div class="centered" id="page-loader">
-        <i class="fa fa-circle-o-notch fa-spin fa-5x"></i>
-    </div>
+    
+    @include('partials.page-loader')
+
     <div id="app">
         <alert-box></alert-box><!-- app alert box -->
         <modal-dialog></modal-dialog><!-- app modal diaglog -->

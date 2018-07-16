@@ -1,5 +1,6 @@
 <template>
     <div>
+        
         <navbar link="/home"
                 brand="Wordplease"
                 title="Login">
@@ -91,6 +92,7 @@
         },
         data() {
             return {
+                loaded: false,
                 org_id: '',
                 password: '',
                 errors: {

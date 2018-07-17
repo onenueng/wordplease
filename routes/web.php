@@ -163,3 +163,7 @@ Route::get('/test-icd', function () {
     $icd = App\Models\Lists\ICDItem::create(['id' => 'shame', 'name' => 'nalinee premas']);
     return App\Models\Lists\ICDItem::find('shame');
 });
+
+Route::get('/vue-login', function () {
+    return view('vue-app')->with(['title' => 'Login', 'jsFile' => '/js/vue-login.js']);
+});

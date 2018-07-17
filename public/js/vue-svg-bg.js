@@ -1,20 +1,20 @@
 webpackJsonp([10],{
 
-/***/ 315:
+/***/ 312:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(316);
+module.exports = __webpack_require__(313);
 
 
 /***/ }),
 
-/***/ 316:
+/***/ 313:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__svg_bg_js__ = __webpack_require__(317);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__modules_form_helper_js__ = __webpack_require__(319);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__svg_bg_js__ = __webpack_require__(314);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__modules_form_helper_js__ = __webpack_require__(316);
 __webpack_require__(60);
 
 
@@ -37,11 +37,11 @@ window.app = new Vue({
 
 /***/ }),
 
-/***/ 317:
+/***/ 314:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-__webpack_require__(318);
+__webpack_require__(315);
 
 /* harmony default export */ __webpack_exports__["a"] = ({
    bgxyy: function bgxyy(text) {
@@ -59,7 +59,7 @@ __webpack_require__(318);
 
 /***/ }),
 
-/***/ 318:
+/***/ 315:
 /***/ (function(module, exports) {
 
 /*!!
@@ -1188,50 +1188,56 @@ __webpack_require__(318);
 
 /***/ }),
 
-/***/ 319:
+/***/ 316:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function($) {/* harmony default export */ __webpack_exports__["a"] = ({
-    formLoaded: function formLoaded() {
-        $('#page-loader').remove();
-
+/* harmony default export */ __webpack_exports__["a"] = ({
+    loaded: function loaded() {
         window.addEventListener('focus', function (e) {
             var timeDiff = Date.now() - window.loadPageAt;
 
             if (timeDiff > window.SESSION_LIFETIME) {
                 axios.get('/is-session-active').then(function (response) {
                     if (!response.data.active) {
-                        console.log('show-common-dialog => error-419');
-                        window.loadPageAt = 419;
-                        window.app.hello();
+                        window.app.$refs.root.modalDialogueMessage = 'Your are now logged off, Please reload this page or loss your data.';
+                        window.app.$refs.root.modalDialogueHeading = 'Attention please !!';
+                        window.app.$refs.root.modalDialogueToggle = 'show';
                     }
                 });
             }
         });
+
+        document.getElementsByTagName("BODY")[0].removeChild(document.getElementById("page-loader"));
     },
     responseErrorHandle: function responseErrorHandle(error) {
         if (this.error.response) {
             // The request was made and the server responded with a status code
             // that falls out of the range of 2xx
             if (this.error.response.status == 419) {
-                console.log('Error', this.error.message);
+                window.app.$refs.root.modalDialogueMessage = 'Your are now logged off, Please reload this page or loss your data.';
+                window.app.$refs.root.modalDialogueHeading = 'Attention please !!';
+                window.app.$refs.root.modalDialogueToggle = 'show';
             } else if (this.error.response.status == 500) {
-                console.log('Error', this.error.message);
+                window.app.$refs.root.modalDialogueMessage = 'Server error, Please try again later or get the Helpdesk.';
+                window.app.$refs.root.modalDialogueHeading = 'Attention please !!';
+                window.app.$refs.root.modalDialogueToggle = 'show';
             }
         } else if (this.error.request) {
             // The request was made but no response was received
             // `this.error.request` is an instance of XMLHttpRequest in the browser and an instance of
             // http.ClientRequest in node.js
-            console.log(this.error.request);
+            window.app.$refs.root.modalDialogueMessage = 'Cannot connect to server, Please try again later or get the Helpdesk.';
+            window.app.$refs.root.modalDialogueHeading = 'Attention please !!';
+            window.app.$refs.root.modalDialogueToggle = 'show';
         } else {
             // Something happened in setting up the request that triggered an Error
-            console.log('Error', this.error.message);
+            window.app.$refs.root.modalDialogueMessage = 'You should never see this, Please try again later or get the Helpdesk.';
+            window.app.$refs.root.modalDialogueHeading = 'Attention please !!';
+            window.app.$refs.root.modalDialogueToggle = 'show';
         }
-        console.log(this.error.config);
     }
 });
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(1)))
 
 /***/ }),
 
@@ -1273,11 +1279,11 @@ if (token) {
 
 window.Vue = __webpack_require__(15);
 
-window.SESSION_LIFETIME = 1000 * 60 * 1; // an hour
+window.SESSION_LIFETIME = 1000 * 5 * 1; // 5 seconds
 
 window.loadPageAt = Date.now();
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ })
 
-},[315]);
+},[312]);

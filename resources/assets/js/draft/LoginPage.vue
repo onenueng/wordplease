@@ -1,6 +1,12 @@
 <template>
     <div>
-        
+        <modal-dialogue :toggle="modalDialogueToggle"
+                        :heading="modalDialogueHeading"
+                        :message="modalDialogueMessage"
+                        :buttonLabel="modalDialogueButtonLabel"
+                        @modalDialogueDismiss="modalDialogueToggle = 'hide'"
+        ></modal-dialogue>
+
         <navbar link="/home"
                 brand="Wordplease"
                 title="Login">
@@ -14,20 +20,18 @@
                     <h1>Login : </h1>
                 </div>
                 <div class="material-box-topic">
-                    <form
-                        ref="form"
-                        method="POST"
-                        action="/login"
-                        @keydown="errors[$event.target.name] = false"
-                        @keydown.enter.prevent="loginButtonClicked">
+                    <form ref="form"
+                          method="POST"
+                          action="/login"
+                          @keydown="errors[$event.target.name] = false"
+                          @keydown.enter.prevent="loginButtonClicked">
                         <div class="form-group">
                             <input type="text"
                                    name="org_id"
                                    class="form-control"
                                    placeholder="ID"
                                    autocomplete="off"
-                                   v-model="org_id"
-                                   @blur=""/>
+                                   v-model="org_id"/>
                             <span class="help-block" v-if="errors.org_id">
                                 <i class="text-danger">ID is required.</i>
                             </span>
@@ -37,8 +41,7 @@
                                    name="password"
                                    class="form-control"
                                    placeholder="Password"
-                                   v-model="password"
-                                   @blur=""/>
+                                   v-model="password"/>
                             <span class="help-block" v-if="errors.password">
                                 <i class="text-danger">Password is required.</i>
                             </span>
@@ -47,26 +50,23 @@
                         <input type="hidden" name="_token" ref="token" />
                     </form>
 
-                    <button-app
-                        size="lg"
-                        status="info"
-                        :disable='loggingIn'
-                        :label="loginButtonLabel"
-                        @click="loginButtonClicked"
+                    <button-app size="lg"
+                                status="info"
+                                :disable='loggingIn'
+                                :label="loginButtonLabel"
+                                @click="loginButtonClicked"
                     ></button-app>
 
                     <a href="/register" v-if="!loggingIn">Or register a new one</a>
 
-                    <transition
-                        name="custom-classes-transition"
-                        enter-active-class="animated fadeInDown"
-                        leave-active-class="animated fadeOutUp">
-                        <alert
-                            state="danger"
-                            icon="fa fa-remove fa-3x"
-                            :content="alertContent"
-                            v-if="alert">
-                        </alert>
+                    <transition name="custom-classes-transition"
+                                enter-active-class="animated fadeInDown"
+                                leave-active-class="animated fadeOutUp">
+                        <alert state="danger"
+                               icon="fa fa-remove fa-3x"
+                               :content="alertContent"
+                               v-if="alert"
+                        ></alert>
                     </transition>
                 </div>
             </div>
@@ -75,12 +75,18 @@
 </template>
 
 <script>
+    // components
     import Alert from '../components/alerts/Alert.vue'
     import Navbar from '../components/navbars/Navbar.vue'
-    import ResponseErrorHandler from '../sandbox/ResponseErrorHandler.js'
     import ButtonApp from '../draft/ButtonApp.vue'
+    import ModalDialogue from '../draft/ModalDialogue.vue'
     import NavbarLeft from '../components/navbars/NavbarLeft.vue'
     import NavbarRight from '../components/navbars/NavbarRight.vue'
+
+    // utilities
+    import ResponseErrorHandler from '../sandbox/ResponseErrorHandler.js'
+    import watermark from "../modules/page-text-watermark.js"
+    import formHelper from "../modules/form-helper.js"
 
     export default {
         components: {
@@ -89,10 +95,23 @@
             ButtonApp,
             NavbarLeft,
             NavbarRight,
+            ModalDialogue
+        },
+        mounted () {
+            formHelper.loaded()
+            watermark.watermark('koramit@gmail.com')
         },
         data() {
             return {
-                loaded: false,
+                alert: false,
+                alertContent: '',
+                alertAnimated: '',
+
+                modalDialogueToggle: undefined,
+                modalDialogueHeading: undefined,
+                modalDialogueMessage: undefined,
+                modalDialogueButtonLabel: undefined,
+
                 org_id: '',
                 password: '',
                 errors: {
@@ -101,14 +120,12 @@
                 },
                 loggingIn: false,
                 loginButtonLabel: 'Login',
-                alert: false,
-                alertContent: '',
-                alertAnimated: '',
+                
                 caught: {}
             }
         },
         methods: {
-            hasError(field) {
+            hasError (field) {
                 return this.errors[field] = this[field] == ''
             },
 
@@ -122,7 +139,7 @@
                     })
                     .then( (response) => {
                         if ( response.data.reply_code == 0 ) {
-                            this.$refs.toekn.value = document.head.querySelector("[name=csrf-token]").content
+                            this.$refs.token.value = document.head.querySelector("[name=csrf-token]").content
                             this.$refs.submit()
                         } else {
                             this.alertContent = response.data.reply_text

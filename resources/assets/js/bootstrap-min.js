@@ -33,6 +33,6 @@ if (token) {
 
 window.Vue = require('vue')
 
-window.SESSION_LIFETIME = 1000 * 60 * 1 // an hour
+window.SESSION_LIFETIME = 1000 * 5 * 1 // 5 seconds
 
 window.loadPageAt = Date.now()

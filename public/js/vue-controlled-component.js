@@ -31789,7 +31789,7 @@ if (token) {
 
 window.Vue = __webpack_require__(15);
 
-window.SESSION_LIFETIME = 1000 * 60 * 1; // an hour
+window.SESSION_LIFETIME = 1000 * 5 * 1; // 5 seconds
 
 window.loadPageAt = Date.now();
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))

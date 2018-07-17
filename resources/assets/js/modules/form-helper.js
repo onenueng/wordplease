@@ -1,9 +1,7 @@
 export default {
 
-formLoaded()
+loaded()
 {
-    $('#page-loader').remove()
-
     window.addEventListener('focus', (e) => {
         let timeDiff = Date.now() - window.loadPageAt
         
@@ -11,14 +9,15 @@ formLoaded()
             axios.get('/is-session-active')
                  .then((response) => {
                     if ( !response.data.active ) {
-                        console.log('show-common-dialog => error-419')
-                        window.loadPageAt = 419
-                        window.app.hello()
+                        window.app.$refs.root.modalDialogueMessage = 'Your are now logged off, Please reload this page or loss your data.'
+                        window.app.$refs.root.modalDialogueHeading = 'Attention please !!'
+                        window.app.$refs.root.modalDialogueToggle = 'show'
                     }
                  })
         }
     })
 
+    document.getElementsByTagName("BODY")[0].removeChild(document.getElementById("page-loader"))
 },
 
 responseErrorHandle(error)
@@ -27,20 +26,27 @@ responseErrorHandle(error)
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
         if ( this.error.response.status == 419 ) {
-            console.log('Error', this.error.message)
+            window.app.$refs.root.modalDialogueMessage = 'Your are now logged off, Please reload this page or loss your data.'
+            window.app.$refs.root.modalDialogueHeading = 'Attention please !!'
+            window.app.$refs.root.modalDialogueToggle = 'show'
         } else if ( this.error.response.status == 500 ) {
-            console.log('Error', this.error.message)
+            window.app.$refs.root.modalDialogueMessage = 'Server error, Please try again later or get the Helpdesk.'
+            window.app.$refs.root.modalDialogueHeading = 'Attention please !!'
+            window.app.$refs.root.modalDialogueToggle = 'show'
         }
     } else if (this.error.request) {
         // The request was made but no response was received
         // `this.error.request` is an instance of XMLHttpRequest in the browser and an instance of
         // http.ClientRequest in node.js
-        console.log(this.error.request)
+        window.app.$refs.root.modalDialogueMessage = 'Cannot connect to server, Please try again later or get the Helpdesk.'
+        window.app.$refs.root.modalDialogueHeading = 'Attention please !!'
+        window.app.$refs.root.modalDialogueToggle = 'show'
     } else {
         // Something happened in setting up the request that triggered an Error
-        console.log('Error', this.error.message)
+        window.app.$refs.root.modalDialogueMessage = 'You should never see this, Please try again later or get the Helpdesk.'
+        window.app.$refs.root.modalDialogueHeading = 'Attention please !!'
+        window.app.$refs.root.modalDialogueToggle = 'show'
     }
-    console.log(this.error.config)
 }
 
 }

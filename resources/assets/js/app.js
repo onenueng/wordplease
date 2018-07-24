@@ -26,6 +26,5 @@ const app = new Vue({
 /*  yarn add flatpickr -- flatpickr no need to import css if use default */
 // require("flatpickr/dist/themes/dark.css");
 // window.flatpickr = require("flatpickr"); // const flatpickr = require("flatpickr");
-flatpickr('#tryme');
-autosize(document.querySelectorAll('textarea'));
-
+// flatpickr('#tryme');
+// autosize(document.querySelectorAll('textarea'));

@@ -1,15 +1,6 @@
 {
-    "/js/edit-note.js": "/js/edit-note.js",
-    "/js/medicine-discharge-note.js": "/js/medicine-discharge-note.js",
-    "/js/medicine-admission-note.js": "/js/medicine-admission-note.js",
-    "/js/create-note.js": "/js/create-note.js",
-    "/js/register.js": "/js/register.js",
     "/js/login.js": "/js/login.js",
-    "/js/vendor.js": "/js/vendor.js",
-    "/js/vue-controlled-component.js": "/js/vue-controlled-component.js",
-    "/js/vue-login.js": "/js/vue-login.js",
-    "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
-    "/js/vue-svg-bg.js": "/js/vue-svg-bg.js",
+    "/js/vendor.js": "/js/vendor.js",
     "/js/manifest.js": "/js/manifest.js"
 }

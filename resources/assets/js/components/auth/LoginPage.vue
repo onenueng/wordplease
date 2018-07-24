@@ -1,5 +1,12 @@
 <template>
     <div>
+        <modal-dialogue :toggle="modalDialogueToggle"
+                        :heading="modalDialogueHeading"
+                        :message="modalDialogueMessage"
+                        :buttonLabel="modalDialogueButtonLabel"
+                        @modalDialogueDismiss="modalDialogueToggle = 'hide'"
+        ></modal-dialogue>
+
         <navbar link="/home"
                 brand="Wordplease"
                 title="Login">
@@ -13,51 +20,53 @@
                     <h1>Login : </h1>
                 </div>
                 <div class="material-box-topic">
-                    <form action="login" method="POST" @keydown.enter.prevent="preventPressedEnterToSubmit">
+                    <form ref="form"
+                          method="POST"
+                          action="/login"
+                          @keydown="errors[$event.target.name] = false"
+                          @keydown.enter.prevent="loginButtonClicked">
                         <div class="form-group">
                             <input type="text"
                                    name="org_id"
                                    class="form-control"
                                    placeholder="ID"
                                    autocomplete="off"
-                                   v-model="userInputOrgId"
-                                   @blur="hasId()"/>
-                            <span class="help-block"><i class="text-danger">{{ orgIdHelpText }}</i></span>
+                                   v-model="org_id"/>
+                            <span class="help-block" v-if="errors.org_id">
+                                <i class="text-danger">ID is required.</i>
+                            </span>
                         </div>
                         <div class="form-group">
                             <input type="password"
                                    name="password"
                                    class="form-control"
                                    placeholder="Password"
-                                   v-model="userInputPassword"
-                                   @blur="hasPassword()"/>
-                            <span class="help-block"><i class="text-danger">{{ passwordHelpText }}</i></span>
+                                   v-model="password"/>
+                            <span class="help-block" v-if="errors.password">
+                                <i class="text-danger">Password is required.</i>
+                            </span>
                         </div>
 
-                        <input type="hidden" name="_token" id="token" />
-                        <input type="submit" id="submitLogin" style="display: none;" />
+                        <input type="hidden" name="_token" ref="token" />
                     </form>
 
-                    <button-app
-                        size="lg"
-                        :label="loginButtonLabel"
-                        action="login-click"
-                        status="info"
-                        @click="loginButtonClicked">
-                    </button-app>
+                    <button-app size="lg"
+                                status="info"
+                                :disable='loggingIn'
+                                :label="loginButtonLabel"
+                                @click="loginButtonClicked"
+                    ></button-app>
 
-                    <a href="/register" v-if="!whileLogginIn">Or register a new one</a>
+                    <a href="/register" v-if="!loggingIn">Or register a new one</a>
 
-                    <transition
-                        name="custom-classes-transition"
-                        enter-active-class="animated fadeInDown"
-                        leave-active-class="animated fadeOutUp">
-                        <alert
-                            state="danger"
-                            icon="fa fa-remove fa-3x"
-                            :content="alertContent"
-                            v-if="alert">
-                        </alert>
+                    <transition name="custom-classes-transition"
+                                enter-active-class="animated fadeInDown"
+                                leave-active-class="animated fadeOutUp">
+                        <alert state="danger"
+                               icon="fa fa-remove fa-3x"
+                               :content="alertContent"
+                               v-if="alert"
+                        ></alert>
                     </transition>
                 </div>
             </div>
@@ -66,113 +75,72 @@
 </template>
 
 <script>
+    // components
     import Alert from '../alerts/Alert.vue'
     import Navbar from '../navbars/Navbar.vue'
     import ButtonApp from '../buttons/ButtonApp.vue'
+    import ModalDialogue from '../modals/ModalDialogue.vue'
     import NavbarLeft from '../navbars/NavbarLeft.vue'
     import NavbarRight from '../navbars/NavbarRight.vue'
 
+    // utilities
+    import ResponseErrorHandler from '../../sandbox/ResponseErrorHandler.js'
+    import watermark from "../../modules/page-text-watermark.js"
+    import formHelper from "../../modules/form-helper.js"
+
     export default {
         components: {
-            'alert': Alert,
-            'navbar': Navbar,
-            'button-app': ButtonApp,
-            'navbar-left': NavbarLeft,
-            'navbar-right': NavbarRight,
+            Alert,
+            Navbar,
+            ButtonApp,
+            NavbarLeft,
+            NavbarRight,
+            ModalDialogue
+        },
+        mounted () {
+            formHelper.loaded()
+            watermark.watermark('koramit@gmail.com')
         },
         data() {
             return {
-                userInputOrgId: '',
-                userInputPassword: '',
-                orgIdHelpText: '',
-                passwordHelpText: '',
-                loginButtonLabel: 'Login',
+                alert: false,
                 alertContent: '',
                 alertAnimated: '',
-                alert: false,
-                whileLogginIn: false
+
+                modalDialogueToggle: undefined,
+                modalDialogueHeading: undefined,
+                modalDialogueMessage: undefined,
+                modalDialogueButtonLabel: undefined,
+
+                org_id: '',
+                password: '',
+                errors: {
+                    org_id: false,
+                    password: false
+                },
+                loggingIn: false,
+                loginButtonLabel: 'Login',
+
+                caught: {}
             }
         },
-        mounted() {
-            // EventBus.$on('login-click', () => {
-            //     if ( this.hasId() && this.hasPassword() ) {
-            //         this.whileLogginIn = true
-            //         this.loginButtonLabel = 'Logging in <i class="fa fa-circle-o-notch fa-spin"></i>'
-            //         axios.post('/front-end-login', {
-            //             org_id: this.userInputOrgId,
-            //             password: this.userInputPassword
-            //         })
-            //         .then( (response) => {
-            //             if ( response.data.reply_code == 0 ) {
-            //                 $('#token').val(document.head.querySelector("[name=csrf-token]").content)
-            //                 $('#submitLogin').click()
-            //             } else {
-            //                 this.alertContent = response.data.reply_text
-            //                 this.alert = true
-            //                 setTimeout( () => {
-            //                     this.alert = false
-            //                 }, 5000);
-            //                 this.loginButtonLabel = 'Login'
-            //                 this.whileLogginIn = false
-            //             }
-            //         })
-            //         .catch( (error) => {
-            //             this.loginButtonLabel = 'Login'
-            //             this.whileLogginIn = false
-            //             if (error.response) {
-            //                 // The request was made and the server responded with a status code
-            //                 // that falls out of the range of 2xx
-            //                 if ( error.response.status == 419 ) {
-            //                     EventBus.$emit('show-common-dialog', 'error-419')
-            //                 } else if ( error.response.status == 500 ) {
-            //                     EventBus.$emit('show-common-dialog', 'error-500')
-            //                 }
-            //             } else if (error.request) {
-            //                 // The request was made but no response was received
-            //                 // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-            //                 // http.ClientRequest in node.js
-            //                 console.log(error.request)
-            //             } else {
-            //                 // Something happened in setting up the request that triggered an Error
-            //                 console.log('Error', error.message)
-            //             }
-            //             console.log(error.config)
-            //         })
-            //     }
-            // })
-        },
         methods: {
-            hasId() {
-                if ( this.userInputOrgId != '' ) {
-                    this.orgIdHelpText = ''
-                    return true
-                }
-                this.orgIdHelpText = 'ID is required.'
-                return false
+            hasError (field) {
+                return this.errors[field] = this[field] == ''
             },
-            hasPassword() {
-                if ( this.userInputPassword != '' ) {
-                    this.passwordHelpText = ''
-                    return true
-                }
-                this.passwordHelpText = 'Password is required.'
-                return false
-            },
-            preventPressedEnterToSubmit () {
-                EventBus.$emit('login-click')
-            },
+
             loginButtonClicked () {
-                if ( this.hasId() && this.hasPassword() ) {
-                    this.whileLogginIn = true
+                if ( !this.hasError('org_id') & !this.hasError('password') ) {
+                    this.loggingIn = true
                     this.loginButtonLabel = 'Logging in <i class="fa fa-circle-o-notch fa-spin"></i>'
                     axios.post('/front-end-login', {
-                        org_id: this.userInputOrgId,
-                        password: this.userInputPassword
+                        org_id: this.org_id,
+                        password: this.password
                     })
                     .then( (response) => {
                         if ( response.data.reply_code == 0 ) {
-                            $('#token').val(document.head.querySelector("[name=csrf-token]").content)
-                            $('#submitLogin').click()
+                            this.$refs.token.value = document.head.querySelector("[name=csrf-token]").content
+                            this.$refs.submit()
                         } else {
                             this.alertContent = response.data.reply_text
                             this.alert = true
@@ -180,30 +148,14 @@
                                 this.alert = false
                             }, 5000);
                             this.loginButtonLabel = 'Login'
-                            this.whileLogginIn = false
+                            this.loggingIn = false
                         }
                     })
                     .catch( (error) => {
                         this.loginButtonLabel = 'Login'
-                        this.whileLogginIn = false
-                        if (error.response) {
-                            // The request was made and the server responded with a status code
-                            // that falls out of the range of 2xx
-                            if ( error.response.status == 419 ) {
-                                EventBus.$emit('show-common-dialog', 'error-419')
-                            } else if ( error.response.status == 500 ) {
-                                EventBus.$emit('show-common-dialog', 'error-500')
-                            }
-                        } else if (error.request) {
-                            // The request was made but no response was received
-                            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                            // http.ClientRequest in node.js
-                            console.log(error.request)
-                        } else {
-                            // Something happened in setting up the request that triggered an Error
-                            console.log('Error', error.message)
-                        }
-                        console.log(error.config)
+                        this.loggingIn = false
+                        this.caught = new ResponseErrorHandler(error)
+                        this.caught.handle()
                     })
                 }
             }

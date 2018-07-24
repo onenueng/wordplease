@@ -2,72 +2,54 @@
     <button :id="id"
             @click="click"
             v-html="label"
-            :tabindex="noTapStop === undefined ? null : -1"
-            :class="'btn-app btn-app-' + status + (size == undefined ? '' : (' btn-' + size))">
-    </button>
+            :tabindex="tabStop"
+            :class="buttonClass"
+            :disabled="disable ? '' : null"
+    ></button>
 </template>
 
 <script>
     export default {
         props: {
-            action: {
-                type: [String, Object, Function],
-                required: false
-            },
-            label: {
-                type: String,
-                required: true
-            },
-            status: {
-                type: String,
-                required: true
-            },
-            size: {
-                type: String,
-                required: false
-            },
-            noTapStop: {
-                type: String,
-                required: false
-            },
+            action: { default: () => ({ event: 'click', payload: null }) },
+            size: { default: false },
+            label: { required: true },
+            disable: { default: null },
+            status: { required: true },
+            noTapStop: { required: false }
         },
-        data() {
-            return {
-                id: ''
+        computed: {
+            id () {
+                return Date.now() + '-' + Math.floor(Math.random() * (1000 - 0 + 1)) + 0
+            },
+            buttonClass () {
+                return 'btn-app btn-app-' + this.status + ( !this.size ? '' : (' btn-' + this.size))
+            },
+            tabStop () {
+                return ( this.noTapStop === undefined ) ? null : -1
             }
-        },
-        mounted () {
-            this.id = Date.now() + '-' + Math.floor(Math.random() * (1000 - 0 + 1)) + 0
         },
         methods: {
             click(e) {
-                if ( this.action === undefined ) {
-                    this.$emit('click')
-                } else if ( typeof this.action == 'string' ) {
-                    // EventBus.$emit(this.action)
-                    this.$emit('click')
-                } else {
-                    // EventBus.$emit(this.action.event, this.action.value)
-                    this.$emit('click',  this.action.value)
+
+                this.$emit(this.action.event, this.action.payload)
+
+                const element = $('#' + this.id)
+
+                if (element.find(".circle").length == 0) {
+                    element.prepend("<span class='circle'></span>")
                 }
 
-                var element, circle, d, x, y
-
-                element = $('#' + this.id)
-
-                if (element.find(".circle").length == 0)
-                    element.prepend("<span class='circle'></span>")
-
-                circle = element.find(".circle")
+                const circle = element.find(".circle")
                 circle.removeClass("animate")
 
                 if (!circle.height() && !circle.width()) {
-                    d = Math.max(element.outerWidth(), element.outerHeight())
+                    const d = Math.max(element.outerWidth(), element.outerHeight())
                     circle.css({height: d, width: d})
                 }
 
-                x = e.pageX - element.offset().left - circle.width()/2
-                y = e.pageY - element.offset().top - circle.height()/2
+                const x = e.pageX - element.offset().left - circle.width()/2
+                const y = e.pageY - element.offset().top - circle.height()/2
 
                 circle.css({top: y+'px', left: x+'px'}).addClass("animate")
             }

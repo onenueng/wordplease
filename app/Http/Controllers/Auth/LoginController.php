@@ -31,13 +31,14 @@ class LoginController extends Controller
      */
     public function showLoginForm()
     {
-        return view('user.login');
+        return view('vue-app')->with(['title' => 'Login', 'jsFile' => '/js/login.js']);
+        // return view('user.login');
     }
 
     public function login(\Illuminate\Http\Request $request)
     {
         $user = $this->attemptLogin($request);
-        
+
         if ( $user ) {
             auth()->login($user);
             return $this->sendLoginResponse();

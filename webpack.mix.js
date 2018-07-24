@@ -25,8 +25,8 @@ mix.extract([
     .autoload({ jquery: ['$', 'window.jQuery', 'jQuery'] }) // use autoload cause bootstrap can't find jquery
 //    .js('resources/assets/js/edit-note.js', 'public/js')
 
-   .js('resources/assets/js/auth/login.js', 'public/js')
-//    .js('resources/assets/js/auth/register.js', 'public/js')
+    .js('resources/assets/js/auth/login.js', 'public/js')
+    .js('resources/assets/js/auth/register.js', 'public/js')
 
 //    .js('resources/assets/js/notes/create-note.js', 'public/js')
 //    .js('resources/assets/js/notes/medicine-admission-note.js', 'public/js')

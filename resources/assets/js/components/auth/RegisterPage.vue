@@ -44,6 +44,9 @@
     import RegisterById from '../../components/auth/RegisterById.vue'
     import NavbarRight from '../../components/navbars/NavbarRight.vue'
     import RegisterByEmail from '../../components/auth/RegisterByEmail.vue'
+
+    import watermark from "../../modules/page-text-watermark.js"
+    import formHelper from "../../modules/form-helper.js"
     
     export default {
         components: {
@@ -69,6 +72,10 @@
                 showRegisterById: false,
                 showRegisterByEmail: false,
             }
+        },
+        mounted () {
+            formHelper.loaded()
+            watermark.watermark('koramit@gmail.com')
         },
         methods: {
             showForm(mode) {

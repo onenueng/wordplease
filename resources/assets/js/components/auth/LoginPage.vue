@@ -78,14 +78,12 @@
     // components
     import Alert from '../alerts/Alert.vue'
     import Navbar from '../navbars/Navbar.vue'
-    import ButtonApp from '../buttons/ButtonApp.vue'
-    import ModalDialogue from '../modals/ModalDialogue.vue'
     import NavbarLeft from '../navbars/NavbarLeft.vue'
     import NavbarRight from '../navbars/NavbarRight.vue'
+    import ButtonApp from '../buttons/ButtonApp.vue'
+    import ModalDialogue from '../modals/ModalDialogue.vue'
 
     // utilities
-    import ResponseErrorHandler from '../../sandbox/ResponseErrorHandler.js'
-    import watermark from "../../modules/page-text-watermark.js"
     import formHelper from "../../modules/form-helper.js"
 
     export default {
@@ -96,10 +94,6 @@
             NavbarLeft,
             NavbarRight,
             ModalDialogue
-        },
-        mounted () {
-            formHelper.loaded()
-            watermark.watermark('koramit@gmail.com')
         },
         data() {
             return {
@@ -119,10 +113,11 @@
                     password: false
                 },
                 loggingIn: false,
-                loginButtonLabel: 'Login',
-
-                caught: {}
+                loginButtonLabel: 'Login'
             }
+        },
+        mounted () {
+            formHelper.loaded()
         },
         methods: {
             hasError (field) {
@@ -140,7 +135,7 @@
                     .then( (response) => {
                         if ( response.data.reply_code == 0 ) {
                             this.$refs.token.value = document.head.querySelector("[name=csrf-token]").content
-                            this.$refs.submit()
+                            this.$refs.form.submit()
                         } else {
                             this.alertContent = response.data.reply_text
                             this.alert = true
@@ -154,8 +149,7 @@
                     .catch( (error) => {
                         this.loginButtonLabel = 'Login'
                         this.loggingIn = false
-                        this.caught = new ResponseErrorHandler(error)
-                        this.caught.handle()
+                        formHelper.responseErrorHandle(error)
                     })
                 }
             }

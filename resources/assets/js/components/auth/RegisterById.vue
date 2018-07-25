@@ -77,11 +77,9 @@
             <button-app
                 size="lg"
                 :label="labelRegisterButton"
-                action="id-register-click"
                 status="info"
                 @click="registerButtonClicked"
-                >
-            </button-app>
+            ></button-app>
         </div>
     </transition>
 </div>
@@ -99,14 +97,8 @@
             'input-state': InputState
         },
         props: {
-            idName: {
-                type: String,
-                required: true
-            },
-            pattern: {
-                type: String,
-                required: true
-            }
+            idName: { default: 'SAP ID' },
+            pattern: { default: '^100([0-9]{5})$' }
         },
         data() {
             return {
@@ -128,11 +120,7 @@
         },
         computed: {
             regex() {
-                return ( this.pattern !== null ) ? new RegExp(this.pattern) : null
-                // if ( this.pattern !== null ) {
-                //     return new RegExp(this.pattern)
-                // }
-                // return null
+                return new RegExp(this.pattern)
             }
         },
         methods: {
@@ -152,10 +140,6 @@
             },
             isIdValid() {
                 return ( this.userInput.match(this.regex) !== null )
-                // if ( this.userInput.match(this.regex) !== null ) {
-                //     return true
-                // }
-                // return false
             },
             idFocus() {
                 this.showIdInputStateIcon = false
@@ -163,7 +147,7 @@
                 this.divIdInputClass = 'form-group-sm has-feedback'
             },
             checkId() {
-                axios.post('/register/check-id', {
+                axios.post('/register/check-ido', {
                     org_id: this.userInput
                 })
                 .then( (response) => {
@@ -183,7 +167,9 @@
                     this.idInputStateIconClass = 'glyphicon glyphicon-remove form-control-feedback'
                     this.idStateText = 'Whoops, someting went wrong. Please try again.'
                     this.idInputDisable = null
-                    console.log(error)
+                    // if ( error.response.status == 404 ) { alert(typeof error) }
+                    // console.log(error)
+                    this.$emit('error', error)
                 })
             },
             registerButtonClicked() {
@@ -206,9 +192,9 @@
                         this.labelRegisterButton = 'Register'
                     })
                     .catch( (error) => {
-                        console.log(error)
                         this.idInputDisable = null
                         this.labelRegisterButton = 'Register'
+                        this.$emit('error', error)
                     })
                 }
             }

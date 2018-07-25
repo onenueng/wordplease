@@ -4,7 +4,7 @@ loaded()
 {
     window.addEventListener('focus', (e) => {
         let timeDiff = Date.now() - window.loadPageAt
-        
+
         if ( (timeDiff) > (window.SESSION_LIFETIME) ) {
             axios.get('/is-session-active')
                  .then((response) => {
@@ -22,19 +22,21 @@ loaded()
 
 responseErrorHandle(error)
 {
-    if (this.error.response) {
+    if ( error.response ) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
-        if ( this.error.response.status == 419 ) {
+        if ( error.response.status == 419 ) {
             window.app.$refs.root.modalDialogueMessage = 'Your are now logged off, Please reload this page or loss your data.'
             window.app.$refs.root.modalDialogueHeading = 'Attention please !!'
             window.app.$refs.root.modalDialogueToggle = 'show'
-        } else if ( this.error.response.status == 500 ) {
+        } else if ( error.response.status == 500 ) {
             window.app.$refs.root.modalDialogueMessage = 'Server error, Please try again later or get the Helpdesk.'
             window.app.$refs.root.modalDialogueHeading = 'Attention please !!'
             window.app.$refs.root.modalDialogueToggle = 'show'
+        } else if (error.response.status == 404) {
+            alert('4o4 !!!')
         }
-    } else if (this.error.request) {
+    } else if ( error.request ) {
         // The request was made but no response was received
         // `this.error.request` is an instance of XMLHttpRequest in the browser and an instance of
         // http.ClientRequest in node.js
@@ -46,6 +48,7 @@ responseErrorHandle(error)
         window.app.$refs.root.modalDialogueMessage = 'You should never see this, Please try again later or get the Helpdesk.'
         window.app.$refs.root.modalDialogueHeading = 'Attention please !!'
         window.app.$refs.root.modalDialogueToggle = 'show'
+        console.log(error)
     }
 }
 

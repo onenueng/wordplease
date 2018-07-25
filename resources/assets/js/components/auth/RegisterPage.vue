@@ -1,5 +1,12 @@
 <template>
     <div>
+        <modal-dialogue :toggle="modalDialogueToggle"
+                        :heading="modalDialogueHeading"
+                        :message="modalDialogueMessage"
+                        :buttonLabel="modalDialogueButtonLabel"
+                        @modalDialogueDismiss="modalDialogueToggle = 'hide'"
+        ></modal-dialogue>
+
         <navbar link="/home"
                 brand="Wordplease"
                 title="Register">
@@ -25,9 +32,10 @@
                 <hr class="line">
                 <div v-if="showRegisterById">
                     <register-by-id
-                        :id-name="idName"
-                        :pattern="pattern">
-                    </register-by-id>
+                        id-name="SAP ID"
+                        pattern="^100([0-9]{5})$"
+                        @error="handleError"
+                    ></register-by-id>
                 </div>
 
                 <div v-if="showRegisterByEmail">
@@ -44,42 +52,36 @@
     import RegisterById from '../../components/auth/RegisterById.vue'
     import NavbarRight from '../../components/navbars/NavbarRight.vue'
     import RegisterByEmail from '../../components/auth/RegisterByEmail.vue'
+    import ModalDialogue from '../modals/ModalDialogue.vue'
 
-    import watermark from "../../modules/page-text-watermark.js"
     import formHelper from "../../modules/form-helper.js"
-    
+
     export default {
         components: {
-            'navbar': Navbar,
-            'navbar-left': NavbarLeft,
-            'navbar-right': NavbarRight,
-            'register-by-id': RegisterById,
-            'register-by-email': RegisterByEmail
-        },
-        props: {
-            // field name on database.
-            idName: {
-                type: String,
-                required: true
-            },
-            pattern: {
-                type: String,
-                required: true
-            }
+            Navbar,
+            NavbarLeft,
+            NavbarRight,
+            RegisterById,
+            ModalDialogue,
+            RegisterByEmail
         },
         data () {
             return {
                 showRegisterById: false,
                 showRegisterByEmail: false,
+
+                modalDialogueToggle: undefined,
+                modalDialogueHeading: undefined,
+                modalDialogueMessage: undefined,
+                modalDialogueButtonLabel: undefined
             }
         },
         mounted () {
             formHelper.loaded()
-            watermark.watermark('koramit@gmail.com')
         },
         methods: {
             showForm(mode) {
-                if (mode == 'id') {
+                if ( mode == 'id' ) {
                     this.showRegisterById = true
                     this.showRegisterByEmail = false
                 } else {
@@ -87,6 +89,10 @@
                     this.showRegisterByEmail = true
                 }
             },
+            handleError(error) {
+                formHelper.responseErrorHandle(error)
+                // console.log(error)
+            }
         }
     }
 </script>

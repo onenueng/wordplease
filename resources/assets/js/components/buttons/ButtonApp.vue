@@ -11,7 +11,7 @@
 <script>
     export default {
         props: {
-            action: { default: () => ({ event: 'click', payload: null }) },
+            action: { default: () => ( { event: 'click', payload: null }) },
             size: { default: false },
             label: { required: true },
             disable: { default: null },

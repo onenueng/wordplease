@@ -4,8 +4,8 @@
         state="info"
         icon="fa fa-lightbulb-o fa-3x"
         animated="lightSpeedIn"
-        content="You need Faculty's account to register and login by ID. If you don't have one, you will not be able to login the application.">
-    </alert>
+        content="You need Faculty's account to register and login by ID. If you don't have one, you will not be able to login the application."
+    ></alert>
     <div :class="divIdInputClass">
         <label for="orgId" class="control-label">
             {{ idName }} :
@@ -22,8 +22,8 @@
         <span
             v-show="showIdInputStateIcon"
             :class="idInputStateIconClass"
-            aria-hidden="true">
-        </span>
+            aria-hidden="true"
+        ></span>
         <span class="help-block">{{ idStateText }}</span>
     </div>
     <transition name="slide-fade">
@@ -92,9 +92,9 @@
 
     export default {
         components: {
-            'alert': Alert,
-            'button-app': ButtonApp,
-            'input-state': InputState
+            Alert,
+            ButtonApp,
+            InputState
         },
         props: {
             idName: { default: 'SAP ID' },
@@ -147,7 +147,7 @@
                 this.divIdInputClass = 'form-group-sm has-feedback'
             },
             checkId() {
-                axios.post('/register/check-ido', {
+                axios.post('/register/check-id', {
                     org_id: this.userInput
                 })
                 .then( (response) => {
@@ -167,8 +167,6 @@
                     this.idInputStateIconClass = 'glyphicon glyphicon-remove form-control-feedback'
                     this.idStateText = 'Whoops, someting went wrong. Please try again.'
                     this.idInputDisable = null
-                    // if ( error.response.status == 404 ) { alert(typeof error) }
-                    // console.log(error)
                     this.$emit('error', error)
                 })
             },

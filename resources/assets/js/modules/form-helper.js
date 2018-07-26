@@ -33,8 +33,10 @@ responseErrorHandle(error)
             window.app.$refs.root.modalDialogueMessage = 'Server error, Please try again later or get the Helpdesk.'
             window.app.$refs.root.modalDialogueHeading = 'Attention please !!'
             window.app.$refs.root.modalDialogueToggle = 'show'
-        } else if (error.response.status == 404) {
-            alert('4o4 !!!')
+        } else {
+            window.app.$refs.root.modalDialogueMessage = 'You should never see this, Please try again later or get the Helpdesk.'
+            window.app.$refs.root.modalDialogueHeading = 'Attention please !!'
+            window.app.$refs.root.modalDialogueToggle = 'show'
         }
     } else if ( error.request ) {
         // The request was made but no response was received

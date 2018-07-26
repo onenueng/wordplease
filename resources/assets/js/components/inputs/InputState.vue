@@ -16,26 +16,11 @@
 <script>
     export default {
         props: {
-            label: {
-                type: String,
-                required: true
-            },
-            field: {
-                type: String,
-                required: true
-            },
-            serviceUrl: {
-                type: String,
-                required: false
-            },
-            initHelpText: {
-                type: String,
-                required: false
-            },
-            pattern: {
-                type: String,
-                required: false
-            },
+            label: { default: 'label'},
+            field: { default: 'data' },
+            serviceUrl: { default: null },
+            initHelpText: { default: null },
+            pattern: { default: '.' },
             inputValue: {
                 type: String,
                 required: true
@@ -82,6 +67,9 @@
             }
 
         },
+            $infomed_host = config('app.infomed_host');
+            $infomed_username = config('app.infomed_username');
+            $infomed_password = config('app.infomed_password');
         methods: {
             checkStateWithApi() {
                 axios.post(this.serviceUrl, {

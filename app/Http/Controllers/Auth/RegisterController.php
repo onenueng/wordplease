@@ -7,6 +7,7 @@ use App\Contracts\UserAPI;
 use Illuminate\Http\Request;
 use App\Traits\Authorizable;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cache;
 
 class RegisterController extends Controller
 {
@@ -51,7 +52,16 @@ class RegisterController extends Controller
         }
 
         // *** IMPLEMENT ThrottlesLogins ***
-        $data = $api->getUser($request->org_id);
+        $cacheLifeTime = 120; // minutes
+        $cacheKey = ( 'user_org_id@' ) . $request->org_id;
+
+        if ( !Cache::has($cacheKey) ) {
+            $data = $api->getUser($request->org_id);
+            Cache::put($cacheKey, $data, $cacheLifeTime);
+        } else {
+            $data = Cache::get($cacheKey);
+        }
+        
         switch ($data['reply_code']) {
             case 0:
                 $data['state'] = 'success';

@@ -6,28 +6,20 @@
         animated="lightSpeedIn"
         content="You need Faculty's account to register and login by ID. If you don't have one, you will not be able to login the application."
     ></alert>
-    <div :class="divIdInputClass">
-        <label for="orgId" class="control-label">
-            {{ idName }} :
-        </label>
-        <input
-            id="orgId"
-            type="text"
-            class="form-control"
-            @input="idUpdate"
-            @focus="idFocus"
-            v-model="userInput"
-            :disabled="idInputDisable"
-            autocomplete="off" />
-        <span
-            v-show="showIdInputStateIcon"
-            :class="idInputStateIconClass"
-            aria-hidden="true"
-        ></span>
-        <span class="help-block">{{ idStateText }}</span>
-    </div>
+    <input-state
+        name="org_id"
+        service-url="/register/is-data-available"
+        placeholder-state-text="please fill in a valid ID"
+        :label="idName"
+        :pattern="pattern"
+        :disabled="disabled.orgId"
+        v-model="orgId"
+        @disabled="(state) => { disabled.orgId = state }"
+        @error="(error) => { $emit('error', error) }"
+        @validated="orgIdValidate"
+    ></input-state>
     <transition name="slide-fade">
-        <div v-if="showUserData">
+        <div v-if="userData != null">
             <div class="form-group-sm">
                 <label class="control-label">Full Name :</label>
                 <input type="text" class="form-control" v-model="userData.name" readonly />
@@ -43,41 +35,44 @@
             </div>
             <hr class="line">
             <input-state
-                field="email"
-                service-url="/register/is-data-available"
+                name="email"
                 label="Email :"
                 pattern="email"
-                :input-value.sync="userData.email"
-                :is-valid.sync="isEmailValid"
-                :input-disable="idInputDisable">
-            </input-state>
-            <input-state
-                field="username"
                 service-url="/register/is-data-available"
+                :disabled="disabled.email"
+                v-model="userData.email"
+                @error="(error) => { $emit('error', error) }"
+                @validated="(isValid) => { valid.email = isValid }"
+            ></input-state>
+            <input-state
+                name="username"
                 label="Username :"
                 pattern="^\w+$"
-                init-help-text="This nickname will display in the app."
-                :input-value.sync="username"
-                :is-valid.sync="isUsernameValid"
-                :input-disable="idInputDisable">
-            </input-state>
+                service-url="/register/is-data-available"
+                placeholder-state-text="This will be your nickname for the app."
+                :disabled="disabled.username"
+                v-model="userData.username"
+                @error="(error) => { $emit('error', error) }"
+                @validated="(isValid) => { valid.username = isValid }"
+            ></input-state>
             <input-state
-                field="name_en"
+                name="name_en"
                 label="Full Name in English :"
                 pattern="[a-zA-Z]"
-                :input-value.sync="userData.name_en"
-                :is-valid.sync="isNameEnValid"
-                :input-disable="idInputDisable">
-            </input-state>
+                :disabled="disabled.name_en"
+                v-model="userData.name_en"
+                @error="(error) => { $emit('error', error) }"
+                @validated="(isValid) => { valid.name_en = isValid }"
+            ></input-state>
             <hr class="line">
         </div>
     </transition>
     <transition name="slide-fade">
-        <div class="form-group-sm" v-if="isEmailValid && isUsernameValid && isNameEnValid">
+        <div class="form-group-sm" v-if="valid.email && valid.username && valid.name_en">
             <button-app
                 size="lg"
-                :label="labelRegisterButton"
                 status="info"
+                :label="labelRegisterButton"
                 @click="registerButtonClicked"
             ></button-app>
         </div>
@@ -102,19 +97,19 @@
         },
         data() {
             return {
-                divIdInputClass: 'form-group-sm has-feedback',
-                userInput: null,
-                idInputDisable: null,
-                showIdInputStateIcon: false,
-                idInputStateIconClass: '',
-                initIdStateText: "please fill in a valid ID",
-                idStateText: null,
-                userData: '',
-                showUserData: false,
-                isEmailValid: false,
-                username: '',
-                isUsernameValid: false,
-                isNameEnValid: false,
+                orgId: null,
+                userData: null,
+                valid: {
+                    email: false,
+                    username: false,
+                    name_en: false
+                },
+                disabled: {
+                    orgId: false,
+                    email: false,
+                    username: false,
+                    name_en: false
+                },                
                 labelRegisterButton: "Register"
             }
         },
@@ -124,77 +119,36 @@
             }
         },
         methods: {
-            idUpdate() {
-                if ( this.userInput.match(this.regex) !== null ) {
-                    this.idStateText = null
-                    this.idInputDisable = ''
-                    this.showIdInputStateIcon = true
-                    this.idInputStateIconClass = 'fa fa-circle-o-notch fa-spin form-control-feedback'
-                    this.checkId()
+            orgIdValidate (available, payload) {
+                if ( available ) {
+                    this.userData = payload
                 } else {
-                    this.showUserData = false
-                    this.isUsernameValid = false
-                    this.isEmailValid = false
-                    this.isNameEnValid = false
+                    this.userData = null
                 }
-            },
-            isIdValid() {
-                return ( this.userInput.match(this.regex) !== null )
-            },
-            idFocus() {
-                this.showIdInputStateIcon = false
-                this.idStateText = this.initIdStateText
-                this.divIdInputClass = 'form-group-sm has-feedback'
-            },
-            checkId() {
-                axios.post('/register/check-id', {
-                    org_id: this.userInput
-                })
-                .then( (response) => {
-                    this.divIdInputClass = 'form-group-sm has-feedback has-' + response.data.state
-                    this.idInputStateIconClass = 'glyphicon form-control-feedback glyphicon-' + response.data.icon
-                    if (response.data.reply_code > 0) {
-                        this.idStateText = response.data.reply_text
-                    } else {
-                        this.idStateText = null
-                        this.userData = response.data
-                        this.showUserData = true
-                    }
-                    this.idInputDisable = null
-                })
-                .catch( (error) => {
-                    this.divIdInputClass = 'form-group-sm has-feedback has-error'
-                    this.idInputStateIconClass = 'glyphicon glyphicon-remove form-control-feedback'
-                    this.idStateText = 'Whoops, someting went wrong. Please try again.'
-                    this.idInputDisable = null
-                    this.$emit('error', error)
-                })
             },
             registerButtonClicked() {
-                this.idInputDisable = ''
+                this.disabled = _.mapValues(this.disabled, () => true);
+
                 this.labelRegisterButton = 'Registering <i class="fa fa-circle-o-notch fa-spin"></i>'
-                if ( this.isEmailValid && this.isUsernameValid && this.isNameEnValid ) {
-                    axios.post('/register', {
-                        mode: "id",
-                        user: {
-                            name: this.username,
-                            email: this.userData.email,
-                            org_id: this.userData.org_id,
-                            full_name: this.userData.name,
-                            full_name_en: this.userData.name_en
-                        }
-                    })
-                    .then( (response) => {
-                        window.location.href = response.data.href
-                        this.idInputDisable = null
-                        this.labelRegisterButton = 'Register'
-                    })
-                    .catch( (error) => {
-                        this.idInputDisable = null
-                        this.labelRegisterButton = 'Register'
-                        this.$emit('error', error)
-                    })
-                }
+
+                axios.post('/register', {
+                    mode: "id",
+                    user: {
+                        name: this.userData.username,
+                        email: this.userData.email,
+                        org_id: this.userData.org_id,
+                        full_name: this.userData.name,
+                        full_name_en: this.userData.name_en
+                    }
+                })
+                .then( (response) => {
+                    window.location.href = response.data.href
+                })
+                .catch( (error) => {
+                    this.labelRegisterButton = 'Register'
+                    this.disabled = _.mapValues(this.disabled, () => false);
+                    this.$emit('error', error)
+                })
             }
         }
     }

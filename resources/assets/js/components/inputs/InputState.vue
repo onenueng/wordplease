@@ -2,7 +2,7 @@
     <div :class="state.themeClass"><!-- class provide state border color -->
         <label class="control-label">{{ label }}</label>
         <input 
-            type="text"
+            :type="type"
             class="form-control"
             :value="value"
             :disabled="disabled"
@@ -19,13 +19,15 @@
 <script>
     export default {
         props: {
-            value: { required: true },              // input's value
-            label: { default: 'label'},             // input's label
-            name: { default: 'data' },              // input's name 
-            serviceUrl: { default: null },          // endpoint for database validation if necessary
-            placeholderStateText: { default: '' },  // placholer as state text
-            pattern: { default: '.' },              // pattern for format validation
-            disabled: { default: false }             // disable input or not
+            type: { default: 'text'},                       // input's type
+            value: { required: true },                      // input's value
+            label: { default: 'label'},                     // input's label
+            name: { default: 'data' },                      // input's name 
+            serviceUrl: { default: null },                  // endpoint for database validation if necessary
+            pattern: { default: '.' },                      // pattern for format validation
+            disabled: { default: false },                   // disable input or not
+            placeholderStateText: { default: '' },          // placholer as state text
+            invalidResponseText: { default: 'invalid input format' }
         },
         data() {
             return {
@@ -42,6 +44,11 @@
                     return new RegExp(/(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/)
                 }
                 return new RegExp(this.pattern)
+            }
+        },
+        watch: {
+            pattern(pattern) {
+                this.onkeydown()
             }
         },
         created () {
@@ -107,7 +114,7 @@
                         this.setState({
                                 theme: 'has-error',
                                 icon: 'glyphicon glyphicon-remove',
-                                text: 'invalid input format'
+                                text: this.invalidResponseText
                             })
                     }
                 } else {

@@ -7,62 +7,72 @@
         content="The email register account is valid for a short period only, you will need Faculty's account to continue using this application.">
     </alert>
     <input-state
-        field="email"
-        service-url="/register/is-data-available"
+        name="email"
         label="Email :"
         pattern="email"
-        :input-value.sync="email"
-        :is-valid.sync="isEmailValid"
-        :input-disable="idInputDisable">
-    </input-state>
-    <input-state
-        field="username"
         service-url="/register/is-data-available"
+        :disabled="disabled.email"
+        v-model="user.email"
+        @error="(error) => { $emit('error', error) }"
+        @validated="(isValid) => { valid.email = isValid }"
+    ></input-state>
+    <input-state
+        name="username"
         label="Username :"
         pattern="^\w+$"
-        init-help-text="This nickname will display in the app."
-        :input-value.sync="username"
-        :is-valid.sync="isUsernameValid"
-        :input-disable="idInputDisable">
-    </input-state>
-    <div :class="passwordDivClass">
-        <label class="control-label">Password :</label>
-        <input type="password" class="form-control" @input="repasswordUpdated()" v-model="password" />
-        <span :class="passwordIconClass"></span>
-        <span class="help-block"><i>{{ passwordHelpText }}</i></span>
-    </div>
-    <div :class="passwordDivClass">
-        <label class="control-label">Password again :</label>
-        <input type="password" class="form-control" @input="repasswordUpdated()" v-model="re_password" />
-        <span :class="passwordIconClass"></span>
-        <span class="help-block"><i>{{ passwordHelpText }}</i></span>
-    </div>
+        service-url="/register/is-data-available"
+        placeholder-state-text="This will be your nickname for the app."
+        :disabled="disabled.username"
+        v-model="user.username"
+        @error="(error) => { $emit('error', error) }"
+        @validated="(isValid) => { valid.username = isValid }"
+    ></input-state>
     <input-state
-        field="full_name"
+        type="password"
+        name="password"
+        label="Password :"
+        :disabled="disabled.password"
+        v-model="user.password"
+        @error="(error) => { $emit('error', error) }"
+        @validated="(isValid) => { valid.password = isValid }"
+    ></input-state>
+    <input-state
+        type="password"
+        name="re_password"
+        label="Password again :"
+        invalid-response-text="password doesn't matched"
+        :pattern="'^' + user.password + '$'"
+        :disabled="disabled.re_password"
+        v-model="user.re_password"
+        @error="(error) => { $emit('error', error) }"
+        @validated="(isValid) => { valid.re_password = isValid }"
+    ></input-state>
+    <input-state
+        name="full_name"
         label="Full Name in Thai :"
         pattern="[\u0e00-\u0e7e]"
-        :input-value.sync="full_name"
-        :is-valid.sync="isFullNameValid"
-        :input-disable="idInputDisable">
-    </input-state>
+        :disabled="disabled.full_name"
+        v-model="user.full_name"
+        @error="(error) => { $emit('error', error) }"
+        @validated="(isValid) => { valid.full_name = isValid }"
+    ></input-state>
     <input-state
-        field="full_name_en"
+        name="full_name_en"
         label="Full Name in English :"
         pattern="[a-zA-Z]"
-        :input-value.sync="full_name_en"
-        :is-valid.sync="isFullNameEnValid"
-        :input-disable="idInputDisable">
-    </input-state>
-
+        :disabled="disabled.full_name_en"
+        v-model="user.full_name_en"
+        @error="(error) => { $emit('error', error) }"
+        @validated="(isValid) => { valid.full_name_en = isValid }"
+    ></input-state>
     <transition name="slide-fade">
         <div class="form-group-sm" v-if="allDataValid">
             <button-app
                 size="lg"
-                :label="labelRegisterButton"
-                action="email-register-click"
                 status="info"
-                @click="registerButtonClicked">
-            </button-app>
+                :label="labelRegisterButton"
+                @click="registerButtonClicked"
+            ></button-app>
         </div>
     </transition>
 </div>
@@ -75,130 +85,79 @@ import InputState from '../inputs/InputState.vue'
 
 export default {
     components: {
-        'alert': Alert,
-        'button-app': ButtonApp,
-        'input-state': InputState
+        Alert,
+        ButtonApp,
+        InputState
     },
     data() {
         return {
-            email: "",
-            isEmailValid: false,
-            username: "",
-            isUsernameValid: false,
-            full_name: "",
-            isFullNameValid: false,
-            full_name_en: "",
-            isFullNameEnValid: false,
-            password: "",
-            re_password: "",
-            passwordHelpText: null,
-            passwordDivClass: 'form-group-sm has-feedback',
-            passwordIconClass: 'form-control-feedback',
-            labelRegisterButton: "Register",
-            idInputDisable: null
-        }
-    },
-    mounted() {
-        // EventBus.$on('email-register-click', () => {
-        //     this.idInputDisable = ''
-        //     this.labelRegisterButton = 'Registering <i class="fa fa-circle-o-notch fa-spin"></i>'
-        //     if ( this.allDataValid ) {
-        //         axios.post('/register', {
-        //             mode: "email",
-        //             user: {
-        //                 name: this.username,
-        //                 email: this.email,
-        //                 org_id: this.email,
-        //                 password: this.password,
-        //                 full_name: this.full_name,
-        //                 full_name_en: this.full_name_en
-        //             }
-        //         })
-        //         .then( (response) => {
-        //             window.location.href = response.data.href
-        //             this.idInputDisable = null
-        //             this.labelRegisterButton = 'Register'
-        //         })
-        //         .catch( (error) => {
-        //             console.log(error)
-        //             this.idInputDisable = null
-        //             this.labelRegisterButton = 'Register'
-        //         })
-        //     }
-        // })
 
-        this.repasswordUpdated = _.debounce(() => {
-            this.checkPasswordMatched()
-        }, 800)
-    },
-    methods: {
-        checkPasswordMatched() {
-            this.passwordHelpText = null
-            if ( ( this.password == '' ) || ( this.re_password == '' ) ) {
-                this.passwordDivClass = 'form-group-sm has-feedback'
-                this. passwordIconClass = 'form-control-feedback'
-            } else if ( this.password == this.re_password ) {
-                this.passwordDivClass = 'form-group-sm has-success has-feedback'
-                this. passwordIconClass = 'fa fa-check form-control-feedback'
-            } else {
-                this.passwordDivClass = 'form-group-sm has-error has-feedback'
-                this. passwordIconClass = 'fa fa-remove form-control-feedback'
-                this.passwordHelpText = 'password and password again not matched'
-            }
-        },
+            labelRegisterButton: 'Register',
 
-        registerButtonClicked() {
-            this.idInputDisable = ''
-            this.labelRegisterButton = 'Registering <i class="fa fa-circle-o-notch fa-spin"></i>'
-            if ( this.allDataValid ) {
-                axios.post('/register', {
-                    mode: "email",
-                    user: {
-                        name: this.username,
-                        email: this.email,
-                        org_id: this.email,
-                        password: this.password,
-                        full_name: this.full_name,
-                        full_name_en: this.full_name_en
-                    }
-                })
-                .then( (response) => {
-                    window.location.href = response.data.href
-                    this.idInputDisable = null
-                    this.labelRegisterButton = 'Register'
-                })
-                .catch( (error) => {
-                    this.idInputDisable = null
-                    this.labelRegisterButton = 'Register'
-                    if (error.response) {
-                        // The request was made and the server responded with a status code
-                        // that falls out of the range of 2xx
-                        if ( error.response.status == 419 ) {
-                            EventBus.$emit('show-common-dialog', 'error-419')
-                        } else if ( error.response.status == 500 ) {
-                            EventBus.$emit('show-common-dialog', 'error-500')
-                        }
-                    } else if (error.request) {
-                        // The request was made but no response was received
-                        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                        // http.ClientRequest in node.js
-                        console.log(error.request)
-                    } else {
-                        // Something happened in setting up the request that triggered an Error
-                        console.log('Error', error.message)
-                    }
-                })
+            user: {
+                username: '',
+                email: '',
+                org_id: '',
+                password: '',
+                re_password: '',
+                full_name: '',
+                full_name_en: ''
+            },
+            valid: {
+                username: false,
+                email: false,
+                password: false,
+                re_password: false,
+                full_name: false,
+                full_name_en: false  
+            },
+            disabled: {
+                username: false,
+                email: false,
+                password: false,
+                re_password: false,
+                full_name: false,
+                full_name_en: false  
             }
         }
     },
     computed: {
-        allDataValid() {
-            return this.isEmailValid &&
-                   this.isUsernameValid &&
-                   this.isFullNameValid &&
-                   this.isFullNameEnValid &&
-                   (this.re_password != '') &&
-                   (this.password == this.re_password)
+        allDataValid () {
+            let values = _.values(this.valid)
+            return (_.sum(values) == values.length)
+        }
+    },
+    methods: {
+        registerButtonClicked() {
+            this.idInputDisable = ''
+            this.labelRegisterButton = 'Registering <i class="fa fa-circle-o-notch fa-spin"></i>'
+            if ( this.allDataValid ) {
+                
+                let email = this.user.email
+                console.log(email)
+                let newUser = _.assign({org_id: email}, this.user)
+                console.log(newUser)
+                axios.post('/register', {
+                    mode: "email",
+                    user: newUser
+                    // user: {
+                    //     name: this.username,
+                    //     email: this.email,
+                    //     org_id: this.email,
+                    //     password: this.password,
+                    //     full_name: this.full_name,
+                    //     full_name_en: this.full_name_en
+                    // }
+                })
+                .then( (response) => {
+                    window.location.href = response.data.href
+                })
+                .catch( (error) => {
+                    this.labelRegisterButton = 'Register'
+                    this.disabled = _.mapValues(this.disabled, () => false);
+                    this.$emit('error', error)
+                })
+            }
         }
     }
 }

@@ -6,5 +6,6 @@ return [
     'VERIFY_CODE_LENGTH' => 6, // length in digits
     'EMAIL_ACCOUNT_DEFAULT_LIFETIME' => 30, // days
     'DEFAULT_USER_DIVISION_ID' => 100, //
-    'LISTS_CSV_PATH' => '/app/lists/'
+    'LISTS_CSV_PATH' => '/app/lists/',
+    'USER_DATA_FROM_API_CACHE_LIFETIME' => 120 // minutes
 ];

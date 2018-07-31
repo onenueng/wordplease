@@ -51,7 +51,7 @@ class RegisterController extends Controller
         }
 
         $data = $this->getUserFromAPI($request->org_id);
-        
+
         switch ($data['reply_code']) {
             case 0:
                 $data['state'] = 'success';
@@ -87,7 +87,7 @@ class RegisterController extends Controller
                 config('constant.USER_DATA_FROM_API_CACHE_LIFETIME')
             );
         }
-        
+
         return Cache::get($cacheKey);
     }
 
@@ -99,7 +99,7 @@ class RegisterController extends Controller
      */
     public function isDataAvailable(Request $request)
     {
-        
+
         $field = ( $request->field == 'username' ) ? 'name' : $request->field;
         $user = User::findByUniqueField($field, $request->value);
 

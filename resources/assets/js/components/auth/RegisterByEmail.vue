@@ -109,7 +109,7 @@ export default {
                 password: false,
                 re_password: false,
                 full_name: false,
-                full_name_en: false  
+                full_name_en: false
             },
             disabled: {
                 username: false,
@@ -117,7 +117,7 @@ export default {
                 password: false,
                 re_password: false,
                 full_name: false,
-                full_name_en: false  
+                full_name_en: false
             }
         }
     },
@@ -129,35 +129,24 @@ export default {
     },
     methods: {
         registerButtonClicked() {
-            this.idInputDisable = ''
+            this.disabled = _.mapValues(this.disabled, () => true)
             this.labelRegisterButton = 'Registering <i class="fa fa-circle-o-notch fa-spin"></i>'
-            if ( this.allDataValid ) {
-                
-                let email = this.user.email
-                console.log(email)
-                let newUser = _.assign({org_id: email}, this.user)
-                console.log(newUser)
-                axios.post('/register', {
+
+            let newUser = _.clone(this.user)
+            newUser.org_id = this.user.email
+            newUser.name = this.user.username
+            axios.post('/register', {
                     mode: "email",
                     user: newUser
-                    // user: {
-                    //     name: this.username,
-                    //     email: this.email,
-                    //     org_id: this.email,
-                    //     password: this.password,
-                    //     full_name: this.full_name,
-                    //     full_name_en: this.full_name_en
-                    // }
-                })
-                .then( (response) => {
+                 })
+                 .then( (response) => {
                     window.location.href = response.data.href
-                })
-                .catch( (error) => {
+                 })
+                 .catch( (error) => {
                     this.labelRegisterButton = 'Register'
-                    this.disabled = _.mapValues(this.disabled, () => false);
+                    this.disabled = _.mapValues(this.disabled, () => false)
                     this.$emit('error', error)
-                })
-            }
+                 })
         }
     }
 }

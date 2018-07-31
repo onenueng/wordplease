@@ -17,19 +17,8 @@ trait AutoIdInsertable
         switch (static::getIdType()) {
             case 'id':
                 $data['id'] = static::count() + 1;
-                do {
-                    try {
-                        static::create($data);
-                        return static::find($data['id']);
-                    } catch (\Illuminate\Database\QueryException $e) {
-                        if ( $e->getCode() != 23000 ) { // not duplicate PK exception
-                            return $e;
-                        }
-                        $duplicatePK = true;
-                        $data['id']++;
-                    }
-                } while ($duplicatePK);
-
+                static::create($data);
+                return static::find($data['id']);
             case 'time_based_uuid':
                 $data['id'] = Uuid::uuid1()->toString();
                 break;

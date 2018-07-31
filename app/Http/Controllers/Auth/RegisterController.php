@@ -81,9 +81,15 @@ class RegisterController extends Controller
         $cacheKey = 'user_org_id@' . $id;
 
         if ( !Cache::has($cacheKey) ) {
+            $data = resolve('App\Contracts\UserAPI')->getUser($id); // get user data
+            $data['full_name'] = $data['name']; // rename keys
+            unset($data['name']);
+            $data['full_name_en'] = $data['name_en'];
+            unset($data['name_en']);
+
             Cache::put(
                 $cacheKey,
-                resolve('App\Contracts\UserAPI')->getUser($id),
+                $data,
                 config('constant.USER_DATA_FROM_API_CACHE_LIFETIME')
             );
         }
@@ -140,8 +146,9 @@ class RegisterController extends Controller
      */
     public function register(Request $request)
     {
+        
         // register every requests
-        $newUser = User::insert($request->user);
+        $newUser = User::insert(json_decode($request->user, true));
 
         // try to load pre-made authorization form .csv file
         if ( $request->mode == 'id' ) {
@@ -181,10 +188,10 @@ class RegisterController extends Controller
             $newUser->expiry_date = \Carbon\Carbon::now()->addDays(config('constant.EMAIL_ACCOUNT_DEFAULT_LIFETIME'));
             $newUser->seen(); // also saved
             auth()->login($newUser, false);
-            return ['href' => 'authenticated'];
+            return redirect('authenticated');
         }
 
         // id register need to authentication with organization's records
-        return ['href' => 'login'];
+        return redirect('login');
     }
 }

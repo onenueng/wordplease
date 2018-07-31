@@ -39,7 +39,9 @@
                 </div>
 
                 <div v-if="showRegisterByEmail">
-                    <register-by-email></register-by-email>
+                    <register-by-email
+                        @error="handleError"
+                    ></register-by-email>
                 </div>
             </div>
         </div>

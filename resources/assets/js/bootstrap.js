@@ -14,6 +14,6 @@ if (token) {
     console.error('CSRF token not found.')
 }
 
-window.SESSION_LIFETIME = 1000 * 60 * 60 // an hour
+window.SESSION_LIFETIME = 1000 * 60 * 60 * 1 // an hour
 
 window.loadPageAt = Date.now()

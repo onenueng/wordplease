@@ -9,6 +9,9 @@
 /.idea
 /.vagrant
 /.vscode
+/frontend-packages
+/temp-list
+/temp-codes
 Homestead.json
 Homestead.yaml
 npm-debug.log

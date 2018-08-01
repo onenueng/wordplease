@@ -24,15 +24,15 @@
     <transition name="slide-fade">
         <div v-if="user != null">
             <div class="form-group-sm">
-                <label class="control-label">Full Name :</label>
+                <label class="control-label topped">Full Name :</label>
                 <input type="text" class="form-control" v-model="user.full_name" readonly />
             </div>
             <div class="form-group-sm">
-                <label class="control-label">Position :</label>
+                <label class="control-label topped">Position :</label>
                 <input type="text" class="form-control" v-model="user.org_position_title" readonly />
             </div>
             <div class="form-group-sm">
-                <label class="control-label">Division :</label>
+                <label class="control-label topped">Division :</label>
                 <input type="text" class="form-control" v-model="user.org_division_name" readonly />
                 <span class="help-block">
                     <i>In case of above fields are incorrect, please contact HR department.</i>

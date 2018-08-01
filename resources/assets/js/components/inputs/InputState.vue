@@ -1,7 +1,7 @@
 <template>
     <div :class="state.themeClass"><!-- class provide state border color -->
-        <label class="control-label">{{ label }}</label>
-        <input 
+        <label class="control-label  topped">{{ label }}</label>
+        <input
             :type="type"
             class="form-control"
             :value="value"
@@ -22,7 +22,7 @@
             type: { default: 'text'},                       // input's type
             value: { required: true },                      // input's value
             label: { default: 'label'},                     // input's label
-            name: { default: 'data' },                      // input's name 
+            name: { default: 'data' },                      // input's name
             serviceUrl: { default: null },                  // endpoint for database validation if necessary
             pattern: { default: '.' },                      // pattern for format validation
             disabled: { default: false },                   // disable input or not
@@ -94,7 +94,7 @@
                                                 })
                                             break
                                         default:
-                                            this.setState({ 
+                                            this.setState({
                                                     theme: 'has-error',
                                                     icon: 'glyphicon glyphicon-remove',
                                                     text: 'Whoops, someting went wrong. Plase try again.'
@@ -133,7 +133,7 @@
                     this.$emit('validated', (state.theme == 'has-success'), state.payload)
                 } else {
                     this.$emit('validated', (state.theme == 'has-success'))
-                }                
+                }
             }
         }
     }

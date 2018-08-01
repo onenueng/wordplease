@@ -34,7 +34,7 @@ Route::post('/register', 'Auth\RegisterController@register');
 // login
 Route::get('/login', ['as' => 'login', 'uses' => 'Auth\LoginController@showLoginForm']);
 Route::post('/login', 'Auth\LoginController@login');
-Route::post('/front-end-login', 'Auth\LoginController@frontEndLogin');
+Route::post('/api-login', 'Auth\LoginController@apiLogin');
 Route::get('/logout', ['as' => 'logout', 'uses' => 'Auth\LoginController@logout']);
 
 // user

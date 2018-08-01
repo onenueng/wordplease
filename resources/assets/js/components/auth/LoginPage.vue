@@ -128,7 +128,7 @@
                 if ( !this.hasError('org_id') & !this.hasError('password') ) {
                     this.loggingIn = true
                     this.loginButtonLabel = 'Logging in <i class="fa fa-circle-o-notch fa-spin"></i>'
-                    axios.post('/front-end-login', {
+                    axios.post('/api-login', {
                         org_id: this.org_id,
                         password: this.password
                     })
@@ -141,7 +141,7 @@
                             this.alert = true
                             setTimeout( () => {
                                 this.alert = false
-                            }, 5000);
+                            }, 5000)
                             this.loginButtonLabel = 'Login'
                             this.loggingIn = false
                         }

@@ -48,7 +48,7 @@ class LoginController extends Controller
         return redirect()->back()->with('error', 'credential not matched');
     }
 
-    public function frontEndLogin(\Illuminate\Http\Request $request)
+    public function apiLogin(\Illuminate\Http\Request $request)
     {
         $user = $this->attemptLogin($request);
 

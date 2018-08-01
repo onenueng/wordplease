@@ -146,15 +146,16 @@ class RegisterController extends Controller
      */
     public function register(Request $request)
     {
-        
         // register every requests
-        $newUser = User::insert(json_decode($request->user, true));
-
         // try to load pre-made authorization form .csv file
         if ( $request->mode == 'id' ) {
+            $newUser = User::insert(json_decode($request->user, true));
             $users = (new \App\Services\Dataloader)->loadCSV('id_users');
         } elseif ($request->mode == 'email' ) {
-            $users = (new \App\Services\Dataloader)->loadCSV('email_users');;
+            $data = json_decode($request->user, true);
+            $data['org_id'] = $data['email'];
+            $newUser = User::insert($data);
+            $users = (new \App\Services\Dataloader)->loadCSV('email_users');
         } else {
             $users = [];
         }

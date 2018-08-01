@@ -1,4 +1,4 @@
-<template>
+<template><form action="/register" method="post" name="register">
 <div class="material-box-topic">
     <alert
         state="info"
@@ -6,12 +6,16 @@
         animated="lightSpeedIn"
         content="The email register account is valid for a short period only, you will need Faculty's account to continue using this application.">
     </alert>
+
+    <csrf-token/>
+    <input type="hidden" name="mode" value="email">
+    <input type="hidden" name="user" :value="JSON.stringify(user)">
+
     <input-state
         name="email"
         label="Email :"
         pattern="email"
         service-url="/register/is-data-available"
-        :disabled="disabled.email"
         v-model="user.email"
         @error="(error) => { $emit('error', error) }"
         @validated="(isValid) => { valid.email = isValid }"
@@ -22,16 +26,14 @@
         pattern="^\w+$"
         service-url="/register/is-data-available"
         placeholder-state-text="This will be your nickname for the app."
-        :disabled="disabled.username"
-        v-model="user.username"
+        v-model="user.name"
         @error="(error) => { $emit('error', error) }"
-        @validated="(isValid) => { valid.username = isValid }"
+        @validated="(isValid) => { valid.name = isValid }"
     ></input-state>
     <input-state
         type="password"
         name="password"
         label="Password :"
-        :disabled="disabled.password"
         v-model="user.password"
         @error="(error) => { $emit('error', error) }"
         @validated="(isValid) => { valid.password = isValid }"
@@ -42,7 +44,6 @@
         label="Password again :"
         invalid-response-text="password doesn't matched"
         :pattern="'^' + user.password + '$'"
-        :disabled="disabled.re_password"
         v-model="user.re_password"
         @error="(error) => { $emit('error', error) }"
         @validated="(isValid) => { valid.re_password = isValid }"
@@ -51,7 +52,6 @@
         name="full_name"
         label="Full Name in Thai :"
         pattern="[\u0e00-\u0e7e]"
-        :disabled="disabled.full_name"
         v-model="user.full_name"
         @error="(error) => { $emit('error', error) }"
         @validated="(isValid) => { valid.full_name = isValid }"
@@ -60,32 +60,34 @@
         name="full_name_en"
         label="Full Name in English :"
         pattern="[a-zA-Z]"
-        :disabled="disabled.full_name_en"
         v-model="user.full_name_en"
         @error="(error) => { $emit('error', error) }"
         @validated="(isValid) => { valid.full_name_en = isValid }"
     ></input-state>
+    <hr class="line">
     <transition name="slide-fade">
         <div class="form-group-sm" v-if="allDataValid">
             <button-app
                 size="lg"
                 status="info"
                 :label="labelRegisterButton"
-                @click="registerButtonClicked"
+                @click="document.forms.register.submit()"
             ></button-app>
         </div>
     </transition>
 </div>
-</template>
+</form></template>
 
 <script>
 import Alert from '../alerts/Alert.vue'
+import CsrfToken from '../forms/CsrfToken.vue'
 import ButtonApp from '../buttons/ButtonApp.vue'
 import InputState from '../inputs/InputState.vue'
 
 export default {
     components: {
         Alert,
+        CsrfToken,
         ButtonApp,
         InputState
     },
@@ -95,24 +97,16 @@ export default {
             labelRegisterButton: 'Register',
 
             user: {
-                username: '',
-                email: '',
-                org_id: '',
-                password: '',
-                re_password: '',
-                full_name: '',
-                full_name_en: ''
+                name: null,
+                email: null,
+                org_id: null,
+                password: null,
+                re_password: null,
+                full_name: null,
+                full_name_en: null
             },
             valid: {
-                username: false,
-                email: false,
-                password: false,
-                re_password: false,
-                full_name: false,
-                full_name_en: false
-            },
-            disabled: {
-                username: false,
+                name: false,
                 email: false,
                 password: false,
                 re_password: false,
@@ -125,28 +119,6 @@ export default {
         allDataValid () {
             let values = _.values(this.valid)
             return (_.sum(values) == values.length)
-        }
-    },
-    methods: {
-        registerButtonClicked() {
-            this.disabled = _.mapValues(this.disabled, () => true)
-            this.labelRegisterButton = 'Registering <i class="fa fa-circle-o-notch fa-spin"></i>'
-
-            let newUser = _.clone(this.user)
-            newUser.org_id = this.user.email
-            newUser.name = this.user.username
-            axios.post('/register', {
-                    mode: "email",
-                    user: newUser
-                 })
-                 .then( (response) => {
-                    window.location.href = response.data.href
-                 })
-                 .catch( (error) => {
-                    this.labelRegisterButton = 'Register'
-                    this.disabled = _.mapValues(this.disabled, () => false)
-                    this.$emit('error', error)
-                 })
         }
     }
 }

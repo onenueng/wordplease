@@ -6,9 +6,9 @@
         animated="lightSpeedIn"
         content="You need Faculty's account to register and login by ID. If you don't have one, you will not be able to login the application."
     ></alert>
-    
+
     <csrf-token/>
-    <input type="hidden" name="mode" value="1">
+    <input type="hidden" name="mode" value="id">
     <input type="hidden" name="user" :value="JSON.stringify(user)">
 
     <input-state

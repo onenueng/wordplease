@@ -7,14 +7,14 @@ use App\Contracts\UserAPI;
 
 class FakeUser implements UserAPI
 {
-    
+
     /**
      * Faker\Factory instance for generate fake data.
      *
      * @var Faker\Factory
      */
     private $faker;
-    
+
     /**
      * Patient's gender.
      *
@@ -33,12 +33,12 @@ class FakeUser implements UserAPI
             $this->gender = (($orgId % 2) == 0);
         }
 
-        $name = $this->gender 
+        $name = $this->gender
                         ? $this->faker->firstNameFemale . ' ' . $this->faker->lastName
                         : $this->faker->firstNameMale . ' ' . $this->faker->lastName;
 
-        $data['resultCode'] = 0;
-        $data['resultText'] = 'success.';
+        $data['reply_code'] = 0;
+        $data['reply_text'] = 'success.';
         $data['document_id'] = $this->faker->ean13;
         $data['org_id'] = $orgId;
         $data['name'] = $name;

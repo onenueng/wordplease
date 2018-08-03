@@ -3,32 +3,30 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" v-if="!processing">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" v-if="!busy">
                         <span aria-hidden="true">&times;</span>
                     </button>
                     <h4 class="modal-title">{{ heading }}</h4>
                 </div>
-                <div class="modal-body bigger-font-25" v-html="content">
+                <div class="modal-body bigger-font-25" v-html="body">
                 </div>
                 <div class="modal-footer" style="height: 80px;">
                     <transition name="slide-fade">
-                        <div v-if="!processing">
+                        <div v-if="!busy">
                             <button-app
                                 size="lg"
-                                :label="label"
-                                :action="action"
-                                status="info">
-                            </button-app>
+                                :label="actionButtonLabel"
+                                status="info" />
+
                             <button-app
                                 size="lg"
                                 label="Cancle"
-                                action="toggle-modal-action"
-                                status="draft">
-                            </button-app>
+                                status="draft"
+                                @click="$emit('dismiss')" />
                         </div>
                     </transition>
                     <transition name="slide-fade">
-                        <div class="centered" v-if="processing">
+                        <div class="centered" v-if="busy">
                             <i class="fa fa-circle-o-notch fa-spin fa-4x"></i>
                         </div>
                     </transition>
@@ -43,37 +41,45 @@
 
     export default {
         components: {
-            'button-app': ButtonApp
+            ButtonApp
+        },
+        props: {
+            toggle: { default: false },
+            busy: { default: false },
+            heading: { default: "What's up!" },
+            body: { default: '' },
+            actionButtonLabel: { default: 'OK' }
         },
         data() {
             return {
-                content: '',
-                heading: '',
-                label: '',
-                action: '',
-                processing: false
+                action: ''
+            }
+        },
+        watch: {
+            toggle(toggle) {
+                $('#modal-action').modal(toggle ? 'show' : 'hide')
             }
         },
         mounted() {
-            EventBus.$on('toggle-modal-action', (content,
-                                                 heading = 'Wordplease says',
-                                                 label = 'OK',
-                                                 action = 'toggle-modal-action') => {
-                if ( content === undefined ) {
-                    $('#modal-action').modal('hide')
-                    this.processing = false
-                } else {
-                    this.content = content
-                    this.heading = heading
-                    this.label = label
-                    this.action = action
-                    $('#modal-action').modal('show')
-                }
-            })
+            // EventBus.$on('toggle-modal-action', (content,
+            //                                      heading = 'Wordplease says',
+            //                                      label = 'OK',
+            //                                      action = 'toggle-modal-action') => {
+            //     if ( content === undefined ) {
+            //         $('#modal-action').modal('hide')
+            //         this.processing = false
+            //     } else {
+            //         this.content = content
+            //         this.heading = heading
+            //         this.label = label
+            //         this.action = action
+            //         $('#modal-action').modal('show')
+            //     }
+            // })
 
-            EventBus.$on('modal-action-processing', (processing) => {
-                this.processing = processing
-            })
+            // EventBus.$on('modal-action-processing', (processing) => {
+            //     this.processing = processing
+            // })
         }
     }
 </script>

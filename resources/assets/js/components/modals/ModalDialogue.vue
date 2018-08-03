@@ -29,40 +29,15 @@
             ButtonApp
         },
         props: {
-            toggle: { default: 'hide' },
+            toggle: { default: false },
             heading: { default: 'hello' },
             message: { default: '01110111 01101111 01110010 01100100 01110000 01101100 01100101 01100001 01110011 01100101'},
             buttonLabel: { default: 'Got it'}
         },
         watch: {
             toggle(toggle) {
-                $('#modal-dialogue').modal(toggle)
+                $('#modal-dialogue').modal(toggle ? 'show' : 'hide')
             }
-        },
-        mounted() {
-            // $('#modal-dialogue').modal('show')
-            // EventBus.$on('show-common-dialog', (code = '') => {
-            //     switch (code) {
-            //         case 'error-419':
-            //             this.message = 'Your are now logged off, Please reload this page or loss your data.'
-            //             this.heading = 'Attention please !!'
-            //             this.buttonLabel = 'Got it'
-            //             $('#modal-dialog').modal('show')
-            //             break
-            //         case 'error-500':
-            //             this.message = 'Server error, Please try again later or get the Helpdesk.'
-            //             this.heading = 'Attention please !!'
-            //             this.buttonLabel = 'Got it'
-            //             $('#modal-dialog').modal('show')
-            //             break
-            //         defualt :
-            //             this.message = '01110111 01101111 01110010 01100100 01110000 01101100 01100101 01100001 01110011 01100101'
-            //             this.heading = 'Attention please !!'
-            //             this.buttonLabel = 'Got it'
-            //             $('#modal-dialog').modal('show')
-            //             break
-            //     }
-            // })
         }
     }
 </script>

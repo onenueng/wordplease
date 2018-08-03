@@ -66,12 +66,12 @@
             }
         },
         mounted() {
-            EventBus.$on('an-checked', (valid, value) => {
-                this.showCreatableNotes = valid
-                if ( valid ) {
-                    this.an = value
-                }
-            })
+            // EventBus.$on('an-checked', (valid, value) => {
+            //     this.showCreatableNotes = valid
+            //     if ( valid ) {
+            //         this.an = value
+            //     }
+            // })
         }
     }
 </script>

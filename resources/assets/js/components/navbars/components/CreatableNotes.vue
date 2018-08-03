@@ -42,23 +42,23 @@
                 .then( (response) => {
                     if ( response.data.hn == undefined ) {
                         this.patientName = 'an data not found, please try again.'
-                        EventBus.$emit('anSearched', false)
+                        // EventBus.$emit('anSearched', false)
                         this.admission = null
                     } else {
                         this.patientName = 'HN ' + response.data.hn + ' ' + response.data.patient_name
-                        EventBus.$emit('anSearched', true)
+                        // EventBus.$emit('anSearched', true)
                         this.admission = response.data
                         axios.post('/get-creatable-notes/' + this.an)
                             .then( (response) => {
                                 this.notes = response.data
                                 this.showCreatableNotes = true
                             }).catch( (error) => {
-                                EventBus.$emit('anSearched', false)
+                                // EventBus.$emit('anSearched', false)
                                 if (error.response) {
                                     if ( error.response.status == 419 ) {
-                                        EventBus.$emit('show-common-dialog', 'error-419')
+                                        // EventBus.$emit('show-common-dialog', 'error-419')
                                     } else if ( error.response.status == 500 ) {
-                                        EventBus.$emit('show-common-dialog', 'error-500')
+                                        // EventBus.$emit('show-common-dialog', 'error-500')
                                     }
                                 }
                                 console.log(error)
@@ -68,9 +68,9 @@
                     this.admission = null
                     if (error.response) {
                         if ( error.response.status == 419 ) {
-                            EventBus.$emit('show-common-dialog', 'error-419')
+                            // EventBus.$emit('show-common-dialog', 'error-419')
                         } else if ( error.response.status == 500 ) {
-                            EventBus.$emit('show-common-dialog', 'error-500')
+                            // EventBus.$emit('show-common-dialog', 'error-500')
                         }
                     }
                     console.log(error)
@@ -102,7 +102,7 @@
                         noteTypeId: note.noteTypeId,
                     }
 
-                    EventBus.$emit('show-create-note-confirmation', data)
+                    // EventBus.$emit('show-create-note-confirmation', data)
                 }
             },
             getClass(creatable) {

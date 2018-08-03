@@ -27,6 +27,7 @@ mix.extract([
 
     .js('resources/assets/js/auth/login.js', 'public/js')
     .js('resources/assets/js/auth/register.js', 'public/js')
+    .js('resources/assets/js/notes/note-index.js', 'public/js')
 
 //    .js('resources/assets/js/notes/create-note.js', 'public/js')
 //    .js('resources/assets/js/notes/medicine-admission-note.js', 'public/js')

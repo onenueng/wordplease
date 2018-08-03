@@ -11,7 +11,7 @@ loaded()
                     if ( !response.data.active ) {
                         window.app.$refs.root.modalDialogueMessage = 'Your are now logged off, Please reload this page or loss your data.'
                         window.app.$refs.root.modalDialogueHeading = 'Attention please !!'
-                        window.app.$refs.root.modalDialogueToggle = 'show'
+                        window.app.$refs.root.modalDialogueToggle = true
                     }
                  })
         }
@@ -28,15 +28,15 @@ responseErrorHandle(error)
         if ( error.response.status == 419 ) {
             window.app.$refs.root.modalDialogueMessage = 'Your are now logged off, Please reload this page or loss your data.'
             window.app.$refs.root.modalDialogueHeading = 'Attention please !!'
-            window.app.$refs.root.modalDialogueToggle = 'show'
+            window.app.$refs.root.modalDialogueToggle = true
         } else if ( error.response.status == 500 ) {
             window.app.$refs.root.modalDialogueMessage = 'Server error, Please try again later or get the Helpdesk.'
             window.app.$refs.root.modalDialogueHeading = 'Attention please !!'
-            window.app.$refs.root.modalDialogueToggle = 'show'
+            window.app.$refs.root.modalDialogueToggle = true
         } else {
             window.app.$refs.root.modalDialogueMessage = 'You should never see this, Please try again later or get the Helpdesk.'
             window.app.$refs.root.modalDialogueHeading = 'Attention please !!'
-            window.app.$refs.root.modalDialogueToggle = 'show'
+            window.app.$refs.root.modalDialogueToggle = true
         }
     } else if ( error.request ) {
         // The request was made but no response was received
@@ -44,12 +44,12 @@ responseErrorHandle(error)
         // http.ClientRequest in node.js
         window.app.$refs.root.modalDialogueMessage = 'Cannot connect to server, Please try again later or get the Helpdesk.'
         window.app.$refs.root.modalDialogueHeading = 'Attention please !!'
-        window.app.$refs.root.modalDialogueToggle = 'show'
+        window.app.$refs.root.modalDialogueToggle = true
     } else {
         // Something happened in setting up the request that triggered an Error
         window.app.$refs.root.modalDialogueMessage = 'You should never see this, Please try again later or get the Helpdesk.'
         window.app.$refs.root.modalDialogueHeading = 'Attention please !!'
-        window.app.$refs.root.modalDialogueToggle = 'show'
+        window.app.$refs.root.modalDialogueToggle = true
         console.log(error)
     }
 }

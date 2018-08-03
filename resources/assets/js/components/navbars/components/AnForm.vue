@@ -50,7 +50,7 @@
                 this.statusClass = 'form-group has-feedback'
                 this.iconStatusClass = 'form-control-feedback'
                 this.assignTooltip('')
-                EventBus.$emit('an-checked', false, '')
+                // EventBus.$emit('an-checked', false, '')
             },
             assignTooltip (message) {
                 $('#an-input').attr('data-original-title', message)
@@ -70,7 +70,7 @@
         mounted () {
             this.checkAn = _.debounce( () => {
                 if ( !this.validator.test(this.an) ) {
-                    EventBus.$emit('an-checked', false, this.an)
+                    // EventBus.$emit('an-checked', false, this.an)
                     if (this.an == '') {
                         this.statusClass = 'form-group has-feedback'
                         this.iconStatusClass = 'form-control-feedback'
@@ -82,7 +82,7 @@
                         this.assignTooltip('an ที่ใส่มาไม่ถูกต้องตามรูปแบบนะจ๊ะ')
                     }
                 } else {
-                    EventBus.$emit('an-checked', true, this.an)
+                    // EventBus.$emit('an-checked', true, this.an)
                     this.disabled = ''
                     this.statusClass = 'form-group has-feedback'
                     this.iconStatusClass = 'form-control-feedback fa fa-circle-o-notch fa-spin'
@@ -96,16 +96,16 @@
                 delay: { "show": 100, "hide": 500 }
             })
 
-            EventBus.$on('anSearched', (canCreate) => {
-                this.disabled = null
-                if ( canCreate ) {
-                    this.statusClass = 'form-group has-feedback has-success'
-                    this.iconStatusClass = 'form-control-feedback fa fa-check'
-                } else {
-                    this.statusClass = 'form-group has-feedback has-warning'
-                    this.iconStatusClass = 'form-control-feedback fa fa-warning'
-                }
-            })
+            // EventBus.$on('anSearched', (canCreate) => {
+            //     this.disabled = null
+            //     if ( canCreate ) {
+            //         this.statusClass = 'form-group has-feedback has-success'
+            //         this.iconStatusClass = 'form-control-feedback fa fa-check'
+            //     } else {
+            //         this.statusClass = 'form-group has-feedback has-warning'
+            //         this.iconStatusClass = 'form-control-feedback fa fa-warning'
+            //     }
+            // })
         }
     }
 </script>

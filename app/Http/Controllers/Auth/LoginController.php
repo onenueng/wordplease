@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class LoginController extends Controller
@@ -35,7 +36,7 @@ class LoginController extends Controller
         // return view('user.login');
     }
 
-    public function login(\Illuminate\Http\Request $request)
+    public function login(Request $request)
     {
         $user = $this->attemptLogin($request);
 
@@ -48,13 +49,17 @@ class LoginController extends Controller
         return redirect()->back()->with('error', 'credential not matched');
     }
 
-    public function apiLogin(\Illuminate\Http\Request $request)
+    public function apiLogin(Request $request)
     {
         $user = $this->attemptLogin($request);
 
         if ( $user ) {
+            auth()->login($user);
+            $request->session()->regenerate();
+            $this->authenticated($user);
             return [
                 'reply_code' => 0,
+                'reply_text' => $this->redirectTo
             ];
         }
 
@@ -63,10 +68,9 @@ class LoginController extends Controller
             'reply_code' => 1,
             'reply_text' => 'Your credential not matched our records or expired.'
         ];
-        // return redirect()->back()->with('error', 'credential not matched');
     }
 
-    protected function attemptLogin(\Illuminate\Http\Request $request)
+    protected function attemptLogin(Request $request)
     {
         $user = \App\User::findByUniqueField('org_id', $request->org_id);
         if ( $user == null ) {
@@ -96,9 +100,10 @@ class LoginController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    protected function sendLoginResponse()
+    protected function sendLoginResponse($request)
     {
-        app('request')->session()->regenerate();
+        // app('request')->session()->regenerate();
+        $request->session()->regenerate();
 
         // $this->clearLoginAttempts($request);
 
@@ -125,7 +130,7 @@ class LoginController extends Controller
      */
     public function redirectPath()
     {
-        if (method_exists($this, 'redirectTo')) {
+        if ( method_exists($this, 'redirectTo') ) {
             return $this->redirectTo();
         }
 
@@ -138,11 +143,11 @@ class LoginController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function logout()
+    public function logout(Request $request)
     {
         $this->guard()->logout();
 
-        app('request')->session()->invalidate();
+        $request->session()->invalidate();
 
         return redirect('/');
     }

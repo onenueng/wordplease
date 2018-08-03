@@ -46,8 +46,6 @@
                                 <i class="text-danger">Password is required.</i>
                             </span>
                         </div>
-
-                        <input type="hidden" name="_token" ref="token" />
                     </form>
 
                     <button-app size="lg"
@@ -134,8 +132,7 @@
                     })
                     .then( (response) => {
                         if ( response.data.reply_code == 0 ) {
-                            this.$refs.token.value = document.head.querySelector("[name=csrf-token]").content
-                            this.$refs.form.submit()
+                            window.location.href = response.data.reply_text
                         } else {
                             this.alertContent = response.data.reply_text
                             this.alert = true

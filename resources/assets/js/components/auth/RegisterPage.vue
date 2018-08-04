@@ -4,8 +4,7 @@
                         :heading="modalDialogueHeading"
                         :message="modalDialogueMessage"
                         :buttonLabel="modalDialogueButtonLabel"
-                        @modalDialogueDismiss="modalDialogueToggle = 'hide'"
-        ></modal-dialogue>
+                        @modalDialogueDismiss="modalDialogueToggle = false" />
 
         <navbar link="/home"
                 brand="Wordplease"

@@ -7,5 +7,11 @@
 @endsection
 
 @section('app-js')
-<script src="{{ mix($jsFile) }}"></script>
+<script src="{{ mix('/js/' . $jsFile) }}"></script>
 @endsection
+
+@if (isset($data))
+@section('store-json')
+<script>const store = {!! json_encode($data) !!} </script>
+@endsection
+@endif

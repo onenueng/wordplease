@@ -32,7 +32,7 @@ class LoginController extends Controller
      */
     public function showLoginForm()
     {
-        return view('vue-app')->with(['title' => 'Login', 'jsFile' => '/js/login.js']);
+        return view('vue-app')->with(['title' => 'Login', 'jsFile' => 'login.js']);
         // return view('user.login');
     }
 

@@ -8,8 +8,8 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" :href="link">{{ brand }}</a>
-                <a class="navbar-brand active" v-html="title"></a>
+                <a class="navbar-brand" :href="brand.link">{{ brand.title }}</a>
+                <a class="navbar-brand active" v-html="brand.subTitle"></a>
             </div>
 
             <div class="collapse navbar-collapse" id="app-navbar">
@@ -23,18 +23,7 @@
 <script>
     export default {
         props: {
-            link: {
-                type: String,
-                required: true
-            },
-            brand: {
-                type: String,
-                required: true
-            },
-            title: {
-                type: String,
-                required: true
-            }
+            brand: { brand: () => { return { link: '/', title: 'IPD Note', subTitle: 'sub title' } } }
         }
     }
 </script>

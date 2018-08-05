@@ -5,14 +5,11 @@
                         :message="modalDialogueMessage"
                         :buttonLabel="modalDialogueButtonLabel"
                         @modalDialogueDismiss="modalDialogueToggle = false" />
-
-        <navbar link="/home"
-                brand="Wordplease"
-                title="Login">
-                <navbar-left slot="navbar-left"></navbar-left>
-                <navbar-right slot="navbar-right"></navbar-right>
+        <navbar 
+            :brand="{ link: '/home', title: 'Wordplease', subTitle: 'Login' }">
+            <navbar-left slot="navbar-left"></navbar-left>
+            <navbar-right slot="navbar-right"></navbar-right>
         </navbar>
-
         <div class="container-fluid">
             <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
                 <div class="page-header">

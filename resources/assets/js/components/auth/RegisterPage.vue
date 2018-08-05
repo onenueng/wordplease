@@ -5,12 +5,10 @@
                         :message="modalDialogueMessage"
                         :buttonLabel="modalDialogueButtonLabel"
                         @modalDialogueDismiss="modalDialogueToggle = false" />
-
-        <navbar link="/home"
-                brand="Wordplease"
-                title="Register">
-                <navbar-left slot="navbar-left"></navbar-left>
-                <navbar-right slot="navbar-right"></navbar-right>
+        <navbar
+            :brand="{ link: '/home', title: 'Wordplease', subTitle: 'Register' }">
+            <navbar-left slot="navbar-left" />
+            <navbar-right slot="navbar-right" />
         </navbar>
         <div class="container-fluid">
             <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
@@ -33,14 +31,11 @@
                     <register-by-id
                         id-name="SAP ID"
                         pattern="^100([0-9]{5})$"
-                        @error="handleError"
-                    ></register-by-id>
+                        @error="handleError" />
                 </div>
 
                 <div v-if="showRegisterByEmail">
-                    <register-by-email
-                        @error="handleError"
-                    ></register-by-email>
+                    <register-by-email @error="handleError" />
                 </div>
             </div>
         </div>

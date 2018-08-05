@@ -1,26 +1,13 @@
 <template>
-    <!-- Main Navbar -->
-    <navbar
-        :link=link
-        :brand=brand
-        :title=title>
-        <!-- Navbar Left Actions -->
+    <navbar :brand="brand"><!-- Main Navbar -->
         <ul
             class="nav navbar-nav"
             slot="navbar-left">
-            <an-form
-                :pattern=anPattern>
-            </an-form>
-            <creatable-notes
-                v-if="showCreatableNotes"
-                :an="an">
-            </creatable-notes>
-        </ul>
-        <!-- Navbar Right Actions -->
-        <navbar-right
-            slot="navbar-right"
-            :username=username>
-        </navbar-right>
+            <an-form />
+            <creatable-notes v-if="showCreatableNotes" :an="an" />
+        </ul><!-- Navbar Left Actions -->
+        
+        <navbar-right slot="navbar-right" /><!-- Navbar Right Actions -->
     </navbar>
 </template>
 
@@ -32,32 +19,13 @@
 
     export default {
         components: {
-            'creatable-notes': CreatableNotes,
-            'navbar-right': NavbarRight,
-            'an-form': AnForm,
-            'navbar': Navbar
+            CreatableNotes,
+            NavbarRight,
+            AnForm,
+            Navbar
         },
         props: {
-            link: {
-                type: String,
-                reqiured: true
-            },
-            brand: {
-                type: String,
-                reqiured: true
-            },
-            title: {
-                type: String,
-                reqiured: true
-            },
-            anPattern: {
-                type: String,
-                reqiured: true
-            },
-            username: {
-                type: String,
-                reqiured: true
-            }
+            brand: { reqiured: true }
         },
         data () {
             return {

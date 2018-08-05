@@ -21,8 +21,15 @@ class NoteController extends Controller
     public function index(Gate $gate)
     {
         if ( $gate->allows('create-note') ) {
-            return view('vue-app')->with(['title' => auth()->user()->name, 'jsFile' => '/js/note-index.js']);
-            // return view('notes.index');
+            // prepare data
+            $data['name'] = auth()->user()->name;
+            $data['division'] = auth()->user()->division->name_eng_short;
+            
+            return view('vue-app')->with([
+                'title'  => $data['name'],
+                'jsFile' => 'note-index.js',
+                'data'   => ['user' => $data]
+            ]);
         }
         return redirect('not-allowed');
     }

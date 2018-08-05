@@ -1,18 +1,19 @@
 <template>
     <form class="navbar-form navbar-left">
-        <div :class="statusClass">
+        <div :class="state.themeClass">
             <input
-                placeholder="AN to create note"
-                data-toggle="tooltip"
-                :disabled="disabled"
                 class="form-control"
-                autocomplete="off"
-                @input="checkAn()"
-                @focus="onfocus()"
+                type="text"
                 id="an-input"
+                data-toggle="tooltip"
+                placeholder="AN to create note"
+                :disabled="state.disabled"
                 v-model="an"
-                type="text"/>
-            <span :class="iconStatusClass"></span>
+                @keydown="onkeydown"
+                
+                @focus="onfocus()" />
+                <!-- @input="checkAn()" -->
+            <span :class="state.iconClass"></span>
         </div>
     </form>
 </template>
@@ -20,28 +21,63 @@
 <script>
     export default {
         props: {
-            pattern: {
-                type: String,
-                required: true
-            }
+            pattern: { default: "^[0-9]{8}$" }
         },
         data () {
             return {
                 an : '',
-                lastAn: '',
-                disabled: null,
+                disabled: false,
                 isTooltip: false,
-                blurByUser: false,
                 statusClass: 'form-group has-feedback',
                 iconStatusClass: 'form-control-feedback',
+
+                validAn: ''
             }
         },
         computed : {
-            validator() {
+            regex () {
                 return new RegExp(this.pattern)
+            },
+            state () {
+                if ( this.validAn === true ) {
+                    return {
+                        disabled: false,
+                        themeClass: 'form-group has-feedback has-success',
+                        iconClass: 'form-control-feedback fa fa-check'
+                    }
+                } else if ( this.validAn === false ) {
+                    return {
+                        disabled: false,
+                        themeClass: 'form-group has-feedback has-warning',
+                        iconClass: 'form-control-feedback fa fa-warning'
+                    }
+                } else if ( this.validAn == 'busy' ) {
+
+                } else { // default
+                    return {
+                        disabled: false,
+                        themeClass: 'form-group has-feedback',
+                        iconClass: 'form-group has-feedback'
+                    }
+                }
             }
         },
+        created () {
+            this.onkeydown = _.debounce(this.validate, 800)
+        },
         methods : {
+            validate() {
+                if ( this.an != '' ) {
+                    if ( this.an.match(this.regex) !== null ) {
+                        this.validAn = true
+                    } else {
+                        this.validAn = false
+                    }
+                } else {
+                    this.validAn = ''
+                }
+            },
+            ////////
             checkAn () {
                 // defind on mounted
             },

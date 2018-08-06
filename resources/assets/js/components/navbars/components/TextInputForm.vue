@@ -21,7 +21,7 @@
 <script>
     export default {
         props: {
-            pattern: { default: "^[0-9]{8}$" }
+            pattern: { default: "." }
         },
         data () {
             return {

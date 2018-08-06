@@ -3,7 +3,7 @@
         <ul
             class="nav navbar-nav"
             slot="navbar-left">
-            <an-form />
+            <an-form pattern="^[0-9]{8}$" />
             <creatable-notes v-if="showCreatableNotes" :an="an" />
         </ul><!-- Navbar Left Actions -->
         
@@ -14,7 +14,7 @@
 <script>
     import CreatableNotes from './components/CreatableNotes.vue'
     import NavbarRight from './AuthenticatedNavbarRight.vue'
-    import AnForm from './components/AnForm.vue'
+    import AnForm from './components/TextInputForm.vue'
     import Navbar from './Navbar.vue'
 
     export default {
@@ -30,7 +30,8 @@
         data () {
             return {
                 showCreatableNotes: false,
-                an: ''
+                an: '',
+                value: ''
             }
         },
         mounted() {

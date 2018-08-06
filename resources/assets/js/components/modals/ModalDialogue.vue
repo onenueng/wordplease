@@ -10,11 +10,11 @@
                 <div class="modal-header"><span class="fa fa-comment-o"></span> {{ heading }}</div>
                 <div class="modal-body">{{ message }}</div>
                 <div class="modal-footer">
-                    <button-app size="lg"
-                                :label="buttonLabel"
-                                @click="$emit('modalDialogueDismiss')"
-                                status="draft"
-                    ></button-app>
+                    <button-app
+                        size="lg"
+                        :label="buttonLabel"
+                        @click="$emit('modalDialogueDismiss')"
+                        status="draft" />
                 </div>
             </div>
         </div>

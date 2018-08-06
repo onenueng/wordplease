@@ -9,7 +9,7 @@ loaded()
             axios.get('/is-session-active')
                  .then((response) => {
                     if ( !response.data.active ) {
-                        window.app.$refs.root.modalDialogueMessage = 'Your are now logged off, Please reload this page or loss your data.'
+                        window.app.$refs.root.modalDialogueMessage = 'Session timeoute, Please reload this page to continue.'
                         window.app.$refs.root.modalDialogueHeading = 'Attention please !!'
                         window.app.$refs.root.modalDialogueToggle = true
                     }
@@ -26,7 +26,7 @@ responseErrorHandle(error)
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
         if ( error.response.status == 419 ) {
-            window.app.$refs.root.modalDialogueMessage = 'Your are now logged off, Please reload this page or loss your data.'
+            window.app.$refs.root.modalDialogueMessage = 'Session timeoute, Please reload this page to continue.'
             window.app.$refs.root.modalDialogueHeading = 'Attention please !!'
             window.app.$refs.root.modalDialogueToggle = true
         } else if ( error.response.status == 500 ) {

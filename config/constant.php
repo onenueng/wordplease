@@ -10,5 +10,5 @@ return [
     'USER_DATA_FROM_API_CACHE_LIFETIME' => 120, // minutes
 
     'ORG_ID_PATTERN' => '^100([0-9]{5})$',
-    'AN_PATTERN' => '^5|6([0-9]{7})$'
+    'AN_PATTERN' => '^(5|6)([0-9]{7})$'
 ];

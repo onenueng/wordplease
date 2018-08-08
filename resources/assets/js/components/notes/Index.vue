@@ -1,6 +1,6 @@
 <template>
     <div>
-        <modal-dialogue 
+        <modal-dialogue
             :toggle="modalDialogueToggle"
             :heading="modalDialogueHeading"
             :message="modalDialogueMessage"
@@ -14,7 +14,8 @@
             :busy="modalActionBusy"
             @dismiss="modalActionToggle = flase" /><!-- display create note confirmation -->
         <page-navbar
-            :brand="{ link: '/', title: 'IPD Note', subTitle: user.division }" />
+            :brand="{ link: '/', title: 'IPD Note', subTitle: user.division }"
+            @error="handleError"  />
         <h1>Note Index</h1>
     </div>
 </template>
@@ -50,6 +51,11 @@ export default {
     },
     mounted () {
         formHelper.loaded()
+    },
+    methods: {
+        handleError(error) {
+            formHelper.responseErrorHandle(error)
+        }
     }
 }
 

@@ -4,15 +4,15 @@
             <input
                 class="form-control"
                 type="text"
-                id="an-input"
+                id="text-input-form"
                 data-toggle="tooltip"
-                placeholder="AN to create note"
-                :disabled="state.disabled"
-                v-model="an"
+                autocomplete="off"
+                :placeholder="placeholder"
+                :disabled="disabled"
+                v-model="value"
                 @keydown="onkeydown"
-                
-                @focus="onfocus()" />
-                <!-- @input="checkAn()" -->
+                @focus="onfocus()"
+                @input="assignTooltip('')" />
             <span :class="state.iconClass"></span>
         </div>
     </form>
@@ -21,45 +21,44 @@
 <script>
     export default {
         props: {
-            pattern: { default: "." }
+            pattern: { default: "." },
+            disabled: { default: false },
+            placeholder: { default: '' },
+            tooltip: { default: '' }
         },
         data () {
             return {
-                an : '',
-                disabled: false,
-                isTooltip: false,
-                statusClass: 'form-group has-feedback',
-                iconStatusClass: 'form-control-feedback',
-
-                validAn: ''
+                value: '',
+                state: {
+                    themeClass: 'form-group has-feedback ',
+                    iconClass: 'form-control-feedback '
+                },
+                lastState: {}
+            }
+        },
+        watch: {
+            disabled (disabled) {
+                if ( disabled ) {
+                    this.lastState.themeClass = this.state.themeClass
+                    this.lastState.iconClass  = this.state.iconClass
+                    this.state.themeClass = 'form-group has-feedback',
+                    this.state.iconClass  = 'form-control-feedback fa fa-circle-o-notch fa-spin'
+                } else {
+                    this.state.themeClass = this.lastState.themeClass
+                    this.state.iconClass  = this.lastState.iconClass
+                }
+            },
+            tooltip (tooltip) {
+                if (tooltip !== '') {
+                    this.state.themeClass = 'form-group has-feedback has-warning',
+                    this.state.iconClass  = 'form-control-feedback fa fa-warning'
+                    this.assignTooltip(tooltip)
+                }
             }
         },
         computed : {
             regex () {
                 return new RegExp(this.pattern)
-            },
-            state () {
-                if ( this.validAn === true ) {
-                    return {
-                        disabled: false,
-                        themeClass: 'form-group has-feedback has-success',
-                        iconClass: 'form-control-feedback fa fa-check'
-                    }
-                } else if ( this.validAn === false ) {
-                    return {
-                        disabled: false,
-                        themeClass: 'form-group has-feedback has-warning',
-                        iconClass: 'form-control-feedback fa fa-warning'
-                    }
-                } else if ( this.validAn == 'busy' ) {
-
-                } else { // default
-                    return {
-                        disabled: false,
-                        themeClass: 'form-group has-feedback',
-                        iconClass: 'form-group has-feedback'
-                    }
-                }
             }
         },
         created () {
@@ -67,81 +66,47 @@
         },
         methods : {
             validate() {
-                if ( this.an != '' ) {
-                    if ( this.an.match(this.regex) !== null ) {
-                        this.validAn = true
+                this.$emit('input', this.value)
+                if ( this.value != '' ) {
+                    if ( this.value.match(this.regex) !== null ) {
+                        this.state.themeClass = 'form-group has-feedback has-success',
+                        this.state.iconClass  = 'form-control-feedback fa fa-check'
+                        this.$emit('validated', true)
+                        this.assignTooltip('')
                     } else {
-                        this.validAn = false
+                        this.state.themeClass = 'form-group has-feedback has-warning',
+                        this.state.iconClass  = 'form-control-feedback fa fa-warning'
+                        this.$emit('validated', false)
+                        this.assignTooltip('Invalid format')
                     }
                 } else {
-                    this.validAn = ''
+                    this.onfocus()
                 }
             },
-            ////////
-            checkAn () {
-                // defind on mounted
-            },
             onfocus () {
-                this.an = ''
-                this.statusClass = 'form-group has-feedback'
-                this.iconStatusClass = 'form-control-feedback'
+                this.value = ''
+                this.state.themeClass = 'form-group has-feedback'
+                this.state.iconClass  = 'form-control-feedback'
+                this.$emit('validated', false)
                 this.assignTooltip('')
-                // EventBus.$emit('an-checked', false, '')
             },
             assignTooltip (message) {
-                $('#an-input').attr('data-original-title', message)
                 if (message != '') {
-                    if ( !this.isTooltip ) {
-                        $('#an-input').tooltip('show')
-                        this.isTooltip = true
-                    }
+                    $('#text-input-form').attr('data-original-title', message)
+                    $('#text-input-form').tooltip('show')
                 } else {
-                    if ( this.isTooltip ) {
-                        $('#an-input').tooltip('hide')
-                        this.isTooltip = false
-                    }
+                    this.state.themeClass = 'form-group has-feedback'
+                    this.state.iconClass  = 'form-control-feedback'
+                    $('#text-input-form').tooltip('hide')
                 }
             }
         },
         mounted () {
-            this.checkAn = _.debounce( () => {
-                if ( !this.validator.test(this.an) ) {
-                    // EventBus.$emit('an-checked', false, this.an)
-                    if (this.an == '') {
-                        this.statusClass = 'form-group has-feedback'
-                        this.iconStatusClass = 'form-control-feedback'
-                        this.assignTooltip('')
-
-                    } else {
-                        this.statusClass = 'form-group has-feedback has-warning'
-                        this.iconStatusClass = 'form-control-feedback fa fa-warning'
-                        this.assignTooltip('an ที่ใส่มาไม่ถูกต้องตามรูปแบบนะจ๊ะ')
-                    }
-                } else {
-                    // EventBus.$emit('an-checked', true, this.an)
-                    this.disabled = ''
-                    this.statusClass = 'form-group has-feedback'
-                    this.iconStatusClass = 'form-control-feedback fa fa-circle-o-notch fa-spin'
-                    this.assignTooltip('')
-                }
-            }, 800)
-
-            $('#an-input').tooltip({
+            $('#text-input-form').tooltip({
                 placement: "bottom",
                 trigger: "hover",
                 delay: { "show": 100, "hide": 500 }
             })
-
-            // EventBus.$on('anSearched', (canCreate) => {
-            //     this.disabled = null
-            //     if ( canCreate ) {
-            //         this.statusClass = 'form-group has-feedback has-success'
-            //         this.iconStatusClass = 'form-control-feedback fa fa-check'
-            //     } else {
-            //         this.statusClass = 'form-group has-feedback has-warning'
-            //         this.iconStatusClass = 'form-control-feedback fa fa-warning'
-            //     }
-            // })
         }
     }
 </script>

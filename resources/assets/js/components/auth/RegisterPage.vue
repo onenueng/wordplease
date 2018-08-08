@@ -30,7 +30,7 @@
                 <div v-if="showRegisterById">
                     <register-by-id
                         id-name="SAP ID"
-                        pattern="^100([0-9]{5})$"
+                        :pattern="orgIdPattern"
                         @error="handleError" />
                 </div>
 
@@ -69,7 +69,9 @@
                 modalDialogueToggle: undefined,
                 modalDialogueHeading: undefined,
                 modalDialogueMessage: undefined,
-                modalDialogueButtonLabel: undefined
+                modalDialogueButtonLabel: undefined,
+
+                orgIdPattern: store.orgIdPattern
             }
         },
         mounted () {

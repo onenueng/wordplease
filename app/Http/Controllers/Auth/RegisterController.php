@@ -30,7 +30,11 @@ class RegisterController extends Controller
      */
     public function showRegisterForm()
     {
-        return view('vue-app')->with(['title' => 'Register', 'jsFile' => 'register.js']);
+        return view('vue-app')->with([
+            'title' => 'Register',
+            'jsFile' => 'register.js',
+            'data' => ['orgIdPattern' => config('constant.ORG_ID_PATTERN')]
+        ]);
         // return view('user.register');
     }
 

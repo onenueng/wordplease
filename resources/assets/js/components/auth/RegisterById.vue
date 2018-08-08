@@ -97,7 +97,7 @@
         },
         props: {
             idName: { default: 'SAP ID' },
-            pattern: { default: '^100([0-9]{5})$' }
+            pattern: { default: '.' }
         },
         data() {
             return {

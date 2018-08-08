@@ -21,7 +21,6 @@ Route::get('/not-allowed', function() {
 Route::get('/lists/{type}/{listName}', 'ListController@getList');
 
 Route::get('/is-session-active', function(Illuminate\Http\Request $request) {
-    return ['active' => false];
     return ['active' => ( $request->header('X-CSRF-TOKEN') == csrf_token() )];
 });
 
@@ -110,7 +109,15 @@ Route::get('/get-ajax', function () {
 });
 
 Route::get('/test-pse', function (App\Contracts\UserAPI $api) {
-    return $api->getUser(10022569);
+    return $api->getUser(10022543);
+});
+
+Route::get('/test-psp', function (App\Contracts\PatientDataAPI $api) {
+    return $api->getPatient(51236666);
+});
+
+Route::get('/test-psa', function (App\Contracts\PatientDataAPI $api) {
+    return $api->getAdmission(51022666);
 });
 
 Route::get('/test-waja', function () {

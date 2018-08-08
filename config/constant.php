@@ -7,5 +7,8 @@ return [
     'EMAIL_ACCOUNT_DEFAULT_LIFETIME' => 30, // days
     'DEFAULT_USER_DIVISION_ID' => 100, //
     'LISTS_CSV_PATH' => '/app/lists/',
-    'USER_DATA_FROM_API_CACHE_LIFETIME' => 120 // minutes
+    'USER_DATA_FROM_API_CACHE_LIFETIME' => 120, // minutes
+
+    'ORG_ID_PATTERN' => '^100([0-9]{5})$',
+    'AN_PATTERN' => '^5|6([0-9]{7})$'
 ];

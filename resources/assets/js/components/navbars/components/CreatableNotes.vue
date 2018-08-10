@@ -1,24 +1,31 @@
 <template>
-    <transition name="slide-fade">
-        <li class="dropdown hvr-bounce-to-bottom" v-if="typeof this.patientName == 'string'">
-            <a class="dropdown-toggle bigger-font-25" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" disabled>
-                <u>{{ patientName }}</u>
-                <span v-if="showCreatableNotes"> | Create <i class="fa fa-file-text"></i></span>
+
+<li class="dropdown hvr-bounce-to-bottom">
+    <a class="dropdown-toggle bigger-font-25"
+       aria-haspopup="true"
+       aria-expanded="false"
+       role="button"
+       data-toggle="dropdown"
+       disabled>
+       <u>{{ 'HN ' + admission.hn + ' ' + admission.patient_name }}</u>
+       <span v-if="showCreatableNotes"> | Create <i class="fa fa-file-text"></i></span>
+    </a>
+
+    <!-- <ul class="dropdown-menu" v-if="showCreatableNotes">
+        <li v-for="note in notes" :key="note.label">
+            <a
+                data-toggle="tooltip"
+                :title="note.title"
+                :class="getClass(note.creatable)"
+                :style="getCursorStyle(note.creatable)"
+                @click="createNote(note)"
+                v-html="note.label">
             </a>
-            <ul class="dropdown-menu" v-if="showCreatableNotes">
-                <li v-for="note in notes" :key="note.label">
-                    <a
-                        data-toggle="tooltip"
-                        :title="note.title"
-                        :class="getClass(note.creatable)"
-                        :style="getCursorStyle(note.creatable)"
-                        @click="createNote(note)"
-                        v-html="note.label">
-                    </a>
-                </li>
-            </ul>
         </li>
-    </transition>
+    </ul> -->
+
+</li>
+
 </template>
 
 <script>
@@ -37,45 +44,48 @@
                 showCreatableNotes: false
             }
         },
-        mounted() {
-            axios.post('/get-admission/' + this.an)
-                .then( (response) => {
-                    if ( response.data.hn == undefined ) {
-                        this.patientName = 'an data not found, please try again.'
-                        // EventBus.$emit('anSearched', false)
-                        this.admission = null
-                    } else {
-                        this.patientName = 'HN ' + response.data.hn + ' ' + response.data.patient_name
-                        // EventBus.$emit('anSearched', true)
-                        this.admission = response.data
-                        axios.post('/get-creatable-notes/' + this.an)
-                            .then( (response) => {
-                                this.notes = response.data
-                                this.showCreatableNotes = true
-                            }).catch( (error) => {
-                                // EventBus.$emit('anSearched', false)
-                                if (error.response) {
-                                    if ( error.response.status == 419 ) {
-                                        // EventBus.$emit('show-common-dialog', 'error-419')
-                                    } else if ( error.response.status == 500 ) {
-                                        // EventBus.$emit('show-common-dialog', 'error-500')
-                                    }
-                                }
-                                console.log(error)
-                            })
-                    }
-                }).catch( (error) => {
-                    this.admission = null
-                    if (error.response) {
-                        if ( error.response.status == 419 ) {
-                            // EventBus.$emit('show-common-dialog', 'error-419')
-                        } else if ( error.response.status == 500 ) {
-                            // EventBus.$emit('show-common-dialog', 'error-500')
-                        }
-                    }
-                    console.log(error)
-                })
+        created () {
+            this.admission = store.admission
         },
+        // mounted() {
+        //     axios.post('/get-admission/' + this.an)
+        //         .then( (response) => {
+        //             if ( response.data.hn == undefined ) {
+        //                 this.patientName = 'an data not found, please try again.'
+        //                 // EventBus.$emit('anSearched', false)
+        //                 this.admission = null
+        //             } else {
+        //                 this.patientName = 'HN ' + response.data.hn + ' ' + response.data.patient_name
+        //                 // EventBus.$emit('anSearched', true)
+        //                 this.admission = response.data
+        //                 axios.post('/get-creatable-notes/' + this.an)
+        //                     .then( (response) => {
+        //                         this.notes = response.data
+        //                         this.showCreatableNotes = true
+        //                     }).catch( (error) => {
+        //                         // EventBus.$emit('anSearched', false)
+        //                         if (error.response) {
+        //                             if ( error.response.status == 419 ) {
+        //                                 // EventBus.$emit('show-common-dialog', 'error-419')
+        //                             } else if ( error.response.status == 500 ) {
+        //                                 // EventBus.$emit('show-common-dialog', 'error-500')
+        //                             }
+        //                         }
+        //                         console.log(error)
+        //                     })
+        //             }
+        //         }).catch( (error) => {
+        //             this.admission = null
+        //             if (error.response) {
+        //                 if ( error.response.status == 419 ) {
+        //                     // EventBus.$emit('show-common-dialog', 'error-419')
+        //                 } else if ( error.response.status == 500 ) {
+        //                     // EventBus.$emit('show-common-dialog', 'error-500')
+        //                 }
+        //             }
+        //             console.log(error)
+        //         })
+        // },
         methods: {
             createNote(note) {
                 if ( note.creatable ) {
@@ -124,21 +134,3 @@
         }
     }
 </script>
-
-<style>
-    /* Enter and leave animations can use different */
-    /* durations and timing functions.              */
-    .slide-fade-enter-active {
-      /*transition: all .3s ease;*/
-      transition: all .8s ease;
-    }
-    .slide-fade-leave-active {
-      /*transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);*/
-      transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-    }
-    .slide-fade-enter, .slide-fade-leave-to
-    /* .slide-fade-leave-active below version 2.1.8 */ {
-      transform: translateX(10px);
-      opacity: 0;
-    }
-</style>

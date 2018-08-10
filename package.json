@@ -19,16 +19,16 @@
         "jquery": "^3.3.1",
         "laravel-mix": "^2.1.11",
         "lodash": "^4.17.10",
-        "vue": "^2.5.16",
-        "vue-template-compiler": "^2.5.16",
+        "vue": "^2.5.17",
+        "vue-template-compiler": "^2.5.17",
         "vuedraggable": "^2.16.0"
     },
     "dependencies": {
         "ajv": "^6.5.2",
         "canvas2svg": "^1.0.16",
         "devbridge-autocomplete": "^1.4.8",
-        "fabric": "^2.3.3",
-        "npm": "^6.2.0",
+        "fabric": "^2.3.4",
+        "npm": "^6.3.0",
         "trix": "^0.12.0"
     }
 }

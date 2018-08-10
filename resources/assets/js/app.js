@@ -10,6 +10,6 @@ window.app = new Vue({
     el: '#app',
     mounted () {
         formHelper.loaded()
-        pageTextWatermark.watermark('nalinee@2216')
+        pageTextWatermark.watermark('nalinee@' + Date.now())
     }
 })

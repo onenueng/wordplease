@@ -174,3 +174,29 @@ Route::get('/test-icd', function () {
 Route::get('/vue-login', function () {
     return view('vue-app')->with(['title' => 'Login', 'jsFile' => '/js/vue-login.js']);
 });
+
+Route::get('/test-accio/{org_id}/{password}', function($org_id, $password) {
+    $client = new \GuzzleHttp\Client([
+        'base_uri' => 'http://localhost:8000',
+        'timeout' => 8.0,
+    ]);
+
+    $response = $client->post('/accio', [
+        'headers' => [
+            'Accept' => 'application/json',
+            'token' => 'app_token',
+            'secret' => 'app_secret'
+        ],
+        'form_params' => [
+            'function' => 'authenticate',
+            'org_id' => $org_id,
+            'password' => $password
+        ]
+    ]);
+
+    if ($response->getStatusCode() == 200) {
+        return json_decode($response->getBody(), true);
+    }
+
+    return 'error';
+});

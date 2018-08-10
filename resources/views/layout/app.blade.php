@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="th-TH">
 <head>
+    {{-- favicon stuff --}}
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -15,20 +16,13 @@
     <title>@yield('title')</title>
 
     <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
+    @yield('custom-style')
 </head>
 <body>
-    
-    @include('partials.page-loader')
+    <div class="container-fluid">@yield('body')</div>
 
-    <div id="app">
-        <alert-box></alert-box><!-- app alert box -->
-        <modal-dialog></modal-dialog><!-- app modal diaglog -->
-        
-        @yield('content')
-    </div>
     <script src="{{ mix('/js/manifest.js') }}"></script>
     <script src="{{ mix('/js/vendor.js') }}"></script>
-    @yield('app-js')
-
+    <script src="{{ mix('/js/app.js') }}"></script>
 </body>
 </html>

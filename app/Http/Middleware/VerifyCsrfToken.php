@@ -12,7 +12,9 @@ class VerifyCsrfToken extends Middleware
      * @var array
      */
     protected $except = [
-        //
+        //  *** FOR TESTING ONLY ***
+        '/test-form-post'
+        //  ***
         // '/register/check-id'
     ];
 }

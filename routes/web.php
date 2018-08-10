@@ -200,3 +200,7 @@ Route::get('/test-accio/{org_id}/{password}', function($org_id, $password) {
 
     return 'error';
 });
+
+Route::post('/test-form-post', function () {
+    return app('request')->all();
+});

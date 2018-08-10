@@ -4,10 +4,8 @@
 <!-- <input-rich-text></input-rich-text> -->
 <toggle
     id='toggle-gender'
-    true-label='ชาย'
-    false-label='หญิง'></toggle>
-<toggle
-    id='employee-type'
-    true-label='เผลอ'
-    false-label='ไม่เผลอ'></toggle>
+    v-model="gender"
+    true-label='Male'
+    new='Gender'
+    false-label='Female'></toggle>
 @endsection

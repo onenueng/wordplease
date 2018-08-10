@@ -1,12 +1,12 @@
 <template>
-    <span class="switch">
+    <span :class="themeClass">
         <input
             type="checkbox"
             class="switch"
             :id="id"
-            :checked="toggle"
-            @click="toggle = !toggle" />
-        <label :for="id">{{ toggle ? trueLabel:falseLabel }}</label>
+            :checked="value"
+            @click="toggle" />
+        <label :for="id">{{ label }}</label>
     </span>
 </template>
 
@@ -14,13 +14,31 @@
 export default {
     props: {
         id: { required: true },
-        state: { default: false },
+        value: { default: false },
         trueLabel: { default: 'on' },
         falseLabel: { default: 'off' },
+        new: { default: '' }
     },
     data () {
         return {
-            toggle: this.state
+            clicked: false,
+            themeClass: 'switch switch-lg'
+        }
+    },
+    computed: {
+        label () {
+            return ( this.new != '' && !this.clicked ) ? this.new :
+                                        ( this.value ? this.trueLabel : this.falseLabel )
+        }
+    },
+    mounted () {
+        this.themeClass += ((this.new != '') ? ' switch-default' : '')
+    },
+    methods: {
+        toggle() {
+            this.$emit('input', !this.value)
+            this.clicked = true
+            this.themeClass = 'switch switch-lg'
         }
     }
 }
@@ -67,10 +85,20 @@ export default {
 }
 .switch input + label::before {
     right: 0;
+    /* background-color: #dee2e6; */
+    background-color: #FFC0CB;
+    border-radius: calc(2.375rem * .8);
+    transition: 0.2s all;
+}
+
+.switch.switch-default input + label::before {
+    right: 0;
+    /* background-color: #FFC0CB; */
     background-color: #dee2e6;
     border-radius: calc(2.375rem * .8);
     transition: 0.2s all;
 }
+
 .switch input + label::after {
     top: 2px;
     left: 2px;

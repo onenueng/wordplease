@@ -23,7 +23,7 @@
 <script>
     export default {
         props: {
-            brand: { brand: () => { return { link: '/', title: 'IPD Note', subTitle: 'sub title' } } }
+            brand: { default: () => { return { link: '/', title: 'IPD Note', subTitle: 'sub title' } } }
         }
     }
 </script>

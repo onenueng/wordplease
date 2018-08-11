@@ -1,13 +1,17 @@
 <template>
     <div class="panel panel-default material-panel">
-        <div class="panel-heading material-panel-heading"><strong>{{ heading }}</strong></div>
-        <div class="panel-body material-panel-body"><slot></slot></div>
+        <div class="panel-heading material-panel-heading">
+            <strong>{{ heading }}</strong>
+        </div>
+        <div class="panel-body material-panel-body">
+            <slot></slot>
+        </div>
     </div>
 </template>
 
 <script>
     export default {
-        props: ['heading']
+        props: { heading: { default: 'heading' } }
     }
 </script>
 
@@ -29,9 +33,5 @@
     .material-panel-body {
         background-color: #fff;
         padding: 10px 22.5px;
-    }
-    .material-panel-heading {
-        /*background-color: #eee;*/
-        /*color: #000;*/
     }
 </style>

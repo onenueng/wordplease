@@ -12,8 +12,9 @@
                 @validated="validAn" />
             <transition name="slide-fade">
                 <creatable-notes
-                    :an="an"
-                    v-if="showCreatableNotes" />
+                    v-if="showCreatableNotes"
+                    @noteSelected="showConfirmation"
+                    @error="handleError" />
             </transition>
         </ul><!-- Navbar Left Actions -->
 
@@ -61,6 +62,7 @@
 
                             } else {
                                 this.showCreatableNotes = true
+                                this.tooltip = ''
                                 store.admission = response.data
                             }
                             this.disabled = false
@@ -70,6 +72,29 @@
                          })
                 } else {
                     this.showCreatableNotes = false
+                }
+            },
+            handleError(error) {
+                this.$emit('error', error)
+            },
+            showConfirmation(note) {
+                if ( note.creatable ) {
+                    let body  = '<div class="row"><div class="col-xs-4 text-right">Create : </div>'
+                        body += '<div class="col-xs-8 text-left"><b>' + note.label + '</b></div></div>'
+                        body += '<div class="row"><div class="col-xs-4 text-right">Hn : </div>'
+                        body += '<div class="col-xs-8 text-left"><b>' + store.admission.hn + '</b></div></div>'
+                        body += '<div class="row"><div class="col-xs-4 text-right">Name : </div>'
+                        body += '<div class="col-xs-8 text-left"><b>' + store.admission.patient_name + '</b></div></div>'
+                        body += '<div class="row"><div class="col-xs-4 text-right">Gender : </div>'
+                        body += '<div class="col-xs-8 text-left"><b>' + (store.admission.gender == 1 ? 'Male':'Female') + '</b></div></div>'
+                        body += '<div class="row"><div class="col-xs-4 text-right">Attending : </div>'
+                        body += '<div class="col-xs-8 text-left"><b>' + store.admission.attending_name + '</b></div></div>'
+                        body += '<div class="row"><div class="col-xs-4 text-right">Datetime Admit : </div>'
+                        body += '<div class="col-xs-8 text-left"><b>' + store.admission.datetime_admit + '</b></div></div>'
+                        body += '<div class="row"><div class="col-xs-4 text-right">Datetime Discharge : </div>'
+                        body += '<div class="col-xs-8 text-left"><b>' + store.admission.datetime_discharge + '</b></div></div>'
+                    store.noteSelected = note
+                    this.$emit('showConfirmation', body)
                 }
             }
         }

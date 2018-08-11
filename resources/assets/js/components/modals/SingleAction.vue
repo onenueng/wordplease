@@ -15,8 +15,9 @@
                         <div v-if="!busy">
                             <button-app
                                 size="lg"
+                                status="info"
                                 :label="actionButtonLabel"
-                                status="info" />
+                                @click="$emit('confirmed')" />
 
                             <button-app
                                 size="lg"
@@ -44,42 +45,16 @@
             ButtonApp
         },
         props: {
+            actionButtonLabel: { default: 'OK' },
+            heading: { default: "What's up!" },
             toggle: { default: false },
             busy: { default: false },
-            heading: { default: "What's up!" },
-            body: { default: '' },
-            actionButtonLabel: { default: 'OK' }
-        },
-        data() {
-            return {
-                action: ''
-            }
+            body: { default: '' }
         },
         watch: {
             toggle(toggle) {
                 $('#modal-action').modal(toggle ? 'show' : 'hide')
             }
-        },
-        mounted() {
-            // EventBus.$on('toggle-modal-action', (content,
-            //                                      heading = 'Wordplease says',
-            //                                      label = 'OK',
-            //                                      action = 'toggle-modal-action') => {
-            //     if ( content === undefined ) {
-            //         $('#modal-action').modal('hide')
-            //         this.processing = false
-            //     } else {
-            //         this.content = content
-            //         this.heading = heading
-            //         this.label = label
-            //         this.action = action
-            //         $('#modal-action').modal('show')
-            //     }
-            // })
-
-            // EventBus.$on('modal-action-processing', (processing) => {
-            //     this.processing = processing
-            // })
         }
     }
 </script>

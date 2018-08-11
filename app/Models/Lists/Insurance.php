@@ -3,7 +3,6 @@
 namespace App\Models\Lists;
 
 use App\Contracts\AutoId;
-use App\Traits\DataImportable;
 use App\Models\Lists\Admission;
 use App\Traits\AutoIdInsertable;
 use App\Traits\RuntimeMaintainable;
@@ -11,9 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Insurance extends Model implements AutoId
 {
-    use AutoIdInsertable, DataImportable, RuntimeMaintainable;
-
-    // protected $dateFormat = 'Y-m-d H:i:s.u';
+    use AutoIdInsertable, RuntimeMaintainable;
     
     /**
      * The attributes that are mass assignable.

@@ -1,6 +1,6 @@
 <template>
     <div :class="state.themeClass"><!-- class provide state border color -->
-        <label class="control-label  topped">{{ label }}</label>
+        <label class="control-label topped">{{ label }}</label>
         <input
             :type="type"
             class="form-control"

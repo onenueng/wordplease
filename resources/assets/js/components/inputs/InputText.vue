@@ -1,27 +1,31 @@
 <template>
     <div :class="componentGrid">
-        <div :class="componentSize" :style="isMaxWidth">
-            <label v-if="hasLabel"
+        <div :class="componentSize"
+             :style="isMaxWidth">
+            <label v-if="label !== null"
                    class="control-label topped"
                    :for="field">
                 <span v-html="label"></span>
-                <a  v-if="labelDescription !== undefined"
+                <a  v-if="labelDescription !== null"
                     role="button"
                     data-toggle="tooltip"
                     :title="labelDescription">
                     <i class="fa fa-info-circle"></i>
                 </a>
-                <span v-if="labelDescription !== undefined">:</span>
+                <span v-if="labelDescription !== null">:</span>
             </label>
-            <input type="text"
-                   :class="inputClass"
-                   :readonly="readonly"
-                   :name="field"
-                   :id="field"
-                   :placeholder="placeholder"
-                   v-model="userInput"
-                   @blur="onblur()"
-                   :style="isMaxWidth" />
+            <input
+                :type="type"
+                :class="inputClass"
+                :readonly="readonly"
+                :name="field"
+                :id="field"
+                :placeholder="placeholder"
+                :style="isMaxWidth"
+                :value="value"
+                ref="input"
+                @input="oninput"
+                @blur="onblur()" />
         </div>
     </div>
 </template>
@@ -29,120 +33,76 @@
 <script>
     export default {
         props: {
-            // field name on database.
-            field: {
-                type: String,
-                required: false
-            },
-            // input type default is text
-            format: {
-                type: String,
-                required: false
-            },
-            label: {
-                type: String,
-                required: false  
-            },
-            labelDescription: {
-                type: String,
-                required: false  
-            },
-            // define Bootstrap grid class in mobile-tablet-desktop order
-            grid: {
-                type: String,
-                required: false  
-            },
-            // initial value.
-            value: {
-                type: String,
-                required: false
-            },
-            // allow user type-in or not, Just mention this option.
-            readonly: {
-                type: String,
-                required: false
-            },
-            // define Bootstrap form-group has-feedback which size of form-group should use.
-            size: {
-                type: String,
-                required: false
-            },
-            // need to sync value with database on render or not ['needSync' or undefined].
-            needSync: {
-                type: String,
-                required: false
-            },
-            placeholder: {
-                type: String,
-                required: false
-            },
-            setterEvent: {
-                type: String,
-                required: false  
-            },
-            pattern: {
-                type: String,
-                required: false
-            },
-            invalidText: {
-                type: String,
-                required: false
-            }
+            type: { default: 'text' },
+            label: { default: null },
+            labelDescription: { default: null },
+            grid: { default: null },
+            size: { default: 'small' },
+            value: { default: null }, // model
+            readonly: { default: false },
+            placeholder: { default: null },
+            pattern: { default: '.' },
+            invalidResponseText: { default: 'Invalid format. Data cannot be saved.' },
+            field: { default: Date.now() + Math.floor(Math.random()*1000) },
         },
         data () {
             return {
-                userInput: '',
-                lastSave: '',
-                type: 'text',
+                lastSave: null,
                 inputClass: 'form-control'
             }
         },
+        computed: {
+            componentSize() {
+                if ( this.size == 'small' ) {
+                    return 'form-group-sm'
+                } else if ( this.size == 'normal' ) {
+                    return 'form-group'
+                } else if ( this.size == 'large' ) {
+                    return 'form-group-lg'
+                } else {
+                    return ''
+                }
+            },
+            componentGrid() {
+                if ( this.grid === null ) {
+                    return ''
+                }
+                let grid = this.grid.split('-')
+                return 'col-xs-' + (grid[0]) + ' col-sm-' + (grid[1]) + ' col-md-' + (grid[2])
+            },
+            isMaxWidth() {
+                return ( this.label === null ) ? "width: 100%;" : ""                
+            },
+            regex() {
+                return new RegExp(this.pattern)
+            }
+        },
         mounted () {
-            // init label tooltip if available.
-            if (this.labelDescription !== undefined) {
+            if (this.labelDescription !== null) {
                 $('a[title="' + this.labelDescription + '"]').tooltip()
             }
 
-            if ( this.format !== undefined ) {
-                this.type = this.format
-            }
-
-            if (this.needSync !== undefined) {
-                let url = this.needSync + '/' + this.field
-                axios.get(url)
-                     .then( (response) => {
-                        this.userInput = response.data
-                     })
-                     .catch( (error) => {
-                        this.userInput = 'error'
-                     })
-            }
-
-            if (this.value === undefined)
-                this.lastSave = this.userInput = ''
-            else
-                this.lastSave = this.userInput = this.value
-
-            if ( this.setterEvent !== undefined ) {
-                EventBus.$on(this.setterEvent, (value) => {
-                    this.userInput = value
-                    this.autosave()
+            if ( this.pattern !== '.') {
+                $('#' + this.field).tooltip({
+                    placement: "bottom",
+                    trigger: "hover",
+                    delay: { "show": 100, "hide": 500 }
                 })
             }
         },
         methods: {
-            autosave() {
-                if ( this.readonly != '' && (this.userInput != this.lastSave)) {
-                    EventBus.$emit('autosave', this.field, this.userInput)
-                    this.lastSave = this.userInput
+            oninput() {
+                if ( this.validate() ) {
+                    this.$emit('input', this.$refs.input.value)
+                    this.resetTheme()
+                } else {
+                    this.setInvalidTheme()
                 }
             },
-            isValidate() {
-                if ( this.pattern !== null ) {
-                    if ( this.userInput.match(this.regex) !== null ) {
-                        $(this.inputDom).attr('data-original-title', '')
-                        $(this.inputDom).tooltip('hide')
-                        this.inputClass = 'form-control'
+            validate() {
+                if ( this.$refs.input.value != '' ) {
+                    if ( this.$refs.input.value.match(this.regex) !== null ) { // valid pattern
+                        this.resetTheme()
                         return true
                     } else {
                         return false
@@ -150,51 +110,29 @@
                 }
                 return true
             },
+            autosave() {
+                if ( !this.readonly && (this.value != this.lastSave) ) {
+                    this.$emit('autosave', this.field)
+                    this.lastSave = this.value
+                }
+            },
             onblur() {
-                if ( this.isValidate() ) {
+                if ( this.validate() ) {
+                    this.resetTheme()
                     this.autosave()
                 } else {
-                    $(this.inputDom).attr('data-original-title', this.invalidTextComputed)
-                    $(this.inputDom).tooltip('show')
-                    this.inputClass = 'form-control invalid-input'
+                    this.setInvalidTheme()
                 }
-            }
-        },
-        computed: {
-            hasLabel() {
-                return !(this.label === undefined)
             },
-            componentSize() {
-                if (this.size == 'normal') {
-                    return 'form-group'
-                }
-                return 'form-group-sm'
+            resetTheme () {
+                $('#' + this.field).attr('data-original-title', '')
+                $('#' + this.field).tooltip('hide')
+                this.inputClass = 'form-control'
             },
-            componentGrid() {
-                if (this.grid === undefined) {
-                    return ''
-                }
-                let grid = this.grid.split('-')
-                return 'col-xs-' + (grid[0]) + ' col-sm-' + (grid[1]) + ' col-md-' + (grid[2])
-            },
-            isMaxWidth() {
-                if ( this.label === undefined ) {
-                    return "width: 100%;"
-                }
-                return ""
-            },
-            regex() {
-                if ( this.pattern !== null ) {
-                    return new RegExp(this.pattern)
-                }
-                return null
-            },
-            inputDom() {
-                return ( this.field !== undefined ) ? ('#' + this.field) : ''
-            },
-            invalidTextComputed() {
-                let defaultText = 'Invalid format. Data cannot be saved.'
-                return ( this.invalidText === undefined ) ? defaultText : this.invalidText
+            setInvalidTheme () {
+                $('#' + this.field).attr('data-original-title', this.invalidResponseText)
+                $('#' + this.field).tooltip('show')
+                this.inputClass = 'form-control invalid'
             }
         }
     }

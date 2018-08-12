@@ -43,7 +43,7 @@
             placeholder: { default: null },
             pattern: { default: '.' },
             invalidResponseText: { default: 'Invalid format. Data cannot be saved.' },
-            field: { default: Date.now() + Math.floor(Math.random()*1000) },
+            field: { default: Date.now() + '-' + Math.floor(Math.random()*1000) },
         },
         data () {
             return {

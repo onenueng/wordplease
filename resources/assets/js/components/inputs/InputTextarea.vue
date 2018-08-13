@@ -1,348 +1,180 @@
 <template>
-    <div :class="getGrid()">
+    <div :class="componentGrid">
         <div class="form-group-sm">
-            <label class="control-label topped"
-                   v-if="label != undefined"
-                   :for="field">
+            <label
+                class="control-label topped"
+                :for="field"
+                v-if="label != null">
                 <span v-html="label"></span>
-                <a  v-if="labelAction !== undefined"
+                <a  data-toggle="tooltip"
                     role="button"
-                    @click="emitLabelActionEvent()"
-                    data-toggle="tooltip"
-                    :title="labelActionTitle">
-                    <i :class="labelActionIcon"></i>
-                </a>
-                <a  v-if="labelDescription !== undefined"
+                    :title="labelAction.title"
+                    v-if="labelAction !== {}"
+                    @click="$emit(labelAction.event)"
+                ><i :class="labelAction.icon"></i></a>
+                <a  data-toggle="tooltip"
                     role="button"
-                    data-toggle="tooltip"
-                    :title="labelDescription">
-                    <i class="fa fa-info-circle"></i>
-                </a>
-                <span v-if="labelDescription !== undefined">:</span>
+                    :title="labelDescription"
+                    v-if="labelDescription !== null"
+                ><i class="fa fa-info-circle"></i></a>
+                <span v-if="labelDescription !== null">:</span>
             </label>
-            <textarea   :class="controlClass"
-                        :readonly="readonly"
-                        :name="field"
-                        :id="field"
-                        :maxlength="getMaxChars"
-                        :placeholder="placeholderNew"
-                        v-model="userInput"
-                        @input="oninput()"
-                        @blur="autosave()"
-                        @focus="onfocus()"
-                        rows="1">
-            </textarea>
+            <textarea
+                rows="1"
+                :class="controlClass"
+                :id="field"
+                :maxlength="maxlength"
+                :name="field"
+                :placeholder="placeholder"
+                :readonly="readonly"
+                ref="textarea"
+                @input="oninput"
+                @keydown="onkeydown"
+                @blur="showCharsRemaining = false"
+            ></textarea>
             <transition name="slide-fade">
-                <p :class="helperClass" v-if="showCharsRemaining"><strong>{{ charsRemaining }} chars remain.</strong></p>
+                <p :class="helperClass"
+                   v-if="showCharsRemaining"
+                ><strong>{{ charsRemaining }} chars remain.</strong></p>
             </transition>
         </div>
     </div>
 </template>
 
 <script>
-    export default {
-        props: {
-            // field name on database.
-            field: {
-                type: String,
-                required: false
-            },
-            label: {
-                type: String,
-                required: false
-            },
-            // tooltip for label.
-            labelDescription: {
-                type: String,
-                required: false
-            },
-            // string in form of json {"emit": "", "icon": "", "title": "" }.
-            labelAction: {
-                type: [String, Object],
-                required: false
-            },
-            // define Bootstrap grid class in mobile-tablet-desktop order
-            grid: {
-                type: String,
-                required: false
-            },
-            // initial value.
-            value: {
-                type: String,
-                required: false
-            },
-            // allow user type-in or not, Just mention this option.
-            readonly: {
-                type: String,
-                required: false
-            },
-            placeholder: {
-                type: String,
-                required: false
-            },
-            maxChars: {
-                type: [String, Number],
-                required: false
-            },
-            setterEvent: {
-                type: String,
-                required: false
-            },
-            // need to sync value with database on render or not ['needSync' or undefined].
-            needSync: {
-                type: String,
-                required: false
+import autosize from "autosize"
+export default {
+    props: {
+        field: { default: Date.now() + '-' + Math.floor(Math.random()*1000) },
+        grid: { default: null },
+        label: { default: null },
+        labelDescription: { default: null },
+        labelAction: { default: () => { return {} } },
+        maxlength: { default: 255 },
+        placeholder: { default: null },
+        readonly: { default: false },
+        value: { required: true }
+    },
+    data () {
+        return {
+            controlClass: 'form-control',
+            helperClass: 'text-muted',
+            showCharsRemaining: false,
+            charsRemaining: 0
+        }
+    },
+    computed: {
+        componentGrid() {
+            let className
+            if ( this.grid === null ) {
+                className = 'col-xs-12'
+            } else {
+                let grid = this.grid.split('-')
+                className = 'col-xs-' + (grid[0]) + ' col-sm-' + (grid[1]) + ' col-md-' + (grid[2])
             }
-        },
-        data () {
-            return {
-                userInput: '',
-                domRef: 'textarea[name=' + this.field + ']',
-                dirty: false,
-                controlClass: 'form-control',
-                helperClass: 'text-muted',
-                showCharsRemaining: false,
-                charsRemaining: 0
-            }
-        },
-        mounted () {
-            if (this.value === undefined)
-                this.userInput = ''
-            else
-                this.userInput = this.value
-
-            if (this.setterEvent !== undefined) {
-                EventBus.$on(this.setterEvent, (value, mode = 'put') => {
-                    if (mode == 'put') {
-                        this.userInput = value;
-                    } else {
-                        if ( this.userInput === null || this.userInput === '' ) {
-                            this.userInput = value
-                        } else {
-                            this.userInput += ('\n' + value)
-                        }
-                    }
-                    this.dirty = true
-                    this.autosave()
-                })
-            }
-
-            if (this.needSync !== undefined) {
-                let url = '/note-data/' + window.location.pathname.split("/")[2] + '/' + this.field
-                axios.get(url)
-                     .then( (response) => {
-                        this.userInput = response.data
-                     })
-                     .catch( (error) => {
-                        this.userInput = 'error'
-                     })
-            }
-
-            autosize($(this.domRef))
-
-            this.onkeypress = _.debounce(() => {
-                let countChars = this.userInput.length
-                if (countChars > (.5*this.getMaxChars)) {
-                    this.charsRemaining = this.getMaxChars - this.userInput.length
-                    this.showCharsRemaining = true
-                    if (countChars > (.75*this.getMaxChars)) {
-                        this.toggleStatus('danger')
-                    } else {
-                        this.toggleStatus('warning')
-                    }
+            return (this.label === null) ? (className += ' fix-margin') : className
+        }
+    },
+    created () {
+        this.oninput = _.debounce(this.autosave, 5000)
+    },
+    mounted () {
+        autosize(this.$refs.textarea)
+        if (this.labelAction !== {}) { // init label action tooltip if available.
+            $('a[title="' + this.labelAction.title + '"]').tooltip()
+        }
+        if (this.labelDescription !== null) { // init label tooltip if available.
+            $('a[title="' + this.labelDescription + '"]').tooltip()
+        }
+    },
+    methods: {
+        onkeydown () {
+            if (this.$refs.textarea.value.length > (.5*this.maxlength)) {
+                this.charsRemaining = this.maxlength - this.$refs.textarea.value.length
+                this.showCharsRemaining = true
+                if (this.$refs.textarea.value.length > (.75*this.maxlength)) {
+                    this.setTheme('danger')
                 } else {
-                    this.toggleStatus('')
+                    this.setTheme('warning')
                 }
-            }, 300)
-
-            this.onkeypressSave = _.debounce(() => { this.autosave() }, 5000)
-
-            // seem like Vue delay update so, we delay autosize process to take effect
-            setTimeout(() => { autosize.update($(this.domRef)) }, 100)
-
-            // init label action icon tooltip if available.
-            if (this.labelAction !== undefined) {
-                $('a[title="' + this.labelActionTitle + '"]').tooltip()
+            } else {
+                this.setTheme('')
             }
         },
-        methods: {
-            getGrid() {
-                let divClass = ''
-                if (this.grid == undefined) {
-                    divClass = ''
-                } else {
-                    // let grid = this.grid.split('-').map((x) => 12/x)
-                    let grid = this.grid.split('-')
-                    divClass = 'col-xs-' + (grid[0]) + ' col-sm-' + (grid[1]) + ' col-md-' + (grid[2])
-                }
-
-                if (this.label === undefined) {
-                    divClass += ' fix-margin'
-                }
-                return divClass
-            },
-            autosave() {
-                if ( this.readonly != '' && this.dirty) {
-                    EventBus.$emit('autosave', this.field, this.userInput)
-                    this.dirty = false
-                    this.showCharsRemaining = false
-                    this.toggleStatus('')
-                }
-
-                if(this.showCharsRemaining) {
-                    this.showCharsRemaining = false
-                }
-
-                // seem like Vue delay update so, we delay autosize process to take effect
-                setTimeout(() => { autosize.update($(this.domRef)) }, 100)
-
-            },
-            oninput() {
-
-                if (!this.dirty && (this.userInput.length < this.getMaxChars)) {
-                    this.dirty = true
-                }
-
-
-                if ( this.showCharsRemaining ) {
-                    this.charsRemaining = this.getMaxChars - this.userInput.length
-                }
-
-                this.onkeypress()
-                this.onkeypressSave()
-            },
-            onkeypress() {
-                // define on mounted
-            },
-            onkeypressSave() {
-                // define on mounted
-            },
-            toggleStatus(status) {
-                let baseClass = ''
-                let subClass = ''
-                let show = false
-                switch (status) {
-                    case 'warning':
-                        baseClass = 'form-control textarea-warning'
-                        subClass = 'text-warning'
-                        show = true
-                        break
-                    case 'danger':
-                        baseClass = 'form-control textarea-danger'
-                        subClass = 'text-danger'
-                        show = true
-                        break
-                    default :
-                        baseClass = 'form-control'
-                        subClass = 'text-muted'
-                }
-                if (this.controlClass != baseClass) {
-                    this.controlClass = baseClass
-                    this.helperClass = subClass
-                    this.showCharsRemaining = show
-                }
-            },
-            onfocus() {
-                if(this.userInput !== null && this.userInput.length == this.getMaxChars) {
-                    this.toggleStatus('danger')
-                }
-            },
-            emitLabelActionEvent() {
-                EventBus.$emit(this.labelActionEmitEventName)
+        autosave() {
+            if ( (this.value !== undefined) && !this.readonly && (this.value != this.lastSave) ) {
+                this.$emit('input', this.$refs.textarea.value)
+                this.$emit('autosave', this.field)
+                this.lastSave = this.value
             }
         },
-        computed: {
-            getMaxChars() {
-                return (this.maxChars === undefined) ? 255 : this.maxChars
-            },
-            placeholderNew() {
-                let placeholder = ''
-                if ( this.placeholder !== undefined ) {
-                    placeholder += this.placeholder
-                    if ( this.getMaxChars !== undefined ) {
-                        return placeholder += ' - ' + this.getMaxChars + ' chars max'
-                    } else {
-                        return placeholder
-                    }
-                }
-
-                if ( this.getMaxChars !== undefined ) {
-                    return this.getMaxChars + ' chars max'
-                }
-
-            },
-            // extract label action emit event name.
-            labelActionEmitEventName() {
-                if (this.labelAction !== undefined) {
-                    return typeof this.labelAction == 'string' 
-                           ? JSON.parse(this.labelAction).emit
-                           : this.labelAction.emit
-                }
-                return ''
-            },
-            // extract label action icon.
-            labelActionIcon() {
-                if (this.labelAction !== undefined) {
-                    return 'fa fa-' + (typeof this.labelAction == 'string'
-                                       ? JSON.parse(this.labelAction).icon
-                                       : this.labelAction.icon)
-                }
-                return ''
-            },
-            // extract label action icon title.
-            labelActionTitle() {
-                if (this.labelAction !== undefined) {
-                    return typeof this.labelAction == 'string'
-                           ? JSON.parse(this.labelAction).title
-                           : this.labelAction.title
-                }
-                return ''
+        setTheme(status) {
+            let baseClass = ''
+            let subClass = ''
+            let show = false
+            switch (status) {
+                case 'warning':
+                    baseClass = 'form-control textarea-warning'
+                    subClass = 'text-warning'
+                    show = true
+                    break
+                case 'danger':
+                    baseClass = 'form-control textarea-danger'
+                    subClass = 'text-danger'
+                    show = true
+                    break
+                default :
+                    baseClass = 'form-control'
+                    subClass = 'text-muted'
+            }
+            if ( this.controlClass != baseClass ) {
+                this.controlClass = baseClass
+                this.helperClass = subClass
+                this.showCharsRemaining = show
             }
         }
     }
+}
 </script>
 
 <style>
-    .fix-margin {
-        margin-top: .3em;
+.fix-margin { margin-top: .3em; }
+.textarea-warning {
+    /*Important stuff here*/
+    -webkit-transition: flash-warning 3s ease-out;
+    -moz-transition: flash-warning 3s ease-out;
+    -o-transition: flash-warning 3s ease-out;
+    transition: flash-warning 3s ease-out;
+    animation: flash-warning 3s forwards linear normal;
+}
+@keyframes flash-warning {
+    0% {
+        background:#fff;
     }
-
-    .textarea-warning {
-        /*Important stuff here*/
-        -webkit-transition: flash-warning 3s ease-out;
-        -moz-transition: flash-warning 3s ease-out;
-        -o-transition: flash-warning 3s ease-out;
-        transition: flash-warning 3s ease-out;
-        animation: flash-warning 3s forwards linear normal;
+    50% {
+        background:#f0ad4e;
     }
-    @keyframes flash-warning {
-        0% {
-            background:#fff;
-        }
-        50% {
-            background:#f0ad4e;
-        }
-        100% {
-            background:#fff;
-        }
+    100% {
+        background:#fff;
     }
-    .textarea-danger {
-        /*Important stuff here*/
-        -webkit-transition: flash-danger 3s ease-out;
-        -moz-transition: flash-danger 3s ease-out;
-        -o-transition: flash-danger 3s ease-out;
-        transition: flash-danger 3s ease-out;
-        animation: flash-danger 3s forwards linear normal;
+}
+.textarea-danger {
+    /*Important stuff here*/
+    -webkit-transition: flash-danger 3s ease-out;
+    -moz-transition: flash-danger 3s ease-out;
+    -o-transition: flash-danger 3s ease-out;
+    transition: flash-danger 3s ease-out;
+    animation: flash-danger 3s forwards linear normal;
+}
+@keyframes flash-danger {
+    0% {
+        background:#fff;
     }
-    @keyframes flash-danger {
-        0% {
-            background:#fff;
-        }
-        50% {
-            background:#d9534f;
-        }
-        100% {
-            background:#fff;
-        }
+    50% {
+        background:#d9534f;
     }
+    100% {
+        background:#fff;
+    }
+}
 </style>

@@ -2,30 +2,30 @@
     <div :class="componentGrid">
         <div :class="componentSize"
              :style="isMaxWidth">
-            <label v-if="label !== null"
-                   class="control-label topped"
-                   :for="field">
+            <label
+                class="control-label topped"
+                :for="field"
+                v-if="label !== null">
                 <span v-html="label"></span>
-                <a  v-if="labelDescription !== null"
+                <a  data-toggle="tooltip"
                     role="button"
-                    data-toggle="tooltip"
-                    :title="labelDescription">
-                    <i class="fa fa-info-circle"></i>
-                </a>
+                    :title="labelDescription"
+                    v-if="labelDescription !== null"
+                ><i class="fa fa-info-circle"></i></a>
                 <span v-if="labelDescription !== null">:</span>
             </label>
             <input
-                :type="type"
                 :class="inputClass"
-                :readonly="readonly"
-                :name="field"
                 :id="field"
+                :name="field"
                 :placeholder="placeholder"
+                :readonly="readonly"
                 :style="isMaxWidth"
-                :value="value"
+                :type="type"
+                :value="value === undefined ? currentValue:value"
                 ref="input"
                 @input="oninput"
-                @blur="onblur()" />
+                @blur="onblur" />
         </div>
     </div>
 </template>
@@ -33,21 +33,22 @@
 <script>
     export default {
         props: {
-            type: { default: 'text' },
+            field: { default: Date.now() + '-' + Math.floor(Math.random()*1000) },
+            grid: { default: null },
+            invalidResponseText: { default: 'Invalid format. Data cannot be saved.' },
             label: { default: null },
             labelDescription: { default: null },
-            grid: { default: null },
-            size: { default: 'small' },
-            value: { default: null }, // model
-            readonly: { default: false },
-            placeholder: { default: null },
             pattern: { default: '.' },
-            invalidResponseText: { default: 'Invalid format. Data cannot be saved.' },
-            field: { default: Date.now() + '-' + Math.floor(Math.random()*1000) },
+            placeholder: { default: null },
+            readonly: { default: false },
+            size: { default: 'small' },
+            type: { default: 'text' },
+            value: { required: true } // model
         },
         data () {
             return {
                 lastSave: null,
+                currentValue: null,
                 inputClass: 'form-control'
             }
         },
@@ -64,14 +65,12 @@
                 }
             },
             componentGrid() {
-                if ( this.grid === null ) {
-                    return ''
-                }
+                if ( this.grid === null ) return 'col-xs-12'
                 let grid = this.grid.split('-')
                 return 'col-xs-' + (grid[0]) + ' col-sm-' + (grid[1]) + ' col-md-' + (grid[2])
             },
             isMaxWidth() {
-                return ( this.label === null ) ? "width: 100%;" : ""                
+                return ( this.label === null ) ? "width: 100%;" : ""
             },
             regex() {
                 return new RegExp(this.pattern)
@@ -91,9 +90,10 @@
             }
         },
         methods: {
-            oninput() {
+            oninput () {
+                this.currentValue = this.$refs.input.value
+                this.$emit('input', this.$refs.input.value)
                 if ( this.validate() ) {
-                    this.$emit('input', this.$refs.input.value)
                     this.resetTheme()
                 } else {
                     this.setInvalidTheme()
@@ -102,7 +102,6 @@
             validate() {
                 if ( this.$refs.input.value != '' ) {
                     if ( this.$refs.input.value.match(this.regex) !== null ) { // valid pattern
-                        this.resetTheme()
                         return true
                     } else {
                         return false
@@ -111,7 +110,7 @@
                 return true
             },
             autosave() {
-                if ( !this.readonly && (this.value != this.lastSave) ) {
+                if ( (this.value !== undefined) && !this.readonly && (this.value != this.lastSave) ) {
                     this.$emit('autosave', this.field)
                     this.lastSave = this.value
                 }

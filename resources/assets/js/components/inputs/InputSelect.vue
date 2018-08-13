@@ -1,216 +1,131 @@
 <template>
-    <div :class="componentGrid">
-        <a v-if="label === undefined" @click="reset()" role="button" v-show="showReset" :style="isMaxWidthReset">
-            <i class="fa fa-remove"></i>
-        </a>
-        <div :class="componentSize" :style="isMaxWidthDiv">
-            <label class="control-label topped" :for="field" v-if="label !== undefined">
-                <span v-html="label"></span>
-                <a  v-if="labelDescription !== undefined"
-                    role="button"
-                    data-toggle="tooltip"
-                    :title="labelDescription">
-                    <i class="fa fa-info-circle"></i>
-                </a>
-                <span v-if="labelDescription !== undefined">:</span>
-                <a @click="reset()" role="button" v-show="showReset">
-                    <i class="fa fa-remove"></i>
-                </a>
-            </label>
-            <input  type="text"
-                    class="form-control cursor-pointer"
-                    :name="field"
-                    :id="field"
-                    v-model="userInput"
-                    @blur="autosave()"
-                    @input="showReset = (userInput != '')"
-                    :onkeypress="isAllowOther"
-                    :placeholder="placeholder"
-                    :style="isMaxWidthInput" />
-            <span class="fa fa-chevron-down form-control-feedback"></span>
-        </div>
-
+<div :class="componentGrid">
+    <a role="button"
+       :style="isMaxWidthReset"
+       v-if="label === null"
+       v-show="showReset"
+       @click="reset"
+    ><i class="fa fa-remove"></i></a>
+    <div :class="componentSize"
+         :style="isMaxWidthDiv">
+        <label
+            class="control-label topped"
+            :for="field"
+            v-if="label !== null">
+            <span v-html="label"></span>
+            <a  v-if="labelDescription !== null"
+                role="button"
+                data-toggle="tooltip"
+                :title="labelDescription"
+            ><i class="fa fa-info-circle"></i></a>
+            <span v-if="labelDescription !== null">:</span>
+            <a role="button"
+               v-show="showReset"
+               @click="reset"
+            ><i class="fa fa-remove"></i></a>
+        </label>
+        <input
+            type="text"
+            class="form-control cursor-pointer"
+            :id="field"
+            :name="field"
+            :onkeydown="allowOther?'return true':'return false'"
+            :placeholder="placeholder"
+            :readonly="readonly"
+            :style="isMaxWidthInput"
+            :value="value === undefined ? currentData:value"
+            ref="input"
+            @blur="autosave" />
+        <span class="fa fa-chevron-down form-control-feedback"></span>
     </div>
+</div>
 </template>
 
 <script>
-    export default {
-        props: {
-            // field name on database.
-            field: {
-                type: String,
-                required: false
-            },
-            label: {
-                type: String,
-                required: false  
-            },
-            labelDescription: {
-                type: String,
-                required: false  
-            },
-            // define Bootstrap grid class in mobile-tablet-desktop order
-            grid: {
-                type: String,
-                required: false  
-            },
-            // endpoint to get options.
-            serviceUrl: {
-                type: String,
-                required: false  
-            },
-            // initial value.
-            value: {
-                type: [String, Number],
-                required: false
-            },
-            // allow user type-in or not, Just mention this option.
-            notAllowOther: {
-                type: String,
-                required: false
-            },
-            // define Bootstrap form-group has-feedback which size of form-group should use.
-            size: {
-                type: String,
-                required: false
-            },
-            // need to sync value with database on render or not ['needSync' or undefined].
-            needSync: {
-                type: String,
-                required: false
-            },
-            placeholder: {
-                type: String,
-                required: false
-            },
-            emitOnUpdate: {
-                type: String,
-                required: false  
-            },
-            storeData: {
-                type: String,
-                required: false
-            }
+require("devbridge-autocomplete/dist/jquery.autocomplete.min.js") // jQuery plugin
+export default {
+    props: {
+        allowOther: { default:false },
+        field: { default: Date.now() + '-' + Math.floor(Math.random()*1000) },
+        grid: { default: null },
+        label: { default: null },
+        labelDescription: { default: null },
+        placeholder: { default: null },
+        readonly: { default: false },
+        serviceUrl: { default: null },
+        size: { default: 'small' },
+        value: { required: true } // model
+    },
+    data () {
+        return {
+            showReset: false,
+            currentData: '',
+            lastSave: null
+        }
+    },
+    computed: {
+        componentGrid() {
+            if ( this.grid === null ) return 'col-xs-12'
+            let grid = this.grid.split('-')
+            return 'col-xs-' + (grid[0]) + ' col-sm-' + (grid[1]) + ' col-md-' + (grid[2])
         },
-        data () {
-            return {
-                userInput: '',
-                domRef: 'input[name=' + this.field + ']',
-                showReset: false,
-                lastData: ''
-            }
-        },
-        mounted () {
-            
-            // init label tooltip if available.
-            if (this.labelDescription !== undefined) {
-                $('a[title="' + this.labelDescription + '"]').tooltip()
-            }
-
-            if (this.needSync !== undefined) {
-                // let url = '/note-data/' + window.location.pathname.split("/")[2] + '/' + this.field
-                let url = this.needSync + '/' + this.field
-                axios.get(url)
-                     .then( (response) => {
-                        this.userInput = response.data
-                     })
-                     .catch( (error) => {
-                        this.userInput = 'error'
-                     })
-            }
-
-            if ( this.value === undefined || this.value === null ) {
-                this.lastData = this.userInput = null
-                this.showReset = false
+        componentSize() {
+            if ( this.size == 'small' ) {
+                return 'form-group-sm has-feedback'
+            } else if ( this.size == 'normal' ) {
+                return 'form-group has-feedback'
+            } else if ( this.size == 'large' ) {
+                return 'form-group-lg has-feedback'
             } else {
-                this.lastData = this.userInput = this.value
-                this.showReset = true
+                return ''
             }
-
-            // init autocomplete.
-            $(this.domRef).autocomplete({
-                // width: this.maxWid,
-                serviceUrl: this.getServiceUrl,
-                onSelect: (suggestion) => {
-                    this.showReset = true
-                    this.data = suggestion.data
-                    this.userInput = suggestion.value
-                    this.autosave()
-                },
-                minChars: 0, // render options on focus
-                maxHeight: 240
-            })
         },
-        methods: {
-            reset() {
-                this.showReset = false
-                this.userInput = ''
+        isMaxWidthDiv() {  // style max width for div input
+            return ( this.label === null ) ? "width: 95%;" : ""
+        },
+        isMaxWidthInput() { // style max width for input
+            return ( this.label === null ) ? "width: 100%;" : ""
+        },
+        isMaxWidthReset() { // style max width for reset icon
+            return ( this.label === null ) ? "width: 5%;" : ""
+        }
+    },
+    mounted () {
+        if (this.labelDescription !== null) { // init label tooltip if available.
+            $('a[title="' + this.labelDescription + '"]').tooltip()
+        }
+        $('#' + this.field).autocomplete({ // initial autocomplete instance
+            serviceUrl: (this.serviceUrl === null) ? '/lists/select/' + this.field : '/lists/' + this.serviceUrl,
+            onSelect: (suggestion) => {
+                this.$refs.input.value = this.currentData = suggestion.value
+                this.$emit('input', this.$refs.input.value)
+                this.showReset = true
                 this.autosave()
             },
-            autosave() {
-                if (this.field !== undefined && this.userInput != this.lastData) {
-                    EventBus.$emit('autosave', this.field, this.userInput)
-                    this.lastData = this.userInput
-
-                    if ( this.storeData !== undefined ) {
-                        EventBus.$emit(this.storeData, this.field, this.userInput)
-                    }
-                    
-                    if ( this.emitOnUpdate !== undefined ) {
-                        EventBus.$emit(this.emitOnUpdate, this.userInput)
-                    }
-                }
-            }
+            minChars: 0, // render options on focus
+            maxHeight: 240
+        })
+    },
+    methods: {
+        reset() {
+            this.lastSave = this.currentData = this.$refs.input.value = null
+            this.$emit('input', null)
+            this.$emit('autosave', this.field)
+            this.showReset = false
         },
-        computed: {
-            getServiceUrl() {
-                if (this.serviceUrl === undefined) {
-                    return '/lists/select/' + this.field
-                }
-
-                return  '/lists/' + this.serviceUrl
-            },
-            componentGrid() {
-                if (this.grid === undefined) {
-                    return ''
-                }
-                // let grid = this.grid.split('-').map((x) => 12/x)
-                let grid = this.grid.split('-')
-                return 'col-xs-' + (grid[0]) + ' col-sm-' + (grid[1]) + ' col-md-' + (grid[2])
-            },
-            componentSize() {
-                if (this.size == 'normal') {
-                    return 'form-group has-feedback'
-                }
-                return 'form-group-sm has-feedback'
-            },
-            isAllowOther() {
-                return this.notAllowOther === undefined ? 'return true;' : 'return false;'
-            },
-            isMaxWidthDiv() {
-                if ( this.label === undefined ) {
-                    return "width: 95%;"
-                }
-                return ""
-            },
-            isMaxWidthInput() {
-                if ( this.label === undefined ) {
-                    return "width: 100%;"
-                }
-                return ""
-            },
-            isMaxWidthReset() {
-                if ( this.label === undefined ) {
-                    return "width: 5%;"
-                }
-                return ""
+        autosave() {
+            if ( (this.value !== undefined) && !this.readonly && (this.value != this.lastSave) ) {
+                this.$emit('autosave', this.field)
+                this.lastSave = this.value
             }
         }
     }
+    
+}
 </script>
 
 <style>
-    .cursor-pointer {
-        cursor:pointer;
-    }
+.cursor-pointer {
+    cursor:pointer;
+}
 </style>

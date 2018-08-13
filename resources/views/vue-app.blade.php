@@ -2,7 +2,7 @@
 
 @section('title', $title)
 
-@section('content')
+@section('body')
 <app ref="root"></app>
 @endsection
 

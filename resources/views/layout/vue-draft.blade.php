@@ -20,7 +20,7 @@
 <body>
     @include('partials.page-loader')
 
-    <div id="app">@yield('content')</div>
+    <div id="app">@yield('body')</div>
 
     <script src="{{ mix('/js/manifest.js') }}"></script>
     <script src="{{ mix('/js/vendor.js') }}"></script>

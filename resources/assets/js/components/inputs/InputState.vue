@@ -2,13 +2,13 @@
     <div :class="state.themeClass"><!-- class provide state border color -->
         <label class="control-label topped">{{ label }}</label>
         <input
-            :type="type"
             class="form-control"
-            :value="value"
             :disabled="disabled"
+            :type="type"
+            :value="value"
+            ref="input"
             @input="oninput"
-            @keydown="onkeydown"
-            ref="input" />
+            @keydown="onkeydown" />
         <span :class="state.iconClass"></span><!-- class provide state icon -->
         <span class="help-block" v-if="state.text != ''"><!-- show help text if necessary -->
             <i>{{ state.text }}</i>
@@ -72,7 +72,7 @@
                                         case 'success':
                                             this.setState({
                                                 theme: 'has-success',
-                                                icon: 'glyphicon glyphicon-ok',
+                                                icon: 'fa fa-check',
                                                 text: '',
                                                 payload: response.data.payload
                                             })
@@ -80,7 +80,7 @@
                                         case 'warning':
                                             this.setState({
                                                     theme: 'has-warning',
-                                                    icon: 'glyphicon glyphicon-warning-sign',
+                                                    icon: 'fa fa-warning',
                                                     text: response.data.reply_text,
                                                     payload: response.data.payload
                                                 })
@@ -88,7 +88,7 @@
                                         case 'error':
                                             this.setState({
                                                     theme: 'has-error',
-                                                    icon: 'glyphicon glyphicon-remove',
+                                                    icon: 'fa fa-remove',
                                                     text: response.data.reply_text,
                                                     payload: response.data.payload
                                                 })
@@ -96,7 +96,7 @@
                                         default:
                                             this.setState({
                                                     theme: 'has-error',
-                                                    icon: 'glyphicon glyphicon-remove',
+                                                    icon: 'fa fa-remove',
                                                     text: 'Whoops, someting went wrong. Plase try again.'
                                                 })
                                             break
@@ -108,12 +108,12 @@
                                     this.state.iconClass = 'form-control-feedback'
                                  })
                         } else {
-                            this.setState({ theme: 'has-success', icon: 'glyphicon glyphicon-ok', text: '' })
+                            this.setState({ theme: 'has-success', icon: 'fa fa-check', text: '' })
                         }
                     } else {
                         this.setState({
                                 theme: 'has-error',
-                                icon: 'glyphicon glyphicon-remove',
+                                icon: 'fa fa-remove',
                                 text: this.invalidResponseText
                             })
                     }

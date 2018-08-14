@@ -77,7 +77,27 @@
                 v-model="inputRadio"
                 label="Options"
                 :options="[{label: 'One', value: 1}, {label: 'Two', value: 2}]"
-            ></input-radio>
+                :trigger-values="[1]"
+            ><h1>Hello radio</h1></input-radio>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4">
+            <input-check
+                label="HBC"
+                v-model="inputCheck"
+            ></input-check>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4">
+            <input-check
+                label="HIV"
+                status="danger"
+            ></input-check>
+        </div>
+        <div class="col-xs-12">
+            <input-check-group
+                label="Check group : "
+                :checks="checks"
+                :models="checkModels"
+            ></input-check-group>
         </div>
     </div>
 </panel>

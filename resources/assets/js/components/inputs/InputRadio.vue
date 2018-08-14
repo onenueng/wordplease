@@ -48,151 +48,60 @@
 
 <script>
 export default {
-    props: {
-        field: { default: Date.now() + '-' + Math.floor(Math.random()*1000) },
-        label: { default: null },
-        labelDescription: { default: null },
-        labelAction: { default: () => { return {} } },
-        options: { required: true, type: Array },
-        value: { required: true },
-        
-        triggerValues: { required: false, type: Array }, // value to trigger extra content.
+props: {
+    field: { default: Date.now() + '-' + Math.floor(Math.random()*1000) },
+    label: { default: null },
+    labelDescription: { default: null },
+    labelAction: { default: () => { return {} } },
+    options: { required: true, type: Array },
+    value: { required: true },
+    triggerValues: { required: false, type: Array }, // value to trigger extra content.
+},
+data () {
+    return { checkedValue: null }
+},
+computed: {
+    showReset () {
+        return ( (this.value !== undefined && this.value != null) || this.checkedValue != null )
     },
-    data () {
-        return {
-            showReset: false,
-            checkedValue: null,
-            showExtra: false
-        }
-    },
-    computed: {
-        hasDefaultSlot() { // check if has content in default slot.
-            return this.$slots.default === undefined ? false : true
-        }
-        // ,
-        // triggerValues() {
-        //     if (this.triggerValue !== undefined) {
-        //         return JSON.parse(this.triggerValue)
-        //     }
-        //     return null
-        // }
-    },
-    methods: {
-        autosave() {
-            if (this.field !== undefined) {
-                // EventBus.$emit('autosave', this.field, this.checkedValue)
-                if ( this.storeData !== undefined ) {
-                    // EventBus.$emit(this.storeData, this.field, this.checkedValue)
-                }
-            }
-
-            if ( this.emitOnUpdate !== undefined ) {
-                // EventBus.$emit(this.emitOnUpdate, this.checkedValue)
-            }
-        },
-
-        check(value) {
-            this.$emit('input', value)
-            // check if has extra contents.
-            if (this.hasDefaultSlot) {
-                if (this.isTriggerExtra(value)) {
-                    if (!this.showExtra) {
-                        this.showExtra = true
-                    }
-                } else {
-                    if (this.showExtra) {
-                        this.showExtra = false
-                    }
-                }
-            }
-
-            // show reset icon.
-            if (!this.showReset) {
-                this.showReset = true
-            }
-
-            // check if value change.
-            if (this.checkedValue != value) {
-                this.checkedValue = value
-                this.autosave()
-            }
-
-            // check if need to store
-        },
-        // reset to unchecked all options.
-        reset() {
-            this.$emit('input', null)
-            this.showReset = false
-            this.checkedValue = null
-            if (this.hasDefaultSlot) {
-                this.showExtra = false
-            }
-            this.autosave()
-        },
-        // return checked value is trigger value or not.
-        isTriggerExtra(value) {
-            /*MAYBE WE CAN USE LODASH FOR THIS SHIT*/
-            if ((typeof this.triggerValues) == 'object') {
-                let show = false
-                this.triggerValues.forEach((eachValue) => {
-                    if (eachValue == value) {
-                        show = true
-                    }
-                })
-                return show
-            }
-            return (value == this.triggerValues)
-        }
-    },
-    mounted () {
-        if (this.labelDescription !== null) { // init label tooltip if available.
-            $('a[title="' + this.labelDescription + '"]').tooltip()
-        }
-
-        if (this.labelAction !== {}) { // init label action icon tooltip if available.
-            $('a[title="' + this.labelAction.title + '"]').tooltip()
-        }
-
-        this.options.forEach((option) => { // init each option label tooltip if available.
-            if (option.labelDescription !== undefined) {
-                $('a[title="' + option.labelDescription + '"]').tooltip()
-            }
-        })
-
-        // // listen to event to set option value.
-        // if (this.setterEvent !== undefined) {
-        //     // let eventName = this.setterEvent != '' ? this.setterEvent : 'set-' + this.field
-            
-        //     EventBus.$on(this.setterEvent, (value) => {
-        //         this.check(value)
-        //     })
-        // }
-
-        if (this.value !== undefined && this.value !== null) {
-
-            this.checkedValue = this.value
-
-            this.showReset = true
-
-            /* MAYBE SHOWEXTRA SHOULD BE COMPUTED */
-            if (this.hasDefaultSlot) {
-                this.showExtra = this.isTriggerExtra(this.value)
-            } else {
-                this.showExtra = false
-            }
-        }
-
-        // if (this.needSync !== undefined) {
-        //     let url = '/note-data/' + window.location.pathname.split("/")[2] + '/' + this.field
-        //         axios.get(url)
-        //              .then( (response) => {
-        //                 check(response.data)
-        //              })
-        //              .catch( (error) => {
-        //                 console.log(error)
-        //              })
-        // }
+    showExtra () {
+        if ( this.$slots.default === undefined || this.triggerValues === undefined ) { return false }
+        // let show = false
+        return false || this.triggerValues.some((value) => { return value == this.checkedValue })
+        // return show
     }
+},
+mounted () {
+    if ( this.value !== undefined ) { this.checkedValue = this.value }
+    if (this.labelDescription !== null) { // init label tooltip if available.
+        $('a[title="' + this.labelDescription + '"]').tooltip()
+    }
+    if (this.labelAction !== {}) { // init label action icon tooltip if available.
+        $('a[title="' + this.labelAction.title + '"]').tooltip()
+    }
+    this.options.forEach((option) => { // init each option label tooltip if available.
+        if (option.labelDescription !== undefined) {
+            $('a[title="' + option.labelDescription + '"]').tooltip()
+        }
+    })
+},
+methods: {
+    check(value) {
+        this.$emit('input', value)
+        if (this.checkedValue != value) { // check if value change.
+            this.checkedValue = value
+            this.autosave()
+        }
+    },
+    autosave() {
+        if ( this.value !== undefined ) { this.$emit('autosave', this.field) }
+    },
+    reset() { // reset to unchecked all options.
+        this.$emit('input', null)
+        this.checkedValue = null
+        this.autosave()
+    }
+}
 }
 </script>
 

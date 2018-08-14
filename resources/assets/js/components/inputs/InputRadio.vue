@@ -26,7 +26,7 @@
             <input
                 type="radio"
                 :checked="option.value == (value === undefined ? checkedValue:value)"
-                :name="field"
+                :name="field !== undefined ? field:id"
                 :value="option.value"
                 @click="check(option.value)" />
             <span v-html="option.label"></span>
@@ -95,7 +95,7 @@ methods: {
         }
     },
     autosave() {
-        if ( this.value !== undefined ) { this.$emit('autosave', this.field) }
+        if ( this.value !== undefined ) { this.$emit('autosave', this.field !== undefined ? this.field:this.id) }
     },
     reset() { // reset to unchecked all options.
         this.$emit('input', null)

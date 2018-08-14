@@ -4,7 +4,7 @@
          :style="isMaxWidth">
         <label
             class="control-label topped"
-            :for="field"
+            :for="field !== undefined ? field:id"
             v-if="label !== null">
             <span v-html="label"></span>
             <a  data-toggle="tooltip"
@@ -47,9 +47,9 @@ props: {
 },
 data () {
     return {
-        lastSave: null,
         currentValue: null,
-        inputClass: 'form-control'
+        inputClass: 'form-control',
+        lastSave: null
     }
 },
 computed: {
@@ -85,7 +85,7 @@ mounted () {
     }
 
     if ( this.pattern !== '.') {
-        $('#' + this.field).tooltip({
+        $('#' + this.$refs.input.id).tooltip({
             placement: "bottom",
             trigger: "hover",
             delay: { "show": 100, "hide": 500 }
@@ -114,7 +114,7 @@ methods: {
     },
     autosave() {
         if ( (this.value !== undefined) && !this.readonly && (this.value != this.lastSave) ) {
-            this.$emit('autosave', this.field)
+            this.$emit('autosave', this.$refs.input.id)
             this.lastSave = this.value
         }
     },
@@ -127,13 +127,13 @@ methods: {
         }
     },
     resetTheme () {
-        $('#' + this.field).attr('data-original-title', '')
-        $('#' + this.field).tooltip('hide')
+        $('#' + this.$refs.input.id).attr('data-original-title', '')
+        $('#' + this.$refs.input.id).tooltip('hide')
         this.inputClass = 'form-control'
     },
     setInvalidTheme () {
-        $('#' + this.field).attr('data-original-title', this.invalidResponseText)
-        $('#' + this.field).tooltip('show')
+        $('#' + this.$refs.input.id).attr('data-original-title', this.invalidResponseText)
+        $('#' + this.$refs.input.id).tooltip('show')
         this.inputClass = 'form-control invalid'
     }
 }

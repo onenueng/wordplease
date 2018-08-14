@@ -10,7 +10,7 @@
          :style="isMaxWidthDiv">
         <label
             class="control-label topped"
-            :for="field"
+            :for="field !== undefined ? field:id"
             v-if="label !== null">
             <span v-html="label"></span>
             <a  v-if="labelDescription !== null"
@@ -97,8 +97,8 @@ mounted () {
     if (this.labelDescription !== null) { // init label tooltip if available.
         $('a[title="' + this.labelDescription + '"]').tooltip()
     }
-    $('#' + this.field).autocomplete({ // initial autocomplete instance
-        serviceUrl: (this.serviceUrl === null) ? '/lists/select/' + this.field : '/lists/' + this.serviceUrl,
+    $('#' + this.$refs.input.id).autocomplete({ // initial autocomplete instance
+        serviceUrl: (this.serviceUrl === null) ? '/lists/select/' + this.$refs.input.id : '/lists/' + this.serviceUrl,
         onSelect: (suggestion) => {
             this.$refs.input.value = this.currentData = suggestion.value
             this.$emit('input', this.$refs.input.value)
@@ -113,12 +113,12 @@ methods: {
     reset() {
         this.lastSave = this.currentData = this.$refs.input.value = null
         this.$emit('input', null)
-        this.$emit('autosave', this.field)
+        this.$emit('autosave', this.$refs.input.name)
         this.showReset = false
     },
     autosave() {
         if ( (this.value !== undefined) && !this.readonly && (this.value != this.lastSave) ) {
-            this.$emit('autosave', this.field)
+            this.$emit('autosave', this.$refs.input.name)
             this.lastSave = this.value
         }
     }

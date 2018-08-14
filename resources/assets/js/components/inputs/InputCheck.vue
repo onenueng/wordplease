@@ -1,7 +1,5 @@
 <template>
-<label
-    :class="'checkbox-inline underline-animate clear-padding ' + ( disabled ? '' : status)"
-    @click="check">
+<label :class="'checkbox-inline underline-animate clear-padding ' + ( disabled ? '' : status)">
     <div :class="'material-checkbox-group ' + (disabled ? '' : status)">
         <input
             class="material-checkbox"
@@ -10,10 +8,11 @@
             :disabled="disabled"
             :id="field !== undefined ? field:id"
             :name="field !== undefined ? field:id"
-            ref="input" />
+            ref="input"
+            @click="check" />
         <label
             :class="'material-checkbox-group-label ' + (disabled ? '' : status)"
-            :for="field">{{ label }}
+            :for="field !== undefined ? field:id">{{ label }}
             <a  data-toggle="tooltip"
                 role="button"
                 :title="labelDescription"

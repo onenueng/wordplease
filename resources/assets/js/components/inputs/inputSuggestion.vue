@@ -3,7 +3,7 @@
     <div class="form-group-sm">
         <label
             class="control-label topped"
-            :for="field"
+            :for="field !== undefined ? field:id"
             v-html="label"
             v-if="label !== null"
         ></label>
@@ -50,9 +50,9 @@ created () {
     if (this.field === undefined ) { this.id = Date.now() + '-' + Math.floor(Math.random()*1000) }
 },
 mounted () {
-    $('#' + this.field).autocomplete({ // initial autocomplete instance
+    $('#' + this.$refs.input.name).autocomplete({ // initial autocomplete instance
         // setup service endpoint
-        serviceUrl: '/lists/autocomplete/' + ((this.serviceUrl !== null) ? this.serviceUrl : this.field ),
+        serviceUrl: '/lists/autocomplete/' + ((this.serviceUrl !== null) ? this.serviceUrl : this.$refs.input.name ),
         beforeRender: (container, suggestions) => { // format suggestions
             for (let i = 0; i < container.children().length; i++) {
                 let strHTML = container.children().eq(i).html()
@@ -92,7 +92,7 @@ mounted () {
 methods: {
     autosave() {
         if ( (this.value !== undefined) && !this.readonly && (this.value != this.lastSave) ) {
-            this.$emit('autosave', this.field)
+            this.$emit('autosave', this.$refs.input.name)
             this.lastSave = this.value
         }
     }

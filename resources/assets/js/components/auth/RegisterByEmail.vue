@@ -1,18 +1,18 @@
 <template><form action="/register" method="post" name="register">
 <div class="material-box-topic">
     <alert
-        state="info"
-        icon="fa fa-lightbulb-o fa-3x"
         animated="lightSpeedIn"
-        content="The email register account is valid for a short period only, you will need Faculty's account to continue using this application.">
-    </alert>
+        content="The email register account is valid for a short period only, you will need Faculty's account to continue using this application."
+        icon="fa fa-lightbulb-o fa-3x"
+        state="info"
+    ></alert>
 
     <csrf-token/>
-    <input type="hidden" name="mode" value="email">
-    <input type="hidden" name="user" :value="JSON.stringify(user)">
+    <input type="hidden" name="mode" value="email" />
+    <input type="hidden" name="user" :value="JSON.stringify(user)" />
 
     <input-state
-        name="email"
+        field="email"
         label="Email :"
         pattern="email"
         service-url="/register/is-data-available"
@@ -21,7 +21,7 @@
         @validated="(isValid) => { valid.email = isValid }"
     ></input-state>
     <input-state
-        name="username"
+        field="username"
         label="Username :"
         pattern="^\w+$"
         service-url="/register/is-data-available"
@@ -31,25 +31,25 @@
         @validated="(isValid) => { valid.name = isValid }"
     ></input-state>
     <input-state
-        type="password"
-        name="password"
+        field="password"
         label="Password :"
+        type="password"
         v-model="user.password"
         @error="(error) => { $emit('error', error) }"
         @validated="(isValid) => { valid.password = isValid }"
     ></input-state>
     <input-state
-        type="password"
-        name="re_password"
-        label="Password again :"
+        field="re_password"
         invalid-response-text="password doesn't matched"
+        label="Password again :"
+        type="password"
         :pattern="'^' + user.password + '$'"
         v-model="user.re_password"
         @error="(error) => { $emit('error', error) }"
         @validated="(isValid) => { valid.re_password = isValid }"
     ></input-state>
     <input-state
-        name="full_name"
+        field="full_name"
         label="Full Name in Thai :"
         pattern="[\u0e00-\u0e7e]"
         v-model="user.full_name"
@@ -57,7 +57,7 @@
         @validated="(isValid) => { valid.full_name = isValid }"
     ></input-state>
     <input-state
-        name="full_name_en"
+        field="full_name_en"
         label="Full Name in English :"
         pattern="[a-zA-Z]"
         v-model="user.full_name_en"

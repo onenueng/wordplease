@@ -4,30 +4,33 @@
         <input
             class="form-control"
             :disabled="disabled"
+            :id="field"
+            :name="field"
             :type="type"
             :value="value"
             ref="input"
             @input="oninput"
             @keydown="onkeydown" />
         <span :class="state.iconClass"></span><!-- class provide state icon -->
-        <span class="help-block" v-if="state.text != ''"><!-- show help text if necessary -->
-            <i>{{ state.text }}</i>
-        </span>
+        <span
+            class="help-block"
+            v-if="state.text != ''"
+        ><i>{{ state.text }}</i></span><!-- show help text if necessary -->
     </div>
 </template>
 
 <script>
     export default {
         props: {
-            type: { default: 'text'},                       // input's type
-            value: { required: true },                      // input's value
-            label: { default: 'label'},                     // input's label
-            name: { default: 'data' },                      // input's name
-            serviceUrl: { default: null },                  // endpoint for database validation if necessary
-            pattern: { default: '.' },                      // pattern for format validation
-            disabled: { default: false },                   // disable input or not
-            placeholderStateText: { default: '' },          // placholer as state text
-            invalidResponseText: { default: 'invalid input format' }
+            disabled: { default: false },
+            field: { default: 'data' },
+            invalidResponseText: { default: 'invalid input format' },
+            label: { default: 'label'},
+            pattern: { default: '.' },
+            placeholderStateText: { default: '' },
+            serviceUrl: { default: null },
+            type: { default: 'text'},
+            value: { required: true }
         },
         data() {
             return {
@@ -63,7 +66,7 @@
                             this.state.iconClass = 'fa fa-circle-o-notch fa-spin form-control-feedback'
                             this.$emit('disabled', true)
                             axios.post(this.serviceUrl, {
-                                    field: this.name,
+                                    field: this.field,
                                     value: this.$refs.input.value
                                  })
                                  .then((response) => {

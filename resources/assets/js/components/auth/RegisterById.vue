@@ -1,20 +1,20 @@
 <template><form action="/register" method="post" name="register">
 <div class="material-box-topic">
     <alert
-        state="info"
-        icon="fa fa-lightbulb-o fa-3x"
         animated="lightSpeedIn"
         content="You need Faculty's account to register and login by ID. If you don't have one, you will not be able to login the application."
+        icon="fa fa-lightbulb-o fa-3x"
+        state="info"
     ></alert>
 
-    <csrf-token/>
-    <input type="hidden" name="mode" value="id">
-    <input type="hidden" name="user" :value="JSON.stringify(user)">
+    <csrf-token />
+    <input type="hidden" name="mode" value="id" />
+    <input type="hidden" name="user" :value="JSON.stringify(user)" />
 
     <input-state
-        name="org_id"
-        service-url="/register/is-data-available"
+        field="org_id"
         placeholder-state-text="please fill in a valid ID"
+        service-url="/register/is-data-available"
         :label="idName"
         :pattern="pattern"
         v-model="orgId"
@@ -25,22 +25,34 @@
         <div v-if="user != null">
             <div class="form-group-sm">
                 <label class="control-label topped">Full Name :</label>
-                <input type="text" class="form-control" v-model="user.full_name" readonly />
+                <input
+                    class="form-control"
+                    readonly
+                    type="text"
+                    v-model="user.full_name" />
             </div>
             <div class="form-group-sm">
                 <label class="control-label topped">Position :</label>
-                <input type="text" class="form-control" v-model="user.org_position_title" readonly />
+                <input
+                    class="form-control"
+                    readonly
+                    type="text"
+                    v-model="user.org_position_title" />
             </div>
             <div class="form-group-sm">
                 <label class="control-label topped">Division :</label>
-                <input type="text" class="form-control" v-model="user.org_division_name" readonly />
+                <input
+                    class="form-control"
+                    type="text"
+                    readonly
+                    v-model="user.org_division_name" />
                 <span class="help-block">
                     <i>In case of above fields are incorrect, please contact HR department.</i>
                 </span>
             </div>
             <hr class="line">
             <input-state
-                name="email"
+                field="email"
                 label="Email :"
                 pattern="email"
                 service-url="/register/is-data-available"
@@ -49,17 +61,17 @@
                 @validated="(isValid) => { valid.email = isValid }"
             ></input-state>
             <input-state
-                name="username"
+                field="username"
                 label="Username :"
                 pattern="^\w+$"
-                service-url="/register/is-data-available"
                 placeholder-state-text="This will be your nickname for the app."
+                service-url="/register/is-data-available"
                 v-model="user.name"
                 @error="(error) => { $emit('error', error) }"
                 @validated="(isValid) => { valid.name = isValid }"
             ></input-state>
             <input-state
-                name="name_en"
+                field="name_en"
                 label="Full Name in English :"
                 pattern="[a-zA-Z]"
                 v-model="user.full_name_en"

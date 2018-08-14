@@ -4,6 +4,7 @@
     :id="id"
     :disabled="disabled"
     :tabindex="noTabStop === undefined ? null : -1"
+    :type="type"
     v-html="label"
     @click="click"
 ></button>
@@ -17,7 +18,8 @@ export default {
         label: { default: 'OK' },
         noTabStop: { require: false },
         size: { default: 'default' },
-        status: { default: 'draft' }
+        status: { default: 'draft' },
+        type: { default: 'button' }
     },
     computed: {
         buttonClass () {

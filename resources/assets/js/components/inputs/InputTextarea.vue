@@ -22,9 +22,9 @@
             <textarea
                 rows="1"
                 :class="controlClass"
-                :id="field"
+                :id="field !== undefined ? field:id"
                 :maxlength="maxlength"
-                :name="field"
+                :name="field !== undefined ? field:id"
                 :placeholder="placeholder"
                 :readonly="readonly"
                 ref="textarea"
@@ -44,96 +44,97 @@
 <script>
 import autosize from "autosize"
 export default {
-    props: {
-        field: { default: Date.now() + '-' + Math.floor(Math.random()*1000) },
-        grid: { default: null },
-        label: { default: null },
-        labelDescription: { default: null },
-        labelAction: { default: () => { return {} } },
-        maxlength: { default: 255 },
-        placeholder: { default: null },
-        readonly: { default: false },
-        value: { required: true }
-    },
-    data () {
-        return {
-            controlClass: 'form-control',
-            helperClass: 'text-muted',
-            showCharsRemaining: false,
-            charsRemaining: 0
+props: {
+    field: { required: false },
+    grid: { default: null },
+    label: { default: null },
+    labelDescription: { default: null },
+    labelAction: { default: () => { return {} } },
+    maxlength: { default: 255 },
+    placeholder: { default: null },
+    readonly: { default: false },
+    value: { required: true }
+},
+data () {
+    return {
+        controlClass: 'form-control',
+        helperClass: 'text-muted',
+        showCharsRemaining: false,
+        charsRemaining: 0
+    }
+},
+computed: {
+    componentGrid() {
+        let className
+        if ( this.grid === null ) {
+            className = 'col-xs-12'
+        } else {
+            let grid = this.grid.split('-')
+            className = 'col-xs-' + (grid[0]) + ' col-sm-' + (grid[1]) + ' col-md-' + (grid[2])
         }
-    },
-    computed: {
-        componentGrid() {
-            let className
-            if ( this.grid === null ) {
-                className = 'col-xs-12'
+        return (this.label === null) ? (className += ' fix-margin') : className
+    }
+},
+created () {
+    if (this.field === undefined ) { this.id = Date.now() + '-' + Math.floor(Math.random()*1000) }
+    this.oninput = _.debounce(this.autosave, 5000)
+},
+mounted () {
+    autosize(this.$refs.textarea)
+    if (this.labelAction !== {}) { // init label action tooltip if available.
+        $('a[title="' + this.labelAction.title + '"]').tooltip()
+    }
+    if (this.labelDescription !== null) { // init label tooltip if available.
+        $('a[title="' + this.labelDescription + '"]').tooltip()
+    }
+},
+methods: {
+    onkeydown () {
+        if (this.$refs.textarea.value.length > (.5*this.maxlength)) {
+            this.charsRemaining = this.maxlength - this.$refs.textarea.value.length
+            this.showCharsRemaining = true
+            if (this.$refs.textarea.value.length > (.75*this.maxlength)) {
+                this.setTheme('danger')
             } else {
-                let grid = this.grid.split('-')
-                className = 'col-xs-' + (grid[0]) + ' col-sm-' + (grid[1]) + ' col-md-' + (grid[2])
+                this.setTheme('warning')
             }
-            return (this.label === null) ? (className += ' fix-margin') : className
+        } else {
+            this.setTheme('')
         }
     },
-    created () {
-        this.oninput = _.debounce(this.autosave, 5000)
-    },
-    mounted () {
-        autosize(this.$refs.textarea)
-        if (this.labelAction !== {}) { // init label action tooltip if available.
-            $('a[title="' + this.labelAction.title + '"]').tooltip()
-        }
-        if (this.labelDescription !== null) { // init label tooltip if available.
-            $('a[title="' + this.labelDescription + '"]').tooltip()
+    autosave() {
+        if ( (this.value !== undefined) && !this.readonly && (this.value != this.lastSave) ) {
+            this.$emit('input', this.$refs.textarea.value)
+            this.$emit('autosave', this.field)
+            this.lastSave = this.value
         }
     },
-    methods: {
-        onkeydown () {
-            if (this.$refs.textarea.value.length > (.5*this.maxlength)) {
-                this.charsRemaining = this.maxlength - this.$refs.textarea.value.length
-                this.showCharsRemaining = true
-                if (this.$refs.textarea.value.length > (.75*this.maxlength)) {
-                    this.setTheme('danger')
-                } else {
-                    this.setTheme('warning')
-                }
-            } else {
-                this.setTheme('')
-            }
-        },
-        autosave() {
-            if ( (this.value !== undefined) && !this.readonly && (this.value != this.lastSave) ) {
-                this.$emit('input', this.$refs.textarea.value)
-                this.$emit('autosave', this.field)
-                this.lastSave = this.value
-            }
-        },
-        setTheme(status) {
-            let baseClass = ''
-            let subClass = ''
-            let show = false
-            switch (status) {
-                case 'warning':
-                    baseClass = 'form-control textarea-warning'
-                    subClass = 'text-warning'
-                    show = true
-                    break
-                case 'danger':
-                    baseClass = 'form-control textarea-danger'
-                    subClass = 'text-danger'
-                    show = true
-                    break
-                default :
-                    baseClass = 'form-control'
-                    subClass = 'text-muted'
-            }
-            if ( this.controlClass != baseClass ) {
-                this.controlClass = baseClass
-                this.helperClass = subClass
-                this.showCharsRemaining = show
-            }
+    setTheme(status) {
+        let baseClass = ''
+        let subClass = ''
+        let show = false
+        switch (status) {
+            case 'warning':
+                baseClass = 'form-control textarea-warning'
+                subClass = 'text-warning'
+                show = true
+                break
+            case 'danger':
+                baseClass = 'form-control textarea-danger'
+                subClass = 'text-danger'
+                show = true
+                break
+            default :
+                baseClass = 'form-control'
+                subClass = 'text-muted'
+        }
+        if ( this.controlClass != baseClass ) {
+            this.controlClass = baseClass
+            this.helperClass = subClass
+            this.showCharsRemaining = show
         }
     }
+}
 }
 </script>
 

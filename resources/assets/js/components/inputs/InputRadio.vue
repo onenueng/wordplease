@@ -49,7 +49,7 @@
 <script>
 export default {
 props: {
-    field: { default: Date.now() + '-' + Math.floor(Math.random()*1000) },
+    field: { required: false },
     label: { default: null },
     labelDescription: { default: null },
     labelAction: { default: () => { return {} } },
@@ -66,10 +66,11 @@ computed: {
     },
     showExtra () {
         if ( this.$slots.default === undefined || this.triggerValues === undefined ) { return false }
-        // let show = false
         return false || this.triggerValues.some((value) => { return value == this.checkedValue })
-        // return show
     }
+},
+created () {
+    if (this.field === undefined ) { this.id = Date.now() + '-' + Math.floor(Math.random()*1000) }
 },
 mounted () {
     if ( this.value !== undefined ) { this.checkedValue = this.value }

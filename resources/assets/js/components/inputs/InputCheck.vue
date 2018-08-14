@@ -44,13 +44,13 @@ data () {
 created () {
     if (this.field === undefined ) { this.id = Date.now() + '-' + Math.floor(Math.random()*1000) }
 },
-mounted() {
+mounted () {
     if (this.labelDescription !== undefined) {
         $('a[title="' + this.labelDescription + '"]').tooltip()
     }
 },
 methods: {
-    check() {
+    check () {
         this.isChecked = !this.isChecked
         this.$emit('toggle', this.isChecked)
         if ( this.checked !== undefined ) { this.$emit('autosave', this.$refs.input.name) }
